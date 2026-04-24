@@ -1,0 +1,71 @@
+name: my-ecm
+
+services:
+  db:
+    extends:
+      file: .docker/compose.base.yml
+      service: db
+    ports:
+      - '${DB_PORT}:5432'
+    volumes:
+      - ${PWD}/.docker/volumes/pg_data:/var/lib/postgresql/data
+    networks:
+      - boilerplate_network
+
+  redis:
+    extends:
+      file: .docker/compose.base.yml
+      service: redis
+    ports:
+      - '${REDIS_PORT}:6379'
+    volumes:
+      - ${PWD}/.docker/volumes/redis_data:/data
+    command: ["redis-server", "--appendonly", "yes", "--dir", "/data"]
+    networks:
+      - boilerplate_network
+
+  apisix:
+    extends:
+      file: .docker/compose.base.yml
+      service: apisix
+    ports:
+      - "9080:9080"
+      - "9443:9443"
+    environment:
+      - APISIX_STAND_ALONE=true
+    volumes:
+      - ${PWD}/apisix/apisix.json:/usr/local/apisix/conf/apisix.json:ro
+      - ${PWD}/apisix/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+    networks:
+      - boilerplate_network
+
+  kafka:
+    extends:
+      file: .docker/compose.base.yml
+      service: kafka
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_KRAFT_MODE: 'true'
+
+      CLUSTER_ID: '1L6g7nGhU-eAKfL--X25wo'
+      KAFKA_NODE_ID: 1
+
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+    volumes:
+      - ${PWD}/.docker/volumes/kafka_data:/var/lib/kafka/data
+    networks:
+      - boilerplate_network
+
+networks:
+  boilerplate_network:

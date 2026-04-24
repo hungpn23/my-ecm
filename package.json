@@ -1,21 +1,32 @@
 {
-	"name": "my-ecm",
-	"private": true,
-	"scripts": {
-		"build": "turbo run build",
-		"dev": "turbo run dev",
-		"lint": "turbo run lint",
-		"format": "biome format --write .",
-		"check-types": "turbo run check-types"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"turbo": "^2.9.6",
-		"typescript": "^6.0.0"
-	},
-	"engines": {
-		"node": ">=18"
-	},
-	"packageManager": "bun@1.3.5",
-	"workspaces": ["packages/*"]
+  "name": "my-ecm",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "biome format --write .",
+    "check-types": "turbo run check-types"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "catalogs": {
+      "backend": {
+        "@nestjs/microservices": "^11.1.19",
+        "nestjs-arktype": "^1.3.2"
+      }
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "turbo": "^2.9.6",
+    "typescript": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "bun@1.3.5"
 }
