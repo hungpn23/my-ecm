@@ -1,11 +1,30 @@
 {
-  "routes": [
-    {
-      "uri": "/hello",
-      "upstream": {
-        "nodes": { "127.0.0.1:1980": 1 },
-        "type": "roundrobin"
-      }
-    }
-  ]
+	"routes": [
+		{
+			"id": "auth-service",
+			"uri": "/auth/*",
+			"plugins": {
+				"proxy-rewrite": {
+					"regex_uri": ["^/auth/(.*)", "/$1"]
+				}
+			},
+			"upstream": {
+				"nodes": { "host.docker.internal:8080": 1 },
+				"type": "roundrobin"
+			}
+		},
+		{
+			"id": "user-service",
+			"uri": "/user/*",
+			"plugins": {
+				"proxy-rewrite": {
+					"regex_uri": ["^/user/(.*)", "/$1"]
+				}
+			},
+			"upstream": {
+				"nodes": { "host.docker.internal:8081": 1 },
+				"type": "roundrobin"
+			}
+		}
+	]
 }
