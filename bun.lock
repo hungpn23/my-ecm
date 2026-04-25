@@ -11,8 +11,8 @@
         "typescript": "^6.0.0",
       },
     },
-    "apps/auth-service": {
-      "name": "@app/auth-service",
+    "apps/cart-service": {
+      "name": "@app/cart-service",
       "version": "0.0.0",
       "dependencies": {
         "@nestjs/common": "catalog:backend",
@@ -26,8 +26,188 @@
         "@types/node": "catalog:devDependencies",
       },
     },
-    "apps/user-service": {
-      "name": "@app/user-service",
+    "apps/chat-service": {
+      "name": "@app/chat-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/identity-service": {
+      "name": "@app/identity-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/inventory-service": {
+      "name": "@app/inventory-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/media-service": {
+      "name": "@app/media-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/notification-service": {
+      "name": "@app/notification-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/order-service": {
+      "name": "@app/order-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/payment-service": {
+      "name": "@app/payment-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/product-service": {
+      "name": "@app/product-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/promotion-service": {
+      "name": "@app/promotion-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/report-service": {
+      "name": "@app/report-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/review-service": {
+      "name": "@app/review-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/search-service": {
+      "name": "@app/search-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:devDependencies",
+      },
+    },
+    "apps/shipping-service": {
+      "name": "@app/shipping-service",
       "version": "0.0.0",
       "dependencies": {
         "@nestjs/common": "catalog:backend",
@@ -66,9 +246,33 @@
     },
   },
   "packages": {
-    "@app/auth-service": ["@app/auth-service@workspace:apps/auth-service"],
+    "@app/cart-service": ["@app/cart-service@workspace:apps/cart-service"],
 
-    "@app/user-service": ["@app/user-service@workspace:apps/user-service"],
+    "@app/chat-service": ["@app/chat-service@workspace:apps/chat-service"],
+
+    "@app/identity-service": ["@app/identity-service@workspace:apps/identity-service"],
+
+    "@app/inventory-service": ["@app/inventory-service@workspace:apps/inventory-service"],
+
+    "@app/media-service": ["@app/media-service@workspace:apps/media-service"],
+
+    "@app/notification-service": ["@app/notification-service@workspace:apps/notification-service"],
+
+    "@app/order-service": ["@app/order-service@workspace:apps/order-service"],
+
+    "@app/payment-service": ["@app/payment-service@workspace:apps/payment-service"],
+
+    "@app/product-service": ["@app/product-service@workspace:apps/product-service"],
+
+    "@app/promotion-service": ["@app/promotion-service@workspace:apps/promotion-service"],
+
+    "@app/report-service": ["@app/report-service@workspace:apps/report-service"],
+
+    "@app/review-service": ["@app/review-service@workspace:apps/review-service"],
+
+    "@app/search-service": ["@app/search-service@workspace:apps/search-service"],
+
+    "@app/shipping-service": ["@app/shipping-service@workspace:apps/shipping-service"],
 
     "@ark/schema": ["@ark/schema@0.56.0", "", { "dependencies": { "@ark/util": "0.56.0" } }, "sha512-ECg3hox/6Z/nLajxXqNhgPtNdHWC9zNsDyskwO28WinoFEnWow4IsERNz9AnXRhTZJnYIlAJ4uGn3nlLk65vZA=="],
 
