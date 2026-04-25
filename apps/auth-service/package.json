@@ -9,14 +9,14 @@
 		"check-types": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@nestjs/common": "^11.0.0",
-		"@nestjs/core": "^11.0.0",
+		"@nestjs/common": "catalog:backend",
+		"@nestjs/core": "catalog:backend",
 		"@nestjs/microservices": "catalog:backend",
-		"@nestjs/platform-express": "^11.0.0",
-		"reflect-metadata": "^0.2.2",
-		"rxjs": "^7.8.1"
+		"@nestjs/platform-express": "catalog:backend",
+		"reflect-metadata": "catalog:backend",
+		"rxjs": "catalog:backend"
 	},
 	"devDependencies": {
-		"@types/node": "^22.10.0"
+		"@types/node": "catalog:devDependencies"
 	}
 }
