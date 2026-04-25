@@ -1,5 +1,5 @@
 {
-	"name": "@app/auth-service",
+	"name": "@app/search-service",
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",

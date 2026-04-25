@@ -3,8 +3,8 @@ import { NestFactory } from "@nestjs/core"
 import { Transport } from "@nestjs/microservices"
 import { AppModule } from "./app.module.js"
 
-const HTTP_PORT = 8080
-const TCP_PORT = 8180
+const HTTP_PORT = 8082
+const TCP_PORT = 8182
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule)
@@ -17,7 +17,7 @@ async function bootstrap() {
 	await app.startAllMicroservices()
 	await app.listen(HTTP_PORT, "0.0.0.0")
 
-	console.log(`[auth-service] HTTP :${HTTP_PORT}  TCP :${TCP_PORT}`)
+	console.log(`[inventory-service] HTTP :${HTTP_PORT}  TCP :${TCP_PORT}`)
 }
 
 bootstrap()

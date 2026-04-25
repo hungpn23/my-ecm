@@ -1,0 +1,22 @@
+{
+	"name": "@app/media-service",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "bun --watch src/main.ts",
+		"start": "bun src/main.ts",
+		"check-types": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@nestjs/common": "catalog:backend",
+		"@nestjs/core": "catalog:backend",
+		"@nestjs/microservices": "catalog:backend",
+		"@nestjs/platform-express": "catalog:backend",
+		"reflect-metadata": "catalog:backend",
+		"rxjs": "catalog:backend"
+	},
+	"devDependencies": {
+		"@types/node": "catalog:devDependencies"
+	}
+}
