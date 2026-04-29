@@ -91,14 +91,14 @@ S36 Create auth-service and user-service NestJS microservices in apps/ using TCP
 56 5:57p 🟣 auth-service and user-service NestJS Apps Fully Scaffolded with Dual-Transport Architecture
 57 " ✅ APISIX Routes Updated to Proxy /auth/* and /user/* to Local Microservices
 S41 Review compose.local.yml and scaffold NestJS microservices (auth-service, user-service) with APISIX routing for local dev (Apr 23 at 6:04 PM)
-**Investigated**: compose.local.yml was reviewed to understand the local Docker Compose setup. The existing APISIX config (apisix/apisix.json) had only a placeholder /hello route pointing to 127.0.0.1:1980. The monorepo root package.json only had packages/* in workspaces, not apps/*.
+**Investigated**: compose.local.yml was reviewed to understand the local Docker Compose setup. The existing APISIX config (apisix/apisix.json) had only a placeholder /hello route pointing to 127.0.0.1:1980. The monorepo root package.json only had libs/* in workspaces, not apps/*.
 
 **Learned**: - APISIX runs in Docker but NestJS services run on the host via bun dev — requires host.docker.internal as upstream (auto-resolved on macOS/Windows Docker Desktop; needs extra_hosts on Linux native Docker).
     - NestJS ClientsModule lazy-connects to TCP peers, so a service boots successfully even if the other service is not yet running — /ping-other will fail at call time, not at startup.
     - The monorepo uses Bun workspaces with a backend catalog for @nestjs/microservices version pinning (^11.1.19).
     - Each microservice extends a shared root tsconfig.json and adds experimentalDecorators + emitDecoratorMetadata for NestJS decorator support.
 
-**Completed**: - Root package.json workspaces updated: added "apps/*" alongside "packages/*".
+**Completed**: - Root package.json workspaces updated: added "apps/*" alongside "libs/*".
     - apps/auth-service fully scaffolded: package.json (@app/auth-service), tsconfig.json, src/main.ts (HTTP :8080, TCP :8180), src/app.module.ts (registers USER_SERVICE TCP client → 127.0.0.1:8181), src/app.controller.ts (GET /, GET /ping-other, @MessagePattern('ping')).
     - apps/user-service fully scaffolded: identical structure — HTTP :8081, TCP :8181, registers AUTH_SERVICE TCP client → 127.0.0.1:8180.
     - apisix/apisix.json updated: /auth/* → proxy-rewrite strip prefix → host.docker.internal:8080; /user/* → host.docker.internal:8081. Old placeholder /hello route removed.
