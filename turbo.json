@@ -4,7 +4,7 @@
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
-			"inputs": ["$TURBO_DEFAULT$", ".env*"]
+			"inputs": ["$TURBO_DEFAULT$", "**/.env*"]
 		},
 		"lint": {
 			"dependsOn": ["^lint"]
@@ -16,5 +16,6 @@
 			"cache": false,
 			"persistent": true
 		}
-	}
+	},
+	"concurrency": "15"
 }
