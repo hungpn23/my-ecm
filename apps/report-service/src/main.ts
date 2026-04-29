@@ -1,7 +1,7 @@
 import "reflect-metadata"
 import { NestFactory } from "@nestjs/core"
 import { Transport } from "@nestjs/microservices"
-import { AppModule } from "./app.module.js"
+import { AppModule } from "./app.module"
 
 const HTTP_PORT = 8093
 const TCP_PORT = 8193
