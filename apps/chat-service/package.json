@@ -18,6 +18,6 @@
 		"rxjs": "catalog:backend"
 	},
 	"devDependencies": {
-		"@types/node": "catalog:devDependencies"
+		"@types/bun": "catalog:devDependencies"
 	}
 }
