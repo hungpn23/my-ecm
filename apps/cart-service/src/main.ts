@@ -19,7 +19,7 @@ async function bootstrap() {
 	await app.listen(HTTP_PORT, "0.0.0.0");
 
 	console.log(`[cart-service] HTTP :${HTTP_PORT}  TCP :${TCP_PORT}`);
-	Logger.log(`TEST TURBO: ${process.env.HI}`);
+	Logger.log(`TEST TURBO: ${Bun.env.HI}`);
 }
 
 bootstrap();
