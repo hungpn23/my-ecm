@@ -1,17 +1,6 @@
-import {
-	ExecutionContext,
-	UnprocessableEntityException,
-	createParamDecorator,
-} from "@nestjs/common";
-import { ArkErrors, type Type } from "arktype";
-
-function validate(schema: Type, data: unknown) {
-	const result = schema(data);
-	if (result instanceof ArkErrors) {
-		throw new UnprocessableEntityException(result.summary);
-	}
-	return result;
-}
+import { ExecutionContext, createParamDecorator } from "@nestjs/common";
+import { type Type } from "arktype";
+import { validate } from "./validate-ark-schema";
 
 export function ArkBody(schema: Type) {
 	return createParamDecorator((_: unknown, ctx: ExecutionContext) =>
