@@ -8,5 +8,9 @@
 	},
 	"scripts": {
 		"check-types": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@nestjs/common": "catalog:backend",
+		"arktype": "catalog:common"
 	}
 }

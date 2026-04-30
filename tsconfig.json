@@ -25,9 +25,7 @@
 		"incremental": false,
 
 		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-
-		"types": ["bun"]
+		"emitDecoratorMetadata": true
 	},
 	"include": ["**/src"]
 }
