@@ -31,14 +31,17 @@
     "check-types": "turbo run check-types",
     "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' bun.lock",
     "dev": "turbo run dev",
-    "fmt": "oxfmt",
+    "format": "oxfmt",
     "lint": "oxlint",
-    "setup": "bun scripts/init.ts && bun i"
+    "check": "oxfmt && oxlint",
+    "setup": "bun scripts/init.ts && bun i",
+    "prepare": "bun .husky/install.mjs"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/bun": "1.3.5",
     "@typescript/native-preview": "^7.0.0-dev.20260424.1",
+    "husky": "^9.1.7",
     "oxfmt": "^0.47.0",
     "oxlint": "^1.62.0",
     "oxlint-tsgolint": "^0.22.1",
