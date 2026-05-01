@@ -1,148 +1,210 @@
 {
-	"upstreams": [
-		{
-			"id": "identity",
-			"nodes": { "host.docker.internal:8080": 1 },
-			"type": "roundrobin"
-		},
-		{
-			"id": "product",
-			"nodes": { "host.docker.internal:8081": 1 },
-			"type": "roundrobin"
-		},
-		{
-			"id": "search",
-			"nodes": { "host.docker.internal:8083": 1 },
-			"type": "roundrobin"
-		},
-		{
-			"id": "cart",
-			"nodes": { "host.docker.internal:8084": 1 },
-			"type": "roundrobin"
-		},
-		{
-			"id": "order",
-			"nodes": { "host.docker.internal:8085": 1 },
-			"type": "roundrobin"
-		},
-		{
-			"id": "payment",
-			"nodes": { "host.docker.internal:8086": 1 },
-			"type": "roundrobin"
-		},
-		{
-			"id": "shipping",
-			"nodes": { "host.docker.internal:8087": 1 },
-			"type": "roundrobin"
-		},
-		{
-			"id": "chat",
-			"nodes": { "host.docker.internal:8089": 1 },
-			"type": "roundrobin"
-		},
-		{
-			"id": "review",
-			"nodes": { "host.docker.internal:8090": 1 },
-			"type": "roundrobin"
-		},
-		{
-			"id": "media",
-			"nodes": { "host.docker.internal:8091": 1 },
-			"type": "roundrobin"
-		},
-		{
-			"id": "promotion",
-			"nodes": { "host.docker.internal:8092": 1 },
-			"type": "roundrobin"
-		},
-		{
-			"id": "report",
-			"nodes": { "host.docker.internal:8093": 1 },
-			"type": "roundrobin"
-		}
-	],
-	"routes": [
-		{
-			"id": "identity",
-			"uri": "/identity/*",
-			"upstream_id": "identity",
-			"plugins": {
-				"proxy-rewrite": { "regex_uri": ["^/identity/(.*)", "/$1"] }
-			}
-		},
-		{
-			"id": "product",
-			"uri": "/products/*",
-			"upstream_id": "product",
-			"plugins": {
-				"proxy-rewrite": { "regex_uri": ["^/products/(.*)", "/$1"] }
-			}
-		},
-		{
-			"id": "search",
-			"uri": "/search/*",
-			"upstream_id": "search",
-			"plugins": { "proxy-rewrite": { "regex_uri": ["^/search/(.*)", "/$1"] } }
-		},
-		{
-			"id": "cart",
-			"uri": "/carts/*",
-			"upstream_id": "cart",
-			"plugins": { "proxy-rewrite": { "regex_uri": ["^/carts/(.*)", "/$1"] } }
-		},
-		{
-			"id": "order",
-			"uri": "/orders/*",
-			"upstream_id": "order",
-			"plugins": { "proxy-rewrite": { "regex_uri": ["^/orders/(.*)", "/$1"] } }
-		},
-		{
-			"id": "payment",
-			"uri": "/payments/*",
-			"upstream_id": "payment",
-			"plugins": {
-				"proxy-rewrite": { "regex_uri": ["^/payments/(.*)", "/$1"] }
-			}
-		},
-		{
-			"id": "shipping",
-			"uri": "/shipping/*",
-			"upstream_id": "shipping",
-			"plugins": {
-				"proxy-rewrite": { "regex_uri": ["^/shipping/(.*)", "/$1"] }
-			}
-		},
-		{
-			"id": "chat",
-			"uri": "/chats/*",
-			"upstream_id": "chat",
-			"plugins": { "proxy-rewrite": { "regex_uri": ["^/chats/(.*)", "/$1"] } }
-		},
-		{
-			"id": "review",
-			"uri": "/reviews/*",
-			"upstream_id": "review",
-			"plugins": { "proxy-rewrite": { "regex_uri": ["^/reviews/(.*)", "/$1"] } }
-		},
-		{
-			"id": "media",
-			"uri": "/media/*",
-			"upstream_id": "media",
-			"plugins": { "proxy-rewrite": { "regex_uri": ["^/media/(.*)", "/$1"] } }
-		},
-		{
-			"id": "promotion",
-			"uri": "/promotions/*",
-			"upstream_id": "promotion",
-			"plugins": {
-				"proxy-rewrite": { "regex_uri": ["^/promotions/(.*)", "/$1"] }
-			}
-		},
-		{
-			"id": "report",
-			"uri": "/reports/*",
-			"upstream_id": "report",
-			"plugins": { "proxy-rewrite": { "regex_uri": ["^/reports/(.*)", "/$1"] } }
-		}
-	]
+  "upstreams": [
+    {
+      "id": "identity",
+      "nodes": {
+        "host.docker.internal:8080": 1
+      },
+      "type": "roundrobin"
+    },
+    {
+      "id": "product",
+      "nodes": {
+        "host.docker.internal:8081": 1
+      },
+      "type": "roundrobin"
+    },
+    {
+      "id": "search",
+      "nodes": {
+        "host.docker.internal:8083": 1
+      },
+      "type": "roundrobin"
+    },
+    {
+      "id": "cart",
+      "nodes": {
+        "host.docker.internal:8084": 1
+      },
+      "type": "roundrobin"
+    },
+    {
+      "id": "order",
+      "nodes": {
+        "host.docker.internal:8085": 1
+      },
+      "type": "roundrobin"
+    },
+    {
+      "id": "payment",
+      "nodes": {
+        "host.docker.internal:8086": 1
+      },
+      "type": "roundrobin"
+    },
+    {
+      "id": "shipping",
+      "nodes": {
+        "host.docker.internal:8087": 1
+      },
+      "type": "roundrobin"
+    },
+    {
+      "id": "chat",
+      "nodes": {
+        "host.docker.internal:8089": 1
+      },
+      "type": "roundrobin"
+    },
+    {
+      "id": "review",
+      "nodes": {
+        "host.docker.internal:8090": 1
+      },
+      "type": "roundrobin"
+    },
+    {
+      "id": "media",
+      "nodes": {
+        "host.docker.internal:8091": 1
+      },
+      "type": "roundrobin"
+    },
+    {
+      "id": "promotion",
+      "nodes": {
+        "host.docker.internal:8092": 1
+      },
+      "type": "roundrobin"
+    },
+    {
+      "id": "report",
+      "nodes": {
+        "host.docker.internal:8093": 1
+      },
+      "type": "roundrobin"
+    }
+  ],
+  "routes": [
+    {
+      "id": "identity",
+      "uri": "/identity/*",
+      "upstream_id": "identity",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/identity/(.*)", "/$1"]
+        }
+      }
+    },
+    {
+      "id": "product",
+      "uri": "/products/*",
+      "upstream_id": "product",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/products/(.*)", "/$1"]
+        }
+      }
+    },
+    {
+      "id": "search",
+      "uri": "/search/*",
+      "upstream_id": "search",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/search/(.*)", "/$1"]
+        }
+      }
+    },
+    {
+      "id": "cart",
+      "uri": "/carts/*",
+      "upstream_id": "cart",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/carts/(.*)", "/$1"]
+        }
+      }
+    },
+    {
+      "id": "order",
+      "uri": "/orders/*",
+      "upstream_id": "order",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/orders/(.*)", "/$1"]
+        }
+      }
+    },
+    {
+      "id": "payment",
+      "uri": "/payments/*",
+      "upstream_id": "payment",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/payments/(.*)", "/$1"]
+        }
+      }
+    },
+    {
+      "id": "shipping",
+      "uri": "/shipping/*",
+      "upstream_id": "shipping",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/shipping/(.*)", "/$1"]
+        }
+      }
+    },
+    {
+      "id": "chat",
+      "uri": "/chats/*",
+      "upstream_id": "chat",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/chats/(.*)", "/$1"]
+        }
+      }
+    },
+    {
+      "id": "review",
+      "uri": "/reviews/*",
+      "upstream_id": "review",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/reviews/(.*)", "/$1"]
+        }
+      }
+    },
+    {
+      "id": "media",
+      "uri": "/media/*",
+      "upstream_id": "media",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/media/(.*)", "/$1"]
+        }
+      }
+    },
+    {
+      "id": "promotion",
+      "uri": "/promotions/*",
+      "upstream_id": "promotion",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/promotions/(.*)", "/$1"]
+        }
+      }
+    },
+    {
+      "id": "report",
+      "uri": "/reports/*",
+      "upstream_id": "report",
+      "plugins": {
+        "proxy-rewrite": {
+          "regex_uri": ["^/reports/(.*)", "/$1"]
+        }
+      }
+    }
+  ]
 }

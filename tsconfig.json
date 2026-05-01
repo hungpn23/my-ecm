@@ -1,31 +1,31 @@
 {
-	"$schema": "https://json.schemastore.org/tsconfig",
-	"compilerOptions": {
-		"strict": true,
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "strict": true,
 
-		"target": "esnext",
-		"module": "preserve",
-		"moduleResolution": "bundler",
-		"moduleDetection": "force",
+    "target": "esnext",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
 
-		"noUncheckedIndexedAccess": true,
-		"noImplicitOverride": true,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": true,
-		"exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
 
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"isolatedModules": true,
-		"resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
 
-		"declaration": true,
-		"declarationMap": true,
-		"skipLibCheck": true,
-		"incremental": false,
+    "declaration": true,
+    "declarationMap": true,
+    "skipLibCheck": true,
+    "incremental": false,
 
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true
-	},
-	"include": ["**/src"]
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": ["**/src"]
 }

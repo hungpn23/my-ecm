@@ -7,17 +7,17 @@ const HTTP_PORT = 8084;
 const TCP_PORT = 8184;
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule);
 
-	app.connectMicroservice({
-		transport: Transport.TCP,
-		options: { host: "0.0.0.0", port: TCP_PORT },
-	});
+  app.connectMicroservice({
+    transport: Transport.TCP,
+    options: { host: "0.0.0.0", port: TCP_PORT },
+  });
 
-	await app.startAllMicroservices();
-	await app.listen(HTTP_PORT, "0.0.0.0");
+  await app.startAllMicroservices();
+  await app.listen(HTTP_PORT, "0.0.0.0");
 
-	console.log(`[cart-service] HTTP :${HTTP_PORT}  TCP :${TCP_PORT}`);
+  console.log(`[cart-service] HTTP :${HTTP_PORT}  TCP :${TCP_PORT}`);
 }
 
-bootstrap();
+await bootstrap();
