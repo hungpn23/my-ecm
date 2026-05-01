@@ -31,8 +31,6 @@
     "check-types": "turbo run check-types",
     "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' bun.lock",
     "dev": "turbo run dev",
-    "format": "oxfmt",
-    "lint": "oxlint",
     "check": "oxfmt && oxlint",
     "setup": "bun scripts/init.ts && bun i",
     "prepare": "bun .husky/install.mjs"
