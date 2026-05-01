@@ -18,6 +18,7 @@
     "rxjs": "catalog:backend"
   },
   "devDependencies": {
-    "@types/bun": "catalog:devDependencies"
+    "@types/bun": "catalog:dev",
+    "@typescript/native-preview": "catalog:dev"
   }
 }
