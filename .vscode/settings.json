@@ -6,5 +6,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "explicit",
     "source.format.oxc": "explicit"
-  }
+  },
+  "js/ts.experimental.useTsgo": true
 }

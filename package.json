@@ -15,9 +15,9 @@
         "arkenv": "^0.11.0",
         "arktype": "^2.2.0"
       },
-      "devDependencies": {
+      "dev": {
         "@types/bun": "1.3.5",
-        "typescript": "^6.0.0"
+        "@typescript/native-preview": "^7.0.0-dev.20260424.1"
       }
     },
     "packages": [
@@ -37,15 +37,13 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
     "@types/bun": "1.3.5",
     "@typescript/native-preview": "^7.0.0-dev.20260424.1",
     "oxfmt": "^0.47.0",
     "oxlint": "^1.62.0",
     "oxlint-tsgolint": "^0.22.1",
     "rimraf": "^6.1.3",
-    "turbo": "^2.9.6",
-    "typescript": "^6.0.0"
+    "turbo": "^2.9.6"
   },
   "packageManager": "bun@1.3.5"
 }

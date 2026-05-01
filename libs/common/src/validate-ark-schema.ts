@@ -1,5 +1,5 @@
 import { UnprocessableEntityException } from "@nestjs/common";
-import { ArkErrors, Type } from "arktype";
+import { ArkErrors, type Type } from "arktype";
 
 export function validate<T extends Type>(schema: T, data: unknown): T["infer"] {
   const result = schema(data);

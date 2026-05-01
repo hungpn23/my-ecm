@@ -1,5 +1,5 @@
-import { ExecutionContext, createParamDecorator } from "@nestjs/common";
-import { type Type } from "arktype";
+import { type ExecutionContext, createParamDecorator } from "@nestjs/common";
+import type { Type } from "arktype";
 import { validate } from "./validate-ark-schema";
 
 export function ArkBody(schema: Type) {
