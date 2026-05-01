@@ -1,4 +1,4 @@
 deployment:
   role: data_plane
-  role_data_plane: 
+  role_data_plane:
     config_provider: json

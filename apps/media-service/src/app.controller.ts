@@ -3,13 +3,13 @@ import { MessagePattern } from "@nestjs/microservices";
 
 @Controller()
 export class AppController {
-	@Get()
-	root() {
-		return { service: "media-service", transport: "http", port: 8091 };
-	}
+  @Get()
+  root() {
+    return { service: "media-service", transport: "http", port: 8091 };
+  }
 
-	@MessagePattern("ping")
-	onPing(payload: unknown) {
-		return { service: "media-service", transport: "tcp", echo: payload };
-	}
+  @MessagePattern("ping")
+  onPing(payload: unknown) {
+    return { service: "media-service", transport: "tcp", echo: payload };
+  }
 }

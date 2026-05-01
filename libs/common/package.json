@@ -1,16 +1,16 @@
 {
-	"name": "@libs/common",
-	"version": "0.0.0",
-	"private": true,
-	"type": "module",
-	"exports": {
-		".": "./src/index.ts"
-	},
-	"scripts": {
-		"check-types": "tsc --noEmit"
-	},
-	"dependencies": {
-		"@nestjs/common": "catalog:backend",
-		"arktype": "catalog:common"
-	}
+  "name": "@libs/common",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@nestjs/common": "catalog:backend",
+    "arktype": "catalog:common"
+  }
 }
