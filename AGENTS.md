@@ -72,18 +72,16 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 <claude-mem-context>
 # Memory Context
 
-# [my-ecm] recent context, 2026-04-28 4:58pm UTC
+# [my-ecm] recent context, 2026-05-20 2:20pm UTC
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 7 obs (2,704t read) | 137,302t work | 98% savings
+Stats: 11 obs (4,258t read) | 208,986t work | 98% savings
 
 ### Apr 23, 2026
-
-S22 Code review of compose.local.yml — Docker Compose local dev stack for vocabify*be / my-ecm project (Apr 23 at 6:19 AM)
-S7 ADC JSON support inquiry — user asked if ADC (APISIX Declarative CLI) supports JSON format for declarative config files (Apr 23 at 6:19 AM)
+S22 Code review of compose.local.yml — Docker Compose local dev stack for vocabify_be / my-ecm project (Apr 23 at 6:19 AM)
 22 5:16p 🔵 my-ecm Monorepo Structure and Stack
 S25 Kafka ADVERTISED_LISTENERS Uses localhost — Breaks Docker Inter-Container Connectivity (Apr 23 at 5:19 PM)
 28 5:27p 🔵 Kafka ADVERTISED_LISTENERS Uses localhost — Breaks Docker Inter-Container Connectivity
@@ -92,17 +90,28 @@ S32 Create auth-service and user-service NestJS microservices in apps/ using TCP
 39 5:47p 🔴 Kafka Internal Port 9092 No Longer Exposed to Host in compose.local.yml
 40 " 🔵 my-ecm Project Structure: Empty apps/, APISIX in Standalone JSON Mode, Bun Monorepo
 S36 Create auth-service and user-service NestJS microservices in apps/ using TCP transport, and configure APISIX to forward requests to them (Apr 23 at 5:47 PM)
+S41 Review compose.local.yml and scaffold NestJS microservices (auth-service, user-service) with APISIX routing for local dev (Apr 23 at 5:54 PM)
 52 5:56p 🟣 auth-service NestJS Microservice Scaffolded in my-ecm Monorepo
 56 5:57p 🟣 auth-service and user-service NestJS Apps Fully Scaffolded with Dual-Transport Architecture
-57 " ✅ APISIX Routes Updated to Proxy /auth/* and /user/_ to Local Microservices
-S41 Review compose.local.yml and scaffold NestJS microservices (auth-service, user-service) with APISIX routing for local dev (Apr 23 at 6:04 PM)
-**Investigated**: compose.local.yml was reviewed to understand the local Docker Compose setup. The existing APISIX config (apisix/apisix.json) had only a placeholder /hello route pointing to 127.0.0.1:1980. The monorepo root package.json only had libs/_ in workspaces, not apps/\_.
+57 " ✅ APISIX Routes Updated to Proxy /auth/* and /user/* to Local Microservices
+S87 Removed Redundant format and lint Scripts from Root package.json (Apr 23 at 6:04 PM)
+### May 4, 2026
+152 4:05p ✅ Removed Redundant format and lint Scripts from Root package.json
+S88 cart-service Debug: Service Running on Port 8084, Returns 200 Directly (May 4 at 4:05 PM)
+153 4:27p 🔵 cart-service Debug: Service Running on Port 8084, Returns 200 Directly
+S123 Session Recap Request — User Reviewing Last Work on feat/ticketing-ndc (May 4 at 4:27 PM)
+154 4:40p 🔵 APISIX JWT Architecture Gap: No JWT Plugin Configured, Identity-Service Skeleton Only
+### May 7, 2026
+191 4:43a 🔵 Session Recap Request — User Reviewing Last Work on feat/ticketing-ndc
+S124 How APISIX upstream connects to cart-service via host.docker.internal in Docker Desktop (May 7 at 4:44 AM)
+**Investigated**: The apisix.json configuration file was read to understand how the upstream for cart-service is defined — specifically the host and port used to route traffic from APISIX to the service running on the host machine.
 
-**Learned**: - APISIX runs in Docker but NestJS services run on the host via bun dev — requires host.docker.internal as upstream (auto-resolved on macOS/Windows Docker Desktop; needs extra_hosts on Linux native Docker). - NestJS ClientsModule lazy-connects to TCP peers, so a service boots successfully even if the other service is not yet running — /ping-other will fail at call time, not at startup. - The monorepo uses Bun workspaces with a backend catalog for @nestjs/microservices version pinning (^11.1.19). - Each microservice extends a shared root tsconfig.json and adds experimentalDecorators + emitDecoratorMetadata for NestJS decorator support.
+**Learned**: APISIX upstream in apisix.json points to `host.docker.internal:8084`, which is a special DNS name provided automatically by Docker Desktop (macOS/Windows) that resolves to the host machine's IP. This allows APISIX running inside a container to reach services running on the host. On Linux native Docker (without Docker Desktop), `host.docker.internal` is not available by default and requires adding `extra_hosts: ["host.docker.internal:host-gateway"]` to the APISIX service in compose.local.yml.
 
-**Completed**: - Root package.json workspaces updated: added "apps/_" alongside "libs/_". - apps/auth-service fully scaffolded: package.json (@app/auth-service), tsconfig.json, src/main.ts (HTTP :8080, TCP :8180), src/app.module.ts (registers USER*SERVICE TCP client → 127.0.0.1:8181), src/app.controller.ts (GET /, GET /ping-other, @MessagePattern('ping')). - apps/user-service fully scaffolded: identical structure — HTTP :8081, TCP :8181, registers AUTH_SERVICE TCP client → 127.0.0.1:8180. - apisix/apisix.json updated: /auth/* → proxy-rewrite strip prefix → host.docker.internal:8080; /user/\_ → host.docker.internal:8081. Old placeholder /hello route removed. - bun install ran successfully: 129 packages installed, lockfile saved.
+**Completed**: Explained the host.docker.internal DNS mechanism and its platform-specific availability. Flagged the Linux Docker compatibility gotcha requiring extra_hosts configuration.
 
-**Next Steps**: Restart APISIX container to load the new routes, then start both NestJS services with bun dev and verify with curl: GET /auth/, /user/, /auth/ping-other, /user/ping-other. May need to add extra_hosts to APISIX service in compose.local.yml if running on Linux.
+**Next Steps**: No active follow-up work identified — this appears to be a one-off explanation. Pending work from prior sessions includes: resolving the divergent feat/ticketing-ndc branch via rebase, running pnpm install to restore typescript@6.0.2, and committing staged air-payment.service.ts fixes once type-check passes.
 
-Access 137k tokens of past work via get_observations([IDs]) or mem-search skill.
+
+Access 209k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>
