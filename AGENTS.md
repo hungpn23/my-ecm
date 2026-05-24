@@ -81,7 +81,8 @@ Fetch details: get_observations([IDs]) | Search: mem-search skill
 Stats: 11 obs (4,258t read) | 208,986t work | 98% savings
 
 ### Apr 23, 2026
-S22 Code review of compose.local.yml — Docker Compose local dev stack for vocabify_be / my-ecm project (Apr 23 at 6:19 AM)
+
+S22 Code review of compose.local.yml — Docker Compose local dev stack for vocabify*be / my-ecm project (Apr 23 at 6:19 AM)
 22 5:16p 🔵 my-ecm Monorepo Structure and Stack
 S25 Kafka ADVERTISED_LISTENERS Uses localhost — Breaks Docker Inter-Container Connectivity (Apr 23 at 5:19 PM)
 28 5:27p 🔵 Kafka ADVERTISED_LISTENERS Uses localhost — Breaks Docker Inter-Container Connectivity
@@ -93,15 +94,19 @@ S36 Create auth-service and user-service NestJS microservices in apps/ using TCP
 S41 Review compose.local.yml and scaffold NestJS microservices (auth-service, user-service) with APISIX routing for local dev (Apr 23 at 5:54 PM)
 52 5:56p 🟣 auth-service NestJS Microservice Scaffolded in my-ecm Monorepo
 56 5:57p 🟣 auth-service and user-service NestJS Apps Fully Scaffolded with Dual-Transport Architecture
-57 " ✅ APISIX Routes Updated to Proxy /auth/* and /user/* to Local Microservices
+57 " ✅ APISIX Routes Updated to Proxy /auth/* and /user/\_ to Local Microservices
 S87 Removed Redundant format and lint Scripts from Root package.json (Apr 23 at 6:04 PM)
+
 ### May 4, 2026
+
 152 4:05p ✅ Removed Redundant format and lint Scripts from Root package.json
 S88 cart-service Debug: Service Running on Port 8084, Returns 200 Directly (May 4 at 4:05 PM)
 153 4:27p 🔵 cart-service Debug: Service Running on Port 8084, Returns 200 Directly
 S123 Session Recap Request — User Reviewing Last Work on feat/ticketing-ndc (May 4 at 4:27 PM)
 154 4:40p 🔵 APISIX JWT Architecture Gap: No JWT Plugin Configured, Identity-Service Skeleton Only
+
 ### May 7, 2026
+
 191 4:43a 🔵 Session Recap Request — User Reviewing Last Work on feat/ticketing-ndc
 S124 How APISIX upstream connects to cart-service via host.docker.internal in Docker Desktop (May 7 at 4:44 AM)
 **Investigated**: The apisix.json configuration file was read to understand how the upstream for cart-service is defined — specifically the host and port used to route traffic from APISIX to the service running on the host machine.
@@ -111,7 +116,6 @@ S124 How APISIX upstream connects to cart-service via host.docker.internal in Do
 **Completed**: Explained the host.docker.internal DNS mechanism and its platform-specific availability. Flagged the Linux Docker compatibility gotcha requiring extra_hosts configuration.
 
 **Next Steps**: No active follow-up work identified — this appears to be a one-off explanation. Pending work from prior sessions includes: resolving the divergent feat/ticketing-ndc branch via rebase, running pnpm install to restore typescript@6.0.2, and committing staged air-payment.service.ts fixes once type-check passes.
-
 
 Access 209k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>
