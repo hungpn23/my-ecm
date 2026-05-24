@@ -4,6 +4,7 @@
   "workspaces": {
     "catalogs": {
       "backend": {
+        "@nestjs/config": "^4.0.4",
         "@nestjs/common": "^11.0.0",
         "@nestjs/core": "^11.0.0",
         "@nestjs/microservices": "^11.1.19",
@@ -32,6 +33,7 @@
     "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' bun.lock",
     "dev": "turbo run dev",
     "check": "oxfmt && oxlint",
+    "check:fix": "oxfmt --write && oxlint --fix",
     "setup": "bun scripts/init.ts && bun i",
     "prepare": "bun .husky/install.mjs"
   },
