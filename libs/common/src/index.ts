@@ -1,2 +1,2 @@
-export { ArkBody, ArkParam, ArkQuery } from "./ark-decorators";
-export { validate } from "./validate-ark-schema";
+export * from "./validation";
+export * from "./configs";
