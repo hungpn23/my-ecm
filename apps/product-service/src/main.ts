@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { NestFactory } from "@nestjs/core";
 import { Transport } from "@nestjs/microservices";
 import { AppModule } from "./app.module";
+import { Logger } from "@nestjs/common";
 
 const HTTP_PORT = 8081;
 const TCP_PORT = 8181;
@@ -17,7 +18,7 @@ async function bootstrap() {
   await app.startAllMicroservices();
   await app.listen(HTTP_PORT, "0.0.0.0");
 
-  console.log(`[product-service] HTTP :${HTTP_PORT}  TCP :${TCP_PORT}`);
+  Logger.log(`[product-service] HTTP :${HTTP_PORT}  TCP :${TCP_PORT}`);
 }
 
 await bootstrap();

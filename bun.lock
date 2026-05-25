@@ -4,9 +4,6 @@
   "workspaces": {
     "": {
       "name": "my-ecm",
-      "dependencies": {
-        "@nestjs/config": "catalog:backend",
-      },
       "devDependencies": {
         "@types/bun": "catalog:dev",
         "@typescript/native-preview": "catalog:dev",
@@ -53,10 +50,15 @@
       "name": "@app/identity-service",
       "version": "0.0.0",
       "dependencies": {
+        "@libs/common": "workspace:*",
+        "@libs/core": "workspace:*",
         "@nestjs/common": "catalog:backend",
+        "@nestjs/config": "catalog:backend",
         "@nestjs/core": "catalog:backend",
         "@nestjs/microservices": "catalog:backend",
         "@nestjs/platform-express": "catalog:backend",
+        "arkenv": "catalog:common",
+        "arktype": "catalog:common",
         "reflect-metadata": "catalog:backend",
         "rxjs": "catalog:backend",
       },
@@ -234,12 +236,18 @@
       "version": "0.0.0",
       "dependencies": {
         "@nestjs/common": "catalog:backend",
+        "@nestjs/config": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "arkenv": "catalog:common",
         "arktype": "catalog:common",
       },
     },
     "libs/core": {
       "name": "@libs/core",
       "version": "0.0.0",
+      "dependencies": {
+        "@nestjs/common": "catalog:backend",
+      },
     },
   },
   "catalogs": {
@@ -441,6 +449,8 @@
     "accepts": ["accepts@2.0.0", "", { "dependencies": { "mime-types": "^3.0.0", "negotiator": "^1.0.0" } }, "sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng=="],
 
     "append-field": ["append-field@1.0.0", "", {}, "sha512-klpgFSWLW1ZEs8svjfb7g4qWY0YS5imI82dTg+QahUvJ8YqAY0P10Uk8tTyh9ZGuYEZEMaeJYCF5BFuX552hsw=="],
+
+    "arkenv": ["arkenv@0.11.0", "", { "peerDependencies": { "arktype": "^2.1.22" }, "optionalPeers": ["arktype"] }, "sha512-XLVk3uiNRwlaqJiRWqVGz5y75P30DczxuupzVz3EEbs2j539ftwusvlK+5y/MOIerUbskSpsm6c6B61YMr/UPA=="],
 
     "arkregex": ["arkregex@0.0.5", "", { "dependencies": { "@ark/util": "0.56.0" } }, "sha512-ncYjBdLlh5/QnVsAA8De16Tc9EqmYM7y/WU9j+236KcyYNUXogpz3sC4ATIZYzzLxwI+0sEOaQLEmLmRleaEXw=="],
 
@@ -663,6 +673,10 @@
     "vary": ["vary@1.1.2", "", {}, "sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg=="],
 
     "wrappy": ["wrappy@1.0.2", "", {}, "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ=="],
+
+    "@app/identity-service/@nestjs/microservices": ["@nestjs/microservices@11.1.23", "", { "dependencies": { "iterare": "1.2.1", "tslib": "2.8.1" }, "peerDependencies": { "@grpc/grpc-js": "*", "@nestjs/common": "^11.0.0", "@nestjs/core": "^11.0.0", "@nestjs/websockets": "^11.0.0", "amqp-connection-manager": "*", "amqplib": "*", "cache-manager": "*", "ioredis": "*", "kafkajs": "*", "mqtt": "*", "nats": "*", "reflect-metadata": "^0.1.12 || ^0.2.0", "rxjs": "^7.1.0" }, "optionalPeers": ["@grpc/grpc-js", "@nestjs/websockets", "amqp-connection-manager", "amqplib", "cache-manager", "ioredis", "kafkajs", "mqtt", "nats"] }, "sha512-iVPp3u274Xx6XAEbKPWDCzUHP6wlt7L7RXUIyIpf3caJ3ldFh/dG3uyHva1lgjHG+ukz+XCXafl1cx352TPW0w=="],
+
+    "@libs/common/@nestjs/microservices": ["@nestjs/microservices@11.1.23", "", { "dependencies": { "iterare": "1.2.1", "tslib": "2.8.1" }, "peerDependencies": { "@grpc/grpc-js": "*", "@nestjs/common": "^11.0.0", "@nestjs/core": "^11.0.0", "@nestjs/websockets": "^11.0.0", "amqp-connection-manager": "*", "amqplib": "*", "cache-manager": "*", "ioredis": "*", "kafkajs": "*", "mqtt": "*", "nats": "*", "reflect-metadata": "^0.1.12 || ^0.2.0", "rxjs": "^7.1.0" }, "optionalPeers": ["@grpc/grpc-js", "@nestjs/websockets", "amqp-connection-manager", "amqplib", "cache-manager", "ioredis", "kafkajs", "mqtt", "nats"] }, "sha512-iVPp3u274Xx6XAEbKPWDCzUHP6wlt7L7RXUIyIpf3caJ3ldFh/dG3uyHva1lgjHG+ukz+XCXafl1cx352TPW0w=="],
 
     "dotenv-expand/dotenv": ["dotenv@16.6.1", "", {}, "sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow=="],
 
