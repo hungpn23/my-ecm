@@ -4,11 +4,18 @@
   "workspaces": {
     "catalogs": {
       "backend": {
-        "@nestjs/config": "^4.0.4",
         "@nestjs/common": "^11.0.0",
+        "@nestjs/config": "^4.0.4",
         "@nestjs/core": "^11.0.0",
         "@nestjs/microservices": "^11.1.19",
+        "@nestjs/passport": "^11.0.5",
         "@nestjs/platform-express": "^11.0.0",
+        "passport": "^0.7.0",
+        "passport-custom": "^1.1.1",
+        "passport-github2": "^0.1.12",
+        "passport-google-oauth20": "^2.0.0",
+        "passport-jwt": "^4.0.1",
+        "passport-local": "^1.0.0",
         "reflect-metadata": "^0.2.2",
         "rxjs": "^7.8.1"
       },
@@ -29,13 +36,14 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
+    "check": "oxfmt && oxlint",
     "check-types": "turbo run check-types",
+    "check:fix": "oxfmt --write && oxlint --fix",
     "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' bun.lock",
     "dev": "turbo run dev",
-    "check": "oxfmt && oxlint",
-    "check:fix": "oxfmt --write && oxlint --fix",
-    "setup": "bun scripts/init.ts && bun i",
-    "prepare": "bun .husky/install.mjs"
+    "generate-jwt-keypair": "bun scripts/generate-jwt-keypair.ts",
+    "prepare": "bun .husky/install.mjs",
+    "setup": "bun scripts/init.ts && bun i"
   },
   "dependencies": {},
   "devDependencies": {
