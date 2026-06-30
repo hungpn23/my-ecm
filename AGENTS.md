@@ -72,13 +72,13 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 <claude-mem-context>
 # Memory Context
 
-# [my-ecm] recent context, 2026-05-20 2:20pm UTC
+# [my-ecm] recent context, 2026-06-15 4:07am UTC
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 11 obs (4,258t read) | 208,986t work | 98% savings
+Stats: 13 obs (5,100t read) | 240,601t work | 98% savings
 
 ### Apr 23, 2026
 
@@ -109,13 +109,11 @@ S123 Session Recap Request — User Reviewing Last Work on feat/ticketing-ndc (M
 
 191 4:43a 🔵 Session Recap Request — User Reviewing Last Work on feat/ticketing-ndc
 S124 How APISIX upstream connects to cart-service via host.docker.internal in Docker Desktop (May 7 at 4:44 AM)
-**Investigated**: The apisix.json configuration file was read to understand how the upstream for cart-service is defined — specifically the host and port used to route traffic from APISIX to the service running on the host machine.
 
-**Learned**: APISIX upstream in apisix.json points to `host.docker.internal:8084`, which is a special DNS name provided automatically by Docker Desktop (macOS/Windows) that resolves to the host machine's IP. This allows APISIX running inside a container to reach services running on the host. On Linux native Docker (without Docker Desktop), `host.docker.internal` is not available by default and requires adding `extra_hosts: ["host.docker.internal:host-gateway"]` to the APISIX service in compose.local.yml.
+### May 31, 2026
 
-**Completed**: Explained the host.docker.internal DNS mechanism and its platform-specific availability. Flagged the Linux Docker compatibility gotcha requiring extra_hosts configuration.
+494 4:27p 🔵 dotenv Resolution Order in my-ecm NestJS Monorepo
+495 4:36p 🔵 dotenv Resolution in Turborepo + Bun Monorepo — App-Level .env Wins
 
-**Next Steps**: No active follow-up work identified — this appears to be a one-off explanation. Pending work from prior sessions includes: resolving the divergent feat/ticketing-ndc branch via rebase, running pnpm install to restore typescript@6.0.2, and committing staged air-payment.service.ts fixes once type-check passes.
-
-Access 209k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 241k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>
