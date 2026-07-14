@@ -1,0 +1,49 @@
+import { Inject, Injectable } from "@nestjs/common";
+import { Redis } from "ioredis";
+import { REDIS_CLIENT } from "./redis.constant";
+
+@Injectable()
+export class RedisService {
+  constructor(@Inject(REDIS_CLIENT) private readonly redis: Redis) {}
+
+  async getValue<V = unknown>(key: string) {
+    const data = await this.redis.get(key);
+    if (!data) return null;
+
+    try {
+      const parsed = JSON.parse(data);
+
+      if (typeof parsed === "object") return parsed as V;
+
+      return data as V;
+    } catch {
+      // in case JSON.parse throw
+      return data as V;
+    }
+  }
+
+  async setValue<V = unknown>(key: string, value: V, ttlInSeconds?: number) {
+    const serialized = typeof value === "string" ? value : JSON.stringify(value);
+
+    if (ttlInSeconds) {
+      await this.redis.set(key, serialized, "EX", ttlInSeconds);
+    } else {
+      await this.redis.set(key, serialized);
+    }
+  }
+
+  async deleteKey(key: string) {
+    await this.redis.del(key);
+  }
+
+  async increaseAttempts(key: string, ttlInSeconds: number): Promise<number> {
+    const count = await this.redis.incr(key);
+
+    // set ttl if first attempt
+    if (count === 1) {
+      await this.redis.expire(key, ttlInSeconds);
+    }
+
+    return count;
+  }
+}

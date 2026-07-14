@@ -1,17 +1,29 @@
+import { CommonConfigModule } from "@libs/common";
+import { DatabaseConfig, databaseConfig, jwtConfig, redisConfig, RedisModule } from "@libs/core";
+import { MikroOrmModule } from "@mikro-orm/nestjs";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
-import { AuthModule } from "./modules/auth/auth.module";
-import { UsersModule } from "./modules/users/users.module";
-import { CommonConfigModule } from "@libs/common";
-import { githubConfig, googleConfig, jwtConfig } from "./config";
+import { githubConfig, googleConfig } from "./config";
+import { AuthModule } from "./module/auth/auth.module";
+import { UserModule } from "./module/user/user.module";
 
 @Module({
   imports: [
     CommonConfigModule.forRoot({
-      load: [jwtConfig, googleConfig, githubConfig],
+      load: [jwtConfig, googleConfig, githubConfig, databaseConfig, redisConfig],
     }),
+    MikroOrmModule.forRootAsync({
+      inject: [databaseConfig.KEY],
+      driver: PostgreSqlDriver,
+      useFactory: (config: DatabaseConfig) => ({
+        ...config,
+        autoLoadEntities: true,
+      }),
+    }),
+    RedisModule,
     AuthModule,
-    UsersModule,
+    UserModule,
   ],
   controllers: [AppController],
 })
