@@ -1,4 +1,5 @@
-import "dotenv/config";
 import { databaseConfig, defineDatabaseConfig } from "@libs/core";
+import "dotenv/config";
+import { entities } from "./entities.generated";
 
-export default defineDatabaseConfig(databaseConfig());
+export default defineDatabaseConfig(entities, databaseConfig());

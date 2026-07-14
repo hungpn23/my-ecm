@@ -1,7 +1,7 @@
 import { baseProperties } from "@libs/core";
 import { defineEntity, p } from "@mikro-orm/core";
 
-const UserSchema = defineEntity({
+export const UserSchema = defineEntity({
   name: "User",
   properties: {
     ...baseProperties,

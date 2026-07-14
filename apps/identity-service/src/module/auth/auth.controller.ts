@@ -24,25 +24,29 @@ export class AuthController {
   }
 
   @Get("profile")
-  getProfile(@Request() req: Express.MayBeAuthenticatedRequest) {
+  getProfile(@Request() req: Express.AuthenticatedRequest) {
     return req.user;
   }
 
   @UseGuards(GoogleAuthGuard)
+  @PublicEndpoint()
   @Get("google")
   async googleAuth() {}
 
   @UseGuards(GoogleAuthGuard)
+  @PublicEndpoint()
   @Get("google/callback")
   googleCallback(@Request() req: Express.Request) {
     return this.authService.googleLogin(req);
   }
 
   @UseGuards(GithubAuthGuard)
+  @PublicEndpoint()
   @Get("github")
   async githubAuth() {}
 
   @UseGuards(GithubAuthGuard)
+  @PublicEndpoint()
   @Get("github/callback")
   githubCallback(@Request() req: Express.Request) {
     return this.authService.githubLogin(req);

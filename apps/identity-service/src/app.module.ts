@@ -3,6 +3,7 @@ import { DatabaseConfig, databaseConfig, jwtConfig, redisConfig, RedisModule } f
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Module } from "@nestjs/common";
+import { entities } from "../entities.generated";
 import { AppController } from "./app.controller";
 import { githubConfig, googleConfig } from "./config";
 import { AuthModule } from "./module/auth/auth.module";
@@ -18,7 +19,7 @@ import { UserModule } from "./module/user/user.module";
       driver: PostgreSqlDriver,
       useFactory: (config: DatabaseConfig) => ({
         ...config,
-        autoLoadEntities: true,
+        entities,
       }),
     }),
     RedisModule,
