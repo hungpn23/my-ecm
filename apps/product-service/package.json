@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --watch src/main.ts",
-    "start": "bun src/main.ts",
     "build": "bun ../../scripts/build.ts",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "dev": "bun --watch src/main.ts",
+    "start": "bun src/main.ts"
   },
   "dependencies": {
     "@nestjs/common": "catalog:backend",

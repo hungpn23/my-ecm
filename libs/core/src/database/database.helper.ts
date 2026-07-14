@@ -1,18 +1,22 @@
-import { DatabaseConfig } from "./database.config";
-import { SeedManager } from "@mikro-orm/seeder";
+import { defineConfig, EntitySchema } from "@mikro-orm/core";
 import { Migrator } from "@mikro-orm/migrations";
-import { defineConfig } from "@mikro-orm/core";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
+import { SeedManager } from "@mikro-orm/seeder";
+import { DatabaseConfig } from "./database.config";
 
-export function defineDatabaseConfig(config: DatabaseConfig): ReturnType<typeof defineConfig> {
+export function defineDatabaseConfig(
+  entities: readonly EntitySchema[],
+  config: DatabaseConfig,
+): ReturnType<typeof defineConfig> {
   return defineConfig({
     ...config,
-    entities: ["dist/**/*.entity.js"],
-    entitiesTs: ["src/**/*.entity.ts"],
+    driver: PostgreSqlDriver,
+    entities: [...entities, "src/**/*.entity.ts"],
     extensions: [SeedManager, Migrator],
-    seeder: { pathTs: "src/db/seeders" },
+    seeder: { pathTs: "src/database/seeders" },
     migrations: {
-      path: "dist/db/migrations",
-      pathTs: "src/db/migrations",
+      path: "dist/database/migrations",
+      pathTs: "src/database/migrations",
     },
   });
 }
