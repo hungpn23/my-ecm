@@ -1,4 +1,4 @@
-import { PASSPORT_STRATEGY } from "@libs/core";
+import { PASSPORT_STRATEGY, type AuthenticatedUser } from "@libs/core";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";
@@ -10,7 +10,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, PASSPORT_STRATEGY.
     super({ usernameField: "email" });
   }
 
-  async validate(email: string, password: string): Promise<Pick<Express.User, "userId">> {
+  async validate(email: string, password: string): Promise<Pick<AuthenticatedUser, "userId">> {
     const user = await this.authService.validateCredentials(email, password);
     if (!user) throw new UnauthorizedException("Invalid credentials");
 

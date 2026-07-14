@@ -282,6 +282,9 @@
         "rxjs": "catalog:backend",
         "uuid": "catalog:backend",
       },
+      "devDependencies": {
+        "@types/express": "catalog:dev",
+      },
     },
   },
   "catalogs": {
@@ -320,6 +323,7 @@
     },
     "dev": {
       "@types/bun": "1.3.5",
+      "@types/express": "^5.0.6",
       "@types/passport-github2": "^1.2.9",
       "@types/passport-google-oauth20": "^2.0.17",
       "@types/passport-jwt": "^4.0.1",

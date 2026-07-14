@@ -1,4 +1,4 @@
-import { PublicEndpoint } from "@libs/core";
+import { PublicEndpoint, type AuthenticatedRequest } from "@libs/core";
 import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import type { RegisterDto } from "./dto/register.dto";
@@ -19,12 +19,12 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @PublicEndpoint()
   @Post("login")
-  async login(@Request() req: Express.AuthenticatedRequest) {
+  async login(@Request() req: AuthenticatedRequest) {
     return await this.authService.login(req.user.userId);
   }
 
   @Get("profile")
-  getProfile(@Request() req: Express.AuthenticatedRequest) {
+  getProfile(@Request() req: AuthenticatedRequest) {
     return req.user;
   }
 
