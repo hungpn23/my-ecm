@@ -10,6 +10,17 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@nestjs/common": "catalog:backend"
+    "@mikro-orm/core": "catalog:backend",
+    "@mikro-orm/migrations": "catalog:backend",
+    "@mikro-orm/seeder": "catalog:backend",
+    "@nestjs/common": "catalog:backend",
+    "@nestjs/config": "catalog:backend",
+    "@nestjs/core": "catalog:backend",
+    "@nestjs/passport": "catalog:backend",
+    "arkenv": "catalog:common",
+    "ioredis": "catalog:backend",
+    "passport-jwt": "catalog:backend",
+    "rxjs": "catalog:backend",
+    "uuid": "catalog:backend"
   }
 }

@@ -16,7 +16,6 @@ export class CommonConfigModule {
           ...restOptions,
         }),
       ],
-      exports: [ConfigModule],
     };
   }
 }

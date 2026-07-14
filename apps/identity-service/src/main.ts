@@ -1,14 +1,22 @@
-import "reflect-metadata";
-import { NestFactory } from "@nestjs/core";
-import { Transport } from "@nestjs/microservices";
-import { AppModule } from "./app.module";
+import { JwtAuthGuard } from "@libs/core";
+import { MikroORM } from "@mikro-orm/core";
 import { Logger } from "@nestjs/common";
+import { NestFactory, Reflector } from "@nestjs/core";
+import { Transport } from "@nestjs/microservices";
+import "reflect-metadata";
+import { AppModule } from "./app.module";
 
 const HTTP_PORT = 8080;
 const TCP_PORT = 8180;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const reflector = app.get(Reflector);
+
+  const orm = app.get(MikroORM);
+  await orm.schema.update();
+
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
 
   app.connectMicroservice({
     transport: Transport.TCP,
