@@ -26,6 +26,7 @@
     "uuid": "catalog:backend"
   },
   "devDependencies": {
-    "@types/express": "catalog:dev"
+    "@types/express": "catalog:dev",
+    "@types/passport-jwt": "catalog:dev"
   }
 }
