@@ -24,5 +24,8 @@
     "passport-jwt": "catalog:backend",
     "rxjs": "catalog:backend",
     "uuid": "catalog:backend"
+  },
+  "devDependencies": {
+    "@types/express": "catalog:dev"
   }
 }

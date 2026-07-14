@@ -22,4 +22,6 @@ export class JwtAuthGuard extends AuthGuard(PASSPORT_STRATEGY.JWT) {
 
     return super.canActivate(context);
   }
+
+  // override handleRequest()
 }
