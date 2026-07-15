@@ -39,7 +39,7 @@ export class AuthService {
 
     await this.em.flush();
 
-    return this._createTokenPair({ userId: user.id });
+    return await this._createTokenPair({ userId: user.id });
   }
 
   async validateCredentials(email: string, password: string) {
