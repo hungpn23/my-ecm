@@ -1,10 +1,11 @@
-import { PublicEndpoint, type AuthenticatedRequest } from "@libs/core";
+import { PublicEndpoint, User, type AuthenticatedUser } from "@libs/core";
 import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import type { RegisterDto } from "./dto/register.dto";
 import { GithubAuthGuard } from "./guard/github-auth.guard";
 import { GoogleAuthGuard } from "./guard/google-auth.guard";
 import { LocalAuthGuard } from "./guard/local-auth.guard";
+import { RefreshTokenGuard } from "./guard/refresh-token.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -19,13 +20,25 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @PublicEndpoint()
   @Post("login")
-  async login(@Request() req: AuthenticatedRequest) {
-    return await this.authService.login(req.user.userId);
+  async login(@User("userId") userId: string) {
+    return await this.authService.login(userId);
+  }
+
+  @Post("logout")
+  async logout(@User() user: AuthenticatedUser) {
+    return await this.authService.logout(user);
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @PublicEndpoint()
+  @Post("refresh")
+  async refreshToken(@User() user: AuthenticatedUser) {
+    return await this.authService.refreshToken(user);
   }
 
   @Get("profile")
-  getProfile(@Request() req: AuthenticatedRequest) {
-    return req.user;
+  getProfile(@User() user: AuthenticatedUser) {
+    return user;
   }
 
   @UseGuards(GoogleAuthGuard)
@@ -36,8 +49,8 @@ export class AuthController {
   @UseGuards(GoogleAuthGuard)
   @PublicEndpoint()
   @Get("google/callback")
-  googleCallback(@Request() req: Express.Request) {
-    return this.authService.googleLogin(req);
+  googleCallback(@User() user: AuthenticatedUser) {
+    return this.authService.googleLogin(user);
   }
 
   @UseGuards(GithubAuthGuard)

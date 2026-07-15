@@ -1,6 +1,5 @@
 // standard claims https://datatracker.ietf.org/doc/html/rfc7519#section-4.1
 export interface JwtPayload {
-  [key: string]: any;
   iss?: string | undefined;
   sub?: string | undefined;
   aud?: string | string[] | undefined;

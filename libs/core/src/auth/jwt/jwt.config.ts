@@ -6,7 +6,6 @@ export const jwtConfig = registerAs("jwt", () => {
     JWT_ALGORITHM: '"RS256"',
     JWT_ISSUER: "string >= 1",
     JWT_AUDIENCE: "string >= 1",
-    JWT_KEY_ID: "string >= 1",
     JWT_ACCESS_TOKEN_EXPIRES_IN_SECONDS: "number.integer",
     JWT_REFRESH_TOKEN_EXPIRES_IN_SECONDS: "number.integer",
     JWT_PRIVATE_KEY_BASE64: "string >= 1",

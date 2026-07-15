@@ -1,4 +1,4 @@
 export type CreateTokenPairOptions = {
   userId: string;
-  sessionId: string;
+  sessionId?: string;
 };

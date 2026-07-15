@@ -8,6 +8,7 @@ import { AuthService } from "./auth.service";
 import { GithubStrategy } from "./strategy/github.strategy";
 import { GoogleStrategy } from "./strategy/google.strategy";
 import { LocalStrategy } from "./strategy/local.strategy";
+import { RefreshStrategy } from "./strategy/refresh.strategy";
 
 @Module({
   imports: [
@@ -18,15 +19,21 @@ import { LocalStrategy } from "./strategy/local.strategy";
         publicKey: decodeBase64(jwtConf.JWT_PUBLIC_KEY_BASE64),
         signOptions: {
           algorithm: jwtConf.JWT_ALGORITHM,
-          keyid: jwtConf.JWT_KEY_ID,
-          audience: jwtConf.JWT_AUDIENCE,
           issuer: jwtConf.JWT_ISSUER,
+          audience: jwtConf.JWT_AUDIENCE,
         },
       }),
     }),
     MikroOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, GoogleStrategy, GithubStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    RefreshStrategy,
+    GoogleStrategy,
+    GithubStrategy,
+  ],
 })
 export class AuthModule {}
