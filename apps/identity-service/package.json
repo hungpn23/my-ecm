@@ -31,6 +31,7 @@
     "dotenv": "catalog:backend",
     "passport-github2": "catalog:backend",
     "passport-google-oauth20": "catalog:backend",
+    "passport-jwt": "catalog:backend",
     "passport-local": "catalog:backend",
     "reflect-metadata": "catalog:backend",
     "rxjs": "catalog:backend",
@@ -40,6 +41,7 @@
     "@types/bun": "catalog:dev",
     "@types/passport-github2": "catalog:dev",
     "@types/passport-google-oauth20": "catalog:dev",
+    "@types/passport-jwt": "catalog:dev",
     "@types/passport-local": "catalog:dev"
   }
 }

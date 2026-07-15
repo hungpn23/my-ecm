@@ -6,6 +6,7 @@
     "source.fixAll.oxc": "explicit",
     "source.format.oxc": "explicit",
     "source.organizeImports": "explicit",
+    "source.sortImports": "explicit",
     "source.fixAllDangerous.oxc": "explicit"
   }
 }

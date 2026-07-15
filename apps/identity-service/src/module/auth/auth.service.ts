@@ -1,5 +1,5 @@
 import {
-  decodeBase64,
+  AuthenticatedUser,
   getUserSessionKey,
   type JwtConfig,
   jwtConfig,
@@ -9,7 +9,7 @@ import {
 import { EntityManager, EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
-import { JwtService, JwtSignOptions } from "@nestjs/jwt";
+import { JwtService } from "@nestjs/jwt";
 import { hash, verify } from "argon2";
 import { v7 } from "uuid";
 import { User } from "../../data-access/entities/user.entity";
@@ -39,10 +39,7 @@ export class AuthService {
 
     await this.em.flush();
 
-    return this._createTokenPair({
-      userId: user.id,
-      sessionId: v7(),
-    });
+    return this._createTokenPair({ userId: user.id });
   }
 
   async validateCredentials(email: string, password: string) {
@@ -56,20 +53,26 @@ export class AuthService {
   }
 
   async login(userId: string) {
-    return await this._createTokenPair({
-      userId,
-      sessionId: v7(),
-    });
+    return await this._createTokenPair({ userId });
   }
 
-  googleLogin(req: any) {
-    if (!req.user) {
-      return "No user from google";
-    }
+  async logout({ userId, sessionId }: AuthenticatedUser) {
+    const key = getUserSessionKey(userId, sessionId);
+    await this.redisService.deleteKey(key);
+
+    return { success: true };
+  }
+
+  async refreshToken({ userId, sessionId }: AuthenticatedUser) {
+    return await this._createTokenPair({ userId, sessionId });
+  }
+
+  googleLogin(user: AuthenticatedUser) {
+    console.log("🚀 ~ AuthService ~ googleLogin ~ user:", user);
 
     return {
       message: "User information from google",
-      user: req.user,
+      user,
     };
   }
 
@@ -84,7 +87,7 @@ export class AuthService {
     };
   }
 
-  private async _createTokenPair({ userId, sessionId }: CreateTokenPairOptions) {
+  private async _createTokenPair({ userId, sessionId = v7() }: CreateTokenPairOptions) {
     const accessPayload: Express.User = {
       userId,
       sessionId,
@@ -96,25 +99,16 @@ export class AuthService {
       jwtType: JwtType.REFRESH_TOKEN,
     };
 
-    const signOptions: JwtSignOptions = {
-      algorithm: this.jwtConf.JWT_ALGORITHM,
-      audience: this.jwtConf.JWT_AUDIENCE,
-      issuer: this.jwtConf.JWT_ISSUER,
-      privateKey: decodeBase64(this.jwtConf.JWT_PRIVATE_KEY_BASE64),
-    };
-
     const jwtid = v7();
 
     const [accessToken, refreshToken, _] = await Promise.all([
       this.jwtService.signAsync(accessPayload, {
-        ...signOptions,
         expiresIn: this.jwtConf.JWT_ACCESS_TOKEN_EXPIRES_IN_SECONDS,
       }),
 
       this.jwtService.signAsync(refreshPayload, {
-        ...signOptions,
-        expiresIn: this.jwtConf.JWT_REFRESH_TOKEN_EXPIRES_IN_SECONDS,
         jwtid,
+        expiresIn: this.jwtConf.JWT_REFRESH_TOKEN_EXPIRES_IN_SECONDS,
       }),
 
       this.redisService.setValue(
