@@ -61,7 +61,7 @@
     "dev": "turbo run dev",
     "generate-jwt-keypair": "bun scripts/generate-jwt-keypair.ts",
     "prepare": "bun .husky/install.mjs",
-    "setup": "bun scripts/init.ts && bun i"
+    "setup": "bun scripts/setup.ts && bun i"
   },
   "dependencies": {},
   "devDependencies": {
