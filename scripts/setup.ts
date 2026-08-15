@@ -1,5 +1,5 @@
-import { dirname, join, resolve } from "node:path";
 import { Glob } from "bun";
+import { dirname, join, resolve } from "node:path";
 
 const root = resolve(import.meta.dir, "..");
 const glob = new Glob("**/.env.example");

@@ -72,7 +72,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 <claude-mem-context>
 # Memory Context
 
-# [my-ecm] recent context, 2026-06-15 4:07am UTC
+# [my-ecm] recent context, 2026-08-15 4:04pm UTC
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
@@ -81,8 +81,7 @@ Fetch details: get_observations([IDs]) | Search: mem-search skill
 Stats: 13 obs (5,100t read) | 240,601t work | 98% savings
 
 ### Apr 23, 2026
-
-S22 Code review of compose.local.yml — Docker Compose local dev stack for vocabify*be / my-ecm project (Apr 23 at 6:19 AM)
+S22 Code review of compose.local.yml — Docker Compose local dev stack for vocabify_be / my-ecm project (Apr 23 at 6:19 AM)
 22 5:16p 🔵 my-ecm Monorepo Structure and Stack
 S25 Kafka ADVERTISED_LISTENERS Uses localhost — Breaks Docker Inter-Container Connectivity (Apr 23 at 5:19 PM)
 28 5:27p 🔵 Kafka ADVERTISED_LISTENERS Uses localhost — Breaks Docker Inter-Container Connectivity
@@ -94,24 +93,18 @@ S36 Create auth-service and user-service NestJS microservices in apps/ using TCP
 S41 Review compose.local.yml and scaffold NestJS microservices (auth-service, user-service) with APISIX routing for local dev (Apr 23 at 5:54 PM)
 52 5:56p 🟣 auth-service NestJS Microservice Scaffolded in my-ecm Monorepo
 56 5:57p 🟣 auth-service and user-service NestJS Apps Fully Scaffolded with Dual-Transport Architecture
-57 " ✅ APISIX Routes Updated to Proxy /auth/* and /user/\_ to Local Microservices
+57 " ✅ APISIX Routes Updated to Proxy /auth/* and /user/* to Local Microservices
 S87 Removed Redundant format and lint Scripts from Root package.json (Apr 23 at 6:04 PM)
-
 ### May 4, 2026
-
 152 4:05p ✅ Removed Redundant format and lint Scripts from Root package.json
 S88 cart-service Debug: Service Running on Port 8084, Returns 200 Directly (May 4 at 4:05 PM)
 153 4:27p 🔵 cart-service Debug: Service Running on Port 8084, Returns 200 Directly
 S123 Session Recap Request — User Reviewing Last Work on feat/ticketing-ndc (May 4 at 4:27 PM)
 154 4:40p 🔵 APISIX JWT Architecture Gap: No JWT Plugin Configured, Identity-Service Skeleton Only
-
 ### May 7, 2026
-
 191 4:43a 🔵 Session Recap Request — User Reviewing Last Work on feat/ticketing-ndc
 S124 How APISIX upstream connects to cart-service via host.docker.internal in Docker Desktop (May 7 at 4:44 AM)
-
 ### May 31, 2026
-
 494 4:27p 🔵 dotenv Resolution Order in my-ecm NestJS Monorepo
 495 4:36p 🔵 dotenv Resolution in Turborepo + Bun Monorepo — App-Level .env Wins
 
