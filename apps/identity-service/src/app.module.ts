@@ -1,5 +1,11 @@
-import { CommonConfigModule } from "@libs/common";
-import { DatabaseConfig, databaseConfig, jwtConfig, redisConfig, RedisModule } from "@libs/core";
+import {
+  BaseConfigModule,
+  DatabaseConfig,
+  databaseConfig,
+  jwtConfig,
+  redisConfig,
+  RedisModule,
+} from "@libs/core";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Module } from "@nestjs/common";
@@ -11,7 +17,7 @@ import { UserModule } from "./module/user/user.module";
 
 @Module({
   imports: [
-    CommonConfigModule.forRoot({
+    BaseConfigModule.forRoot({
       load: [jwtConfig, googleConfig, githubConfig, databaseConfig, redisConfig],
     }),
     MikroOrmModule.forRootAsync({
