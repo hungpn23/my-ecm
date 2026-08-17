@@ -72,13 +72,13 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 <claude-mem-context>
 # Memory Context
 
-# [my-ecm] recent context, 2026-08-15 4:04pm UTC
+# [my-ecm] recent context, 2026-08-17 6:46pm UTC
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 13 obs (5,100t read) | 240,601t work | 98% savings
+Stats: 21 obs (7,880t read) | 485,759t work | 98% savings
 
 ### Apr 23, 2026
 S22 Code review of compose.local.yml — Docker Compose local dev stack for vocabify_be / my-ecm project (Apr 23 at 6:19 AM)
@@ -107,6 +107,16 @@ S124 How APISIX upstream connects to cart-service via host.docker.internal in Do
 ### May 31, 2026
 494 4:27p 🔵 dotenv Resolution Order in my-ecm NestJS Monorepo
 495 4:36p 🔵 dotenv Resolution in Turborepo + Bun Monorepo — App-Level .env Wins
+### Aug 15, 2026
+785 4:05p 🔵 my-ecm Monorepo — Full ESM Confirmed Across All Packages
+### Aug 17, 2026
+829 6:25p ⚖️ JWT Public/Private Key Storage Format: Raw PEM vs Base64
+830 6:40p 🔄 identity-service: File structure reorganization with barrel exports and @src path alias
+831 " 🔵 MikroORM migration path mismatch: helper hardcodes "migrations" but identity-service folder is "migration"
+832 " 🔵 identity-service type-check and build pass cleanly after refactor
+833 " 🔵 identity-service initial migration creates user table with UUID PK and unique email
+834 6:45p 🔴 libs/core database helper migration path fixed to match renamed folder
+835 " 🔵 libs/core auth files staged with individual imports, not barrel imports
 
-Access 241k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 486k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>

@@ -2,13 +2,10 @@ import { decodeBase64, jwtConfig, JwtConfig, JwtStrategy } from "@libs/core";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
-import { User } from "../../data-access/entities/user.entity";
+import { User } from "@src/database/entity";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import { GithubStrategy } from "./strategy/github.strategy";
-import { GoogleStrategy } from "./strategy/google.strategy";
-import { LocalStrategy } from "./strategy/local.strategy";
-import { RefreshStrategy } from "./strategy/refresh.strategy";
+import { GithubStrategy, GoogleStrategy, LocalStrategy, RefreshStrategy } from "./strategy";
 
 @Module({
   imports: [

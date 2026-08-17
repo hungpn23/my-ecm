@@ -1,11 +1,8 @@
 import { PublicEndpoint, User, type AuthenticatedUser } from "@libs/core";
 import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import type { RegisterDto } from "./dto/register.dto";
-import { GithubAuthGuard } from "./guard/github-auth.guard";
-import { GoogleAuthGuard } from "./guard/google-auth.guard";
-import { LocalAuthGuard } from "./guard/local-auth.guard";
-import { RefreshTokenGuard } from "./guard/refresh-token.guard";
+import type { RegisterDto } from "./dto";
+import { GithubAuthGuard, GoogleAuthGuard, LocalAuthGuard, RefreshTokenGuard } from "./guard";
 
 @Controller("auth")
 export class AuthController {
