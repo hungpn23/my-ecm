@@ -15,8 +15,8 @@ export function defineDatabaseConfig(
     extensions: [SeedManager, Migrator],
     seeder: { pathTs: "src/database/seeders" },
     migrations: {
-      path: "dist/database/migrations",
-      pathTs: "src/database/migrations",
+      path: "dist/database/migration",
+      pathTs: "src/database/migration",
     },
   });
 }

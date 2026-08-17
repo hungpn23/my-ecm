@@ -10,11 +10,11 @@ import { EntityManager, EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { User } from "@src/database/entity";
 import { hash, verify } from "argon2";
 import { v7 } from "uuid";
-import { User } from "../../data-access/entities/user.entity";
 import { CreateTokenPairOptions } from "./auth.type";
-import { RegisterDto } from "./dto/register.dto";
+import { RegisterDto } from "./dto";
 
 @Injectable()
 export class AuthService {
