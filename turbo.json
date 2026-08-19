@@ -1,19 +1,19 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "ui": "stream",
+  "ui": "tui",
+  "concurrency": "15",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", "**/.env*"],
       "outputs": ["dist/**"]
     },
-    "check-types": {
-      "dependsOn": ["^check-types"]
+    "check:types": {
+      "dependsOn": ["^check:types"]
     },
     "dev": {
       "cache": false,
       "persistent": true
     }
-  },
-  "concurrency": "15"
+  }
 }

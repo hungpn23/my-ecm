@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "bun ../../scripts/build.ts",
-    "check-types": "tsc --noEmit",
+    "check:types": "tsc --noEmit",
     "dev": "bun --watch src/main.ts",
     "start": "bun src/main.ts"
   },
@@ -29,10 +29,13 @@
     "arkenv": "catalog:common",
     "arktype": "catalog:common",
     "dotenv": "catalog:backend",
+    "nestjs-pino": "catalog:backend",
     "passport-github2": "catalog:backend",
     "passport-google-oauth20": "catalog:backend",
     "passport-jwt": "catalog:backend",
     "passport-local": "catalog:backend",
+    "pino-http": "catalog:backend",
+    "pino-pretty": "catalog:backend",
     "reflect-metadata": "catalog:backend",
     "rxjs": "catalog:backend",
     "uuid": "catalog:backend"
