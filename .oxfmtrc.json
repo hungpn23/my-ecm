@@ -1,6 +1,22 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [],
+  "ignorePatterns": [
+    ".agent/**",
+    ".agents/**",
+    ".claude/**",
+    ".codex/**",
+    ".continue/**",
+    ".cursor/**",
+    ".gemini/**",
+    ".opencode/**",
+    ".pi/**",
+    ".roo/**",
+    ".windsurf/**",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    "tools/oxlint/anti-slop/**"
+  ],
   "sortPackageJson": {
     "sortScripts": true
   }

@@ -72,7 +72,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 <claude-mem-context>
 # Memory Context
 
-# [my-ecm] recent context, 2026-08-19 2:32pm UTC
+# [my-ecm] recent context, 2026-08-20 8:20am UTC
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
@@ -81,8 +81,7 @@ Fetch details: get_observations([IDs]) | Search: mem-search skill
 Stats: 38 obs (13,684t read) | 905,622t work | 98% savings
 
 ### Apr 23, 2026
-
-S22 Code review of compose.local.yml — Docker Compose local dev stack for vocabify*be / my-ecm project (Apr 23 at 6:19 AM)
+S22 Code review of compose.local.yml — Docker Compose local dev stack for vocabify_be / my-ecm project (Apr 23 at 6:19 AM)
 22 5:16p 🔵 my-ecm Monorepo Structure and Stack
 S25 Kafka ADVERTISED_LISTENERS Uses localhost — Breaks Docker Inter-Container Connectivity (Apr 23 at 5:19 PM)
 28 5:27p 🔵 Kafka ADVERTISED_LISTENERS Uses localhost — Breaks Docker Inter-Container Connectivity
@@ -94,33 +93,23 @@ S36 Create auth-service and user-service NestJS microservices in apps/ using TCP
 S41 Review compose.local.yml and scaffold NestJS microservices (auth-service, user-service) with APISIX routing for local dev (Apr 23 at 5:54 PM)
 52 5:56p 🟣 auth-service NestJS Microservice Scaffolded in my-ecm Monorepo
 56 5:57p 🟣 auth-service and user-service NestJS Apps Fully Scaffolded with Dual-Transport Architecture
-57 " ✅ APISIX Routes Updated to Proxy /auth/* and /user/\_ to Local Microservices
+57 " ✅ APISIX Routes Updated to Proxy /auth/* and /user/* to Local Microservices
 S87 Removed Redundant format and lint Scripts from Root package.json (Apr 23 at 6:04 PM)
-
 ### May 4, 2026
-
 152 4:05p ✅ Removed Redundant format and lint Scripts from Root package.json
 S88 cart-service Debug: Service Running on Port 8084, Returns 200 Directly (May 4 at 4:05 PM)
 153 4:27p 🔵 cart-service Debug: Service Running on Port 8084, Returns 200 Directly
 S123 Session Recap Request — User Reviewing Last Work on feat/ticketing-ndc (May 4 at 4:27 PM)
 154 4:40p 🔵 APISIX JWT Architecture Gap: No JWT Plugin Configured, Identity-Service Skeleton Only
-
 ### May 7, 2026
-
 191 4:43a 🔵 Session Recap Request — User Reviewing Last Work on feat/ticketing-ndc
 S124 How APISIX upstream connects to cart-service via host.docker.internal in Docker Desktop (May 7 at 4:44 AM)
-
 ### May 31, 2026
-
 494 4:27p 🔵 dotenv Resolution Order in my-ecm NestJS Monorepo
 495 4:36p 🔵 dotenv Resolution in Turborepo + Bun Monorepo — App-Level .env Wins
-
 ### Aug 15, 2026
-
 785 4:05p 🔵 my-ecm Monorepo — Full ESM Confirmed Across All Packages
-
 ### Aug 17, 2026
-
 829 6:25p ⚖️ JWT Public/Private Key Storage Format: Raw PEM vs Base64
 830 6:40p 🔄 identity-service: File structure reorganization with barrel exports and @src path alias
 831 " 🔵 MikroORM migration path mismatch: helper hardcodes "migrations" but identity-service folder is "migration"
@@ -128,9 +117,7 @@ S124 How APISIX upstream connects to cart-service via host.docker.internal in Do
 833 " 🔵 identity-service initial migration creates user table with UUID PK and unique email
 834 6:45p 🔴 libs/core database helper migration path fixed to match renamed folder
 835 " 🔵 libs/core auth files staged with individual imports, not barrel imports
-
 ### Aug 18, 2026
-
 852 1:50p 🔵 bun build --no-bundle Flag — Build Without Bundling
 853 " 🔵 bun build --no-bundle Flag — Transpile Without Bundling
 854 1:51p 🔵 Bun Build — No-Bundle Mode via --target=node Flag
@@ -140,11 +127,9 @@ S124 How APISIX upstream connects to cart-service via host.docker.internal in Do
 858 " 🔵 identity-service tsconfig Uses moduleResolution: bundler
 859 1:57p 🔵 tsc --rootDir Fails on identity-service Due to Monorepo include Pattern
 861 1:58p 🔵 bun 1.3.5 --no-bundle --outdir Is Broken; --outfile Only Workaround
-
 ### Aug 19, 2026
-
 868 4:03a 🔵 TS2307 — @src/database/entity Path Alias Unresolved in identity-service During Monorepo Type Check
-869 4:04a 🔵 TS2307 in identity-service — @src Path Alias Not Resolved by shipping-service check:types
+869 4:04a 🔵 TS2307 in identity-service — @src Path Alias Not Resolved by shipping-service check-types
 870 4:19a 🔵 TS2307 Path Alias @src/database/entity Unresolved in identity-service
 871 4:23a ✅ TypeScript include Scope Moved from Root to Per-App tsconfig
 872 4:26a 🔵 my-ecm Monorepo tsconfig Structure — include Lives Only at Root
