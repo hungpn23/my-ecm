@@ -21,7 +21,7 @@ const [privateKeyDer, publicKeyDer] = await Promise.all([
 const privateKey = derToPem("PRIVATE KEY", privateKeyDer);
 const publicKey = derToPem("PUBLIC KEY", publicKeyDer);
 
-const values: Record<string, string> = {
+const values = {
   JWT_PRIVATE_KEY_BASE64: btoa(privateKey),
   JWT_PUBLIC_KEY_BASE64: btoa(publicKey),
 };
