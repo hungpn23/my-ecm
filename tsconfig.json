@@ -1,13 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "strict": true,
-
     "target": "esnext",
     "module": "preserve",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
 
+    "verbatimModuleSyntax": true,
+    "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
@@ -25,7 +25,9 @@
     "incremental": false,
 
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+
+    "types": ["bun"]
   },
   "include": ["scripts/**/*.ts"]
 }

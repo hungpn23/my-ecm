@@ -2,7 +2,7 @@ import { defineConfig, EntitySchema } from "@mikro-orm/core";
 import { Migrator } from "@mikro-orm/migrations";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { SeedManager } from "@mikro-orm/seeder";
-import { DatabaseConfig } from "./database.config";
+import type { DatabaseConfig } from "./database.config";
 
 export function defineDatabaseConfig(
   entities: readonly EntitySchema[],

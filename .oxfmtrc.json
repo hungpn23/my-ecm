@@ -15,7 +15,9 @@
     "AGENTS.md",
     "CLAUDE.md",
     "GEMINI.md",
-    "tools/oxlint/anti-slop/**"
+    "tools/oxlint/anti-slop/**",
+    "bun.lock",
+    "**/*/entities.generated.ts"
   ],
   "sortPackageJson": {
     "sortScripts": true

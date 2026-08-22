@@ -17,7 +17,5 @@
     "reflect-metadata": "catalog:backend",
     "rxjs": "catalog:backend"
   },
-  "devDependencies": {
-    "@types/bun": "catalog:dev"
-  }
+  "devDependencies": {}
 }

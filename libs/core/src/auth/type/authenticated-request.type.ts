@@ -1,5 +1,5 @@
-import { Request } from "express";
-import { AuthenticatedUser } from "./authenticated-user.type";
+import type { Request } from "express";
+import type { AuthenticatedUser } from "./authenticated-user.type";
 
 export type AuthenticatedRequest = Request & {
   user: AuthenticatedUser;

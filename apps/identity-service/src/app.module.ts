@@ -1,6 +1,6 @@
 import {
   BaseConfigModule,
-  DatabaseConfig,
+  type DatabaseConfig,
   databaseConfig,
   jwtConfig,
   redisConfig,

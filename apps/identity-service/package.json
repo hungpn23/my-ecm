@@ -41,7 +41,6 @@
     "uuid": "catalog:backend"
   },
   "devDependencies": {
-    "@types/bun": "catalog:dev",
     "@types/passport-github2": "catalog:dev",
     "@types/passport-google-oauth20": "catalog:dev",
     "@types/passport-jwt": "catalog:dev",

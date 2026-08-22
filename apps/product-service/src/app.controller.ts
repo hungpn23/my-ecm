@@ -9,7 +9,7 @@ export class AppController {
   }
 
   @MessagePattern("ping")
-  onPing(payload: unknown) {
-    return { service: "product-service", transport: "tcp", echo: payload };
+  onPing() {
+    return { service: "product-service", transport: "tcp" };
   }
 }

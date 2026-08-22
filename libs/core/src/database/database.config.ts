@@ -1,4 +1,4 @@
-import { ConfigType, registerAs } from "@nestjs/config";
+import { type ConfigType, registerAs } from "@nestjs/config";
 import arkenv from "arkenv";
 
 export const databaseConfig = registerAs("database", () => {
