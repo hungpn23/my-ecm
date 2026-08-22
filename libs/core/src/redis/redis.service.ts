@@ -6,29 +6,15 @@ import { REDIS_CLIENT } from "./redis.constant";
 export class RedisService {
   constructor(@Inject(REDIS_CLIENT) private readonly redis: Redis) {}
 
-  async getValue<V = unknown>(key: string) {
-    const data = await this.redis.get(key);
-    if (!data) return null;
-
-    try {
-      const parsed = JSON.parse(data);
-
-      if (typeof parsed === "object") return parsed as V;
-
-      return data as V;
-    } catch {
-      // in case JSON.parse throw
-      return data as V;
-    }
+  async getString(key: string): Promise<string | null> {
+    return this.redis.get(key);
   }
 
-  async setValue<V = unknown>(key: string, value: V, ttlInSeconds?: number) {
-    const serialized = typeof value === "string" ? value : JSON.stringify(value);
-
+  async setString(key: string, value: string, ttlInSeconds?: number) {
     if (ttlInSeconds) {
-      await this.redis.set(key, serialized, "EX", ttlInSeconds);
+      await this.redis.set(key, value, "EX", ttlInSeconds);
     } else {
-      await this.redis.set(key, serialized);
+      await this.redis.set(key, value);
     }
   }
 

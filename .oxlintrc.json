@@ -12,7 +12,9 @@
     ".pi/**",
     ".roo/**",
     ".windsurf/**",
-    "tools/oxlint/anti-slop/**"
+    "tools/oxlint/anti-slop/**",
+    "bun.lock",
+    "**/*/entities.generated.ts"
   ],
   "jsPlugins": [
     {

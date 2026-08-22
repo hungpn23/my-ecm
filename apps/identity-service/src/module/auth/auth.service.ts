@@ -1,6 +1,6 @@
 import {
-  AuthenticatedUser,
   getUserSessionKey,
+  type AuthenticatedUser,
   type JwtConfig,
   jwtConfig,
   JwtType,
@@ -13,8 +13,8 @@ import { JwtService } from "@nestjs/jwt";
 import { User } from "@src/database/entity";
 import { hash, verify } from "argon2";
 import { v7 } from "uuid";
-import { CreateTokenPairOptions } from "./auth.type";
-import { RegisterDto } from "./dto";
+import type { CreateTokenPairOptions } from "./auth.type";
+import type { RegisterDto } from "./dto";
 
 @Injectable()
 export class AuthService {
@@ -111,7 +111,7 @@ export class AuthService {
         expiresIn: this.jwtConf.JWT_REFRESH_TOKEN_EXPIRES_IN_SECONDS,
       }),
 
-      this.redisService.setValue(
+      this.redisService.setString(
         getUserSessionKey(userId, sessionId),
         jwtid,
         this.jwtConf.JWT_REFRESH_TOKEN_EXPIRES_IN_SECONDS,

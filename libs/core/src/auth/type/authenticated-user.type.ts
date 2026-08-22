@@ -1,4 +1,4 @@
-import { JwtPayload } from "../jwt/jwt-payload.type";
+import type { JwtPayload } from "../jwt/jwt-payload.type";
 import { JwtType } from "../jwt/jwt-type.enum";
 
 export type AuthenticatedUser = JwtPayload & {

@@ -1,3 +1,3 @@
-import { BaseAuthDto } from "./base-auth.dto";
+import type { BaseAuthDto } from "./base-auth.dto";
 
 export type RegisterDto = BaseAuthDto;

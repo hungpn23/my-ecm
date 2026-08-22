@@ -1,4 +1,4 @@
-import { decodeBase64, jwtConfig, JwtConfig, JwtStrategy } from "@libs/core";
+import { decodeBase64, jwtConfig, type JwtConfig, JwtStrategy } from "@libs/core";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
