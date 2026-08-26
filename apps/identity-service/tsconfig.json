@@ -3,7 +3,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "@src/*": ["./src/*"]
+      "@src/*": ["./src/*"],
+      "@mikro-orm/generated": ["./entities.generated.ts"]
     }
   },
   "include": ["src/**/*.ts"]

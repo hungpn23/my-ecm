@@ -6,11 +6,11 @@ import {
   redisConfig,
   RedisModule,
 } from "@libs/core";
+import { entities } from "@mikro-orm/generated";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Module } from "@nestjs/common";
 import { LoggerModule } from "nestjs-pino";
-import { entities } from "../entities.generated";
 import { AppController } from "./app.controller";
 import { githubConfig, googleConfig } from "./config";
 import { AuthModule } from "./module/auth/auth.module";
