@@ -2,7 +2,7 @@ import { PASSPORT_STRATEGY } from "@libs/core";
 import { Inject, Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { type Profile, Strategy } from "passport-github2";
-import { type GithubConfig, githubConfig } from "../../../config";
+import { githubConfig, type GithubConfig } from "./github.config";
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy, PASSPORT_STRATEGY.GITHUB) {

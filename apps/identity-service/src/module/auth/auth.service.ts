@@ -68,26 +68,6 @@ export class AuthService {
     return await this._createTokenPair({ userId, sessionId });
   }
 
-  googleLogin(user: AuthenticatedUser) {
-    console.log("🚀 ~ AuthService ~ googleLogin ~ user:", user);
-
-    return {
-      message: "User information from google",
-      user,
-    };
-  }
-
-  githubLogin(req: any) {
-    if (!req.user) {
-      return "No user from github";
-    }
-
-    return {
-      message: "User information from github",
-      user: req.user,
-    };
-  }
-
   private async _createTokenPair({ userId, sessionId = v7() }: CreateTokenPairOptions) {
     const accessPayload: Express.User = {
       userId,
