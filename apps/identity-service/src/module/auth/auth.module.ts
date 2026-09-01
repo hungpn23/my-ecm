@@ -1,4 +1,4 @@
-import { decodeBase64, jwtConfig, type JwtConfig, JwtStrategy } from "@libs/core";
+import { jwtConfig, type JwtConfig, JwtStrategy } from "@libs/core";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
@@ -13,19 +13,18 @@ import { LocalStrategy, RefreshStrategy } from "./strategy";
     PassportModule.register({}),
     JwtModule.registerAsync({
       inject: [jwtConfig.KEY],
-      useFactory: (jwtConf: JwtConfig) => ({
-        privateKey: decodeBase64(jwtConf.JWT_PRIVATE_KEY_BASE64),
-        publicKey: decodeBase64(jwtConf.JWT_PUBLIC_KEY_BASE64),
+      useFactory: (config: JwtConfig) => ({
+        secret: config.JWT_SECRET,
         signOptions: {
-          algorithm: jwtConf.JWT_ALGORITHM,
-          issuer: jwtConf.JWT_ISSUER,
-          audience: jwtConf.JWT_AUDIENCE,
+          algorithm: config.JWT_ALGORITHM,
+          issuer: config.JWT_ISSUER,
+          audience: config.JWT_AUDIENCE,
         },
       }),
     }),
     MikroOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, RefreshStrategy],
+  providers: [AuthService, LocalStrategy, RefreshStrategy, JwtStrategy],
 })
 export class AuthModule {}

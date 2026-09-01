@@ -3,14 +3,20 @@ import {
   type DatabaseConfig,
   databaseConfig,
   jwtConfig,
+  JwtGuard,
   redisConfig,
   RedisModule,
 } from "@libs/core";
 import { entities } from "@mikro-orm/generated";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { Module } from "@nestjs/common";
+import {
+  Module,
+  StandardSchemaSerializerInterceptor,
+  StandardSchemaValidationPipe,
+} from "@nestjs/common";
 import { ConditionalModule } from "@nestjs/config";
+import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { LoggerModule } from "nestjs-pino";
 import { AppController } from "./app.controller";
 import { AuthModule } from "./module/auth/auth.module";
@@ -56,5 +62,19 @@ import { UserModule } from "./module/user/user.module";
     UserModule,
   ],
   controllers: [AppController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
+    {
+      provide: APP_PIPE,
+      useClass: StandardSchemaValidationPipe,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: StandardSchemaSerializerInterceptor,
+    },
+  ],
 })
 export class AppModule {}
