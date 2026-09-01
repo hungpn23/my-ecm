@@ -68,7 +68,6 @@
     "check:types": "tsc --noEmit && turbo check:types",
     "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' bun.lock",
     "dev": "dotenv -e .env -- turbo dev",
-    "generate-jwt-keypair": "bun scripts/generate-jwt-keypair.ts",
     "lint-staged": "lint-staged",
     "prepare": "bun .husky/install.mjs",
     "setup": "bun scripts/setup.ts && bun i"

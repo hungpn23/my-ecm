@@ -1,21 +1,18 @@
 import {
   type AuthenticatedUser,
-  decodeBase64,
   getUserSessionKey,
-  type JwtConfig,
   jwtConfig,
+  type JwtConfig,
   JwtType,
   PASSPORT_STRATEGY,
   RedisService,
 } from "@libs/core";
-import { Inject, Injectable, Logger, UnauthorizedException } from "@nestjs/common";
+import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 @Injectable()
 export class RefreshStrategy extends PassportStrategy(Strategy, PASSPORT_STRATEGY.REFRESH) {
-  private readonly logger = new Logger(RefreshStrategy.name);
-
   constructor(
     private readonly redisService: RedisService,
     @Inject(jwtConfig.KEY)
@@ -23,7 +20,7 @@ export class RefreshStrategy extends PassportStrategy(Strategy, PASSPORT_STRATEG
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: decodeBase64(jwtConf.JWT_PUBLIC_KEY_BASE64),
+      secretOrKey: jwtConf.JWT_SECRET,
       algorithms: [jwtConf.JWT_ALGORITHM],
       audience: jwtConf.JWT_AUDIENCE,
       issuer: jwtConf.JWT_ISSUER,

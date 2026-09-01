@@ -10,9 +10,11 @@
     "start": "bun src/main.ts"
   },
   "dependencies": {
+    "@libs/core": "workspace:*",
     "@nestjs/common": "catalog:backend",
     "@nestjs/core": "catalog:backend",
     "@nestjs/microservices": "catalog:backend",
+    "@nestjs/passport": "catalog:backend",
     "@nestjs/platform-express": "catalog:backend",
     "reflect-metadata": "catalog:backend",
     "rxjs": "catalog:backend"

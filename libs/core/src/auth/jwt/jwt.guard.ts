@@ -6,7 +6,7 @@ import { PASSPORT_STRATEGY } from "../constant/passport-strategy";
 import { ReflectorMetadataKey } from "../enum/reflector-metadata-key.enum";
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard(PASSPORT_STRATEGY.JWT) {
+export class JwtGuard extends AuthGuard(PASSPORT_STRATEGY.JWT) {
   constructor(private readonly reflector: Reflector) {
     super();
   }
