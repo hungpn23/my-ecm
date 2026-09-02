@@ -1,11 +1,11 @@
 import {
-  BaseConfigModule,
-  type DatabaseConfig,
   databaseConfig,
+  GlobalConfigModule,
   jwtConfig,
   JwtGuard,
   redisConfig,
   RedisModule,
+  type DatabaseConfig,
 } from "@libs/core";
 import { entities } from "@mikro-orm/generated";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
@@ -28,7 +28,7 @@ import { UserModule } from "./module/user/user.module";
 
 @Module({
   imports: [
-    BaseConfigModule.forRoot({
+    GlobalConfigModule.forRoot({
       load: [jwtConfig, databaseConfig, redisConfig],
     }),
     MikroOrmModule.forRootAsync({
