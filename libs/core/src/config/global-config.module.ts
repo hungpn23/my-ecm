@@ -2,12 +2,12 @@ import type { DynamicModule } from "@nestjs/common";
 import { ConfigModule, type ConfigModuleOptions } from "@nestjs/config";
 import { appConfig } from "./app.config";
 
-export class BaseConfigModule {
+export class GlobalConfigModule {
   static forRoot(options: ConfigModuleOptions = {}): DynamicModule {
     const { load = [], ...restOptions } = options;
 
     return {
-      module: BaseConfigModule,
+      module: GlobalConfigModule,
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,

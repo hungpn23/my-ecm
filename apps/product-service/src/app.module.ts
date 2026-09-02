@@ -1,4 +1,4 @@
-import { BaseConfigModule, jwtConfig, JwtGuard } from "@libs/core";
+import { GlobalConfigModule, jwtConfig, JwtGuard } from "@libs/core";
 import {
   Module,
   StandardSchemaSerializerInterceptor,
@@ -9,7 +9,7 @@ import { AppController } from "./app.controller";
 import { AuthModule } from "./module/auth/auth.module";
 
 @Module({
-  imports: [BaseConfigModule.forRoot({ load: [jwtConfig] }), AuthModule],
+  imports: [GlobalConfigModule.forRoot({ load: [jwtConfig] }), AuthModule],
   controllers: [AppController],
   providers: [
     {
