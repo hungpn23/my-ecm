@@ -1,16 +1,18 @@
 import { SuccessResponseSchema, type SuccessResponse } from "@libs/common";
 import { AuthenticatedUserSchema, PublicEndpoint, User, type AuthenticatedUser } from "@libs/core";
 import { Body, Controller, Get, Post, SerializeOptions, UseGuards } from "@nestjs/common";
+import { ApiBody, ApiCreatedResponse } from "@nestjs/swagger";
 import {
   BaseAuthSchema,
   ChangePasswordSchema,
   TokenResponseSchema,
   type ChangePassword,
+  type SignIn,
   type SignUp,
   type TokenResponse,
 } from "./auth.schema";
 import { AuthService } from "./auth.service";
-import { LocalGuard, RefreshGuard } from "./guard";
+import { RefreshGuard } from "./refresh.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -20,15 +22,24 @@ export class AuthController {
   @SerializeOptions({ schema: TokenResponseSchema })
   @Post("sign-up")
   async register(@Body({ schema: BaseAuthSchema }) body: SignUp): Promise<TokenResponse> {
-    return await this.authService.register(body);
+    return await this.authService.signUp(body);
   }
 
-  @UseGuards(LocalGuard)
   @PublicEndpoint()
+  @ApiBody({
+    schema: BaseAuthSchema["~standard"].jsonSchema.input({
+      target: "draft-2020-12",
+    }),
+  })
+  @ApiCreatedResponse({
+    schema: TokenResponseSchema["~standard"].jsonSchema.output({
+      target: "draft-2020-12",
+    }),
+  })
   @SerializeOptions({ schema: TokenResponseSchema })
   @Post("sign-in")
-  async login(@User("userId") userId: string): Promise<TokenResponse> {
-    return await this.authService.login(userId);
+  async login(@Body({ schema: BaseAuthSchema }) body: SignIn): Promise<TokenResponse> {
+    return await this.authService.signIn(body);
   }
 
   @SerializeOptions({ schema: SuccessResponseSchema })

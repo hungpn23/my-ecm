@@ -27,16 +27,14 @@ export class RefreshStrategy extends PassportStrategy(Strategy, PASSPORT_STRATEG
     });
   }
 
-  async validate(
-    payload: AuthenticatedUser,
-  ): Promise<Pick<AuthenticatedUser, "userId" | "sessionId">> {
-    const { jwtKind, userId, sessionId, jti } = payload;
+  async validate(user: AuthenticatedUser): Promise<AuthenticatedUser> {
+    const { jwtKind, userId, sessionId, jti } = user;
 
     if (jwtKind !== JWT_KIND.REFRESH_TOKEN) throw new UnauthorizedException();
 
-    const currentJti = await this.redisService.get(jwtidBy(userId, sessionId));
-    if (currentJti !== jti) throw new UnauthorizedException();
+    const jwtid = await this.redisService.get(jwtidBy(userId, sessionId));
+    if (jwtid !== jti) throw new UnauthorizedException();
 
-    return { userId, sessionId };
+    return user;
   }
 }

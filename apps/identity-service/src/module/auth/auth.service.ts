@@ -7,7 +7,7 @@ import {
   type AuthenticatedUser,
   type JwtConfig,
 } from "@libs/core";
-import { EntityRepository, type Loaded } from "@mikro-orm/core";
+import { EntityRepository } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/generated";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
@@ -15,8 +15,12 @@ import { JwtService } from "@nestjs/jwt";
 import { User } from "@src/database/entity";
 import { hash, verify } from "argon2";
 import { v7 } from "uuid";
-import type { ChangePassword, SignUp, TokenResponse } from "./auth.schema";
-import type { CreateTokenPairOptions } from "./auth.type";
+import type { ChangePassword, SignIn, SignUp, TokenResponse } from "./auth.schema";
+
+type CreateTokenPairOptions = {
+  userId: string;
+  sessionId?: string;
+};
 
 @Injectable()
 export class AuthService {
@@ -30,7 +34,7 @@ export class AuthService {
     private readonly em: EntityManager,
   ) {}
 
-  async register({ email, password }: SignUp): Promise<TokenResponse> {
+  async signUp({ email, password }: SignUp): Promise<TokenResponse> {
     let user = await this.userRepo.findOne({ email });
     if (user) throw new BadRequestException();
 
@@ -44,20 +48,13 @@ export class AuthService {
     return await this._createTokenPair({ userId: user.id });
   }
 
-  async verifyCredentials(
-    email: string,
-    password: string,
-  ): Promise<Loaded<User, never, "password", never> | null> {
+  async signIn({ email, password }: SignIn): Promise<TokenResponse> {
     const user = await this.userRepo.findOne({ email }, { fields: ["password"] });
 
     const isCorrectPassword = user && (await verify(user.password.get(), password));
-    if (isCorrectPassword) return user;
+    if (!isCorrectPassword) throw new BadRequestException("Invalid credentials");
 
-    return null;
-  }
-
-  async login(userId: string): Promise<TokenResponse> {
-    return await this._createTokenPair({ userId });
+    return await this._createTokenPair({ userId: user.id });
   }
 
   async changePassword(
@@ -84,10 +81,6 @@ export class AuthService {
 
   async refreshToken({ userId, sessionId }: AuthenticatedUser): Promise<TokenResponse> {
     return await this._createTokenPair({ userId, sessionId });
-  }
-
-  private async _verifyPassword(target: string, input: string): Promise<boolean> {
-    return await verify(target, input);
   }
 
   private async _createTokenPair({

@@ -22,13 +22,13 @@ export class JwtStrategy extends PassportStrategy(Strategy, PASSPORT_STRATEGY.JW
     });
   }
 
-  async validate(payload: AuthenticatedUser): Promise<AuthenticatedUser> {
-    const { jwtKind, userId, sessionId } = payload;
+  async validate(user: AuthenticatedUser): Promise<AuthenticatedUser> {
+    const { jwtKind, userId, sessionId } = user;
     if (jwtKind !== JWT_KIND.ACCESS_TOKEN) throw new UnauthorizedException();
 
     const jwtid = await this.redisService.get(jwtidBy(userId, sessionId));
     if (!jwtid) throw new UnauthorizedException();
 
-    return payload;
+    return user;
   }
 }
