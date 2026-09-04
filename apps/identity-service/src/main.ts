@@ -1,3 +1,4 @@
+import "@libs/core/arktype-config";
 import { MikroORM } from "@mikro-orm/core";
 import { NestFactory } from "@nestjs/core";
 import { Transport } from "@nestjs/microservices";

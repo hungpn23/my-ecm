@@ -1,14 +1,21 @@
-import "reflect-metadata";
+import "@libs/core/arktype-config";
 import { NestFactory } from "@nestjs/core";
 import { Transport } from "@nestjs/microservices";
+import { Logger } from "nestjs-pino";
+import "reflect-metadata";
 import { AppModule } from "./app.module";
-import { Logger } from "@nestjs/common";
 
 const HTTP_PORT = 8081;
 const TCP_PORT = 8181;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+    routeConflictPolicy: { duplicate: "error", shadow: "error" },
+  });
+
+  const logger = app.get(Logger);
+  app.useLogger(logger);
 
   app.connectMicroservice({
     transport: Transport.TCP,
@@ -18,7 +25,7 @@ async function bootstrap() {
   await app.startAllMicroservices();
   await app.listen(HTTP_PORT, "0.0.0.0");
 
-  Logger.log(`[product-service] HTTP :${HTTP_PORT}  TCP :${TCP_PORT}`);
+  logger.log(`[product-service] HTTP :${HTTP_PORT}  TCP :${TCP_PORT}`);
 }
 
 await bootstrap();
