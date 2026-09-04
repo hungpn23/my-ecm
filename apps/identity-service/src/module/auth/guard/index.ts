@@ -1,2 +1,2 @@
-export * from "./local-auth.guard";
-export * from "./refresh-token.guard";
+export * from "./local.guard";
+export * from "./refresh.guard";

@@ -1,6 +1,7 @@
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
+import { jwtidBy, RedisService } from "../redis";
 import { JWT_KIND, PASSPORT_STRATEGY } from "./auth.constant";
 import type { AuthenticatedUser } from "./auth.schema";
 import { jwtConfig, type JwtConfig } from "./jwt.config";
@@ -10,6 +11,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, PASSPORT_STRATEGY.JW
   constructor(
     @Inject(jwtConfig.KEY)
     jwtConf: JwtConfig,
+    private readonly redisService: RedisService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -21,7 +23,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, PASSPORT_STRATEGY.JW
   }
 
   async validate(payload: AuthenticatedUser): Promise<AuthenticatedUser> {
-    if (payload.jwtKind !== JWT_KIND.ACCESS_TOKEN) throw new UnauthorizedException();
+    const { jwtKind, userId, sessionId } = payload;
+    if (jwtKind !== JWT_KIND.ACCESS_TOKEN) throw new UnauthorizedException();
+
+    const jwtid = await this.redisService.get(jwtidBy(userId, sessionId));
+    if (!jwtid) throw new UnauthorizedException();
 
     return payload;
   }
