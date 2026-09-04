@@ -14,6 +14,14 @@
     "@nestjs/config": "catalog:backend",
     "@nestjs/microservices": "catalog:backend",
     "arkenv": "catalog:common",
-    "arktype": "catalog:common"
+    "arktype": "catalog:common",
+    "lodash": "catalog:common",
+    "nestjs-pino": "catalog:backend",
+    "pino": "catalog:backend",
+    "pino-http": "catalog:backend",
+    "pino-pretty": "catalog:backend"
+  },
+  "devDependencies": {
+    "@types/lodash": "catalog:dev"
   }
 }

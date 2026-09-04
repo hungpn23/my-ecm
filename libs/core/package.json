@@ -4,12 +4,14 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./arktype-config": "./src/config/arktype.config.ts"
   },
   "scripts": {
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
+    "@libs/common": "workspace:*",
     "@mikro-orm/core": "catalog:backend",
     "@mikro-orm/migrations": "catalog:backend",
     "@mikro-orm/postgresql": "catalog:backend",
@@ -20,13 +22,16 @@
     "@nestjs/passport": "catalog:backend",
     "@oxc-node/core": "catalog:backend",
     "arkenv": "catalog:common",
+    "arktype": "catalog:common",
     "ioredis": "catalog:backend",
+    "lodash": "catalog:common",
     "passport-jwt": "catalog:backend",
     "rxjs": "catalog:backend",
     "uuid": "catalog:backend"
   },
   "devDependencies": {
     "@types/express": "catalog:dev",
+    "@types/lodash": "catalog:dev",
     "@types/passport-jwt": "catalog:dev"
   }
 }

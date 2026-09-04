@@ -34,8 +34,6 @@
     "passport-google-oauth20": "catalog:backend",
     "passport-jwt": "catalog:backend",
     "passport-local": "catalog:backend",
-    "pino-http": "catalog:backend",
-    "pino-pretty": "catalog:backend",
     "reflect-metadata": "catalog:backend",
     "rxjs": "catalog:backend",
     "uuid": "catalog:backend"
