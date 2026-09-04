@@ -1,6 +1,8 @@
-import { createParamDecorator, type ExecutionContext } from "@nestjs/common";
-import type { AuthenticatedRequest } from "../type/authenticated-request.type";
-import type { AuthenticatedUser } from "../type/authenticated-user.type";
+import { createParamDecorator, SetMetadata, type ExecutionContext } from "@nestjs/common";
+import { METADATA_KEY } from "./auth.constant";
+import type { AuthenticatedRequest, AuthenticatedUser } from "./auth.schema";
+
+export const PublicEndpoint = () => SetMetadata(METADATA_KEY.IS_PUBLIC_ENDPOINT, true);
 
 export const User = createParamDecorator(
   (data: keyof AuthenticatedUser, context: ExecutionContext) => {

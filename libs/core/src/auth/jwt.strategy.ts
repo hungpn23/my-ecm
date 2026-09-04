@@ -1,9 +1,8 @@
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { PASSPORT_STRATEGY } from "../constant/passport-strategy";
-import type { AuthenticatedUser } from "../type/authenticated-user.type";
-import { JwtType } from "./jwt-type.enum";
+import { JWT_KIND, PASSPORT_STRATEGY } from "./auth.constant";
+import type { AuthenticatedUser } from "./auth.schema";
 import { jwtConfig, type JwtConfig } from "./jwt.config";
 
 @Injectable()
@@ -22,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, PASSPORT_STRATEGY.JW
   }
 
   async validate(payload: AuthenticatedUser): Promise<AuthenticatedUser> {
-    if (payload.jwtType !== JwtType.ACCESS_TOKEN) throw new UnauthorizedException();
+    if (payload.jwtKind !== JWT_KIND.ACCESS_TOKEN) throw new UnauthorizedException();
 
     return payload;
   }
