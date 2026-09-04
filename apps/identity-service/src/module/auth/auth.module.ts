@@ -6,7 +6,7 @@ import { PassportModule } from "@nestjs/passport";
 import { User } from "@src/database/entity";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import { LocalStrategy, RefreshStrategy } from "./strategy";
+import { RefreshStrategy } from "./refresh.strategy";
 
 @Module({
   imports: [
@@ -25,6 +25,6 @@ import { LocalStrategy, RefreshStrategy } from "./strategy";
     MikroOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, RefreshStrategy, JwtStrategy],
+  providers: [AuthService, RefreshStrategy, JwtStrategy],
 })
 export class AuthModule {}

@@ -24,6 +24,7 @@
     "@nestjs/microservices": "catalog:backend",
     "@nestjs/passport": "catalog:backend",
     "@nestjs/platform-express": "catalog:backend",
+    "@nestjs/swagger": "catalog:backend",
     "@oxc-node/core": "catalog:backend",
     "argon2": "catalog:backend",
     "arkenv": "catalog:common",
@@ -33,7 +34,6 @@
     "passport-github2": "catalog:backend",
     "passport-google-oauth20": "catalog:backend",
     "passport-jwt": "catalog:backend",
-    "passport-local": "catalog:backend",
     "reflect-metadata": "catalog:backend",
     "rxjs": "catalog:backend",
     "uuid": "catalog:backend"
@@ -41,7 +41,6 @@
   "devDependencies": {
     "@types/passport-github2": "catalog:dev",
     "@types/passport-google-oauth20": "catalog:dev",
-    "@types/passport-jwt": "catalog:dev",
-    "@types/passport-local": "catalog:dev"
+    "@types/passport-jwt": "catalog:dev"
   }
 }

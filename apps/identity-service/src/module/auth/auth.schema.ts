@@ -14,6 +14,7 @@ export const BaseAuthSchema = type({
 
 export type BaseAuth = typeof BaseAuthSchema.infer;
 export type SignUp = BaseAuth;
+export type SignIn = BaseAuth;
 
 export const TokenResponseSchema = type({
   accessToken: "string",

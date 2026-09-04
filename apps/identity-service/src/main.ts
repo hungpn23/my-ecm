@@ -2,6 +2,7 @@ import "@libs/core/arktype-config";
 import { MikroORM } from "@mikro-orm/core";
 import { NestFactory } from "@nestjs/core";
 import { Transport } from "@nestjs/microservices";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { Logger } from "nestjs-pino";
 import "reflect-metadata";
 import { AppModule } from "./app.module";
@@ -17,6 +18,13 @@ async function bootstrap() {
 
   const logger = app.get(Logger);
   app.useLogger(logger);
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle("Identity Service API")
+    .setVersion("1.0")
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup("swagger", app, documentFactory);
 
   const orm = app.get(MikroORM);
   await orm.schema.update();
