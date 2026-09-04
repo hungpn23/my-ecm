@@ -1,3 +1,4 @@
+import { GlobalLoggerModule, GlobalStandardSchemaValidationPipe } from "@libs/common";
 import {
   databaseConfig,
   GlobalConfigModule,
@@ -10,14 +11,9 @@ import {
 import { entities } from "@mikro-orm/generated";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import {
-  Module,
-  StandardSchemaSerializerInterceptor,
-  StandardSchemaValidationPipe,
-} from "@nestjs/common";
+import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { ConditionalModule } from "@nestjs/config";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
-import { LoggerModule } from "nestjs-pino";
 import { AppController } from "./app.controller";
 import { AuthModule } from "./module/auth/auth.module";
 import { isGithubConfigured } from "./module/oauth/github/github.config";
@@ -39,18 +35,7 @@ import { UserModule } from "./module/user/user.module";
         entities,
       }),
     }),
-    LoggerModule.forRoot({
-      pinoHttp: {
-        level: "debug",
-        transport: {
-          target: "pino-pretty",
-          options: {
-            customColors: "error:bgRed",
-            ignore: "req.headers,res.headers,remoteAddress,remotePort",
-          },
-        },
-      },
-    }),
+    GlobalLoggerModule.forRoot(),
     RedisModule,
     AuthModule,
     ConditionalModule.registerWhen(GoogleModule, isGoogleConfigured, {
@@ -69,7 +54,7 @@ import { UserModule } from "./module/user/user.module";
     },
     {
       provide: APP_PIPE,
-      useClass: StandardSchemaValidationPipe,
+      useClass: GlobalStandardSchemaValidationPipe,
     },
     {
       provide: APP_INTERCEPTOR,
