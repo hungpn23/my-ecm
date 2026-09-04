@@ -1,7 +1,7 @@
 import {
   getUserSessionKey,
+  JWT_KIND,
   jwtConfig,
-  JwtType,
   RedisService,
   type AuthenticatedUser,
   type JwtConfig,
@@ -69,15 +69,15 @@ export class AuthService {
   }
 
   private async _createTokenPair({ userId, sessionId = v7() }: CreateTokenPairOptions) {
-    const accessPayload: Express.User = {
+    const accessPayload: AuthenticatedUser = {
       userId,
       sessionId,
-      jwtType: JwtType.ACCESS_TOKEN,
+      jwtKind: JWT_KIND.ACCESS_TOKEN,
     };
 
-    const refreshPayload: Express.User = {
+    const refreshPayload: AuthenticatedUser = {
       ...accessPayload,
-      jwtType: JwtType.REFRESH_TOKEN,
+      jwtKind: JWT_KIND.REFRESH_TOKEN,
     };
 
     const jwtid = v7();

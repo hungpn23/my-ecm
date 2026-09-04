@@ -1,9 +1,9 @@
 import {
   type AuthenticatedUser,
   getUserSessionKey,
+  JWT_KIND,
   jwtConfig,
   type JwtConfig,
-  JwtType,
   PASSPORT_STRATEGY,
   RedisService,
 } from "@libs/core";
@@ -30,9 +30,9 @@ export class RefreshStrategy extends PassportStrategy(Strategy, PASSPORT_STRATEG
   async validate(
     payload: AuthenticatedUser,
   ): Promise<Pick<AuthenticatedUser, "userId" | "sessionId">> {
-    const { jwtType, userId, sessionId, jti } = payload;
+    const { jwtKind, userId, sessionId, jti } = payload;
 
-    if (jwtType !== JwtType.REFRESH_TOKEN) throw new UnauthorizedException();
+    if (jwtKind !== JWT_KIND.REFRESH_TOKEN) throw new UnauthorizedException();
 
     const currentJti = await this.redisService.getString(getUserSessionKey(userId, sessionId));
     if (currentJti !== jti) throw new UnauthorizedException();
