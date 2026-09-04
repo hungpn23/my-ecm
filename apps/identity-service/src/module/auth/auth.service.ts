@@ -1,12 +1,13 @@
+import type { SuccessResponse } from "@libs/common";
 import {
-  getUserSessionKey,
   JWT_KIND,
   jwtConfig,
+  jwtidBy,
   RedisService,
   type AuthenticatedUser,
   type JwtConfig,
 } from "@libs/core";
-import { EntityRepository } from "@mikro-orm/core";
+import { EntityRepository, type Loaded } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/generated";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
@@ -14,8 +15,8 @@ import { JwtService } from "@nestjs/jwt";
 import { User } from "@src/database/entity";
 import { hash, verify } from "argon2";
 import { v7 } from "uuid";
+import type { ChangePassword, SignUp, TokenResponse } from "./auth.schema";
 import type { CreateTokenPairOptions } from "./auth.type";
-import type { RegisterDto } from "./dto";
 
 @Injectable()
 export class AuthService {
@@ -29,7 +30,7 @@ export class AuthService {
     private readonly em: EntityManager,
   ) {}
 
-  async register({ email, password }: RegisterDto) {
+  async register({ email, password }: SignUp): Promise<TokenResponse> {
     let user = await this.userRepo.findOne({ email });
     if (user) throw new BadRequestException();
 
@@ -43,32 +44,56 @@ export class AuthService {
     return await this._createTokenPair({ userId: user.id });
   }
 
-  async validateCredentials(email: string, password: string) {
+  async verifyCredentials(
+    email: string,
+    password: string,
+  ): Promise<Loaded<User, never, "password", never> | null> {
     const user = await this.userRepo.findOne({ email }, { fields: ["password"] });
-    if (!user) return null;
 
-    const isPasswordMatched = await verify(user.password.get(), password);
-    if (isPasswordMatched) return user;
+    const isCorrectPassword = user && (await verify(user.password.get(), password));
+    if (isCorrectPassword) return user;
 
     return null;
   }
 
-  async login(userId: string) {
+  async login(userId: string): Promise<TokenResponse> {
     return await this._createTokenPair({ userId });
   }
 
-  async logout({ userId, sessionId }: AuthenticatedUser) {
-    const key = getUserSessionKey(userId, sessionId);
-    await this.redisService.deleteKey(key);
+  async changePassword(
+    userId: string,
+    { oldPassword, newPassword }: ChangePassword,
+  ): Promise<SuccessResponse> {
+    const user = await this.userRepo.findOne({ id: userId }, { fields: ["password"] });
 
-    return { success: true };
+    const isCorrectPassword = user && (await verify(user.password.get(), oldPassword));
+    if (!isCorrectPassword) throw new BadRequestException("Incorrect password");
+
+    user.password.set(await hash(newPassword));
+    await this.em.flush();
+
+    return { ok: true };
   }
 
-  async refreshToken({ userId, sessionId }: AuthenticatedUser) {
+  async logout({ userId, sessionId }: AuthenticatedUser): Promise<SuccessResponse> {
+    const key = jwtidBy(userId, sessionId);
+    await this.redisService.delete(key);
+
+    return { ok: true };
+  }
+
+  async refreshToken({ userId, sessionId }: AuthenticatedUser): Promise<TokenResponse> {
     return await this._createTokenPair({ userId, sessionId });
   }
 
-  private async _createTokenPair({ userId, sessionId = v7() }: CreateTokenPairOptions) {
+  private async _verifyPassword(target: string, input: string): Promise<boolean> {
+    return await verify(target, input);
+  }
+
+  private async _createTokenPair({
+    userId,
+    sessionId = v7(),
+  }: CreateTokenPairOptions): Promise<TokenResponse> {
     const accessPayload: AuthenticatedUser = {
       userId,
       sessionId,
@@ -92,8 +117,8 @@ export class AuthService {
         expiresIn: this.jwtConf.JWT_REFRESH_TOKEN_EXPIRES_IN_SECONDS,
       }),
 
-      this.redisService.setString(
-        getUserSessionKey(userId, sessionId),
+      this.redisService.set(
+        jwtidBy(userId, sessionId),
         jwtid,
         this.jwtConf.JWT_REFRESH_TOKEN_EXPIRES_IN_SECONDS,
       ),

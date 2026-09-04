@@ -6,11 +6,11 @@ import { REDIS_CLIENT } from "./redis.constant";
 export class RedisService {
   constructor(@Inject(REDIS_CLIENT) private readonly redis: Redis) {}
 
-  async getString(key: string): Promise<string | null> {
+  async get(key: string): Promise<string | null> {
     return this.redis.get(key);
   }
 
-  async setString(key: string, value: string, ttlInSeconds?: number) {
+  async set(key: string, value: string, ttlInSeconds?: number) {
     if (ttlInSeconds) {
       await this.redis.set(key, value, "EX", ttlInSeconds);
     } else {
@@ -18,7 +18,7 @@ export class RedisService {
     }
   }
 
-  async deleteKey(key: string) {
+  async delete(key: string) {
     await this.redis.del(key);
   }
 

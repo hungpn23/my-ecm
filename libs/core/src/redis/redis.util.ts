@@ -1,3 +1,3 @@
-export function getUserSessionKey(userId: string, sessionId: string) {
+export function jwtidBy(userId: string, sessionId: string) {
   return `user:${userId}:session:${sessionId}`;
 }
