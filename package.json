@@ -70,6 +70,7 @@
     "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' bun.lock",
     "dev": "dotenv -e .env -- turbo dev",
     "lint-staged": "lint-staged",
+    "onboard:service": "bun scripts/onboard-service.ts",
     "prepare": "bun .husky/install.mjs",
     "setup": "bun scripts/setup.ts && bun i"
   },
