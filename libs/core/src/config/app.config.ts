@@ -3,6 +3,7 @@ import arkenv from "arkenv";
 
 export function getAppConfig() {
   return arkenv({
+    APP_HOST: "string.host",
     APP_PORT: "number.port",
     APP_PORT_TCP: "number.port",
   });

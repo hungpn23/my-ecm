@@ -24,30 +24,6 @@
         "typescript": "catalog:dev",
       },
     },
-    "apps/cart-service": {
-      "name": "@app/cart-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
-      },
-    },
-    "apps/chat-service": {
-      "name": "@app/chat-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
-      },
-    },
     "apps/identity-service": {
       "name": "@app/identity-service",
       "version": "0.0.0",
@@ -76,7 +52,6 @@
         "passport-github2": "catalog:backend",
         "passport-google-oauth20": "catalog:backend",
         "passport-jwt": "catalog:backend",
-        "passport-local": "catalog:backend",
         "reflect-metadata": "catalog:backend",
         "rxjs": "catalog:backend",
         "uuid": "catalog:backend",
@@ -85,67 +60,6 @@
         "@types/passport-github2": "catalog:dev",
         "@types/passport-google-oauth20": "catalog:dev",
         "@types/passport-jwt": "catalog:dev",
-        "@types/passport-local": "catalog:dev",
-      },
-    },
-    "apps/inventory-service": {
-      "name": "@app/inventory-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
-      },
-    },
-    "apps/media-service": {
-      "name": "@app/media-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
-      },
-    },
-    "apps/notification-service": {
-      "name": "@app/notification-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
-      },
-    },
-    "apps/order-service": {
-      "name": "@app/order-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
-      },
-    },
-    "apps/payment-service": {
-      "name": "@app/payment-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
       },
     },
     "apps/product-service": {
@@ -154,6 +68,11 @@
       "dependencies": {
         "@libs/common": "workspace:*",
         "@libs/core": "workspace:*",
+        "@mikro-orm/cli": "catalog:backend",
+        "@mikro-orm/core": "catalog:backend",
+        "@mikro-orm/migrations": "catalog:backend",
+        "@mikro-orm/nestjs": "catalog:backend",
+        "@mikro-orm/postgresql": "catalog:backend",
         "@nestjs/common": "catalog:backend",
         "@nestjs/core": "catalog:backend",
         "@nestjs/microservices": "catalog:backend",
@@ -161,66 +80,6 @@
         "@nestjs/platform-express": "catalog:backend",
         "@nestjs/swagger": "catalog:backend",
         "nestjs-pino": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
-      },
-    },
-    "apps/promotion-service": {
-      "name": "@app/promotion-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
-      },
-    },
-    "apps/report-service": {
-      "name": "@app/report-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
-      },
-    },
-    "apps/review-service": {
-      "name": "@app/review-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
-      },
-    },
-    "apps/search-service": {
-      "name": "@app/search-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
-        "reflect-metadata": "catalog:backend",
-        "rxjs": "catalog:backend",
-      },
-    },
-    "apps/shipping-service": {
-      "name": "@app/shipping-service",
-      "version": "0.0.0",
-      "dependencies": {
-        "@nestjs/common": "catalog:backend",
-        "@nestjs/core": "catalog:backend",
-        "@nestjs/microservices": "catalog:backend",
-        "@nestjs/platform-express": "catalog:backend",
         "reflect-metadata": "catalog:backend",
         "rxjs": "catalog:backend",
       },
@@ -262,6 +121,7 @@
         "arktype": "catalog:common",
         "ioredis": "catalog:backend",
         "lodash": "catalog:common",
+        "nestjs-pino": "catalog:backend",
         "passport-jwt": "catalog:backend",
         "rxjs": "catalog:backend",
         "uuid": "catalog:backend",
@@ -301,7 +161,6 @@
       "passport-github2": "^0.1.12",
       "passport-google-oauth20": "^2.0.0",
       "passport-jwt": "^4.0.1",
-      "passport-local": "^1.0.0",
       "pino": "^10.3.1",
       "pino-http": "^11.0.0",
       "pino-pretty": "^13.1.3",
@@ -323,7 +182,6 @@
       "@types/passport-github2": "^1.2.9",
       "@types/passport-google-oauth20": "^2.0.17",
       "@types/passport-jwt": "^4.0.1",
-      "@types/passport-local": "^1.0.38",
       "typescript": "^7.0.2",
     },
   },
@@ -334,33 +192,9 @@
 
     "@angular-devkit/schematics-cli": ["@angular-devkit/schematics-cli@22.1.5", "", { "dependencies": { "@angular-devkit/core": "22.1.5", "@angular-devkit/schematics": "22.1.5", "@inquirer/prompts": "8.5.2" }, "bin": { "schematics": "bin/schematics.js" } }, "sha512-VB/5fH2b/2j8eeMm25vRYCJzBbpaM/VyHc8/+WqPzJahdWuvL0CeLWrxjHHT1exQ/kgbqHLaIWMgSywZe3EBhA=="],
 
-    "@app/cart-service": ["@app/cart-service@workspace:apps/cart-service"],
-
-    "@app/chat-service": ["@app/chat-service@workspace:apps/chat-service"],
-
     "@app/identity-service": ["@app/identity-service@workspace:apps/identity-service"],
 
-    "@app/inventory-service": ["@app/inventory-service@workspace:apps/inventory-service"],
-
-    "@app/media-service": ["@app/media-service@workspace:apps/media-service"],
-
-    "@app/notification-service": ["@app/notification-service@workspace:apps/notification-service"],
-
-    "@app/order-service": ["@app/order-service@workspace:apps/order-service"],
-
-    "@app/payment-service": ["@app/payment-service@workspace:apps/payment-service"],
-
     "@app/product-service": ["@app/product-service@workspace:apps/product-service"],
-
-    "@app/promotion-service": ["@app/promotion-service@workspace:apps/promotion-service"],
-
-    "@app/report-service": ["@app/report-service@workspace:apps/report-service"],
-
-    "@app/review-service": ["@app/review-service@workspace:apps/review-service"],
-
-    "@app/search-service": ["@app/search-service@workspace:apps/search-service"],
-
-    "@app/shipping-service": ["@app/shipping-service@workspace:apps/shipping-service"],
 
     "@ark/schema": ["@ark/schema@0.56.2", "", { "dependencies": { "@ark/util": "0.56.2" } }, "sha512-Qx4D2JFbBWpntiHZaTv7bGG4H/M2rigiknezKg/WVyDSaLdE4YCcWAOoFB7pjjDqHbbV2OqRfntm1nnXvwMexg=="],
 
@@ -616,7 +450,7 @@
 
     "@types/body-parser": ["@types/body-parser@1.19.6", "", { "dependencies": { "@types/connect": "*", "@types/node": "*" } }, "sha512-HLFeCYgz89uk22N5Qg3dvGvsv46B8GLvKKo1zKG4NybA8U2DiEO3w9lqGg29t/tfLRJpJ6iQxnVw4OnB7MoM9g=="],
 
-    "@types/bun": ["@types/bun@1.4.0", "", { "dependencies": { "bun-types": "1.4.0" } }, "sha512-K+lZULY23vRgK/CfTjFIV+tyifaNdSMlPh9j+6mQ/cLfpOznLyAuzgV/JQysyECpkBQLVMSyvjlr2fBUSA9wFQ=="],
+    "@types/bun": ["@types/bun@1.4.1", "", { "dependencies": { "bun-types": "1.4.1" } }, "sha512-0AVGiTXGajf1rgKom3N+c5L7CBxuoyyv1i44M0nX4UDK0G/fnRAMiri93nHuVPIb429KKtAgj7HatVmmOjeQLA=="],
 
     "@types/connect": ["@types/connect@3.4.38", "", { "dependencies": { "@types/node": "*" } }, "sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug=="],
 
@@ -643,8 +477,6 @@
     "@types/passport-google-oauth20": ["@types/passport-google-oauth20@2.0.17", "", { "dependencies": { "@types/express": "*", "@types/passport": "*", "@types/passport-oauth2": "*" } }, "sha512-MHNOd2l7gOTCn3iS+wInPQMiukliAUvMpODO3VlXxOiwNEMSyzV7UNvAdqxSN872o8OXx1SqPDVT6tLW74AtqQ=="],
 
     "@types/passport-jwt": ["@types/passport-jwt@4.0.1", "", { "dependencies": { "@types/jsonwebtoken": "*", "@types/passport-strategy": "*" } }, "sha512-Y0Ykz6nWP4jpxgEUYq8NoVZeCQPo1ZndJLfapI249g1jHChvRfZRO/LS3tqu26YgAS/laI1qx98sYGz0IalRXQ=="],
-
-    "@types/passport-local": ["@types/passport-local@1.0.38", "", { "dependencies": { "@types/express": "*", "@types/passport": "*", "@types/passport-strategy": "*" } }, "sha512-nsrW4A963lYE7lNTv9cr5WmiUD1ibYJvWrpE13oxApFsRt77b0RdtZvKbCdNIY4v/QZ6TRQWaDDEwV1kCTmcXg=="],
 
     "@types/passport-oauth2": ["@types/passport-oauth2@1.8.0", "", { "dependencies": { "@types/express": "*", "@types/oauth": "*", "@types/passport": "*" } }, "sha512-6//z+4orIOy/g3zx17HyQ71GSRK4bs7Sb+zFasRoc2xzlv7ZCJ+vkDBYFci8U6HY+or6Zy7ajf4mz4rK7nsWJQ=="],
 
@@ -738,7 +570,7 @@
 
     "buffer-from": ["buffer-from@1.1.2", "", {}, "sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ=="],
 
-    "bun-types": ["bun-types@1.4.0", "", { "dependencies": { "@types/node": "*" } }, "sha512-iIKw23BspnQQYd3prITOBxeUsxBHnwzX6YJfGMuNOZzeNcMmVqzIIVGRm1l69ogaPQmb4wB6BN8mA5bE9YuC5Q=="],
+    "bun-types": ["bun-types@1.4.1", "", { "dependencies": { "@types/node": "*" } }, "sha512-loKuVrAFZKfEv+JvWkHRS9GW5IqLuLRjVXN9p+vZvBN86O5hf/pBZQ5hSoyipsrMmWObZBDvWnlmKvjKTM0PdA=="],
 
     "busboy": ["busboy@1.6.0", "", { "dependencies": { "streamsearch": "^1.1.0" } }, "sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA=="],
 
@@ -926,7 +758,7 @@
 
     "kysely": ["kysely@0.29.5", "", {}, "sha512-ooa+eSbBNPTo3MycPEuW5jdrxQdQwdtB3LC3h43FiXQbIry5tR0C5lDG7eealK0E4D7XjrnOP5DIUg/LyjRMYQ=="],
 
-    "lint-staged": ["lint-staged@17.4.1", "", { "dependencies": { "picomatch": "^4.0.7", "string-argv": "^0.3.2", "tinyexec": "^1.3.0" }, "optionalDependencies": { "yaml": "^2.9.0" }, "bin": { "lint-staged": "bin/lint-staged.js" } }, "sha512-FmJeudcalbSfg1du+JCfvi5vS6Qt08KgbfLWiHinbef+2JJwUZwAWVoaO1AcJVUTWPfk0t30PMQNwPAeCzYQ+Q=="],
+    "lint-staged": ["lint-staged@17.5.0", "", { "dependencies": { "picomatch": "^4.0.7", "string-argv": "^0.3.2", "tinyexec": "^1.3.1" }, "optionalDependencies": { "yaml": "^2.9.0" }, "bin": { "lint-staged": "bin/lint-staged.js" } }, "sha512-ah2qsNtvKP1+Ak4rAvEEIvcXDLjjbr/xmxCvlequxqEOFYk0qINcZcRxD3Ic8wRn7/oQ8+wC9s0DfDrdMVCRFg=="],
 
     "load-esm": ["load-esm@1.0.3", "", {}, "sha512-v5xlu8eHD1+6r8EHTg6hfmO97LN8ugKtiXcy5e6oN72iD2r6u0RPfLl6fxM+7Wnh2ZRq15o0russMst44WauPA=="],
 
@@ -1021,8 +853,6 @@
     "passport-google-oauth20": ["passport-google-oauth20@2.0.0", "", { "dependencies": { "passport-oauth2": "1.x.x" } }, "sha512-KSk6IJ15RoxuGq7D1UKK/8qKhNfzbLeLrG3gkLZ7p4A6DBCcv7xpyQwuXtWdpyR0+E0mwkpjY1VfPOhxQrKzdQ=="],
 
     "passport-jwt": ["passport-jwt@4.0.1", "", { "dependencies": { "jsonwebtoken": "^9.0.0", "passport-strategy": "^1.0.0" } }, "sha512-UCKMDYhNuGOBE9/9Ycuoyh7vP6jpeTp/+sfMJl7nLff/t6dps+iaeE0hhNkKN8/HZHcJ7lCdOyDxHdDoxoSvdQ=="],
-
-    "passport-local": ["passport-local@1.0.0", "", { "dependencies": { "passport-strategy": "1.x.x" } }, "sha512-9wCE6qKznvf9mQYYbgJ3sVOHmCWoUNMVFoZzNoznmISbhnNNPhN9xfY3sLmScHMetEJeoY7CXwfhCe7argfQow=="],
 
     "passport-oauth2": ["passport-oauth2@1.8.0", "", { "dependencies": { "base64url": "3.x.x", "oauth": "0.10.x", "passport-strategy": "1.x.x", "uid2": "0.0.x", "utils-merge": "1.x.x" } }, "sha512-cjsQbOrXIDE4P8nNb3FQRCCmJJ/utnFKEz2NX209f7KOHPoX18gF7gBzBbLLsj2/je4KrgiwLLGjf0lm9rtTBA=="],
 

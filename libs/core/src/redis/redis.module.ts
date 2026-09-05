@@ -1,25 +1,28 @@
-import { Global, Logger, Module } from "@nestjs/common";
+import { Global, Module } from "@nestjs/common";
 import { Redis } from "ioredis";
+import { PinoLogger } from "nestjs-pino";
+import { redisConfig, type RedisConfig } from "./redis.config";
 import { REDIS_CLIENT } from "./redis.constant";
 import { RedisService } from "./redis.service";
-import { redisConfig, type RedisConfig } from "./redis.config";
 
 @Global()
 @Module({
   providers: [
     {
+      inject: [redisConfig.KEY, PinoLogger],
       provide: REDIS_CLIENT,
-      useFactory: async (redisConf: RedisConfig) => {
-        const logger = new Logger(REDIS_CLIENT);
-        let redis: Redis = new Redis(redisConf);
+      useFactory: async (redisConf: RedisConfig, logger: PinoLogger) => {
+        logger.setContext(RedisModule.name);
+
+        const redis: Redis = new Redis(redisConf);
 
         redis
           .ping()
           .then(() => {
-            logger.debug(`Redis client connected`);
+            logger.info("RedisModule dependencies initialized");
           })
           .catch(() => {
-            logger.error(`Redis client connection failed`);
+            logger.error("RedisModule dependencies failed to initialize");
           });
 
         redis.on("error", (err) => {
@@ -28,7 +31,6 @@ import { redisConfig, type RedisConfig } from "./redis.config";
 
         return redis;
       },
-      inject: [redisConfig.KEY],
     },
     RedisService,
   ],
