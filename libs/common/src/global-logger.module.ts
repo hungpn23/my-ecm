@@ -10,7 +10,6 @@ export class GlobalLoggerModule {
         transport: {
           target: "pino-pretty",
           options: {
-            customColors: "error:bgRed",
             ignore: "req.headers,res.headers,remoteAddress,remotePort",
           },
         },

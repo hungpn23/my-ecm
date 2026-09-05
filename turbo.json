@@ -17,6 +17,7 @@
   },
   "globalEnv": [
     "NODE_ENV",
+    "APP_HOST",
     "JWT_ALGORITHM",
     "JWT_ISSUER",
     "JWT_AUDIENCE",

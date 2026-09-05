@@ -4,8 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./arktype-config": "./src/config/arktype.config.ts"
+    ".": "./src/index.ts"
   },
   "scripts": {
     "check:types": "tsc --noEmit"
@@ -25,6 +24,7 @@
     "arktype": "catalog:common",
     "ioredis": "catalog:backend",
     "lodash": "catalog:common",
+    "nestjs-pino": "catalog:backend",
     "passport-jwt": "catalog:backend",
     "rxjs": "catalog:backend",
     "uuid": "catalog:backend"

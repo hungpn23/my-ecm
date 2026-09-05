@@ -12,6 +12,11 @@
   "dependencies": {
     "@libs/common": "workspace:*",
     "@libs/core": "workspace:*",
+    "@mikro-orm/cli": "catalog:backend",
+    "@mikro-orm/core": "catalog:backend",
+    "@mikro-orm/migrations": "catalog:backend",
+    "@mikro-orm/nestjs": "catalog:backend",
+    "@mikro-orm/postgresql": "catalog:backend",
     "@nestjs/common": "catalog:backend",
     "@nestjs/core": "catalog:backend",
     "@nestjs/microservices": "catalog:backend",

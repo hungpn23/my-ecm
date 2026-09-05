@@ -14,7 +14,6 @@ import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { ConditionalModule } from "@nestjs/config";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
-import { AppController } from "./app.controller";
 import { AuthModule } from "./module/auth/auth.module";
 import { isGithubConfigured } from "./module/oauth/github/github.config";
 import { GithubModule } from "./module/oauth/github/github.module";
@@ -46,7 +45,6 @@ import { UserModule } from "./module/user/user.module";
     }),
     UserModule,
   ],
-  controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,
