@@ -1,5 +1,5 @@
 {
-  "name": "@app/identity-service",
+  "name": "@apps/identity-service",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -25,7 +25,6 @@
     "@nestjs/passport": "catalog:backend",
     "@nestjs/platform-express": "catalog:backend",
     "@nestjs/swagger": "catalog:backend",
-    "@oxc-node/core": "catalog:backend",
     "argon2": "catalog:backend",
     "arkenv": "catalog:common",
     "arktype": "catalog:common",

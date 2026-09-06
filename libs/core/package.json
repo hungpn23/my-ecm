@@ -19,7 +19,6 @@
     "@nestjs/config": "catalog:backend",
     "@nestjs/core": "catalog:backend",
     "@nestjs/passport": "catalog:backend",
-    "@oxc-node/core": "catalog:backend",
     "arkenv": "catalog:common",
     "arktype": "catalog:common",
     "ioredis": "catalog:backend",
