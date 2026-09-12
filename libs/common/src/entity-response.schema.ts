@@ -1,8 +1,8 @@
 import { type } from "arktype";
-import { UuidSchema } from "./common.schema";
+import { Uuid } from "./common.schema";
 
-export const EntityResponseSchema = type({
-  id: UuidSchema,
+export const EntityResponse = type({
+  id: Uuid,
   createdAt: type("string.date.iso").configure({ format: "date-time" }),
   updatedAt: type("string.date.iso").configure({ format: "date-time" }),
 });
