@@ -4,12 +4,12 @@
   "workspaces": {
     "catalogs": {
       "backend": {
-        "@mikro-orm/cli": "^7.1.14",
-        "@mikro-orm/core": "^7.1.14",
-        "@mikro-orm/migrations": "^7.1.14",
-        "@mikro-orm/nestjs": "^7.0.2",
-        "@mikro-orm/postgresql": "^7.1.14",
-        "@mikro-orm/seeder": "^7.1.14",
+        "@mikro-orm/cli": "^7.2.0",
+        "@mikro-orm/core": "^7.2.0",
+        "@mikro-orm/migrations": "^7.2.0",
+        "@mikro-orm/nestjs": "^7.1.0",
+        "@mikro-orm/postgresql": "^7.2.0",
+        "@mikro-orm/seeder": "^7.2.0",
         "@mikro-orm/sql-highlighter": "^1.0.1",
         "@nestjs/common": "^12.0.1",
         "@nestjs/config": "^12.0.0",
@@ -42,7 +42,7 @@
         "lodash": "^4.18.1"
       },
       "dev": {
-        "@types/bun": "^1.4.0",
+        "@types/bun": "^1.4.2",
         "@types/express": "^5.0.6",
         "@types/lodash": "^4.17.25",
         "@types/passport-github2": "^1.2.9",
@@ -79,7 +79,7 @@
     "@types/bun": "catalog:dev",
     "@types/lodash": "catalog:dev",
     "husky": "^9.1.7",
-    "lint-staged": "^17.4.1",
+    "lint-staged": "^17.5.1",
     "oxfmt": "^0.65.0",
     "oxlint": "1.80.0",
     "oxlint-tsgolint": "^7.0.2001",
