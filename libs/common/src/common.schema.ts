@@ -1,9 +1,9 @@
 import { type } from "arktype";
 
-export const UuidSchema = type("string.uuid.v7");
-export const VarcharSchema = type("string <= 255");
+export const Uuid = type("string.uuid.v7");
+export const Varchar = type("string <= 255");
 
-export const OffsetMetadataSchema = type({
+export const OffsetMetadata = type({
   page: "number >= 1",
   pageSize: "number >= 10",
   total: "number >= 0",
@@ -12,5 +12,5 @@ export const OffsetMetadataSchema = type({
 
 export const Paginated = type("<t>", {
   data: "t[]",
-  metadata: OffsetMetadataSchema,
+  metadata: OffsetMetadata,
 });

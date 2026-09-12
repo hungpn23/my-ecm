@@ -1,21 +1,21 @@
 import { type } from "arktype";
 
-export const ChangePasswordSchema = type({
+export const ChangePassword = type({
   oldPassword: "string >= 8",
   newPassword: "string >= 8",
 });
-export type ChangePassword = typeof ChangePasswordSchema.infer;
+export type ChangePassword = typeof ChangePassword.infer;
 
-export const BaseAuthSchema = type({
+export const BaseAuth = type({
   email: "string.email",
   password: "string >= 8",
 });
-export type BaseAuth = typeof BaseAuthSchema.infer;
+export type BaseAuth = typeof BaseAuth.infer;
 export type SignUp = BaseAuth;
 export type SignIn = BaseAuth;
 
-export const TokenResponseSchema = type({
+export const TokenResponse = type({
   accessToken: "string",
   refreshToken: "string",
 });
-export type TokenResponse = typeof TokenResponseSchema.inferIn;
+export type TokenResponse = typeof TokenResponse.inferIn;
