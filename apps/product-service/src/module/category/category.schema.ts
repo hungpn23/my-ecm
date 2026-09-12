@@ -8,7 +8,7 @@ export const CreateCategory = type({
 export type CreateCategory = typeof CreateCategory.infer;
 
 export const CategoryResponse = EntityResponse.merge(CreateCategory);
-export type CategoryResponse = typeof CategoryResponse.infer;
+export type CategoryResponse = typeof CategoryResponse.inferIn;
 
 export const PaginatedCategoryResponse = Paginated(CategoryResponse);
-export type PaginatedCategoryResponse = typeof PaginatedCategoryResponse.infer;
+export type PaginatedCategoryResponse = typeof PaginatedCategoryResponse.inferIn;
