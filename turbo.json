@@ -28,6 +28,7 @@
     "DB_PORT",
     "DB_USER",
     "DB_PASSWORD",
+    "DB_ENABLE_DEBUG",
     "REDIS_HOST",
     "REDIS_PORT",
     "REDIS_USERNAME",

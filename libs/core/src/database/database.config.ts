@@ -8,6 +8,7 @@ export const databaseConfig = registerAs("database", () => {
     DB_USER: "string >= 1",
     DB_PASSWORD: "string >= 1",
     DB_DATABASE: "string >= 1",
+    DB_ENABLE_DEBUG: "boolean = false",
   });
 
   return {
@@ -16,6 +17,7 @@ export const databaseConfig = registerAs("database", () => {
     user: config.DB_USER,
     password: config.DB_PASSWORD,
     dbName: config.DB_DATABASE,
+    debug: config.DB_ENABLE_DEBUG,
   };
 });
 
