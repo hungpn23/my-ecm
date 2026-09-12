@@ -1,4 +1,5 @@
 import { getAppConfig } from "@libs/core";
+import { MikroORM } from "@mikro-orm/core";
 import { NestFactory } from "@nestjs/core";
 import { Transport } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
@@ -24,8 +25,8 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("swagger", app, documentFactory);
 
-  // const orm = app.get(MikroORM);
-  // await orm.schema.update();
+  const orm = app.get(MikroORM);
+  await orm.schema.update();
 
   app.connectMicroservice({
     transport: Transport.TCP,
