@@ -6,14 +6,13 @@
       "name": "my-ecm",
       "dependencies": {
         "dotenv-cli": "catalog:backend",
-        "pino": "catalog:backend",
       },
       "devDependencies": {
         "@oxlint/plugins": "1.80.0",
         "@types/bun": "catalog:dev",
         "@types/lodash": "catalog:dev",
         "husky": "^9.1.7",
-        "lint-staged": "^17.4.1",
+        "lint-staged": "^17.5.1",
         "oxfmt": "^0.65.0",
         "oxlint": "1.80.0",
         "oxlint-tsgolint": "^7.0.2001",
@@ -23,7 +22,7 @@
       },
     },
     "apps/identity-service": {
-      "name": "@app/identity-service",
+      "name": "@apps/identity-service",
       "version": "0.0.0",
       "dependencies": {
         "@libs/common": "workspace:*",
@@ -60,7 +59,7 @@
       },
     },
     "apps/product-service": {
-      "name": "@app/product-service",
+      "name": "@apps/product-service",
       "version": "0.0.0",
       "dependencies": {
         "@libs/common": "workspace:*",
@@ -76,6 +75,8 @@
         "@nestjs/passport": "catalog:backend",
         "@nestjs/platform-express": "catalog:backend",
         "@nestjs/swagger": "catalog:backend",
+        "arktype": "catalog:common",
+        "dotenv": "catalog:backend",
         "nestjs-pino": "catalog:backend",
         "reflect-metadata": "catalog:backend",
         "rxjs": "catalog:backend",
@@ -88,6 +89,7 @@
         "@nestjs/common": "catalog:backend",
         "@nestjs/config": "catalog:backend",
         "@nestjs/microservices": "catalog:backend",
+        "@nestjs/swagger": "catalog:backend",
         "arkenv": "catalog:common",
         "arktype": "catalog:common",
         "lodash": "catalog:common",
@@ -107,8 +109,10 @@
         "@libs/common": "workspace:*",
         "@mikro-orm/core": "catalog:backend",
         "@mikro-orm/migrations": "catalog:backend",
+        "@mikro-orm/nestjs": "catalog:backend",
         "@mikro-orm/postgresql": "catalog:backend",
         "@mikro-orm/seeder": "catalog:backend",
+        "@mikro-orm/sql-highlighter": "catalog:backend",
         "@nestjs/common": "catalog:backend",
         "@nestjs/config": "catalog:backend",
         "@nestjs/core": "catalog:backend",
@@ -131,12 +135,12 @@
   },
   "catalogs": {
     "backend": {
-      "@mikro-orm/cli": "^7.1.14",
-      "@mikro-orm/core": "^7.1.14",
-      "@mikro-orm/migrations": "^7.1.14",
-      "@mikro-orm/nestjs": "^7.0.2",
-      "@mikro-orm/postgresql": "^7.1.14",
-      "@mikro-orm/seeder": "^7.1.14",
+      "@mikro-orm/cli": "^7.2.0",
+      "@mikro-orm/core": "^7.2.0",
+      "@mikro-orm/migrations": "^7.2.0",
+      "@mikro-orm/nestjs": "^7.1.0",
+      "@mikro-orm/postgresql": "^7.2.0",
+      "@mikro-orm/seeder": "^7.2.0",
       "@mikro-orm/sql-highlighter": "^1.0.1",
       "@nestjs/common": "^12.0.1",
       "@nestjs/config": "^12.0.0",
@@ -169,7 +173,7 @@
       "lodash": "^4.18.1",
     },
     "dev": {
-      "@types/bun": "^1.4.0",
+      "@types/bun": "^1.4.2",
       "@types/express": "^5.0.6",
       "@types/lodash": "^4.17.25",
       "@types/passport-github2": "^1.2.9",
@@ -179,9 +183,9 @@
     },
   },
   "packages": {
-    "@app/identity-service": ["@app/identity-service@workspace:apps/identity-service"],
+    "@apps/identity-service": ["@apps/identity-service@workspace:apps/identity-service"],
 
-    "@app/product-service": ["@app/product-service@workspace:apps/product-service"],
+    "@apps/product-service": ["@apps/product-service@workspace:apps/product-service"],
 
     "@ark/schema": ["@ark/schema@0.56.2", "", { "dependencies": { "@ark/util": "0.56.2" } }, "sha512-Qx4D2JFbBWpntiHZaTv7bGG4H/M2rigiknezKg/WVyDSaLdE4YCcWAOoFB7pjjDqHbbV2OqRfntm1nnXvwMexg=="],
 
@@ -201,19 +205,21 @@
 
     "@microsoft/tsdoc": ["@microsoft/tsdoc@0.16.0", "", {}, "sha512-xgAyonlVVS+q7Vc7qLW0UrJU7rSFcETRWsqdXZtjzRU8dF+6CkozTK4V4y1LwOX7j8r/vHphjDeMeGI4tNGeGA=="],
 
-    "@mikro-orm/cli": ["@mikro-orm/cli@7.1.15", "", { "dependencies": { "@mikro-orm/core": "7.1.15", "mikro-orm": "7.1.15", "yargs": "17.7.2" }, "bin": { "mikro-orm": "cli.js" } }, "sha512-VMR0+A/654ZNK8mx+okQw4Kjg+tsdMoOlRo2+XsQ09nuPaj/g3TkhWg8fNOS5i+xByP015gwD4Mg87fSR13KEQ=="],
+    "@mikro-orm/cli": ["@mikro-orm/cli@7.2.0", "", { "dependencies": { "@mikro-orm/core": "7.2.0", "mikro-orm": "7.2.0", "yargs": "17.7.2" }, "bin": { "mikro-orm": "cli.js" } }, "sha512-hqhBkwbWf1mbu9VI1qJfzyHuB+RORIPfIjS+LrvsrE4dEvMPU31smnU1x7Vclz7CbJVBGCwJxJS9cdh+tvuPug=="],
 
-    "@mikro-orm/core": ["@mikro-orm/core@7.1.15", "", { "peerDependencies": { "dataloader": "2.2.3" }, "optionalPeers": ["dataloader"] }, "sha512-2u7UuZ3IXRsqEnOVNxh1Lf8R3rzTj1Uqem/Xdo/iEpeRls3QUOAIar3Qm0LjpaSyaRIVOrohXFg2Wk+acJEbeA=="],
+    "@mikro-orm/core": ["@mikro-orm/core@7.2.0", "", { "peerDependencies": { "dataloader": "2.2.3" }, "optionalPeers": ["dataloader"] }, "sha512-a4RoZXfzVJqiaOwsw2k7EH1Vv+BOdOokB+F4TofUz0mLz4XPewwaKUQIUeqRNmf0fKpOFJxlgTxsZYXhZoFxCQ=="],
 
-    "@mikro-orm/migrations": ["@mikro-orm/migrations@7.1.15", "", { "dependencies": { "@mikro-orm/sql": "7.1.15" }, "peerDependencies": { "@mikro-orm/core": "7.1.15" } }, "sha512-ublCLE5kpmGvtZJaJJyjioDuCy9lS18Q6pp+BMBIYGEzlYcwdpp9br3js3gYDMNr86VZgnZBkByLAg0X5Yu+SA=="],
+    "@mikro-orm/migrations": ["@mikro-orm/migrations@7.2.0", "", { "dependencies": { "@mikro-orm/sql": "7.2.0" }, "peerDependencies": { "@mikro-orm/core": "7.2.0" } }, "sha512-C0lhvyreASOf8GelzdqCuXHo3pjg6cPDUJAFggT8kKkCNgA4x34bXQVUWOWw/Vqwpu0BuWTsMEveX/Ln3cQCmw=="],
 
     "@mikro-orm/nestjs": ["@mikro-orm/nestjs@7.1.0", "", { "peerDependencies": { "@mikro-orm/core": "^7.0.0 || ^7.0.0-dev.0", "@nestjs/common": "^11.0.5 || ^12.0.0", "@nestjs/core": "^11.0.5 || ^12.0.0", "reflect-metadata": "^0.1.0 || ^0.2.0" } }, "sha512-S7UXOR4jYtl+lSl23GxQNoWaI3naf5WGUaWMjqZ1o+xcp+fha8une9Yu3qEizZNA+iulE4qA+yaB6sKnA67fbw=="],
 
-    "@mikro-orm/postgresql": ["@mikro-orm/postgresql@7.1.15", "", { "dependencies": { "@mikro-orm/sql": "7.1.15", "kysely": "0.29.5", "pg": "8.23.0", "pg-cursor": "2.22.0", "postgres-array": "3.0.4", "postgres-date": "2.1.0", "postgres-interval": "4.1.0" }, "peerDependencies": { "@mikro-orm/core": "7.1.15" } }, "sha512-cyRnOGwgt6YfD9v0B6o84ypEemguadRgCw6BtrYysP56VBu9j629rahrcRfQma+OVwmeVYS2kEDmH+TKam6Igg=="],
+    "@mikro-orm/postgresql": ["@mikro-orm/postgresql@7.2.0", "", { "dependencies": { "@mikro-orm/sql": "7.2.0", "kysely": "0.29.5", "pg": "8.23.0", "pg-cursor": "2.22.0", "postgres-array": "3.0.4", "postgres-date": "2.1.0", "postgres-interval": "4.1.0" }, "peerDependencies": { "@mikro-orm/core": "7.2.0" } }, "sha512-15M7ntKtiND22YAGYOzvKXtHJ8lm0ukRW+TaHjk9m/HFop4fXyHzqWC91cTb+kdcE+RzeLqOqbkmcIzFOC5BkA=="],
 
-    "@mikro-orm/seeder": ["@mikro-orm/seeder@7.1.15", "", { "peerDependencies": { "@mikro-orm/core": "7.1.15" } }, "sha512-8m1PMHr4w2b5ReTCEbSaLW9eK88WI54cUQyYbQbL2wCG17qJd+xictLh33Gj4LZgUwXtSgpsq8D8PYVGxySRSA=="],
+    "@mikro-orm/seeder": ["@mikro-orm/seeder@7.2.0", "", { "peerDependencies": { "@mikro-orm/core": "7.2.0" } }, "sha512-un1FaXAcnN2VRN3Hs87KxAgssSdxbLl1VG+vrRMo4gaPPUJOVk4w1CvqViggKgIkuGnrOoyMbmTKkVe2Ndz/aQ=="],
 
-    "@mikro-orm/sql": ["@mikro-orm/sql@7.1.15", "", { "dependencies": { "kysely": "0.29.5" }, "peerDependencies": { "@mikro-orm/core": "7.1.15" } }, "sha512-5vuPeOC381j2sTH3xiHqKSolq9f0T4CHkQaGmEGO4a8PHyUUkExd7uZ41q50+9azgrMBdtP7vlmNVatB0/ntKQ=="],
+    "@mikro-orm/sql": ["@mikro-orm/sql@7.2.0", "", { "dependencies": { "kysely": "0.29.5" }, "peerDependencies": { "@mikro-orm/core": "7.2.0" } }, "sha512-ZpuCfBL6XAYrJsUglvXrah+erB9gVgkoSuIKR/x+o1o/OVOE8ljgRxYIIIMGE+LetR9s1wrDQjrwfm0gghqsiA=="],
+
+    "@mikro-orm/sql-highlighter": ["@mikro-orm/sql-highlighter@1.0.1", "", { "dependencies": { "ansi-colors": "^4.1.1" } }, "sha512-iO+FwRNuqNDVlIo5zfgOu2mMGVicX/FqzP+F/A0xpJLHyqvWyXzVwntgAMimBjQaxiX9Rpmc0u3Jq6/A6V6JQA=="],
 
     "@nestjs/common": ["@nestjs/common@12.0.1", "", { "dependencies": { "@standard-schema/spec": "1.1.0", "file-type": "22.0.2", "iterare": "1.2.1", "load-esm": "1.0.3", "tslib": "2.8.1", "uid": "2.0.2" }, "peerDependencies": { "class-transformer": ">=0.4.1", "class-validator": ">=0.13.2", "reflect-metadata": "^0.1.12 || ^0.2.0", "rxjs": "^7.1.0" }, "optionalPeers": ["class-transformer", "class-validator"] }, "sha512-v0zTaRCTV2K2xSnb3GnJoQKtaR6VxouJtm+P2gpr5w61dlXeWpXl1WVknCSzUqx2QwTV10tBkHETxvQvkf2Exg=="],
 
@@ -349,7 +355,7 @@
 
     "@types/body-parser": ["@types/body-parser@1.19.6", "", { "dependencies": { "@types/connect": "*", "@types/node": "*" } }, "sha512-HLFeCYgz89uk22N5Qg3dvGvsv46B8GLvKKo1zKG4NybA8U2DiEO3w9lqGg29t/tfLRJpJ6iQxnVw4OnB7MoM9g=="],
 
-    "@types/bun": ["@types/bun@1.4.1", "", { "dependencies": { "bun-types": "1.4.1" } }, "sha512-0AVGiTXGajf1rgKom3N+c5L7CBxuoyyv1i44M0nX4UDK0G/fnRAMiri93nHuVPIb429KKtAgj7HatVmmOjeQLA=="],
+    "@types/bun": ["@types/bun@1.4.2", "", { "dependencies": { "bun-types": "1.4.2" } }, "sha512-GimotNn7+ZV0uVArItBbriZsR1oNf0+WTzPkdcFrzShI7k2norL0uzEaJT8T33dWr7O/c9ZDuAFQrctKCi72oQ=="],
 
     "@types/connect": ["@types/connect@3.4.38", "", { "dependencies": { "@types/node": "*" } }, "sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug=="],
 
@@ -365,7 +371,7 @@
 
     "@types/ms": ["@types/ms@2.1.0", "", {}, "sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA=="],
 
-    "@types/node": ["@types/node@26.4.1", "", { "dependencies": { "undici-types": "~8.3.0" } }, "sha512-k97ENvZWtvA6yqz5/FS6a7duDgOPEeOQOc2iKS/nY6mX6qJUKtLnWzQS+Xj6tXweyj6ZcTAK2Qecetnvi9nCLA=="],
+    "@types/node": ["@types/node@22.20.2", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-xlvWf4Vs9n1PEVYwP1n4vvG07M6y8WgvJ2t0vbrWTmijsIHp1cS+uJ2kMIRdY3nHZK0nCYKrPeD171+SzF4/zw=="],
 
     "@types/oauth": ["@types/oauth@0.9.6", "", { "dependencies": { "@types/node": "*" } }, "sha512-H9TRCVKBNOhZZmyHLqFt9drPM9l+ShWiqqJijU1B8P3DX3ub84NjxDuy+Hjrz+fEca5Kwip3qPMKNyiLgNJtIA=="],
 
@@ -431,6 +437,8 @@
 
     "accepts": ["accepts@2.0.0", "", { "dependencies": { "mime-types": "^3.0.0", "negotiator": "^1.0.0" } }, "sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng=="],
 
+    "ansi-colors": ["ansi-colors@4.1.3", "", {}, "sha512-/6w/C21Pm1A7aZitlI5Ni/2J6FFQN8i1Cvz3kHABAAbw93v/NlvKdVOqz7CCWz/3iv/JplRSEEZ83XION15ovw=="],
+
     "ansi-regex": ["ansi-regex@5.0.1", "", {}, "sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ=="],
 
     "ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
@@ -461,7 +469,7 @@
 
     "buffer-from": ["buffer-from@1.1.2", "", {}, "sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ=="],
 
-    "bun-types": ["bun-types@1.4.1", "", { "dependencies": { "@types/node": "*" } }, "sha512-loKuVrAFZKfEv+JvWkHRS9GW5IqLuLRjVXN9p+vZvBN86O5hf/pBZQ5hSoyipsrMmWObZBDvWnlmKvjKTM0PdA=="],
+    "bun-types": ["bun-types@1.4.2", "", { "dependencies": { "@types/node": "*" } }, "sha512-bxV1FgK7yBIzjRe5zBozIM4Bem11ZJcCXSrjWRG3YWLt8yFDePu4cLjpebO8OvPeIE9trbyPF4fuj3Cia4Fj3w=="],
 
     "busboy": ["busboy@1.6.0", "", { "dependencies": { "streamsearch": "^1.1.0" } }, "sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA=="],
 
@@ -499,7 +507,7 @@
 
     "dateformat": ["dateformat@4.6.3", "", {}, "sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA=="],
 
-    "debug": ["debug@4.4.3", "", { "dependencies": { "ms": "^2.1.3" } }, "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA=="],
+    "debug": ["debug@4.4.3", "", { "dependencies": { "ms": "^2.1.3" }, "peerDependencies": { "supports-color": "*" }, "optionalPeers": ["supports-color"] }, "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA=="],
 
     "denque": ["denque@2.1.0", "", {}, "sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw=="],
 
@@ -603,7 +611,7 @@
 
     "kysely": ["kysely@0.29.5", "", {}, "sha512-ooa+eSbBNPTo3MycPEuW5jdrxQdQwdtB3LC3h43FiXQbIry5tR0C5lDG7eealK0E4D7XjrnOP5DIUg/LyjRMYQ=="],
 
-    "lint-staged": ["lint-staged@17.5.0", "", { "dependencies": { "picomatch": "^4.0.7", "string-argv": "^0.3.2", "tinyexec": "^1.3.1" }, "optionalDependencies": { "yaml": "^2.9.0" }, "bin": { "lint-staged": "bin/lint-staged.js" } }, "sha512-ah2qsNtvKP1+Ak4rAvEEIvcXDLjjbr/xmxCvlequxqEOFYk0qINcZcRxD3Ic8wRn7/oQ8+wC9s0DfDrdMVCRFg=="],
+    "lint-staged": ["lint-staged@17.5.1", "", { "dependencies": { "picomatch": "^4.0.7", "string-argv": "^0.3.2", "tinyexec": "^1.3.1" }, "optionalDependencies": { "yaml": "^2.9.0" }, "bin": { "lint-staged": "bin/lint-staged.js" } }, "sha512-7EDuco1xnBMeVpvAbeMq1U5KXwJGLmY8q6l+Ye78r36C4mPc+Vg1Z2SK8gHyRTyvPro90A0q5/FAZ+Au23d6QQ=="],
 
     "load-esm": ["load-esm@1.0.3", "", {}, "sha512-v5xlu8eHD1+6r8EHTg6hfmO97LN8ugKtiXcy5e6oN72iD2r6u0RPfLl6fxM+7Wnh2ZRq15o0russMst44WauPA=="],
 
@@ -631,7 +639,7 @@
 
     "merge-descriptors": ["merge-descriptors@2.0.0", "", {}, "sha512-Snk314V5ayFLhp3fkUREub6WtjBfPdCPY1Ln8/8munuLuiYhsABgBVWsozAG+MWMbVEvcdcpbi9R7ww22l9Q3g=="],
 
-    "mikro-orm": ["mikro-orm@7.1.15", "", {}, "sha512-q6dWO1IrX3n41itJlkprr2VH850oxMXoIez9pRRP48hCU028HQoEdq90wRQ/vlMLWx5P3VThM4l6AotI4eCM2Q=="],
+    "mikro-orm": ["mikro-orm@7.2.0", "", {}, "sha512-1YChTUHF4aGlJQKtM6eD4ehPnJcAK3IF5QKObDryhKyFuF0dLclUurwIIyDae8a7cR55AzEqEMYAJ/JAZEmOwg=="],
 
     "mime-db": ["mime-db@1.54.0", "", {}, "sha512-aU5EJuIN2WDemCcAp2vFBfp/m4EAhWJnUNSSw0ixs7/kXbd6Pg64EmwJkNdFhB8aWt1sH2CTXrLxo/iAGV3oPQ=="],
 
@@ -843,7 +851,7 @@
 
     "uint8array-extras": ["uint8array-extras@1.5.0", "", {}, "sha512-rvKSBiC5zqCCiDZ9kAOszZcDvdAHwwIKJG33Ykj43OKcWsnmcBRL09YTU4nOeHZ8Y2a7l1MgTd08SBe9A8Qj6A=="],
 
-    "undici-types": ["undici-types@8.3.0", "", {}, "sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ=="],
+    "undici-types": ["undici-types@6.21.0", "", {}, "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="],
 
     "unpipe": ["unpipe@1.0.0", "", {}, "sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ=="],
 
@@ -865,7 +873,7 @@
 
     "y18n": ["y18n@5.0.8", "", {}, "sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA=="],
 
-    "yaml": ["yaml@2.9.0", "", { "bin": { "yaml": "bin.mjs" } }, "sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA=="],
+    "yaml": ["yaml@2.9.1", "", { "bin": { "yaml": "bin.mjs" } }, "sha512-3NxN8+78OdzbT7C/WjGsyfPAtJaN3FNDsWxv7Y7mcDsT/oOmgW8BpyQQFFBnvZE3j9Y2Sdz1ULFLezL7Eb2yFw=="],
 
     "yargs": ["yargs@17.7.2", "", { "dependencies": { "cliui": "^8.0.1", "escalade": "^3.1.1", "get-caller-file": "^2.0.5", "require-directory": "^2.1.1", "string-width": "^4.2.3", "y18n": "^5.0.5", "yargs-parser": "^21.1.1" } }, "sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w=="],
 
