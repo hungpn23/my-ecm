@@ -1,8 +1,7 @@
 import { type } from "arktype";
 
 export const SuccessResponseSchema = type({
-  ok: "boolean",
+  ok: "true",
   "message?": "string",
 });
-
 export type SuccessResponse = typeof SuccessResponseSchema.inferIn;
