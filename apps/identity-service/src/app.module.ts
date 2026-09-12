@@ -2,15 +2,13 @@ import { GlobalLoggerModule, GlobalStandardSchemaValidationPipe } from "@libs/co
 import {
   databaseConfig,
   GlobalConfigModule,
+  GlobalMikroOrmModule,
   jwtConfig,
   JwtGuard,
   redisConfig,
   RedisModule,
-  type DatabaseConfig,
 } from "@libs/core";
 import { entities } from "@mikro-orm/generated";
-import { MikroOrmModule } from "@mikro-orm/nestjs";
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { ConditionalModule } from "@nestjs/config";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
@@ -26,14 +24,7 @@ import { UserModule } from "./module/user/user.module";
     GlobalConfigModule.forRoot({
       load: [jwtConfig, databaseConfig, redisConfig],
     }),
-    MikroOrmModule.forRootAsync({
-      inject: [databaseConfig.KEY],
-      driver: PostgreSqlDriver,
-      useFactory: (config: DatabaseConfig) => ({
-        ...config,
-        entities,
-      }),
-    }),
+    GlobalMikroOrmModule.forRoot(entities),
     GlobalLoggerModule.forRoot(),
     RedisModule,
     AuthModule,
