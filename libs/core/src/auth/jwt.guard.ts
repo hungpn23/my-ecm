@@ -1,8 +1,9 @@
+import { METADATA_KEY } from "@libs/common";
 import { type ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
 import { Observable } from "rxjs";
-import { METADATA_KEY, PASSPORT_STRATEGY } from "./auth.constant";
+import { PASSPORT_STRATEGY } from "./auth.constant";
 
 @Injectable()
 export class JwtGuard extends AuthGuard(PASSPORT_STRATEGY.JWT) {
