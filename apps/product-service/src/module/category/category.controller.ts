@@ -1,13 +1,6 @@
 import { Endpoint } from "@libs/common";
 import { Body, Controller } from "@nestjs/common";
-import {
-  CategoryResponseSchema,
-  CreateCategorySchema,
-  PaginatedCategoryResponseSchema,
-  type CategoryResponse,
-  type CreateCategory,
-  type PaginatedCategoryResponse,
-} from "./category.schema";
+import { CategoryResponse, CreateCategory, PaginatedCategoryResponse } from "./category.schema";
 import { CategoryService } from "./category.service";
 
 @Controller("categories")
@@ -16,18 +9,16 @@ export class CategoryController {
 
   @Endpoint({
     method: "POST",
-    request: CreateCategorySchema,
-    response: CategoryResponseSchema,
+    request: CreateCategory,
+    response: CategoryResponse,
   })
-  async create(
-    @Body({ schema: CreateCategorySchema }) body: CreateCategory,
-  ): Promise<CategoryResponse> {
+  async create(@Body({ schema: CreateCategory }) body: CreateCategory): Promise<CategoryResponse> {
     return await this.categoryService.create(body);
   }
 
   @Endpoint({
     method: "GET",
-    response: PaginatedCategoryResponseSchema,
+    response: PaginatedCategoryResponse,
   })
   async findAll(): Promise<PaginatedCategoryResponse> {
     return await this.categoryService.findAll();

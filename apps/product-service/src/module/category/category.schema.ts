@@ -1,17 +1,14 @@
-import { EntityResponseSchema, Paginated, VarcharSchema } from "@libs/common";
+import { EntityResponse, Paginated, Varchar } from "@libs/common";
 import { type } from "arktype";
 
-export const CreateCategorySchema = type({
-  name: VarcharSchema,
-  code: VarcharSchema,
+export const CreateCategory = type({
+  name: Varchar,
+  code: Varchar,
 });
-export type CreateCategory = typeof CreateCategorySchema.infer;
+export type CreateCategory = typeof CreateCategory.infer;
 
-export const CategoryResponseSchema = EntityResponseSchema.merge(CreateCategorySchema);
-export type CategoryResponse = typeof CategoryResponseSchema.infer;
+export const CategoryResponse = EntityResponse.merge(CreateCategory);
+export type CategoryResponse = typeof CategoryResponse.infer;
 
-export const PaginatedCategoryResponseSchema = Paginated(CategoryResponseSchema);
-export type PaginatedCategoryResponse = typeof PaginatedCategoryResponseSchema.infer;
-
-// export const CategoriesResponseSchema = CategoryResponseSchema.array();
-// export type CategoriesResponse = typeof CategoriesResponseSchema.infer;
+export const PaginatedCategoryResponse = Paginated(CategoryResponse);
+export type PaginatedCategoryResponse = typeof PaginatedCategoryResponse.infer;

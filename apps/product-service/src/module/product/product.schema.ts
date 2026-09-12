@@ -1,24 +1,24 @@
-// import { UuidSchema } from "@libs/common";
+// import { Uuid } from "@libs/common";
 import { type } from "arktype";
 
 export const PRODUCT_STATUS = {
   ACTIVE: "active",
   INACTIVE: "inactive",
 } as const;
-export const ProductStatusSchema = type.enumerated(...Object.values(PRODUCT_STATUS));
-export type ProductStatus = typeof ProductStatusSchema.infer;
+export const ProductStatus = type.enumerated(...Object.values(PRODUCT_STATUS));
+export type ProductStatus = typeof ProductStatus.infer;
 
-// export const CreateProductSchema = type({
+// export const CreateProduct = type({
 //   name: "string <= 255",
 //   "description?": "string <= 255",
 //   sku: "string.alphanumeric <= 10",
 //   price: "number >= 0",
-//   "status?": ProductStatusSchema,
-//   categoryId: UuidSchema,
+//   "status?": ProductStatus,
+//   categoryId: Uuid,
 // });
-// export type CreateProduct = typeof CreateProductSchema.infer;
+// export type CreateProduct = typeof CreateProduct.infer;
 
-// export const ProductResponseSchema = type({
+// export const ProductResponse = type({
 //   id: "string.uuid",
 //   createdAt: "string",
 //   updatedAt: "string",
@@ -27,13 +27,13 @@ export type ProductStatus = typeof ProductStatusSchema.infer;
 //   description: "string | null",
 //   sku: "string",
 //   price: "string.numeric.parse",
-//   status: ProductStatusSchema,
+//   status: ProductStatus,
 // });
-// export type ProductResponse = typeof ProductResponseSchema.infer;
+// export type ProductResponse = typeof ProductResponse.infer;
 
-// export const ProductListResponseSchema = ProductResponseSchema.array();
+// export const ProductListResponse = ProductResponse.array();
 
-// export const TestSchema = type({
+// export const Test = type({
 //   status: "string",
 //   name: "string",
 //   randomType: "string",

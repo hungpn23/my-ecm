@@ -1,15 +1,7 @@
 import { Endpoint, type SuccessResponse } from "@libs/common";
-import { AuthenticatedUserSchema, User, type AuthenticatedUser } from "@libs/core";
+import { AuthenticatedUser, User } from "@libs/core";
 import { Body, Controller, UseGuards } from "@nestjs/common";
-import {
-  BaseAuthSchema,
-  ChangePasswordSchema,
-  TokenResponseSchema,
-  type ChangePassword,
-  type SignIn,
-  type SignUp,
-  type TokenResponse,
-} from "./auth.schema";
+import { BaseAuth, ChangePassword, type SignIn, type SignUp, TokenResponse } from "./auth.schema";
 import { AuthService } from "./auth.service";
 import { RefreshGuard } from "./refresh.guard";
 
@@ -21,10 +13,10 @@ export class AuthController {
     method: "POST",
     path: "sign-up",
     isPublic: true,
-    request: BaseAuthSchema,
-    response: TokenResponseSchema,
+    request: BaseAuth,
+    response: TokenResponse,
   })
-  async register(@Body({ schema: BaseAuthSchema }) body: SignUp): Promise<TokenResponse> {
+  async register(@Body({ schema: BaseAuth }) body: SignUp): Promise<TokenResponse> {
     return await this.authService.signUp(body);
   }
 
@@ -32,21 +24,21 @@ export class AuthController {
     method: "POST",
     path: "sign-in",
     isPublic: true,
-    request: BaseAuthSchema,
-    response: TokenResponseSchema,
+    request: BaseAuth,
+    response: TokenResponse,
   })
-  async login(@Body({ schema: BaseAuthSchema }) body: SignIn): Promise<TokenResponse> {
+  async login(@Body({ schema: BaseAuth }) body: SignIn): Promise<TokenResponse> {
     return await this.authService.signIn(body);
   }
 
   @Endpoint({
     method: "POST",
     path: "change-password",
-    request: ChangePasswordSchema,
+    request: ChangePassword,
   })
   async changePassword(
     @User("userId") userId: string,
-    @Body({ schema: ChangePasswordSchema }) body: ChangePassword,
+    @Body({ schema: ChangePassword }) body: ChangePassword,
   ): Promise<SuccessResponse> {
     return await this.authService.changePassword(userId, body);
   }
@@ -64,7 +56,7 @@ export class AuthController {
     method: "POST",
     path: "refresh",
     isPublic: true,
-    response: TokenResponseSchema,
+    response: TokenResponse,
   })
   async refreshToken(@User() user: AuthenticatedUser): Promise<TokenResponse> {
     return await this.authService.refreshToken(user);
@@ -73,7 +65,7 @@ export class AuthController {
   @Endpoint({
     method: "GET",
     path: "profile",
-    response: AuthenticatedUserSchema,
+    response: AuthenticatedUser,
   })
   getProfile(@User() user: AuthenticatedUser): AuthenticatedUser {
     return user;

@@ -1,7 +1,7 @@
 import { type } from "arktype";
 
-export const SuccessResponseSchema = type({
+export const SuccessResponse = type({
   ok: "true",
   "message?": "string",
 });
-export type SuccessResponse = typeof SuccessResponseSchema.inferIn;
+export type SuccessResponse = typeof SuccessResponse.inferIn;

@@ -10,7 +10,7 @@ import {
 import { ApiBearerAuth, ApiBody, ApiResponse } from "@nestjs/swagger";
 import { type Type } from "arktype";
 import { METADATA_KEY } from "./common.constant";
-import { SuccessResponseSchema } from "./success-response.schema";
+import { SuccessResponse } from "./success-response.schema";
 
 type EndpointParams = {
   method: "GET" | "POST" | "PATCH" | "DELETE";
@@ -43,10 +43,10 @@ export function Endpoint(params: EndpointParams) {
       }),
     );
   } else {
-    decorators.push(SerializeOptions({ schema: SuccessResponseSchema }));
+    decorators.push(SerializeOptions({ schema: SuccessResponse }));
     decorators.push(
       ApiResponse({
-        schema: SuccessResponseSchema["~standard"].jsonSchema.output({
+        schema: SuccessResponse["~standard"].jsonSchema.output({
           target: "draft-2020-12",
         }),
       }),
