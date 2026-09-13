@@ -1,8 +1,10 @@
-import { Endpoint } from "@libs/common";
-import { Body, Controller } from "@nestjs/common";
+import { Endpoint, OffsetQuery } from "@libs/common";
+import { Body, Controller, Query } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { CategoryResponse, CreateCategory, PaginatedCategoryResponse } from "./category.schema";
 import { CategoryService } from "./category.service";
 
+@ApiBearerAuth()
 @Controller("categories")
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
@@ -20,7 +22,9 @@ export class CategoryController {
     method: "GET",
     response: PaginatedCategoryResponse,
   })
-  async findAll(): Promise<PaginatedCategoryResponse> {
-    return await this.categoryService.findAll();
+  async find(
+    @Query({ schema: OffsetQuery }) query: OffsetQuery,
+  ): Promise<PaginatedCategoryResponse> {
+    return await this.categoryService.find(query);
   }
 }
