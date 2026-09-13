@@ -14,7 +14,8 @@
     ".windsurf/**",
     "tools/oxlint/anti-slop/**",
     "bun.lock",
-    "**/*/entities.generated.ts"
+    "**/*/entities.generated.ts",
+    "**/migration/*"
   ],
   "jsPlugins": [
     {
