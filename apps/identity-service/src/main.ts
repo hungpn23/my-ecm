@@ -21,6 +21,7 @@ async function bootstrap() {
   const swaggerConfig = new DocumentBuilder()
     .setTitle("Identity Service API")
     .setVersion("1.0")
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("swagger", app, documentFactory);
