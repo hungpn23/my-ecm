@@ -7,17 +7,10 @@ import { GoogleGuard } from "./google.guard";
 @UseGuards(GoogleGuard)
 @Controller("google")
 export class GoogleController {
-  @Endpoint({
-    method: "GET",
-    isPublic: true,
-  })
+  @Endpoint("GET", { isPublic: true })
   async login() {}
 
-  @Endpoint({
-    method: "GET",
-    path: "callback",
-    isPublic: true,
-  })
+  @Endpoint("GET", { path: "callback", isPublic: true })
   callback(@GoogleProfile() _profile: Profile) {
     return {
       ok: true,

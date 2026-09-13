@@ -9,19 +9,12 @@ import { CategoryService } from "./category.service";
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @Endpoint({
-    method: "POST",
-    request: CreateCategory,
-    response: CategoryResponse,
-  })
+  @Endpoint("POST", { request: CreateCategory, response: CategoryResponse })
   async create(@Body({ schema: CreateCategory }) body: CreateCategory): Promise<CategoryResponse> {
     return await this.categoryService.create(body);
   }
 
-  @Endpoint({
-    method: "GET",
-    response: PaginatedCategoryResponse,
-  })
+  @Endpoint("GET", { query: OffsetQuery, response: PaginatedCategoryResponse })
   async find(
     @Query({ schema: OffsetQuery }) query: OffsetQuery,
   ): Promise<PaginatedCategoryResponse> {
