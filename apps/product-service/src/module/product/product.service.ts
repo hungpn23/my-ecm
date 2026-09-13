@@ -43,6 +43,7 @@ export class ProductService {
     }
 
     const [products, total] = await this.productRepo.findAndCount(where, {
+      populate: ["category"],
       limit: pageSize,
       offset: (page - 1) * pageSize,
       orderBy: { createdAt: "desc" },
@@ -60,22 +61,26 @@ export class ProductService {
   }
 
   async findOne(productId: string): Promise<ProductResponse> {
-    const product = await this.productRepo.findOne({ id: productId });
+    const product = await this.productRepo.findOne({ id: productId }, { populate: ["category"] });
     if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
     return this._toResponse(product);
   }
 
   async update(productId: string, body: UpdateProduct): Promise<ProductResponse> {
-    const product = await this.productRepo.findOne({ id: productId });
+    const product = await this.productRepo.findOne({ id: productId }, { populate: ["category"] });
     if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
     const { categoryId, ...data } = body;
-    const category = categoryId ? await this.categoryRepo.findOne({ id: categoryId }) : undefined;
-    if (categoryId && !category) throw new NotFoundException(`Category ${categoryId} not found`);
+
+    if (categoryId) {
+      const category = await this.categoryRepo.findOne({ id: categoryId });
+      if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
+
+      product.category = category;
+    }
 
     this.productRepo.assign(product, data);
-    if (category) this.productRepo.assign(product, { category });
     await this.em.flush();
 
     return this._toResponse(product);
