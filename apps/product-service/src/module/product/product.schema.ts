@@ -17,6 +17,11 @@ export const CreateProduct = type({
 });
 export type CreateProduct = typeof CreateProduct.infer;
 
+export const UpdateProduct = CreateProduct.partial().merge({
+  "description?": "string >= 1 | null",
+});
+export type UpdateProduct = typeof UpdateProduct.infer;
+
 export const ProductResponse = EntityResponse.merge({
   name: Varchar,
   description: "string | null",
