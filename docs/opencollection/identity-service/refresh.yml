@@ -1,0 +1,22 @@
+info:
+  name: refresh
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{identity}}/refresh"
+  headers:
+    - name: Authorization
+      value: Bearer  {{refresh_token}}
+      disabled: true
+  auth:
+    type: bearer
+    token: "{{refresh_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

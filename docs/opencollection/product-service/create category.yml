@@ -1,0 +1,31 @@
+info:
+  name: create category
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{product}}/categories"
+  body:
+    type: json
+    data: |-
+      {
+        "code": "{{$randomBankAccount}}",
+        "name": "DO NOI THAT"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const body = res.getBody()
+
+        if (body.id) bru.setEnvVar('category_id', body.id)
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
