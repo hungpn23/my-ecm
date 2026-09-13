@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: "{{identity}}/logout"
+  url: "{{identity}}/auth/logout"
 
 settings:
   encodeUrl: true

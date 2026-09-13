@@ -5,14 +5,11 @@ info:
 
 http:
   method: POST
-  url: "{{identity}}/refresh"
+  url: "{{identity}}/auth/refresh"
   headers:
     - name: Authorization
       value: Bearer  {{refresh_token}}
       disabled: true
-  auth:
-    type: bearer
-    token: "{{refresh_token}}"
 
 settings:
   encodeUrl: true
