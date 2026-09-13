@@ -7,9 +7,8 @@ import {
   type AuthenticatedUser,
   type JwtConfig,
 } from "@libs/core";
-import { EntityRepository } from "@mikro-orm/core";
-import { EntityManager } from "@mikro-orm/generated";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { User } from "@src/database/entity";
