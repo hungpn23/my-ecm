@@ -1,7 +1,12 @@
-import { Endpoint, OffsetQuery } from "@libs/common";
-import { Body, Controller, Query } from "@nestjs/common";
+import { Endpoint, OffsetQuery, Uuid } from "@libs/common";
+import { Body, Controller, Param, Query } from "@nestjs/common";
 import { ApiBearerAuth } from "@nestjs/swagger";
-import { CategoryResponse, CreateCategory, PaginatedCategoryResponse } from "./category.schema";
+import {
+  CategoryResponse,
+  CreateCategory,
+  PaginatedCategoryResponse,
+  UpdateCategory,
+} from "./category.schema";
 import { CategoryService } from "./category.service";
 
 @ApiBearerAuth()
@@ -19,5 +24,22 @@ export class CategoryController {
     @Query({ schema: OffsetQuery }) query: OffsetQuery,
   ): Promise<PaginatedCategoryResponse> {
     return await this.categoryService.find(query);
+  }
+
+  @Endpoint("PATCH", {
+    path: ":categoryId",
+    request: UpdateCategory,
+    response: CategoryResponse,
+  })
+  async update(
+    @Param("categoryId", { schema: Uuid }) categoryId: string,
+    @Body({ schema: UpdateCategory }) body: UpdateCategory,
+  ): Promise<CategoryResponse> {
+    return await this.categoryService.update(categoryId, body);
+  }
+
+  @Endpoint("DELETE", { path: ":categoryId" })
+  async delete(@Param("categoryId", { schema: Uuid }) categoryId: string): Promise<void> {
+    await this.categoryService.delete(categoryId);
   }
 }

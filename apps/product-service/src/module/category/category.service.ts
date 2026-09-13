@@ -1,12 +1,13 @@
 import { deepMerge, type OffsetQuery } from "@libs/common";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, wrap, type FilterQuery } from "@mikro-orm/postgresql";
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { Category } from "@src/database/entity";
 import type {
   CategoryResponse,
   CreateCategory,
   PaginatedCategoryResponse,
+  UpdateCategory,
 } from "./category.schema";
 
 @Injectable()
@@ -21,7 +22,7 @@ export class CategoryService {
     const category = this.categoryRepo.create(body);
     await this.em.flush();
 
-    return wrap(category).toObject();
+    return this._toResponse(category);
   }
 
   async find(query: OffsetQuery): Promise<PaginatedCategoryResponse> {
@@ -41,7 +42,7 @@ export class CategoryService {
     });
 
     return {
-      data: categories.map((category) => wrap(category).toObject()),
+      data: categories.map((category) => this._toResponse(category)),
       metadata: {
         page,
         pageSize,
@@ -49,5 +50,27 @@ export class CategoryService {
         totalPages: Math.max(1, Math.ceil(total / pageSize)),
       },
     };
+  }
+
+  async update(categoryId: string, body: UpdateCategory): Promise<CategoryResponse> {
+    const category = await this.categoryRepo.findOne({ id: categoryId });
+    if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
+
+    this.categoryRepo.assign(category, body);
+    await this.em.flush();
+
+    return this._toResponse(category);
+  }
+
+  async delete(categoryId: string): Promise<void> {
+    const category = await this.categoryRepo.findOne({ id: categoryId });
+    if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
+
+    this.em.remove(category);
+    await this.em.flush();
+  }
+
+  private _toResponse(category: Category): CategoryResponse {
+    return wrap(category).toObject();
   }
 }

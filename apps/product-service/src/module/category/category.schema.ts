@@ -7,6 +7,9 @@ export const CreateCategory = type({
 });
 export type CreateCategory = typeof CreateCategory.infer;
 
+export const UpdateCategory = CreateCategory.partial();
+export type UpdateCategory = typeof UpdateCategory.infer;
+
 export const CategoryResponse = EntityResponse.merge(CreateCategory);
 export type CategoryResponse = typeof CategoryResponse.inferIn;
 
