@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{identity}}/profile"
+  url: "{{identity}}/auth/profile"
 
 settings:
   encodeUrl: true

@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: "{{identity}}/sign-up"
+  url: "{{identity}}/auth/sign-up"
   body:
     type: json
     data: |-
