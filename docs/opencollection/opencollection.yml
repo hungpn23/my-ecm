@@ -1,0 +1,47 @@
+opencollection: 1.0.0
+
+info:
+  name: my-ecm
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  scripts:
+    - type: before-request
+      code: |-
+        const accessToken = bru.getEnvVar('access_token')
+        const refreshToken = bru.getEnvVar('refresh_token')
+
+        if(req.getName() === 'refresh' && refreshToken) {
+          const token = 'Bearer ' + refreshToken
+          req.setHeader('Authorization', token)
+        } else {
+          const token = 'Bearer ' + accessToken
+          if (accessToken) req.setHeader('Authorization', token)
+        }
+    - type: after-response
+      code: |-
+        const body = res.getBody()
+
+        if (body.sessionId) bru.setEnvVar('user_profile', body)
+        if (body.accessToken) bru.setEnvVar('access_token', body.accessToken)
+        if (body.refreshToken) bru.setEnvVar('refresh_token', body.refreshToken)
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git
+    presets:
+      request:
+        type: http
+      defaultEnvironment: env

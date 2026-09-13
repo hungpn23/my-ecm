@@ -1,0 +1,30 @@
+info:
+  name: update category
+  type: http
+  seq: 3
+
+http:
+  method: PATCH
+  url: "{{product}}/categories/{{category_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "DO NOI THAT CAO CAP"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const body = res.getBody()
+
+        if (body.id) bru.setEnvVar('category_id', body.id)
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
