@@ -7,3 +7,8 @@
 ## 2. Database rules
 
 - Do not create migration files directly, use the provided commands/scripts. If the project don't have any commands/scripts, please notice me.
+
+## 3. Code review rules
+
+- Do not modify the code while reviewing.
+- Do not use sub-agents to review.
