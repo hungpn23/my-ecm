@@ -10,6 +10,9 @@ export const DateToISOString = type("Date").pipe(
   type("string.date.iso").configure({ format: "date-time" }),
 );
 
+export const AnyRecord = type.Record("string", "unknown");
+export type AnyRecord = typeof AnyRecord;
+
 export const OffsetQuery = type({
   "search?": Varchar,
   page: type("string.integer.parse").to("number >= 1").default("1"),

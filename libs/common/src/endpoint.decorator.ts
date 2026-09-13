@@ -8,52 +8,44 @@ import {
   SetMetadata,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiResponse } from "@nestjs/swagger";
-import { type Type } from "arktype";
+import type { Type } from "arktype";
 import { METADATA_KEY } from "./common.constant";
+import { AnyRecord } from "./common.schema";
 import { SuccessResponse } from "./success-response.schema";
 
+type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
+
 type EndpointParams = {
-  method: "GET" | "POST" | "PATCH" | "DELETE";
-  path?: string | string[];
-  isPublic?: boolean;
-  request?: Type;
-  response?: Type;
+  path: string | string[];
+  isPublic: boolean;
+  request: AnyRecord;
+  response: AnyRecord;
+  query: AnyRecord;
+  params: AnyRecord;
 };
 
-export function Endpoint(params: EndpointParams) {
+export function Endpoint(method: HttpMethod, params: Partial<EndpointParams>) {
   const decorators: MethodDecorator[] = [];
 
-  if (params.request) {
-    decorators.push(
-      ApiBody({
-        schema: params.request["~standard"].jsonSchema.input({
-          target: "draft-2020-12",
-        }),
-      }),
-    );
+  if (params.query) {
+    // TODO: Add query parameter decorators
   }
+
+  if (params.params) {
+    // TODO: Add path parameter decorators
+  }
+
+  if (params.request) decorators.push(ApiBody({ schema: toJsonSchema(params.request, "input") }));
 
   if (params.response) {
     decorators.push(SerializeOptions({ schema: params.response }));
-    decorators.push(
-      ApiResponse({
-        schema: params.response["~standard"].jsonSchema.output({
-          target: "draft-2020-12",
-        }),
-      }),
-    );
+    decorators.push(ApiResponse({ schema: toJsonSchema(params.response, "output") }));
   } else {
     decorators.push(SerializeOptions({ schema: SuccessResponse }));
-    decorators.push(
-      ApiResponse({
-        schema: SuccessResponse["~standard"].jsonSchema.output({
-          target: "draft-2020-12",
-        }),
-      }),
-    );
+    decorators.push(ApiResponse({ schema: toJsonSchema(SuccessResponse, "output") }));
   }
 
-  switch (params.method) {
+  switch (method) {
     case "GET":
       decorators.push(Get(params.path));
       break;
@@ -75,4 +67,10 @@ export function Endpoint(params: EndpointParams) {
   }
 
   return applyDecorators(...decorators);
+}
+
+function toJsonSchema(schema: Type<unknown>, direction: "input" | "output") {
+  return schema["~standard"].jsonSchema[direction]({
+    target: "draft-2020-12",
+  });
 }

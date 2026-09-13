@@ -9,8 +9,7 @@ import { RefreshGuard } from "./refresh.guard";
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Endpoint({
-    method: "POST",
+  @Endpoint("POST", {
     path: "sign-up",
     isPublic: true,
     request: BaseAuth,
@@ -20,8 +19,7 @@ export class AuthController {
     return await this.authService.signUp(body);
   }
 
-  @Endpoint({
-    method: "POST",
+  @Endpoint("POST", {
     path: "sign-in",
     isPublic: true,
     request: BaseAuth,
@@ -31,11 +29,7 @@ export class AuthController {
     return await this.authService.signIn(body);
   }
 
-  @Endpoint({
-    method: "POST",
-    path: "change-password",
-    request: ChangePassword,
-  })
+  @Endpoint("POST", { path: "change-password", request: ChangePassword })
   async changePassword(
     @User("userId") userId: string,
     @Body({ schema: ChangePassword }) body: ChangePassword,
@@ -43,17 +37,13 @@ export class AuthController {
     return await this.authService.changePassword(userId, body);
   }
 
-  @Endpoint({
-    method: "POST",
-    path: "logout",
-  })
+  @Endpoint("POST", { path: "logout" })
   async logout(@User() user: AuthenticatedUser): Promise<SuccessResponse> {
     return await this.authService.logout(user);
   }
 
   @UseGuards(RefreshGuard)
-  @Endpoint({
-    method: "POST",
+  @Endpoint("POST", {
     path: "refresh",
     isPublic: true,
     response: TokenResponse,
@@ -62,11 +52,7 @@ export class AuthController {
     return await this.authService.refreshToken(user);
   }
 
-  @Endpoint({
-    method: "GET",
-    path: "profile",
-    response: AuthenticatedUser,
-  })
+  @Endpoint("GET", { path: "profile", response: AuthenticatedUser })
   getProfile(@User() user: AuthenticatedUser): AuthenticatedUser {
     return user;
   }

@@ -7,17 +7,10 @@ import { GithubGuard } from "./github.guard";
 @UseGuards(GithubGuard)
 @Controller("github")
 export class GithubController {
-  @Endpoint({
-    method: "GET",
-    isPublic: true,
-  })
+  @Endpoint("GET", { isPublic: true })
   async login() {}
 
-  @Endpoint({
-    method: "GET",
-    path: "callback",
-    isPublic: true,
-  })
+  @Endpoint("GET", { path: "callback", isPublic: true })
   callback(@GithubProfile() _profile: Profile) {
     return {
       ok: true,
