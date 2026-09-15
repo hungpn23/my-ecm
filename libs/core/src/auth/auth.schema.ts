@@ -23,6 +23,6 @@ export const AuthenticatedUser = type({
   jwtKind: JwtKind,
 }).merge(JwtPayload);
 export type AuthenticatedUser = typeof AuthenticatedUser.infer;
-export type AuthenticatedRequest = Request & {
-  user: AuthenticatedUser;
+export type AuthenticatedRequest<U extends object> = Omit<Request, "user"> & {
+  user: U;
 };

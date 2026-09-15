@@ -5,8 +5,7 @@ export const PRODUCT_STATUS = {
   ACTIVE: "active",
   INACTIVE: "inactive",
 } as const;
-export const ProductStatus = type.enumerated(...Object.values(PRODUCT_STATUS));
-export type ProductStatus = typeof ProductStatus.infer;
+const ProductStatus = type.enumerated(...Object.values(PRODUCT_STATUS));
 
 export const CreateProduct = type({
   name: Varchar,

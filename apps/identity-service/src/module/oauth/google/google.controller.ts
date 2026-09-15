@@ -1,7 +1,7 @@
 import { Endpoint } from "@libs/common";
+import { User } from "@libs/core";
 import { Controller, UseGuards } from "@nestjs/common";
 import type { Profile } from "passport-google-oauth20";
-import { GoogleProfile } from "./google.decorator";
 import { GoogleGuard } from "./google.guard";
 
 @UseGuards(GoogleGuard)
@@ -11,7 +11,7 @@ export class GoogleController {
   async login() {}
 
   @Endpoint("GET", { path: "callback", isPublic: true })
-  callback(@GoogleProfile() _profile: Profile) {
+  callback(@User<Profile>() _profile: Profile) {
     return {
       ok: true,
       message: "User information from google",

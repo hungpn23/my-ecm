@@ -12,9 +12,7 @@
   "dependencies": {
     "@nestjs/common": "catalog:backend",
     "@nestjs/config": "catalog:backend",
-    "@nestjs/microservices": "catalog:backend",
     "@nestjs/swagger": "catalog:backend",
-    "arkenv": "catalog:common",
     "arktype": "catalog:common",
     "lodash": "catalog:common",
     "nestjs-pino": "catalog:backend",
