@@ -13,15 +13,15 @@ import { METADATA_KEY } from "./common.constant";
 import { AnyRecord } from "./common.schema";
 import { SuccessResponse } from "./success-response.schema";
 
-type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
+export type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
-type EndpointParams = {
+export type EndpointParams = {
   path: string | string[];
   isPublic: boolean;
-  request: AnyRecord;
-  response: AnyRecord;
-  query: AnyRecord;
-  params: AnyRecord;
+  request: typeof AnyRecord;
+  response: typeof AnyRecord;
+  query: typeof AnyRecord;
+  params: typeof AnyRecord;
 };
 
 export function Endpoint(method: HttpMethod, params: Partial<EndpointParams>) {
