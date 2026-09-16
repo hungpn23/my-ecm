@@ -5,7 +5,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", ".react-email/**"]
     },
     "check:types": {
       "dependsOn": ["^check:types"]
