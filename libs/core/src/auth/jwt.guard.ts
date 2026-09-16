@@ -1,4 +1,4 @@
-import { METADATA_KEY } from "@libs/common";
+import { IS_PUBLIC } from "@libs/common";
 import { type ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
@@ -14,10 +14,10 @@ export class JwtGuard extends AuthGuard(PASSPORT_STRATEGY.JWT) {
   override canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const isPublicEndpoint = this.reflector.getAllAndOverride<boolean>(
-      METADATA_KEY.IS_PUBLIC_ENDPOINT,
-      [context.getHandler(), context.getClass()],
-    );
+    const isPublicEndpoint = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
     if (isPublicEndpoint) return true;
 
     return super.canActivate(context);

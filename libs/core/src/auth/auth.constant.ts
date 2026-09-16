@@ -7,6 +7,6 @@ export const PASSPORT_STRATEGY = {
 } as const;
 
 export const JWT_KIND = {
-  ACCESS_TOKEN: "access-token",
-  REFRESH_TOKEN: "refresh-token",
+  ACCESS_TOKEN: "ACCESS_TOKEN",
+  REFRESH_TOKEN: "REFRESH_TOKEN",
 } as const;

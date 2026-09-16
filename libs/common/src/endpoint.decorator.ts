@@ -9,7 +9,7 @@ import {
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiResponse } from "@nestjs/swagger";
 import type { Type } from "arktype";
-import { METADATA_KEY } from "./common.constant";
+import { IS_PUBLIC } from "./common.constant";
 import { AnyRecord } from "./common.schema";
 import { SuccessResponse } from "./success-response.schema";
 
@@ -61,7 +61,7 @@ export function Endpoint(method: HttpMethod, params: Partial<EndpointParams>) {
   }
 
   if (params.isPublic) {
-    decorators.push(SetMetadata(METADATA_KEY.IS_PUBLIC_ENDPOINT, true));
+    decorators.push(SetMetadata(IS_PUBLIC, true));
   } else {
     decorators.push(ApiBearerAuth());
   }

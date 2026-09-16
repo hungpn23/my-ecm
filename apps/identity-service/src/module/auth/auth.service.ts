@@ -1,6 +1,5 @@
 import type { SuccessResponse } from "@libs/common";
 import {
-  JWT_KIND,
   jwtConfig,
   jwtidBy,
   RedisService,
@@ -89,12 +88,12 @@ export class AuthService {
     const accessPayload: AuthenticatedUser = {
       userId,
       sessionId,
-      jwtKind: JWT_KIND.ACCESS_TOKEN,
+      jwtKind: "ACCESS_TOKEN",
     };
 
     const refreshPayload: AuthenticatedUser = {
       ...accessPayload,
-      jwtKind: JWT_KIND.REFRESH_TOKEN,
+      jwtKind: "REFRESH_TOKEN",
     };
 
     const jwtid = v7();
