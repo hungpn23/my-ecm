@@ -33,9 +33,8 @@ async function bootstrap() {
   await app.startAllMicroservices();
   await app.listen(APP_PORT, APP_HOST);
 
-  logger.log(`HTTP server listening on http://${APP_HOST}:${APP_PORT}`);
-
-  logger.log(`TCP microservice listening on ${APP_HOST}:${APP_PORT_TCP}`);
+  logger.log(`Swagger: http://${APP_HOST}:${APP_PORT}/swagger`);
+  logger.log(`TCP: ${APP_HOST}:${APP_PORT_TCP}`);
 }
 
 await bootstrap();
