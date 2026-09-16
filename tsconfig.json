@@ -13,12 +13,14 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "exactOptionalPropertyTypes": true,
+    "strictNullChecks": true,
 
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
 
+    "noEmit": true,
     "declaration": true,
     "declarationMap": true,
     "skipLibCheck": true,

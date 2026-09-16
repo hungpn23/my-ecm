@@ -45,6 +45,14 @@
         "@types/passport-github2": "^1.2.9",
         "@types/passport-google-oauth20": "^2.0.17",
         "@types/passport-jwt": "^4.0.1"
+      },
+      "email": {
+        "@react-email/ui": "^6.9.5",
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
+        "react": "^19.3.0",
+        "react-dom": "^19.3.0",
+        "react-email": "^6.9.5"
       }
     },
     "packages": [
@@ -59,8 +67,8 @@
     "check:env": "bun scripts/check-global-env.ts",
     "check:fix": "oxfmt --write && oxlint --fix",
     "check:lint": "oxfmt --check && oxlint",
-    "check:types": "tsc --noEmit && turbo check:types",
-    "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' bun.lock",
+    "check:types": "tsc && turbo check:types",
+    "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' '**/.react-email' bun.lock",
     "dev": "dotenv -e .env -- turbo dev",
     "lint-staged": "lint-staged",
     "onboard:service": "bun scripts/onboard-service.ts",
