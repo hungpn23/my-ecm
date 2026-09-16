@@ -1,3 +1,1 @@
-export const METADATA_KEY = {
-  IS_PUBLIC_ENDPOINT: "is-public-key",
-} as const;
+export const IS_PUBLIC = Symbol("IS_PUBLIC");
