@@ -64,7 +64,7 @@
   "scripts": {
     "build": "turbo build",
     "check:all": "bun check:lint && bun check:types && bun check:env",
-    "check:env": "bun scripts/check-global-env.ts",
+    "check:env": "bun scripts/check:env.ts",
     "check:fix": "oxfmt --write && oxlint --fix",
     "check:lint": "oxfmt --check && oxlint",
     "check:types": "tsc && turbo check:types",
