@@ -18,7 +18,8 @@
     "nestjs-pino": "catalog:backend",
     "pino": "catalog:backend",
     "pino-http": "catalog:backend",
-    "pino-pretty": "catalog:backend"
+    "pino-pretty": "catalog:backend",
+    "uuid": "catalog:backend"
   },
   "devDependencies": {
     "@types/lodash": "catalog:dev"

@@ -1,5 +1,6 @@
 import type { DynamicModule } from "@nestjs/common";
 import { LoggerModule, type Params } from "nestjs-pino";
+import { v7 } from "uuid";
 import { deepMerge } from "./deep-merge";
 
 export class GlobalLoggerModule {
@@ -13,7 +14,12 @@ export class GlobalLoggerModule {
             ignore: "req.headers,res.headers,remoteAddress,remotePort",
           },
         },
+        autoLogging: false,
+        quietReqLogger: true,
+        quietResLogger: true,
+        genReqId: (req) => req.headers["x-request-id"] ?? v7(),
       },
+      microservice: true,
     };
 
     return {
