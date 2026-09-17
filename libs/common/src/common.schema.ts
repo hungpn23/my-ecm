@@ -11,6 +11,7 @@ export const DateToISOString = type("Date").pipe(
 );
 
 export const AnyRecord = type.Record("string", "unknown");
+export type AnyRecord = typeof AnyRecord.infer;
 
 export const OffsetQuery = type({
   "search?": Varchar,

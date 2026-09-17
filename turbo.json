@@ -13,6 +13,15 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "discovery:export": {
+      "dependsOn": ["^discovery:export"]
+    },
+    "migration:down": {
+      "dependsOn": ["^migration:down"]
+    },
+    "migration:up": {
+      "dependsOn": ["^migration:up"]
     }
   },
   "globalEnv": [
