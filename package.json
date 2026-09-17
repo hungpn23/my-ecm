@@ -70,8 +70,11 @@
     "check:types": "tsc && turbo check:types",
     "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' '**/.react-email' bun.lock",
     "dev": "dotenv -e .env -- turbo dev",
+    "discovery:export": "turbo discovery:export",
     "lint-staged": "lint-staged",
-    "onboard:service": "bun scripts/onboard-service.ts",
+    "migration:down": "turbo migration:down",
+    "migration:up": "turbo migration:up",
+    "onboard:service": "bun scripts/onboard:service.ts",
     "prepare": "bun .husky/install.mjs",
     "setup": "bun scripts/setup.ts && bun i"
   },

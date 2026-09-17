@@ -7,6 +7,9 @@
     "build": "bun ../../scripts/build.ts",
     "check:types": "tsc",
     "dev": "bun --watch src/main.ts",
+    "discovery:export": "bun -b mikro-orm discovery:export",
+    "migration:down": "bun -b mikro-orm migration:down",
+    "migration:up": "bun -b mikro-orm migration:up",
     "start": "bun src/main.ts"
   },
   "dependencies": {
