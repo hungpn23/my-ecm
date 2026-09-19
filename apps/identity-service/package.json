@@ -32,6 +32,7 @@
     "arkenv": "catalog:common",
     "arktype": "catalog:common",
     "dotenv": "catalog:backend",
+    "kafkajs": "catalog:backend",
     "nestjs-pino": "catalog:backend",
     "passport-github2": "catalog:backend",
     "passport-google-oauth20": "catalog:backend",

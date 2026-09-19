@@ -1,5 +1,5 @@
 import { GlobalStandardSchemaValidationPipe, LoggerModule } from "@libs/common";
-import { ConfigModule, DatabaseModule, JwtGuard, RedisModule } from "@libs/core";
+import { ConfigModule, DatabaseModule, JwtGuard, KafkaModule, RedisModule } from "@libs/core";
 import { entities } from "@mikro-orm/generated";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { ConditionalModule } from "@nestjs/config";
@@ -25,6 +25,7 @@ import { UserModule } from "./module/user/user.module";
       debug: false,
     }),
     UserModule,
+    KafkaModule.forRoot("identity-service"),
   ],
   providers: [
     {
