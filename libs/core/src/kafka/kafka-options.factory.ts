@@ -20,6 +20,7 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
     private readonly clientId: string,
   ) {}
 
+  // fallow-ignore-next-line unused-class-member
   createClientOptions(): KafkaOptions {
     return {
       transport: Transport.KAFKA,

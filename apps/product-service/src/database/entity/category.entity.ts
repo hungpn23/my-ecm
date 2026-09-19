@@ -1,5 +1,6 @@
 import { useBaseProps } from "@libs/core";
 import { defineEntity, p } from "@mikro-orm/core";
+// fallow-ignore-next-line circular-dependency
 import { Product } from "./product.entity";
 
 export const CategorySchema = defineEntity({
