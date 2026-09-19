@@ -11,5 +11,7 @@
     "mode": "weak",
     "minOccurrences": 3
   },
-  "rules": {}
+  "rules": {
+    "unused-class-members": "off"
+  }
 }
