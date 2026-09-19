@@ -21,6 +21,7 @@
     "@mikro-orm/nestjs": "catalog:backend",
     "@mikro-orm/postgresql": "catalog:backend",
     "@nestjs/common": "catalog:backend",
+    "@nestjs/config": "catalog:backend",
     "@nestjs/core": "catalog:backend",
     "@nestjs/microservices": "catalog:backend",
     "@nestjs/passport": "catalog:backend",

@@ -1,4 +1,5 @@
 import { Global, Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
 import { Redis } from "ioredis";
 import { PinoLogger } from "nestjs-pino";
 import { redisConfig, type RedisConfig } from "./redis.config";
@@ -7,6 +8,7 @@ import { RedisService } from "./redis.service";
 
 @Global()
 @Module({
+  imports: [ConfigModule.forFeature(redisConfig)],
   providers: [
     {
       inject: [redisConfig.KEY, PinoLogger],
@@ -19,10 +21,10 @@ import { RedisService } from "./redis.service";
         redis
           .ping()
           .then(() => {
-            logger.info("RedisModule dependencies initialized");
+            logger.info("Redis connected successfully.");
           })
           .catch(() => {
-            logger.error("RedisModule dependencies failed to initialize");
+            logger.error("Redis connection failed.");
           });
 
         redis.on("error", (err) => {
