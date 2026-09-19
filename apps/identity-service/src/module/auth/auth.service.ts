@@ -2,6 +2,7 @@ import type { SuccessResponse } from "@libs/common";
 import {
   jwtConfig,
   jwtidBy,
+  KafkaService,
   RedisService,
   type AuthenticatedUser,
   type JwtConfig,
@@ -30,6 +31,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly redisService: RedisService,
     private readonly em: EntityManager,
+    private readonly kafka: KafkaService,
   ) {}
 
   async signUp({ email, password }: SignUp): Promise<TokenResponse> {
@@ -42,6 +44,8 @@ export class AuthService {
     });
 
     await this.em.flush();
+
+    this.kafka.emit("user.created", { userId: user.id, email: user.email });
 
     return await this._createTokenPair({ userId: user.id });
   }

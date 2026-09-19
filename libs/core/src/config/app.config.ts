@@ -6,7 +6,6 @@ export function getAppConfig() {
     NODE_ENV: "'development' | 'production'",
     APP_HOST: "string.host",
     APP_PORT: "number.port",
-    APP_PORT_TCP: "number.port",
   });
 }
 
