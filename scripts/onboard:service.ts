@@ -5,7 +5,6 @@ import { dirname, join } from "node:path";
 type OnboardOptions = {
   name: string;
   httpPort: number;
-  tcpPort: number;
   auth: boolean;
   mikroOrm: boolean;
 };
@@ -13,12 +12,11 @@ type OnboardOptions = {
 type ParseResult = { kind: "help" } | { kind: "options"; options: OnboardOptions };
 
 const usage = `Usage:
-  bun run onboard:service -- --name <name> --http-port <port> --tcp-port <port> [options]
+  bun run onboard:service -- --name <name> --http-port <port> [options]
 
 Required:
   --name <name>       Service name in kebab-case, without -service
   --http-port <port>  HTTP port
-  --tcp-port <port>   TCP port
 
 Options:
   --mikro-orm         Enable MikroORM without entities or migrations
@@ -37,7 +35,6 @@ function parsePort(value: string, option: string): number {
 function parseArguments(arguments_: readonly string[]): ParseResult {
   let name: string | undefined;
   let httpPort: number | undefined;
-  let tcpPort: number | undefined;
   let auth = true;
   let mikroOrm = false;
 
@@ -70,14 +67,6 @@ function parseArguments(arguments_: readonly string[]): ParseResult {
         index += 1;
         break;
       }
-      case "--tcp-port": {
-        const value = arguments_[index + 1];
-        if (!value) throw new Error("--tcp-port requires a value.");
-        if (tcpPort !== undefined) throw new Error("--tcp-port can only be provided once.");
-        tcpPort = parsePort(value, "--tcp-port");
-        index += 1;
-        break;
-      }
       default:
         throw new Error(`Unknown option: ${argument}`);
     }
@@ -91,12 +80,10 @@ function parseArguments(arguments_: readonly string[]): ParseResult {
     throw new Error("--name must omit the -service suffix.");
   }
   if (httpPort === undefined) throw new Error("--http-port is required.");
-  if (tcpPort === undefined) throw new Error("--tcp-port is required.");
-  if (httpPort === tcpPort) throw new Error("--http-port and --tcp-port must differ.");
 
   return {
     kind: "options",
-    options: { name, httpPort, tcpPort, auth, mikroOrm },
+    options: { name, httpPort, auth, mikroOrm },
   };
 }
 
@@ -187,9 +174,8 @@ function createTsConfig(options: OnboardOptions): string {
 function createMain(options: OnboardOptions): string {
   const serviceTitle = toServiceTitle(options.name);
 
-  return `import { getAppConfig } from "@libs/core";
+  return `import { appConfig } from "@libs/core";
 import { NestFactory } from "@nestjs/core";
-import { Transport } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { Logger } from "nestjs-pino";
 import "reflect-metadata";
@@ -204,7 +190,7 @@ async function bootstrap() {
   const logger = app.get(Logger);
   app.useLogger(logger);
 
-  const { APP_HOST, APP_PORT, APP_PORT_TCP } = getAppConfig();
+  const { APP_HOST, APP_PORT } = app.get(appConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("${serviceTitle} Service API")
@@ -213,16 +199,9 @@ ${options.auth ? "    .addBearerAuth()\n" : ""}    .build();
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("swagger", app, documentFactory);
 
-  app.connectMicroservice({
-    transport: Transport.TCP,
-    options: { host: APP_HOST, port: APP_PORT_TCP },
-  });
-
-  await app.startAllMicroservices();
   await app.listen(APP_PORT, APP_HOST);
 
   logger.log(\`Swagger: http://\${APP_HOST}:\${APP_PORT}/swagger\`);
-  logger.log(\`TCP: \${APP_HOST}:\${APP_PORT_TCP}\`);
 }
 
 await bootstrap();
@@ -232,9 +211,10 @@ await bootstrap();
 function createAppModule(options: OnboardOptions): string {
   const coreImports = [
     ...(options.mikroOrm ? ["databaseConfig"] : []),
-    "GlobalConfigModule",
-    ...(options.mikroOrm ? ["GlobalMikroOrmModule"] : []),
+    "ConfigModule",
+    ...(options.mikroOrm ? ["DatabaseModule"] : []),
     ...(options.auth ? ["jwtConfig", "JwtGuard", "redisConfig", "RedisModule"] : []),
+    "KafkaModule",
   ];
   const configLoads = [
     ...(options.auth ? ["jwtConfig", "redisConfig"] : []),
@@ -242,13 +222,14 @@ function createAppModule(options: OnboardOptions): string {
   ];
   const configModule =
     configLoads.length === 0
-      ? "GlobalConfigModule.forRoot()"
-      : `GlobalConfigModule.forRoot({\n      load: [${configLoads.join(", ")}],\n    })`;
+      ? "ConfigModule.forRoot()"
+      : `ConfigModule.forRoot({\n      load: [${configLoads.join(", ")}],\n    })`;
   const imports = [
     configModule,
-    ...(options.mikroOrm ? ["GlobalMikroOrmModule.forRoot(entities)"] : []),
-    "GlobalLoggerModule.forRoot()",
+    ...(options.mikroOrm ? ["DatabaseModule.forRoot(entities)"] : []),
+    "LoggerModule.forRoot()",
     ...(options.auth ? ["RedisModule", "AuthModule"] : []),
+    "KafkaModule.forRoot()",
   ];
   const providers = [
     ...(options.auth
@@ -269,7 +250,7 @@ function createAppModule(options: OnboardOptions): string {
     }`,
   ];
 
-  return `import { GlobalLoggerModule, ArktypeValidationPipe } from "@libs/common";
+  return `import { ArktypeValidationPipe, LoggerModule } from "@libs/common";
 import {
   ${coreImports.join(",\n  ")},
 } from "@libs/core";
@@ -317,7 +298,7 @@ function createFiles(options: OnboardOptions): [string, string][] {
   const files: [string, string][] = [
     [
       ".env.example",
-      `APP_PORT=${options.httpPort}\nAPP_PORT_TCP=${options.tcpPort}\n${options.mikroOrm ? `\nDB_DATABASE=${options.name}-service\n` : ""}`,
+      `APP_NAME=${options.name}-service\nAPP_PORT=${options.httpPort}\n${options.mikroOrm ? `\nDB_DATABASE=${options.name}-service\n` : ""}`,
     ],
     ["package.json", createPackageJson(options)],
     ["tsconfig.json", createTsConfig(options)],
