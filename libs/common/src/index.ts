@@ -5,3 +5,4 @@ export * from "./deep-merge";
 export * from "./endpoint.decorator";
 export * from "./entity-response.schema";
 export * from "./success-response.schema";
+export * from "./x-request-id.constant";

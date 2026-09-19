@@ -4,10 +4,11 @@ import {
   type ClientsModuleOptionsFactory,
   type KafkaOptions,
 } from "@nestjs/microservices";
-import { appConfig, type AppConfig } from "@src/config";
-import { logLevel } from "kafkajs";
+import { logLevel, type LogEntry } from "kafkajs";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
+import { appConfig, type AppConfig } from "../config";
 import { kafkaConfig, type KafkaConfig } from "./kafka.config";
+import { PayloadSerializer } from "./payload-serializer";
 
 @Injectable()
 export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
@@ -18,9 +19,9 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
     private readonly config: KafkaConfig,
     @Inject(appConfig.KEY)
     private readonly appConf: AppConfig,
+    private readonly serializer: PayloadSerializer,
   ) {}
 
-  // fallow-ignore-next-line unused-class-member
   createClientOptions(): KafkaOptions {
     return {
       transport: Transport.KAFKA,
@@ -28,7 +29,7 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
         client: {
           clientId: this.appConf.APP_NAME,
           brokers: [`${this.config.KAFKA_HOST}:${this.config.KAFKA_PORT}`],
-          logCreator: () => (entry) => {
+          logCreator: () => (entry: LogEntry) => {
             const { message, error, ...rest } = entry.log;
 
             const data = {
@@ -55,7 +56,12 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
         },
         consumer: {
           groupId: `${this.appConf.APP_NAME}-group`,
+          sessionTimeout: this.config.KAFKA_SESSION_TIMEOUT,
+          heartbeatInterval: this.config.KAFKA_HEARTBEAT_INTERVAL,
+          rebalanceTimeout: this.config.KAFKA_REBALANCE_TIMEOUT,
+          maxWaitTimeInMs: this.config.KAFKA_MAX_WAIT_TIME,
         },
+        serializer: this.serializer,
       },
     };
   }

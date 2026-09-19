@@ -5,6 +5,7 @@ import { KafkaOptionsFactory } from "./kafka-options.factory";
 import { kafkaConfig } from "./kafka.config";
 import { KAFKA_CLIENT } from "./kafka.constant";
 import { KafkaService } from "./kafka.service";
+import { PayloadSerializer } from "./payload-serializer";
 
 export class KafkaModule {
   static forRoot(): DynamicModule {
@@ -17,6 +18,7 @@ export class KafkaModule {
             name: KAFKA_CLIENT,
             imports: [ConfigModule.forFeature(kafkaConfig)],
             useClass: KafkaOptionsFactory,
+            extraProviders: [PayloadSerializer],
           },
         ]),
       ],
