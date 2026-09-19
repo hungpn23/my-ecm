@@ -1,2 +1,2 @@
 export * from "./app.config";
-export * from "./global-config.module";
+export * from "./config.module";

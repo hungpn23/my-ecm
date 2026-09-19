@@ -8,7 +8,7 @@ import {
 import { deepMerge } from "./deep-merge";
 
 @Injectable()
-export class GlobalStandardSchemaValidationPipe extends StandardSchemaValidationPipe {
+export class ArktypeValidationPipe extends StandardSchemaValidationPipe {
   static defaultOptions: StandardSchemaValidationPipeOptions = {
     transform: true,
     validateCustomDecorators: true,
@@ -16,6 +16,6 @@ export class GlobalStandardSchemaValidationPipe extends StandardSchemaValidation
   };
 
   constructor(@Optional() options?: StandardSchemaValidationPipeOptions) {
-    super(deepMerge(GlobalStandardSchemaValidationPipe.defaultOptions, options));
+    super(deepMerge(ArktypeValidationPipe.defaultOptions, options));
   }
 }

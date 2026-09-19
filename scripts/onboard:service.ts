@@ -261,7 +261,7 @@ function createAppModule(options: OnboardOptions): string {
       : []),
     `{
       provide: APP_PIPE,
-      useClass: GlobalStandardSchemaValidationPipe,
+      useClass: ArktypeValidationPipe,
     }`,
     `{
       provide: APP_INTERCEPTOR,
@@ -269,7 +269,7 @@ function createAppModule(options: OnboardOptions): string {
     }`,
   ];
 
-  return `import { GlobalLoggerModule, GlobalStandardSchemaValidationPipe } from "@libs/common";
+  return `import { GlobalLoggerModule, ArktypeValidationPipe } from "@libs/common";
 import {
   ${coreImports.join(",\n  ")},
 } from "@libs/core";

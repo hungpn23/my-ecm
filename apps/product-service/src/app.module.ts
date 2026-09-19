@@ -1,4 +1,4 @@
-import { GlobalStandardSchemaValidationPipe, LoggerModule } from "@libs/common";
+import { ArktypeValidationPipe, LoggerModule } from "@libs/common";
 import { AuthModule, ConfigModule, DatabaseModule, JwtGuard, RedisModule } from "@libs/core";
 import { entities } from "@mikro-orm/generated";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
@@ -23,7 +23,7 @@ import { ProductModule } from "./module/product/product.module";
     },
     {
       provide: APP_PIPE,
-      useClass: GlobalStandardSchemaValidationPipe,
+      useClass: ArktypeValidationPipe,
     },
     {
       provide: APP_INTERCEPTOR,
