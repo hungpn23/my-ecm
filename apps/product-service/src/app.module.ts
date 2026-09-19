@@ -1,13 +1,5 @@
-import { GlobalLoggerModule, GlobalStandardSchemaValidationPipe } from "@libs/common";
-import {
-  databaseConfig,
-  GlobalConfigModule,
-  GlobalMikroOrmModule,
-  jwtConfig,
-  JwtGuard,
-  redisConfig,
-  RedisModule,
-} from "@libs/core";
+import { GlobalStandardSchemaValidationPipe, LoggerModule } from "@libs/common";
+import { ConfigModule, DatabaseModule, JwtGuard, RedisModule } from "@libs/core";
 import { entities } from "@mikro-orm/generated";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
@@ -17,11 +9,9 @@ import { ProductModule } from "./module/product/product.module";
 
 @Module({
   imports: [
-    GlobalConfigModule.forRoot({
-      load: [jwtConfig, databaseConfig, redisConfig],
-    }),
-    GlobalMikroOrmModule.forRoot(entities),
-    GlobalLoggerModule.forRoot(),
+    ConfigModule.forRoot(),
+    DatabaseModule.forRoot(entities),
+    LoggerModule.forRoot(),
     RedisModule,
     AuthModule,
     CategoryModule,

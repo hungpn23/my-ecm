@@ -1,13 +1,14 @@
 import type { DynamicModule } from "@nestjs/common";
-import { LoggerModule, type Params } from "nestjs-pino";
+import { LoggerModule as RootLoggerModule, type Params } from "nestjs-pino";
 import { v7 } from "uuid";
 import { deepMerge } from "./deep-merge";
 
-export class GlobalLoggerModule {
+export class LoggerModule {
   static forRoot(params?: Params): DynamicModule {
     const defaultParams: Params = {
       pinoHttp: {
         level: "debug",
+        messageKey: "msg",
         transport: {
           target: "pino-pretty",
           options: {
@@ -23,8 +24,8 @@ export class GlobalLoggerModule {
     };
 
     return {
-      module: GlobalLoggerModule,
-      imports: [LoggerModule.forRoot(deepMerge(defaultParams, params))],
+      module: LoggerModule,
+      imports: [RootLoggerModule.forRoot(deepMerge(defaultParams, params))],
     };
   }
 }

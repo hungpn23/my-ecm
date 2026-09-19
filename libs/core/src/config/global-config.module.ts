@@ -1,9 +1,9 @@
 import { deepMerge } from "@libs/common";
 import type { DynamicModule } from "@nestjs/common";
-import { ConfigModule, type ConfigModuleOptions } from "@nestjs/config";
+import { ConfigModule as RootConfigModule, type ConfigModuleOptions } from "@nestjs/config";
 import { appConfig } from "./app.config";
 
-export class GlobalConfigModule {
+export class ConfigModule {
   static forRoot(options?: ConfigModuleOptions): DynamicModule {
     const defaultOptions: ConfigModuleOptions = {
       isGlobal: true,
@@ -12,8 +12,8 @@ export class GlobalConfigModule {
     };
 
     return {
-      module: GlobalConfigModule,
-      imports: [ConfigModule.forRoot(deepMerge(defaultOptions, options))],
+      module: ConfigModule,
+      imports: [RootConfigModule.forRoot(deepMerge(defaultOptions, options))],
     };
   }
 }
