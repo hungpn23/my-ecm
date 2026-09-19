@@ -4,10 +4,10 @@ import {
   type ClientsModuleOptionsFactory,
   type KafkaOptions,
 } from "@nestjs/microservices";
+import { appConfig, type AppConfig } from "@src/config";
 import { logLevel } from "kafkajs";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { kafkaConfig, type KafkaConfig } from "./kafka.config";
-import { KAFKA_CLIENT_ID } from "./kafka.constant";
 
 @Injectable()
 export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
@@ -16,8 +16,8 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
     private readonly logger: PinoLogger,
     @Inject(kafkaConfig.KEY)
     private readonly config: KafkaConfig,
-    @Inject(KAFKA_CLIENT_ID)
-    private readonly clientId: string,
+    @Inject(appConfig.KEY)
+    private readonly appConf: AppConfig,
   ) {}
 
   // fallow-ignore-next-line unused-class-member
@@ -26,7 +26,7 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
       transport: Transport.KAFKA,
       options: {
         client: {
-          clientId: this.clientId,
+          clientId: this.appConf.APP_NAME,
           brokers: [`${this.config.KAFKA_HOST}:${this.config.KAFKA_PORT}`],
           logCreator: () => (entry) => {
             const { message, error, ...rest } = entry.log;
@@ -54,7 +54,7 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
           },
         },
         consumer: {
-          groupId: `${this.clientId}-group`,
+          groupId: `${this.appConf.APP_NAME}-group`,
         },
       },
     };

@@ -1,4 +1,4 @@
-import { getAppConfig, KafkaOptionsFactory } from "@libs/core";
+import { appConfig, KafkaOptionsFactory } from "@libs/core";
 import { NestFactory } from "@nestjs/core";
 import { type KafkaOptions } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
@@ -15,7 +15,7 @@ async function bootstrap() {
   const logger = app.get(Logger);
   app.useLogger(logger);
 
-  const { APP_HOST, APP_PORT } = getAppConfig();
+  const { APP_HOST, APP_PORT } = app.get(appConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("Identity Service API")

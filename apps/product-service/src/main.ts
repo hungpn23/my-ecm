@@ -1,4 +1,4 @@
-import { getAppConfig } from "@libs/core";
+import { appConfig } from "@libs/core";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { Logger } from "nestjs-pino";
@@ -14,7 +14,7 @@ async function bootstrap() {
   const logger = app.get(Logger);
   app.useLogger(logger);
 
-  const { APP_HOST, APP_PORT } = getAppConfig();
+  const { APP_HOST, APP_PORT } = app.get(appConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("Product Service API")

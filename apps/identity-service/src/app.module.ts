@@ -25,7 +25,7 @@ import { UserModule } from "./module/user/user.module";
       debug: false,
     }),
     UserModule,
-    KafkaModule.forRoot("identity-service"),
+    KafkaModule.forRoot(),
   ],
   providers: [
     {
