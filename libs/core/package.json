@@ -29,6 +29,9 @@
     "lodash": "catalog:common",
     "nestjs-pino": "catalog:backend",
     "passport-jwt": "catalog:backend",
+    "pino": "catalog:backend",
+    "pino-http": "catalog:backend",
+    "pino-pretty": "catalog:backend",
     "rxjs": "catalog:backend",
     "uuid": "catalog:backend"
   },
