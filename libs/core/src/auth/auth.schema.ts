@@ -5,20 +5,19 @@ const JWT_KIND = {
   ACCESS_TOKEN: "ACCESS_TOKEN",
   REFRESH_TOKEN: "REFRESH_TOKEN",
 } as const;
-
 export const JwtKind = type.enumerated(...Object.values(JWT_KIND));
 export type JwtKind = typeof JwtKind.infer;
 
 // standard claims https://datatracker.ietf.org/doc/html/rfc7519#section-4.1
 export const JwtPayload = type({
-  "iss?": "string",
-  "sub?": "string",
-  "aud?": "string | string[]",
-  "exp?": "number",
-  "nbf?": "number",
-  "iat?": "number",
-  "jti?": "string",
-});
+  iss: "string",
+  sub: "string",
+  aud: "string | string[]",
+  exp: "number",
+  nbf: "number",
+  iat: "number",
+  jti: "string",
+}).partial();
 export type JwtPayload = typeof JwtPayload.infer;
 
 export const AuthenticatedUser = type({
