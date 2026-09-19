@@ -1,6 +1,10 @@
 import { type } from "arktype";
 import type { Request } from "express";
-import { JWT_KIND } from "./auth.constant";
+
+const JWT_KIND = {
+  ACCESS_TOKEN: "ACCESS_TOKEN",
+  REFRESH_TOKEN: "REFRESH_TOKEN",
+} as const;
 
 export const JwtKind = type.enumerated(...Object.values(JWT_KIND));
 export type JwtKind = typeof JwtKind.infer;
