@@ -2,7 +2,7 @@ import { appConfig, KafkaOptionsFactory } from "@libs/core";
 import { NestFactory } from "@nestjs/core";
 import { type KafkaOptions } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { Logger } from "nestjs-pino";
+import { Logger, registerMicroserviceLogging } from "nestjs-pino";
 import "reflect-metadata";
 import { AppModule } from "./app.module";
 
@@ -25,7 +25,11 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("swagger", app, documentFactory);
 
-  app.connectMicroservice<KafkaOptions>(app.get(KafkaOptionsFactory).createClientOptions());
+  const ms = app.connectMicroservice<KafkaOptions>(
+    app.get(KafkaOptionsFactory).createClientOptions(),
+    { deferInitialization: true },
+  );
+  registerMicroserviceLogging(ms);
 
   await app.startAllMicroservices();
   await app.listen(APP_PORT, APP_HOST);
