@@ -1,10 +1,11 @@
-import { ArktypeValidationPipe, LoggerModule } from "@libs/common";
+import { ArktypeValidationPipe } from "@libs/common";
 import {
   AuthModule,
   ConfigModule,
   DatabaseModule,
   JwtGuard,
   KafkaModule,
+  LoggerModule,
   RedisModule,
 } from "@libs/core";
 import { entities } from "@mikro-orm/generated";

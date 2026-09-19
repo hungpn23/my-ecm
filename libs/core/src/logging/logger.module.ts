@@ -1,7 +1,7 @@
+import { deepMerge } from "@libs/common";
 import type { DynamicModule } from "@nestjs/common";
 import { LoggerModule as RootLoggerModule, type Params } from "nestjs-pino";
 import { v7 } from "uuid";
-import { deepMerge } from "./deep-merge";
 
 export class LoggerModule {
   static forRoot(params?: Params): DynamicModule {

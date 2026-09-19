@@ -4,4 +4,5 @@ export * from "./auth";
 export * from "./config";
 export * from "./database";
 export * from "./kafka";
+export * from "./logging";
 export * from "./redis";

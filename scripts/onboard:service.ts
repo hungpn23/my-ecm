@@ -215,6 +215,7 @@ function createAppModule(options: OnboardOptions): string {
     ...(options.mikroOrm ? ["DatabaseModule"] : []),
     ...(options.auth ? ["jwtConfig", "JwtGuard", "redisConfig", "RedisModule"] : []),
     "KafkaModule",
+    "LoggerModule",
   ];
   const configLoads = [
     ...(options.auth ? ["jwtConfig", "redisConfig"] : []),
@@ -250,7 +251,7 @@ function createAppModule(options: OnboardOptions): string {
     }`,
   ];
 
-  return `import { ArktypeValidationPipe, LoggerModule } from "@libs/common";
+  return `import { ArktypeValidationPipe } from "@libs/common";
 import {
   ${coreImports.join(",\n  ")},
 } from "@libs/core";

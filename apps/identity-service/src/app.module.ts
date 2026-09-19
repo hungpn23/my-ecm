@@ -1,5 +1,12 @@
-import { ArktypeValidationPipe, LoggerModule } from "@libs/common";
-import { ConfigModule, DatabaseModule, JwtGuard, KafkaModule, RedisModule } from "@libs/core";
+import { ArktypeValidationPipe } from "@libs/common";
+import {
+  ConfigModule,
+  DatabaseModule,
+  JwtGuard,
+  KafkaModule,
+  LoggerModule,
+  RedisModule,
+} from "@libs/core";
 import { entities } from "@mikro-orm/generated";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { ConditionalModule } from "@nestjs/config";
