@@ -1,12 +1,12 @@
+import { AuthModule } from "@libs/core";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { PassportModule } from "@nestjs/passport";
 import { githubConfig } from "./github.config";
 import { GithubController } from "./github.controller";
 import { GithubStrategy } from "./github.strategy";
 
 @Module({
-  imports: [ConfigModule.forFeature(githubConfig), PassportModule.register({})],
+  imports: [AuthModule, ConfigModule.forFeature(githubConfig)],
   controllers: [GithubController],
   providers: [GithubStrategy],
 })

@@ -1,8 +1,7 @@
-import { jwtConfig, type JwtConfig, JwtStrategy } from "@libs/core";
+import { AuthModule as CoreAuthModule, jwtConfig, type JwtConfig } from "@libs/core";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
-import { PassportModule } from "@nestjs/passport";
 import { User } from "@src/database/entity";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
@@ -10,8 +9,9 @@ import { RefreshStrategy } from "./refresh.strategy";
 
 @Module({
   imports: [
-    PassportModule.register({}),
+    CoreAuthModule,
     JwtModule.registerAsync({
+      imports: [CoreAuthModule],
       inject: [jwtConfig.KEY],
       useFactory: (config: JwtConfig) => ({
         secret: config.JWT_SECRET,
@@ -24,7 +24,7 @@ import { RefreshStrategy } from "./refresh.strategy";
     }),
     MikroOrmModule.forFeature([User]),
   ],
+  providers: [AuthService, RefreshStrategy],
   controllers: [AuthController],
-  providers: [AuthService, RefreshStrategy, JwtStrategy],
 })
 export class AuthModule {}
