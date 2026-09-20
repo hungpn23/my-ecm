@@ -28,7 +28,7 @@ import { RedisService } from "./redis.service";
           });
 
         redis.on("error", (err) => {
-          logger.error(err.message);
+          logger.error(err, err.message);
         });
 
         return redis;

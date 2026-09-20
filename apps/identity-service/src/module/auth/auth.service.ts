@@ -13,6 +13,7 @@ import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { User } from "@src/database/entity";
 import { hash, verify } from "argon2";
+import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
 import type { ChangePassword, SignIn, SignUp, TokenResponse } from "./auth.schema";
 
@@ -24,6 +25,8 @@ type CreateTokenPairOptions = {
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectPinoLogger(AuthService.name)
+    private readonly logger: PinoLogger,
     @Inject(jwtConfig.KEY)
     private readonly jwtConf: JwtConfig,
     @InjectRepository(User)
@@ -46,6 +49,8 @@ export class AuthService {
     await this.em.flush();
 
     this.kafka.emit("user.created", { value: { email: user.email } });
+
+    this.logger.info({ userId: user.id, email: user.email }, "User created");
 
     return await this._createTokenPair({ userId: user.id });
   }

@@ -7,8 +7,8 @@ import {
 import { logLevel, type LogEntry } from "kafkajs";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { appConfig, type AppConfig } from "../config";
-import { kafkaConfig, type KafkaConfig } from "./kafka.config";
 import { KafkaPayloadSerializerService } from "./kafka-payload-serializer.service";
+import { kafkaConfig, type KafkaConfig } from "./kafka.config";
 
 @Injectable()
 export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
@@ -32,24 +32,25 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
           logCreator: () => (entry: LogEntry) => {
             const { message, error, ...rest } = entry.log;
 
-            const data = {
-              ...rest,
-              context: `Kafka${entry.namespace}`,
-              msg: error ?? message,
-            };
+            let msg = message;
+            if (Error.isError(error)) {
+              msg = error.message;
+            }
+
+            this.logger.setContext(`Kafka${entry.namespace}`);
 
             switch (entry.level) {
               case logLevel.ERROR:
-                this.logger.error(data);
+                this.logger.error(rest, msg);
                 break;
               case logLevel.WARN:
-                this.logger.warn(data);
+                this.logger.warn(rest, msg);
                 break;
               case logLevel.INFO:
-                this.logger.info(data);
+                this.logger.info(rest, msg);
                 break;
               case logLevel.DEBUG:
-                this.logger.debug(data);
+                this.logger.debug(rest, msg);
                 break;
             }
           },
