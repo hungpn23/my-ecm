@@ -108,7 +108,7 @@ function createPackageJson(options: OnboardOptions): string {
       : []),
     ["start", "bun src/main.ts"],
   ]);
-  const dependencies = [
+  const dependencies: [string, string][] = [
     ["@libs/common", "workspace:*"],
     ["@libs/core", "workspace:*"],
     ["@nestjs/common", "catalog:backend"],
@@ -132,10 +132,6 @@ function createPackageJson(options: OnboardOptions): string {
     );
   }
 
-  if (options.auth) {
-    dependencies.push(["@nestjs/passport", "catalog:backend"]);
-  }
-
   return `${JSON.stringify(
     {
       name: `@apps/${options.name}-service`,
@@ -143,7 +139,9 @@ function createPackageJson(options: OnboardOptions): string {
       private: true,
       type: "module",
       scripts,
-      dependencies: Object.fromEntries(dependencies),
+      dependencies: Object.fromEntries(
+        dependencies.sort(([left], [right]) => left.localeCompare(right)),
+      ),
       devDependencies: {},
     },
     null,
@@ -152,32 +150,26 @@ function createPackageJson(options: OnboardOptions): string {
 }
 
 function createTsConfig(options: OnboardOptions): string {
-  return `${JSON.stringify(
-    {
-      $schema: "https://json.schemastore.org/tsconfig",
-      extends: "../../tsconfig.json",
-      compilerOptions: {
-        paths: options.mikroOrm
-          ? {
-              "@src/*": ["./src/*"],
-              "@mikro-orm/generated": ["./entities.generated.ts"],
-            }
-          : { "@src/*": ["./src/*"] },
-      },
-      include: ["src/**/*.ts"],
-    },
-    null,
-    2,
-  )}\n`;
+  return `{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@src/*": ["./src/*"]${options.mikroOrm ? ',\n      "@mikro-orm/generated": ["./entities.generated.ts"]' : ""}
+    }
+  },
+  "include": ["src/**/*.ts"]
+}\n`;
 }
 
 function createMain(options: OnboardOptions): string {
   const serviceTitle = toServiceTitle(options.name);
 
-  return `import { appConfig } from "@libs/core";
+  return `import { appConfig, KafkaOptionsFactory } from "@libs/core";
 import { NestFactory } from "@nestjs/core";
+import { type KafkaOptions } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { Logger } from "nestjs-pino";
+import { Logger, registerMicroserviceLogging } from "nestjs-pino";
 import "reflect-metadata";
 import { AppModule } from "./app.module";
 
@@ -186,6 +178,8 @@ async function bootstrap() {
     bufferLogs: true,
     routeConflictPolicy: { duplicate: "error", shadow: "error" },
   });
+
+  app.enableShutdownHooks();
 
   const logger = app.get(Logger);
   app.useLogger(logger);
@@ -199,6 +193,13 @@ ${options.auth ? "    .addBearerAuth()\n" : ""}    .build();
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("swagger", app, documentFactory);
 
+  const ms = app.connectMicroservice<KafkaOptions>(
+    app.get(KafkaOptionsFactory).createClientOptions(),
+    { deferInitialization: true },
+  );
+  registerMicroserviceLogging(ms);
+
+  await app.startAllMicroservices();
   await app.listen(APP_PORT, APP_HOST);
 
   logger.log(\`Swagger: http://\${APP_HOST}:\${APP_PORT}/swagger\`);
@@ -210,23 +211,16 @@ await bootstrap();
 
 function createAppModule(options: OnboardOptions): string {
   const coreImports = [
-    ...(options.mikroOrm ? ["databaseConfig"] : []),
+    ...(options.auth ? ["AuthModule"] : []),
     "ConfigModule",
     ...(options.mikroOrm ? ["DatabaseModule"] : []),
-    ...(options.auth ? ["jwtConfig", "JwtGuard", "redisConfig", "RedisModule"] : []),
+    ...(options.auth ? ["JwtGuard"] : []),
     "KafkaModule",
     "LoggerModule",
+    ...(options.auth ? ["RedisModule"] : []),
   ];
-  const configLoads = [
-    ...(options.auth ? ["jwtConfig", "redisConfig"] : []),
-    ...(options.mikroOrm ? ["databaseConfig"] : []),
-  ];
-  const configModule =
-    configLoads.length === 0
-      ? "ConfigModule.forRoot()"
-      : `ConfigModule.forRoot({\n      load: [${configLoads.join(", ")}],\n    })`;
   const imports = [
-    configModule,
+    "ConfigModule.forRoot()",
     ...(options.mikroOrm ? ["DatabaseModule.forRoot(entities)"] : []),
     "LoggerModule.forRoot()",
     ...(options.auth ? ["RedisModule", "AuthModule"] : []),
@@ -250,11 +244,17 @@ function createAppModule(options: OnboardOptions): string {
       useClass: StandardSchemaSerializerInterceptor,
     }`,
   ];
+  const coreImport =
+    coreImports.length <= 3
+      ? `import { ${coreImports.join(", ")} } from "@libs/core";`
+      : `import {\n  ${coreImports.join(",\n  ")},\n} from "@libs/core";`;
+  const moduleImports =
+    imports.length <= 3
+      ? `imports: [${imports.join(", ")}],`
+      : `imports: [\n    ${imports.join(",\n    ")},\n  ],`;
 
   return `import { ArktypeValidationPipe } from "@libs/common";
-import {
-  ${coreImports.join(",\n  ")},
-} from "@libs/core";
+${coreImport}
 ${
   options.mikroOrm
     ? `import { entities } from "@mikro-orm/generated";
@@ -262,11 +262,9 @@ ${
     : ""
 }import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { ${options.auth ? "APP_GUARD, " : ""}APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
-${options.auth ? 'import { AuthModule } from "./module/auth/auth.module";\n' : ""}
+
 @Module({
-  imports: [
-    ${imports.join(",\n    ")},
-  ],
+  ${moduleImports}
   providers: [
     ${providers.join(",\n    ")},
   ],
@@ -306,22 +304,6 @@ function createFiles(options: OnboardOptions): [string, string][] {
     ["src/main.ts", createMain(options)],
     ["src/app.module.ts", createAppModule(options)],
   ];
-
-  if (options.auth) {
-    files.push([
-      "src/module/auth/auth.module.ts",
-      `import { JwtStrategy } from "@libs/core";
-import { Module } from "@nestjs/common";
-import { PassportModule } from "@nestjs/passport";
-
-@Module({
-  imports: [PassportModule.register({})],
-  providers: [JwtStrategy],
-})
-export class AuthModule {}
-`,
-    ]);
-  }
 
   if (options.mikroOrm) {
     files.push(["entities.generated.ts", createEntitiesGenerated()]);
