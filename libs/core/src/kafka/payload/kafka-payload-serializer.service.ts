@@ -6,9 +6,9 @@ import { v7 } from "uuid";
 import { KafkaPayload, type KafkaMessage } from "./kafka-payload.schema";
 
 @Injectable()
-export class PayloadSerializer implements Serializer<KafkaPayload, KafkaMessage> {
+export class KafkaPayloadSerializerService implements Serializer<KafkaPayload, KafkaMessage> {
   constructor(
-    @InjectPinoLogger(PayloadSerializer.name)
+    @InjectPinoLogger(KafkaPayloadSerializerService.name)
     private readonly logger: PinoLogger,
   ) {}
 

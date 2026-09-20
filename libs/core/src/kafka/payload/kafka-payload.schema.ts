@@ -14,6 +14,5 @@ export const KafkaPayload = type({
     return result;
   }),
 });
-
 export type KafkaPayload = typeof KafkaPayload.inferIn;
 export type KafkaMessage = typeof KafkaPayload.infer;
