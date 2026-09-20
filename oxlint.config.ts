@@ -1,33 +1,23 @@
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "ignorePatterns": [
-    ".agent/**",
-    ".agents/**",
-    ".claude/**",
-    ".codex/**",
-    ".continue/**",
-    ".cursor/**",
-    ".gemini/**",
-    ".opencode/**",
-    ".pi/**",
-    ".roo/**",
-    ".windsurf/**",
+import { defineConfig } from "oxlint";
+
+export default defineConfig({
+  ignorePatterns: [
     "tools/oxlint/anti-slop/**",
     "bun.lock",
     "**/*/entities.generated.ts",
-    "**/migration/*"
+    "**/migration/*",
   ],
-  "jsPlugins": [
+  jsPlugins: [
     {
-      "name": "anti-slop",
-      "specifier": "./tools/oxlint/anti-slop/index.ts"
-    }
+      name: "anti-slop",
+      specifier: "./tools/oxlint/anti-slop/index.ts",
+    },
   ],
-  "options": {
-    "typeAware": true,
-    "typeCheck": true
+  options: {
+    typeAware: true,
+    typeCheck: true,
   },
-  "rules": {
+  rules: {
     "anti-slop/no-chained-type-assertions": "error",
     "anti-slop/no-conditional-empty-object-spread": "error",
     "anti-slop/no-known-value-widening": "error",
@@ -42,6 +32,6 @@
     "anti-slop/no-unknown-type-aliases": "error",
     "anti-slop/no-unsafe-dictionary-type": "error",
     "anti-slop/no-widen-then-assert": "error",
-    "anti-slop/require-safety-comment-for-type-assertion": "error"
-  }
-}
+    "anti-slop/require-safety-comment-for-type-assertion": "error",
+  },
+});

@@ -64,7 +64,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo build",
-    "check:all": "bun check:lint && bun check:types && bun check:env",
+    "check:all": "bun check:lint && bun check:types && bun check:fallow && bun check:env",
     "check:env": "bun scripts/check:env.ts",
     "check:fallow": "bunx fallow --skip health",
     "check:fix": "oxfmt --write && oxlint --fix",
