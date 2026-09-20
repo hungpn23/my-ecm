@@ -5,7 +5,7 @@ import { KafkaOptionsFactory } from "./kafka-options.factory";
 import { kafkaConfig } from "./kafka.config";
 import { KAFKA_CLIENT } from "./kafka.constant";
 import { KafkaService } from "./kafka.service";
-import { KafkaPayloadSerializerService } from "./payload";
+import { KafkaPayloadSerializerService } from "./kafka-payload-serializer.service";
 
 export class KafkaModule {
   static forRoot(): DynamicModule {

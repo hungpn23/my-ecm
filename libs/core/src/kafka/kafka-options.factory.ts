@@ -8,7 +8,7 @@ import { logLevel, type LogEntry } from "kafkajs";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { appConfig, type AppConfig } from "../config";
 import { kafkaConfig, type KafkaConfig } from "./kafka.config";
-import { KafkaPayloadSerializerService } from "./payload";
+import { KafkaPayloadSerializerService } from "./kafka-payload-serializer.service";
 
 @Injectable()
 export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {

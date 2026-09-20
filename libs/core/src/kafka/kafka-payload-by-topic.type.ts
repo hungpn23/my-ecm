@@ -1,5 +1,10 @@
-import { type KafkaPayload, type UserCreatedPayload } from "./payload";
-import { type KafkaTopics, PRODUCT, USER } from "./topic";
+import {
+  type KafkaPayload,
+  type KafkaTopics,
+  PRODUCT,
+  USER,
+  type UserCreatedPayload,
+} from "@libs/common";
 
 type TopicPayloadMap<T extends Record<KafkaTopics, KafkaPayload>> = T;
 

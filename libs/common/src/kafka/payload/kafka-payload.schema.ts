@@ -1,5 +1,5 @@
-import { AnyRecord } from "@libs/common";
 import { type } from "arktype";
+import { AnyRecord } from "../../common.schema";
 
 export const KafkaPayload = type({
   "key?": AnyRecord.pipe((k) => JSON.stringify(k)),

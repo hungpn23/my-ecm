@@ -1,9 +1,8 @@
-import { X_REQUEST_ID } from "@libs/common";
+import { KafkaPayload, type KafkaMessage, X_REQUEST_ID } from "@libs/common";
 import { Injectable } from "@nestjs/common";
 import type { Serializer } from "@nestjs/microservices";
 import { InjectPinoLogger, type PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
-import { KafkaPayload, type KafkaMessage } from "./kafka-payload.schema";
 
 @Injectable()
 export class KafkaPayloadSerializerService implements Serializer<KafkaPayload, KafkaMessage> {
