@@ -202,7 +202,7 @@ ${options.auth ? "    .addBearerAuth()\n" : ""}    .build();
   await app.startAllMicroservices();
   await app.listen(APP_PORT, APP_HOST);
 
-  logger.log(\`Swagger: http://\${APP_HOST}:\${APP_PORT}/swagger\`);
+  logger.log(\`🔥 Swagger: http://\${APP_HOST}:\${APP_PORT}/swagger\`);
 }
 
 await bootstrap();

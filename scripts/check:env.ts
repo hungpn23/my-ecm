@@ -19,5 +19,5 @@ if (missingKeys.length > 0) {
 
   process.exitCode = 1;
 } else {
-  console.log("All root .env variables are declared in turbo.json globalEnv.");
+  console.log("✅ All root .env variables are declared in turbo.json globalEnv.");
 }
