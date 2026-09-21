@@ -23,7 +23,8 @@ import { UserModule } from "./module/user/user.module";
     ConfigModule.forRoot(),
     DatabaseModule.forRoot(entities),
     LoggerModule.forRoot(),
-    RedisModule,
+    RedisModule.forRoot(),
+    KafkaModule.forRoot(),
     AuthModule,
     ConditionalModule.registerWhen(GoogleModule, GoogleEnv.allows, {
       debug: false,
@@ -32,7 +33,6 @@ import { UserModule } from "./module/user/user.module";
       debug: false,
     }),
     UserModule,
-    KafkaModule.forRoot(),
   ],
   providers: [
     {

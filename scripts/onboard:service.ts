@@ -223,8 +223,8 @@ function createAppModule(options: OnboardOptions): string {
     "ConfigModule.forRoot()",
     ...(options.mikroOrm ? ["DatabaseModule.forRoot(entities)"] : []),
     "LoggerModule.forRoot()",
-    ...(options.auth ? ["RedisModule", "AuthModule"] : []),
     "KafkaModule.forRoot()",
+    ...(options.auth ? ["RedisModule.forRoot()", "AuthModule"] : []),
   ];
   const providers = [
     ...(options.auth
