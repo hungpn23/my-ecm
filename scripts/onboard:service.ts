@@ -165,7 +165,7 @@ function createTsConfig(options: OnboardOptions): string {
 function createMain(options: OnboardOptions): string {
   const serviceTitle = toServiceTitle(options.name);
 
-  return `import { appConfig, KafkaOptionsFactory } from "@libs/core";
+  return `import { appConfig, KafkaService } from "@libs/core";
 import { NestFactory } from "@nestjs/core";
 import { type KafkaOptions } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
@@ -194,7 +194,7 @@ ${options.auth ? "    .addBearerAuth()\n" : ""}    .build();
   SwaggerModule.setup("swagger", app, documentFactory);
 
   const ms = app.connectMicroservice<KafkaOptions>(
-    app.get(KafkaOptionsFactory).createClientOptions(),
+    app.get(KafkaService).options,
     { deferInitialization: true },
   );
   registerMicroserviceLogging(ms);

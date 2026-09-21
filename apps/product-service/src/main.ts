@@ -1,4 +1,4 @@
-import { appConfig, KafkaOptionsFactory } from "@libs/core";
+import { appConfig, KafkaService } from "@libs/core";
 import { NestFactory } from "@nestjs/core";
 import { type KafkaOptions } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
@@ -27,10 +27,9 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("swagger", app, documentFactory);
 
-  const ms = app.connectMicroservice<KafkaOptions>(
-    app.get(KafkaOptionsFactory).createClientOptions(),
-    { deferInitialization: true },
-  );
+  const ms = app.connectMicroservice<KafkaOptions>(app.get(KafkaService).options, {
+    deferInitialization: true,
+  });
   registerMicroserviceLogging(ms);
 
   await app.startAllMicroservices();
