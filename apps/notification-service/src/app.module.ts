@@ -9,6 +9,7 @@ import {
 } from "@libs/core";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
+import { UserModule } from "./module/user/user.module";
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
     RedisModule.forRoot(),
     KafkaModule.forRoot(),
     AuthModule,
+    UserModule,
   ],
   providers: [
     {

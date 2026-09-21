@@ -1,3 +1,4 @@
+import { ArktypeValidationPipe } from "@libs/common";
 import { appConfig, KafkaService } from "@libs/core";
 import { NestFactory } from "@nestjs/core";
 import { type KafkaOptions } from "@nestjs/microservices";
@@ -30,6 +31,7 @@ async function bootstrap() {
   const ms = app.connectMicroservice<KafkaOptions>(app.get(KafkaService).options, {
     deferInitialization: true,
   });
+  ms.useGlobalPipes(new ArktypeValidationPipe());
   registerMicroserviceLogging(ms);
 
   await app.startAllMicroservices();
