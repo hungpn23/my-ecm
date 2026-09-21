@@ -59,6 +59,22 @@
         "@types/passport-jwt": "catalog:dev",
       },
     },
+    "apps/notification-service": {
+      "name": "@apps/notification-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@libs/common": "workspace:*",
+        "@libs/core": "workspace:*",
+        "@nestjs/common": "catalog:backend",
+        "@nestjs/core": "catalog:backend",
+        "@nestjs/microservices": "catalog:backend",
+        "@nestjs/platform-express": "catalog:backend",
+        "@nestjs/swagger": "catalog:backend",
+        "nestjs-pino": "catalog:backend",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+    },
     "apps/product-service": {
       "name": "@apps/product-service",
       "version": "0.0.0",
@@ -204,6 +220,8 @@
   },
   "packages": {
     "@apps/identity-service": ["@apps/identity-service@workspace:apps/identity-service"],
+
+    "@apps/notification-service": ["@apps/notification-service@workspace:apps/notification-service"],
 
     "@apps/product-service": ["@apps/product-service@workspace:apps/product-service"],
 
