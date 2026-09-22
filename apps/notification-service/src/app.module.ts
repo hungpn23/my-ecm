@@ -10,6 +10,7 @@ import {
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { EmailModule } from "./module/email/email.module";
+import { ProductModule } from "./module/product/product.module";
 import { UserModule } from "./module/user/user.module";
 
 @Module({
@@ -21,6 +22,7 @@ import { UserModule } from "./module/user/user.module";
     AuthModule,
     UserModule,
     EmailModule,
+    ProductModule,
   ],
   providers: [
     {

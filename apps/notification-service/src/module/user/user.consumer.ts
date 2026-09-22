@@ -1,5 +1,5 @@
 import { UserCreatedData } from "@libs/common";
-import { KafkaTopic } from "@libs/core";
+import { KafkaEvent } from "@libs/core";
 import { Controller } from "@nestjs/common";
 import { Payload } from "@nestjs/microservices";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
@@ -12,7 +12,7 @@ export class UserConsumer {
     private readonly emailService: EmailService,
   ) {}
 
-  @KafkaTopic("user.created")
+  @KafkaEvent("user.created")
   async handleUserCreated(@Payload({ schema: UserCreatedData }) data: UserCreatedData) {
     await this.emailService.sendWelcomeEmail({ to: data.email });
 

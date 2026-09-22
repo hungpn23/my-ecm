@@ -2,6 +2,7 @@ import { type } from "arktype";
 
 export const USER = {
   CREATED: "user.created",
+  UPDATED: "user.updated",
   GET: "user.get",
 } as const;
 export const UserTopic = type.enumerated(...Object.values(USER));

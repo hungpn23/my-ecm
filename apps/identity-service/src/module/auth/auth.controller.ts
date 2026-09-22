@@ -51,9 +51,4 @@ export class AuthController {
   async refreshToken(@User() user: AuthenticatedUser): Promise<TokenResponse> {
     return await this.authService.refreshToken(user);
   }
-
-  @Endpoint("GET", { path: "profile", response: AuthenticatedUser })
-  getProfile(@User() user: AuthenticatedUser): AuthenticatedUser {
-    return user;
-  }
 }
