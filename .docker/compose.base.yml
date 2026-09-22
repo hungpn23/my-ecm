@@ -36,8 +36,3 @@ services:
     restart: unless-stopped
     depends_on:
       - kafka
-
-  floci:
-    image: floci/floci:latest
-    container_name: floci
-    restart: unless-stopped

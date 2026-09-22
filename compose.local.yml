@@ -82,18 +82,6 @@ services:
     networks:
       - network
 
-  floci:
-    extends:
-      file: .docker/compose.base.yml
-      service: floci
-    ports:
-      - 4566:4566
-    environment:
-      FLOCI_STORAGE_MODE: persistent
-      FLOCI_STORAGE_PERSISTENT_PATH: /app/data
-    volumes:
-      - ${PWD}/.docker/volumes/floci_data:/app/data
-
 volumes:
   kafka_data:
 
