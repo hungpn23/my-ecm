@@ -10,13 +10,13 @@
     "check:types": "tsc"
   },
   "dependencies": {
-    "@nestjs/common": "catalog:backend",
-    "@nestjs/config": "catalog:backend",
-    "@nestjs/swagger": "catalog:backend",
+    "@nestjs/common": "catalog:nest",
+    "@nestjs/config": "catalog:nest",
+    "@nestjs/swagger": "catalog:nest",
     "arktype": "catalog:common",
     "lodash": "catalog:common"
   },
   "devDependencies": {
-    "@types/lodash": "catalog:dev"
+    "@types/lodash": "catalog:common"
   }
 }

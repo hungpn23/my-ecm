@@ -111,23 +111,23 @@ function createPackageJson(options: OnboardOptions): string {
   const dependencies: [string, string][] = [
     ["@libs/common", "workspace:*"],
     ["@libs/core", "workspace:*"],
-    ["@nestjs/common", "catalog:backend"],
-    ["@nestjs/core", "catalog:backend"],
-    ["@nestjs/microservices", "catalog:backend"],
-    ["@nestjs/platform-express", "catalog:backend"],
-    ["@nestjs/swagger", "catalog:backend"],
-    ["nestjs-pino", "catalog:backend"],
+    ["@nestjs/common", "catalog:nest"],
+    ["@nestjs/core", "catalog:nest"],
+    ["@nestjs/microservices", "catalog:nest"],
+    ["@nestjs/platform-express", "catalog:nest"],
+    ["@nestjs/swagger", "catalog:nest"],
+    ["nestjs-pino", "catalog:logging"],
     ["reflect-metadata", "catalog:backend"],
     ["rxjs", "catalog:backend"],
   ];
 
   if (options.mikroOrm) {
     dependencies.push(
-      ["@mikro-orm/cli", "catalog:backend"],
-      ["@mikro-orm/core", "catalog:backend"],
-      ["@mikro-orm/migrations", "catalog:backend"],
-      ["@mikro-orm/nestjs", "catalog:backend"],
-      ["@mikro-orm/postgresql", "catalog:backend"],
+      ["@mikro-orm/cli", "catalog:mikro"],
+      ["@mikro-orm/core", "catalog:mikro"],
+      ["@mikro-orm/migrations", "catalog:mikro"],
+      ["@mikro-orm/nestjs", "catalog:mikro"],
+      ["@mikro-orm/postgresql", "catalog:mikro"],
       ["dotenv", "catalog:backend"],
     );
   }
