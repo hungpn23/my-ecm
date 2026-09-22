@@ -22,6 +22,7 @@
     "@nestjs/swagger": "catalog:nest",
     "arkenv": "catalog:common",
     "nestjs-pino": "catalog:logging",
+    "nodemailer": "catalog:email",
     "react": "catalog:email",
     "react-email": "catalog:email",
     "reflect-metadata": "catalog:backend",

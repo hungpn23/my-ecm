@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "email": "{{$randomInt}}@gmail.com",
+        "email": "{{$randomEmail}}",
         "password": "12345678"
       }
   auth: inherit

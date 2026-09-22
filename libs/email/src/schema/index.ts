@@ -1,2 +1,2 @@
-export * from "./base-email.schema";
-export * from "./welcome.schema";
+export * from "./send-email.schema";
+export * from "./send-welcome.schema";

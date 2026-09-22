@@ -75,6 +75,7 @@
         "@nestjs/swagger": "catalog:nest",
         "arkenv": "catalog:common",
         "nestjs-pino": "catalog:logging",
+        "nodemailer": "catalog:email",
         "react": "catalog:email",
         "react-email": "catalog:email",
         "reflect-metadata": "catalog:backend",
@@ -209,6 +210,7 @@
       "@react-email/ui": "6.9.5",
       "@types/react": "19.3.0",
       "@types/react-dom": "19.3.0",
+      "nodemailer": "^10.0.10",
       "react": "19.3.0",
       "react-dom": "19.3.0",
       "react-email": "6.9.5",
@@ -1049,6 +1051,8 @@
     "node-addon-api": ["node-addon-api@8.9.2", "", {}, "sha512-VijLXbi3UACN69I0JVXJsX4tjACjNoQDgv2gTF6sx2wWEi8tkSg2eX8p5gSIFi8z2+DL3oHmY6OyKce38SDolg=="],
 
     "node-gyp-build": ["node-gyp-build@4.8.4", "", { "bin": { "node-gyp-build": "bin.js", "node-gyp-build-optional": "optional.js", "node-gyp-build-test": "build-test.js" } }, "sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ=="],
+
+    "nodemailer": ["nodemailer@10.0.10", "", {}, "sha512-He9XskOFms62SyAKkLu8CcGcYHAo+BSHSsORI8s4PJH8qZgZY4L4lDfvyN0twvmbpyG+eGrxpyBlskj9d9rJ8A=="],
 
     "normalize-path": ["normalize-path@3.0.0", "", {}, "sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA=="],
 
