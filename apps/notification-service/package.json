@@ -10,16 +10,24 @@
     "start": "bun src/main.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-sesv2": "catalog:aws",
     "@libs/common": "workspace:*",
     "@libs/core": "workspace:*",
+    "@libs/email": "workspace:*",
     "@nestjs/common": "catalog:backend",
+    "@nestjs/config": "catalog:backend",
     "@nestjs/core": "catalog:backend",
     "@nestjs/microservices": "catalog:backend",
     "@nestjs/platform-express": "catalog:backend",
     "@nestjs/swagger": "catalog:backend",
+    "arkenv": "catalog:common",
     "nestjs-pino": "catalog:backend",
+    "react": "catalog:email",
+    "react-email": "catalog:email",
     "reflect-metadata": "catalog:backend",
     "rxjs": "catalog:backend"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/react": "catalog:email"
+  }
 }

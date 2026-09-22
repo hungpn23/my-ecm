@@ -1,4 +1,4 @@
-import type { SuccessResponse } from "@libs/common";
+import { type SuccessResponse } from "@libs/common";
 import {
   jwtConfig,
   jwtidBy,

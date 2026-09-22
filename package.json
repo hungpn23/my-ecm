@@ -54,6 +54,9 @@
         "react": "19.3.0",
         "react-dom": "19.3.0",
         "react-email": "6.9.5"
+      },
+      "aws": {
+        "@aws-sdk/client-sesv2": "^3.1136.0"
       }
     },
     "packages": [

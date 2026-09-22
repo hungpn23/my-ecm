@@ -2,14 +2,19 @@
   "name": "@libs/email",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "check:types": "tsc",
-    "email:build": "email build -d templates",
-    "email:dev": "email dev -d templates",
-    "email:export": "email export -d templates",
+    "email:build": "email build -d src/templates",
+    "email:dev": "email dev -d src/templates",
+    "email:export": "email export -d src/templates",
     "email:start": "email start"
   },
   "dependencies": {
+    "arktype": "catalog:common",
     "react": "catalog:email",
     "react-dom": "catalog:email",
     "react-email": "catalog:email"
