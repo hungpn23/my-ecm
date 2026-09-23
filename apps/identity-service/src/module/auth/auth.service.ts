@@ -48,7 +48,9 @@ export class AuthService {
 
     await this.em.flush();
 
-    this.kafka.emit("user.created", { value: { email: user.email } });
+    this.kafka.emit("user.created", {
+      value: { email: user.email },
+    });
 
     this.logger.info({ userId: user.id, email: user.email }, "User created");
 
