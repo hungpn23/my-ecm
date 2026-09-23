@@ -47,8 +47,6 @@ services:
     ports:
       - "${KAFKA_PORT}:${KAFKA_PORT}"
     environment:
-      KAFKA_KRAFT_MODE: "true"
-
       CLUSTER_ID: "1L6g7nGhU-eAKfL--X25wo"
       KAFKA_NODE_ID: 1
 
