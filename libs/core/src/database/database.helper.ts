@@ -10,7 +10,7 @@ export function defineDatabaseConfig(config: DatabaseConfig): ReturnType<typeof 
   return defineConfig({
     ...config,
     driver: PostgreSqlDriver,
-    entities: ["src/**/*.entity.ts"],
+    entities: ["src/database/entity/index.ts"],
     extensions: [SeedManager, Migrator],
     seeder: { pathTs: "src/database/seeders" },
     migrations: {
