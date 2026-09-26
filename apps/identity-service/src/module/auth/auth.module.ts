@@ -2,7 +2,7 @@ import { AuthModule as CoreAuthModule, jwtConfig, type JwtConfig } from "@libs/c
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
-import { User } from "@src/database/entity";
+import { OutboxEvent, User } from "@src/database/entity";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { RefreshStrategy } from "./refresh.strategy";
@@ -22,7 +22,7 @@ import { RefreshStrategy } from "./refresh.strategy";
         },
       }),
     }),
-    MikroOrmModule.forFeature([User]),
+    MikroOrmModule.forFeature([User, OutboxEvent]),
   ],
   providers: [AuthService, RefreshStrategy],
   controllers: [AuthController],

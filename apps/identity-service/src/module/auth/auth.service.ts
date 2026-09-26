@@ -2,7 +2,6 @@ import { type SuccessResponse } from "@libs/common";
 import {
   jwtConfig,
   jwtidBy,
-  KafkaService,
   RedisService,
   type AuthenticatedUser,
   type JwtConfig,
@@ -11,7 +10,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { User } from "@src/database/entity";
+import { OutboxEvent, User } from "@src/database/entity";
 import { hash, verify } from "argon2";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
@@ -31,30 +30,34 @@ export class AuthService {
     private readonly jwtConf: JwtConfig,
     @InjectRepository(User)
     private readonly userRepo: EntityRepository<User>,
+    @InjectRepository(OutboxEvent)
+    private readonly outboxRepo: EntityRepository<OutboxEvent>,
     private readonly jwtService: JwtService,
     private readonly redisService: RedisService,
     private readonly em: EntityManager,
-    private readonly kafka: KafkaService,
   ) {}
 
   async signUp({ email, password }: SignUp): Promise<TokenResponse> {
-    let user = await this.userRepo.findOne({ email });
+    const user = await this.em.findOne(User, { email });
     if (user) throw new BadRequestException();
 
-    user = this.userRepo.create({
+    const newUser = this.em.create(User, {
       email,
       password: await hash(password),
     });
 
-    await this.em.flush();
-
-    this.kafka.emit("user.created", {
-      value: { email: user.email },
+    this.outboxRepo.create({
+      aggregateType: "user",
+      aggregateId: newUser.id,
+      eventType: "user.created",
+      payload: { email: newUser.email },
     });
 
-    this.logger.info({ userId: user.id, email: user.email }, "User created");
+    await this.em.flush();
 
-    return await this._createTokenPair({ userId: user.id });
+    this.logger.info({ userId: newUser.id, email: newUser.email }, "User created");
+
+    return await this._createTokenPair({ userId: newUser.id });
   }
 
   async signIn({ email, password }: SignIn): Promise<TokenResponse> {

@@ -81,6 +81,7 @@
     "check:lint": "oxfmt --check && oxlint",
     "check:types": "tsc && turbo check:types",
     "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' '**/.react-email' bun.lock",
+    "debezium:register": "dotenv -e .env -- turbo debezium:register",
     "dev": "dotenv -e .env -- turbo dev",
     "discovery:export": "turbo discovery:export",
     "email:dev": "bun -b --filter @libs/email email:dev",

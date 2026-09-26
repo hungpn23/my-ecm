@@ -30,6 +30,14 @@ services:
     container_name: kafka
     restart: unless-stopped
 
+  kafka-connect:
+    build:
+      context: ..
+      dockerfile: .docker/kafka-connect.Dockerfile
+    image: kafka-connect-debezium:1.0.0
+    container_name: kafka-connect
+    restart: unless-stopped
+
   kafka-ui:
     image: kafbat/kafka-ui:1764f6a
     container_name: kafbat-ui

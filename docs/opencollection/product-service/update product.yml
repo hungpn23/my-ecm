@@ -10,10 +10,7 @@ http:
     type: json
     data: |-
       {
-        "name": "BAN AN GO CAO CAP FRWEEEEEEE",
-        "price": "0.00",
-        "status": "active",
-        "categoryId": "{{category_id}}"
+        "name": "{{$randomCity}}"
       }
   auth: inherit
 
