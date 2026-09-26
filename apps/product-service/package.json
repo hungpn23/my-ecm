@@ -32,7 +32,8 @@
     "dotenv": "catalog:backend",
     "nestjs-pino": "catalog:logging",
     "reflect-metadata": "catalog:backend",
-    "rxjs": "catalog:backend"
+    "rxjs": "catalog:backend",
+    "uuid": "catalog:backend"
   },
   "devDependencies": {}
 }

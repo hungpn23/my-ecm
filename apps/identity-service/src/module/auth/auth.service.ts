@@ -10,7 +10,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { OutboxEvent, User } from "@src/database/entity";
+import { Outbox, User } from "@src/database/entity";
 import { hash, verify } from "argon2";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
@@ -30,8 +30,8 @@ export class AuthService {
     private readonly jwtConf: JwtConfig,
     @InjectRepository(User)
     private readonly userRepo: EntityRepository<User>,
-    @InjectRepository(OutboxEvent)
-    private readonly outboxRepo: EntityRepository<OutboxEvent>,
+    @InjectRepository(Outbox)
+    private readonly outboxRepo: EntityRepository<Outbox>,
     private readonly jwtService: JwtService,
     private readonly redisService: RedisService,
     private readonly em: EntityManager,
@@ -47,10 +47,11 @@ export class AuthService {
     });
 
     this.outboxRepo.create({
-      aggregateType: "user",
+      aggregateType: "User",
       aggregateId: newUser.id,
       eventType: "user.created",
       payload: { email: newUser.email },
+      requestId: this.logger.logger.bindings()["reqId"] ?? v7(),
     });
 
     await this.em.flush();

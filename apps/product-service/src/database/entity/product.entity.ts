@@ -1,10 +1,10 @@
-import { useBaseProps } from "@libs/core";
+import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p } from "@mikro-orm/core";
 import { type ProductStatus } from "@src/module/product/product.schema";
 import { Category } from "./category.entity";
 
 export const ProductSchema = defineEntity({
-  name: "Product",
+  name: AGGREGATE_TYPE.PRODUCT,
   properties: useBaseProps({
     name: p.string(),
     description: p.text().nullable(),

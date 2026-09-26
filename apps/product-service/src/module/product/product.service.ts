@@ -2,7 +2,9 @@ import { deepMerge, type OffsetQuery } from "@libs/common";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, wrap, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Category, OutboxEvent, Product } from "@src/database/entity";
+import { Category, Outbox, Product } from "@src/database/entity";
+import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
+import { v7 } from "uuid";
 import type {
   CreateProduct,
   PaginatedProductResponse,
@@ -13,6 +15,8 @@ import type {
 @Injectable()
 export class ProductService {
   constructor(
+    @InjectPinoLogger(ProductService.name)
+    private readonly logger: PinoLogger,
     private readonly em: EntityManager,
     @InjectRepository(Category)
     private readonly categoryRepo: EntityRepository<Category>,
@@ -29,11 +33,12 @@ export class ProductService {
     const product = this.productRepo.create({ ...rest, category });
     const response = this._toResponse(product);
 
-    this.em.create(OutboxEvent, {
-      aggregateType: "product",
+    this.em.create(Outbox, {
+      aggregateType: "Product",
       aggregateId: product.id,
       eventType: "product.created",
       payload: response,
+      requestId: this.logger.logger.bindings()["reqId"] ?? v7(),
     });
 
     await this.em.flush();
@@ -93,11 +98,12 @@ export class ProductService {
 
     const response = this._toResponse(product);
 
-    this.em.create(OutboxEvent, {
-      aggregateType: "product",
+    this.em.create(Outbox, {
+      aggregateType: "Product",
       aggregateId: product.id,
       eventType: "product.updated",
       payload: response,
+      requestId: this.logger.logger.bindings()["reqId"] ?? v7(),
     });
 
     await this.em.flush();

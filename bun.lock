@@ -108,6 +108,7 @@
         "nestjs-pino": "catalog:logging",
         "reflect-metadata": "catalog:backend",
         "rxjs": "catalog:backend",
+        "uuid": "catalog:backend",
       },
     },
     "libs/common": {

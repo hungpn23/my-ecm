@@ -1,1 +1,1 @@
-export * from "./outbox-event.entity";
+export * from "./outbox.entity";

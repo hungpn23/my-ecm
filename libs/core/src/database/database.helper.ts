@@ -1,4 +1,4 @@
-import type { AnyRecord } from "@libs/common";
+import type { AnyRecord, Uuid } from "@libs/common";
 import { defineConfig, p } from "@mikro-orm/core";
 import { Migrator } from "@mikro-orm/migrations";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
@@ -25,7 +25,8 @@ export function useBaseProps<T extends AnyRecord>(props: T) {
     id: p
       .uuid()
       .primary()
-      .onCreate(() => v7()),
+      .onCreate(() => v7())
+      .$type<Uuid>(),
     ...props,
     createdAt: p.datetime().onCreate(() => new Date()),
     updatedAt: p
