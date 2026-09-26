@@ -11,6 +11,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       # POSTGRES_DB: ${DB_DATABASE}
+    command: ["postgres", "-c", "wal_level=logical"]
     volumes:
       - ${PWD}/.docker/volumes/pg_data:/var/lib/postgresql/data
     networks:
@@ -65,6 +66,33 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     volumes:
       - kafka_data:/var/lib/kafka/data
+    networks:
+      - network
+
+  kafka-connect:
+    extends:
+      file: .docker/compose.base.yml
+      service: kafka-connect
+    ports:
+      - "${KAFKA_CONNECT_PORT}:8083"
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
+      CONNECT_GROUP_ID: my-ecm-connect-group
+      CONNECT_CONFIG_STORAGE_TOPIC: my-ecm.connect.configs
+      CONNECT_OFFSET_STORAGE_TOPIC: my-ecm.connect.offsets
+      CONNECT_STATUS_STORAGE_TOPIC: my-ecm.connect.status
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+      CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
+      CONNECT_PLUGIN_PATH: /usr/share/confluent-hub-components
+    depends_on:
+      - db
+      - kafka
     networks:
       - network
 

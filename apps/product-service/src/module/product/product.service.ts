@@ -2,7 +2,7 @@ import { deepMerge, type OffsetQuery } from "@libs/common";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, wrap, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Category, Product } from "@src/database/entity";
+import { Category, OutboxEvent, Product } from "@src/database/entity";
 import type {
   CreateProduct,
   PaginatedProductResponse,
@@ -27,9 +27,18 @@ export class ProductService {
     if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
 
     const product = this.productRepo.create({ ...rest, category });
+    const response = this._toResponse(product);
+
+    this.em.create(OutboxEvent, {
+      aggregateType: "product",
+      aggregateId: product.id,
+      eventType: "product.created",
+      payload: response,
+    });
+
     await this.em.flush();
 
-    return this._toResponse(product);
+    return response;
   }
 
   async find(query: OffsetQuery): Promise<PaginatedProductResponse> {
@@ -81,9 +90,19 @@ export class ProductService {
     }
 
     this.productRepo.assign(product, data);
+
+    const response = this._toResponse(product);
+
+    this.em.create(OutboxEvent, {
+      aggregateType: "product",
+      aggregateId: product.id,
+      eventType: "product.updated",
+      payload: response,
+    });
+
     await this.em.flush();
 
-    return this._toResponse(product);
+    return response;
   }
 
   async delete(productId: string): Promise<void> {

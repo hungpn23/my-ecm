@@ -22,6 +22,10 @@
     },
     "migration:up": {
       "dependsOn": ["^migration:up"]
+    },
+    "debezium:register": {
+      "dependsOn": ["^debezium:register"],
+      "cache": false
     }
   },
   "globalEnv": [
@@ -50,6 +54,7 @@
     "KAFKA_REBALANCE_TIMEOUT",
     "KAFKA_MAX_WAIT_TIME",
     "KAFKA_UI_PORT",
+    "KAFKA_CONNECT_PORT",
     "KAFKAJS_NO_PARTITIONER_WARNING",
     "AWS_REGION",
     "AWS_ENDPOINT_URL",

@@ -5,10 +5,10 @@ info:
 
 http:
   method: GET
-  url: "{{product}}/categories?page=2&pageSize=10&search="
+  url: "{{product}}/categories?page=1&pageSize=10"
   params:
     - name: page
-      value: "2"
+      value: "1"
       type: query
     - name: pageSize
       value: "10"
@@ -16,6 +16,7 @@ http:
     - name: search
       value: ""
       type: query
+      disabled: true
   auth: inherit
 
 runtime:
