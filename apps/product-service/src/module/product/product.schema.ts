@@ -1,17 +1,18 @@
 import { EntityResponse, NonNegativeDecimal, Paginated, Uuid, Varchar } from "@libs/common";
 import { type } from "arktype";
 
-export const PRODUCT_STATUS = {
-  ACTIVE: "active",
-  INACTIVE: "inactive",
+const PRODUCT_STATUS = {
+  ACTIVE: "ACTIVE",
+  INACTIVE: "INACTIVE",
 } as const;
 const ProductStatus = type.enumerated(...Object.values(PRODUCT_STATUS));
+export type ProductStatus = typeof ProductStatus.infer;
 
 export const CreateProduct = type({
   name: Varchar,
   "description?": "string >= 1",
   price: NonNegativeDecimal,
-  status: ProductStatus.default(PRODUCT_STATUS.ACTIVE),
+  status: ProductStatus.default("ACTIVE"),
   categoryId: Uuid,
 });
 export type CreateProduct = typeof CreateProduct.infer;
