@@ -15,13 +15,16 @@
       "persistent": true
     },
     "discovery:export": {
-      "dependsOn": ["^discovery:export"]
+      "dependsOn": ["^discovery:export"],
+      "cache": false
     },
     "migration:down": {
-      "dependsOn": ["^migration:down"]
+      "dependsOn": ["^migration:down"],
+      "cache": false
     },
     "migration:up": {
-      "dependsOn": ["^migration:up"]
+      "dependsOn": ["^migration:up"],
+      "cache": false
     },
     "debezium:register": {
       "dependsOn": ["^debezium:register"],
