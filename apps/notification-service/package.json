@@ -9,7 +9,7 @@
   "scripts": {
     "build": "bun ../../scripts/build.ts",
     "check:types": "tsc",
-    "dev": "bun --watch src/main.ts",
+    "dev": "bun -b --watch src/main.ts",
     "start": "bun src/main.ts"
   },
   "dependencies": {
