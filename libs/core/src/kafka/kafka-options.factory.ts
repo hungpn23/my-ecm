@@ -6,7 +6,7 @@ import {
 } from "@nestjs/microservices";
 import { logLevel, type LogEntry } from "kafkajs";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
-import { appConfig, type AppConfig } from "../config";
+import { appConfig, type AppConfig } from "#internal/config/index";
 import { KafkaPayloadSerializerService } from "./kafka-payload-serializer.service";
 import { kafkaConfig, type KafkaConfig } from "./kafka.config";
 
