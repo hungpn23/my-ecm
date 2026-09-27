@@ -3,7 +3,7 @@ import { KafkaEvent } from "@libs/core";
 import { Controller } from "@nestjs/common";
 import { Payload } from "@nestjs/microservices";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
-import { EmailService } from "../email/email.service";
+import { EmailService } from "#internal/module/email/email.service";
 
 @Controller()
 export class UserConsumer {

@@ -95,6 +95,12 @@ function toServiceTitle(name: string): string {
 }
 
 function createPackageJson(options: OnboardOptions): string {
+  const packageImports = options.mikroOrm
+    ? {
+        "#internal/*": "./src/*.ts",
+        "#mikro-orm/generated": "./entities.generated.ts",
+      }
+    : { "#internal/*": "./src/*.ts" };
   const scripts = Object.fromEntries([
     ["build", "bun ../../scripts/build.ts"],
     ["check:types", "tsc"],
@@ -138,6 +144,7 @@ function createPackageJson(options: OnboardOptions): string {
       version: "0.0.0",
       private: true,
       type: "module",
+      imports: packageImports,
       scripts,
       dependencies: Object.fromEntries(
         dependencies.sort(([left], [right]) => left.localeCompare(right)),
@@ -149,15 +156,10 @@ function createPackageJson(options: OnboardOptions): string {
   )}\n`;
 }
 
-function createTsConfig(options: OnboardOptions): string {
+function createTsConfig(): string {
   return `{
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "paths": {
-      "@src/*": ["./src/*"]${options.mikroOrm ? ',\n      "@mikro-orm/generated": ["./entities.generated.ts"]' : ""}
-    }
-  },
   "include": ["src/**/*.ts"]
 }\n`;
 }
@@ -257,7 +259,7 @@ function createAppModule(options: OnboardOptions): string {
 ${coreImport}
 ${
   options.mikroOrm
-    ? `import { entities } from "@mikro-orm/generated";
+    ? `import { entities } from "#mikro-orm/generated";
 `
     : ""
 }import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
@@ -300,7 +302,7 @@ function createFiles(options: OnboardOptions): [string, string][] {
       `APP_NAME=${options.name}-service\nAPP_PORT=${options.httpPort}\n${options.mikroOrm ? `\nDB_DATABASE=${options.name}-service\n` : ""}`,
     ],
     ["package.json", createPackageJson(options)],
-    ["tsconfig.json", createTsConfig(options)],
+    ["tsconfig.json", createTsConfig()],
     ["src/main.ts", createMain(options)],
     ["src/app.module.ts", createAppModule(options)],
   ];

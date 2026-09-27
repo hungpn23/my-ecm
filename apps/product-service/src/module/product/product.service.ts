@@ -2,7 +2,7 @@ import { deepMerge, type OffsetQuery } from "@libs/common";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, wrap, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Category, Outbox, Product } from "@src/database/entity";
+import { Category, Outbox, Product } from "#internal/database/entity/index";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
 import type {

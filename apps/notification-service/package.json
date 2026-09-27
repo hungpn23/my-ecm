@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "imports": {
+    "#internal/*": "./src/*.ts"
+  },
   "scripts": {
     "build": "bun ../../scripts/build.ts",
     "check:types": "tsc",

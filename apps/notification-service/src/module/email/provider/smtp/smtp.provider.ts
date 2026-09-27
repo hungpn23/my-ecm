@@ -1,7 +1,7 @@
 import type { SendEmailData } from "@libs/email";
 import { Inject } from "@nestjs/common";
 import { createTransport, type Transporter } from "nodemailer";
-import { AbstractEmailProvider } from "../abstract-email.provider";
+import { AbstractEmailProvider } from "#internal/module/email/provider/abstract-email.provider";
 import { SmtpConfig, smtpConfig } from "./smtp.config";
 
 export class SmtpProvider extends AbstractEmailProvider {

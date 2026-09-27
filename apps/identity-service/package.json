@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "imports": {
+    "#internal/*": "./src/*.ts",
+    "#mikro-orm/generated": "./entities.generated.ts"
+  },
   "scripts": {
     "build": "bun ../../scripts/build.ts",
     "check:types": "tsc",

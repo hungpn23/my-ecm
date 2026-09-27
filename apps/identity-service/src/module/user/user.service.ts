@@ -1,7 +1,7 @@
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { wrap, type EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { User } from "@src/database/entity";
+import { User } from "#internal/database/entity/index";
 import type { UserResponse } from "./user.schema";
 
 @Injectable()

@@ -2,7 +2,7 @@ import { deepMerge, type OffsetQuery } from "@libs/common";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, wrap, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Category } from "@src/database/entity";
+import { Category } from "#internal/database/entity/index";
 import type {
   CategoryResponse,
   CreateCategory,

@@ -1,6 +1,6 @@
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p } from "@mikro-orm/core";
-import { type ProductStatus } from "@src/module/product/product.schema";
+import { type ProductStatus } from "#internal/module/product/product.schema";
 import { Category } from "./category.entity";
 
 export const ProductSchema = defineEntity({

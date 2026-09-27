@@ -2,7 +2,7 @@ import { AuthModule as CoreAuthModule, jwtConfig, type JwtConfig } from "@libs/c
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
-import { Outbox, User } from "@src/database/entity";
+import { Outbox, User } from "#internal/database/entity/index";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { RefreshStrategy } from "./refresh.strategy";

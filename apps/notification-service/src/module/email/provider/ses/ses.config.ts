@@ -1,7 +1,7 @@
 import { AwsConfig } from "@libs/core";
 import { registerAs, type ConfigType } from "@nestjs/config";
 import { createEnv } from "arkenv";
-import { DefaultEmailConfig } from "../../email.schema";
+import { DefaultEmailConfig } from "#internal/module/email/email.schema";
 
 export const SesConfig = DefaultEmailConfig.merge({
   EMAIL_PROVIDER: "'ses'",

@@ -10,7 +10,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { Outbox, User } from "@src/database/entity";
+import { Outbox, User } from "#internal/database/entity/index";
 import { hash, verify } from "argon2";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
