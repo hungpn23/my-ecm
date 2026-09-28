@@ -3,7 +3,13 @@ import { deepMerge, type OffsetQuery } from "@libs/common";
 import { BaseService } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityManager, EntityRepository, wrap, type FilterQuery } from "@mikro-orm/postgresql";
+import {
+  EntityManager,
+  EntityRepository,
+  wrap,
+  type FilterQuery,
+  type Loaded,
+} from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import type {
   CategoryResponse,
@@ -75,7 +81,7 @@ export class CategoryService extends BaseService<Category> {
     this.em.remove(category);
   }
 
-  protected override _toResponse(category: Category): CategoryResponse {
+  protected override _toResponse(category: Category | Loaded<Category>): CategoryResponse {
     return wrap(category).serialize();
   }
 }

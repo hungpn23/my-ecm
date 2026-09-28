@@ -3,7 +3,13 @@ import { deepMerge, type OffsetQuery } from "@libs/common";
 import { BaseService, OutboxService } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityManager, EntityRepository, wrap, type FilterQuery } from "@mikro-orm/postgresql";
+import {
+  EntityManager,
+  EntityRepository,
+  wrap,
+  type FilterQuery,
+  type Loaded,
+} from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import type {
   CreateProduct,
@@ -118,7 +124,7 @@ export class ProductService extends BaseService<Product> {
     this.em.remove(product);
   }
 
-  protected override _toResponse(product: Product): ProductResponse {
+  protected override _toResponse(product: Product | Loaded<Product>): ProductResponse {
     const { category, ...data } = wrap(product).serialize({
       forceObject: true,
     });
