@@ -69,6 +69,7 @@ export class AuthService {
     return await this._createTokenPair({ userId: user.id });
   }
 
+  @Transactional()
   async changePassword(
     userId: string,
     { oldPassword, newPassword }: ChangePassword,
@@ -79,7 +80,6 @@ export class AuthService {
     if (!isCorrectPassword) throw new BadRequestException("Incorrect password");
 
     user.password.set(await hash(newPassword));
-    await this.em.flush();
 
     return { ok: true };
   }

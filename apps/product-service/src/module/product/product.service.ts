@@ -110,16 +110,18 @@ export class ProductService extends BaseService<Product> {
     return response;
   }
 
+  @Transactional()
   async delete(productId: string): Promise<void> {
     const product = await this.productRepo.findOne({ id: productId });
     if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
     this.em.remove(product);
-    await this.em.flush();
   }
 
   protected override _toResponse(product: Product): ProductResponse {
-    const { category, ...data } = wrap(product).toObject();
+    const { category, ...data } = wrap(product).serialize({
+      populate: ["category"],
+    });
 
     return {
       ...data,

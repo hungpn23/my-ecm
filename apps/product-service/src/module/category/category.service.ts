@@ -1,6 +1,7 @@
 import { Category } from "#internal/database/entity/index";
 import { deepMerge, type OffsetQuery } from "@libs/common";
 import { BaseService } from "@libs/core";
+import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, wrap, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
@@ -21,9 +22,9 @@ export class CategoryService extends BaseService<Category> {
     super();
   }
 
+  @Transactional()
   async create(body: CreateCategory): Promise<CategoryResponse> {
     const category = this.categoryRepo.create(body);
-    await this.em.flush();
 
     return this._toResponse(category);
   }
@@ -55,6 +56,7 @@ export class CategoryService extends BaseService<Category> {
     };
   }
 
+  @Transactional()
   async update(categoryId: string, body: UpdateCategory): Promise<CategoryResponse> {
     const category = await this.categoryRepo.findOne({ id: categoryId });
     if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
@@ -65,15 +67,15 @@ export class CategoryService extends BaseService<Category> {
     return this._toResponse(category);
   }
 
+  @Transactional()
   async delete(categoryId: string): Promise<void> {
     const category = await this.categoryRepo.findOne({ id: categoryId });
     if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
 
     this.em.remove(category);
-    await this.em.flush();
   }
 
   protected override _toResponse(category: Category): CategoryResponse {
-    return wrap(category).toObject();
+    return wrap(category).serialize();
   }
 }
