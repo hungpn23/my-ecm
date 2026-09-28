@@ -1,8 +1,9 @@
+import { Category } from "#internal/database/entity/index";
 import { deepMerge, type OffsetQuery } from "@libs/common";
+import { BaseService } from "@libs/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, wrap, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Category } from "#internal/database/entity/index";
 import type {
   CategoryResponse,
   CreateCategory,
@@ -11,12 +12,14 @@ import type {
 } from "./category.schema";
 
 @Injectable()
-export class CategoryService {
+export class CategoryService extends BaseService<Category> {
   constructor(
     private readonly em: EntityManager,
     @InjectRepository(Category)
     private readonly categoryRepo: EntityRepository<Category>,
-  ) {}
+  ) {
+    super();
+  }
 
   async create(body: CreateCategory): Promise<CategoryResponse> {
     const category = this.categoryRepo.create(body);
@@ -70,7 +73,7 @@ export class CategoryService {
     await this.em.flush();
   }
 
-  private _toResponse(category: Category): CategoryResponse {
+  protected override _toResponse(category: Category): CategoryResponse {
     return wrap(category).toObject();
   }
 }

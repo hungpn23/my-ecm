@@ -6,3 +6,4 @@ export const EntityResponse = type({
   createdAt: DateToISOString,
   updatedAt: DateToISOString,
 });
+export type EntityResponse = typeof EntityResponse.inferIn;

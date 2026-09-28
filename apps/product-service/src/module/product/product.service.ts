@@ -1,6 +1,6 @@
 import { Category, Product } from "#internal/database/entity/index";
 import { deepMerge, type OffsetQuery } from "@libs/common";
-import { OutboxService } from "@libs/core";
+import { BaseService, OutboxService } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, wrap, type FilterQuery } from "@mikro-orm/postgresql";
@@ -13,7 +13,7 @@ import type {
 } from "./product.schema";
 
 @Injectable()
-export class ProductService {
+export class ProductService extends BaseService<Product> {
   constructor(
     private readonly em: EntityManager,
     private readonly outboxService: OutboxService,
@@ -21,7 +21,9 @@ export class ProductService {
     private readonly categoryRepo: EntityRepository<Category>,
     @InjectRepository(Product)
     private readonly productRepo: EntityRepository<Product>,
-  ) {}
+  ) {
+    super();
+  }
 
   @Transactional()
   async create(body: CreateProduct): Promise<ProductResponse> {
@@ -116,7 +118,7 @@ export class ProductService {
     await this.em.flush();
   }
 
-  private _toResponse(product: Product): ProductResponse {
+  protected override _toResponse(product: Product): ProductResponse {
     const { category, ...data } = wrap(product).toObject();
 
     return {
