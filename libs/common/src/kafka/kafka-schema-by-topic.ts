@@ -1,5 +1,5 @@
 import type { Type } from "arktype";
-import { KafkaMessageIn, UserCreatedMessage } from "./payload";
+import { KafkaMessageIn, UserCreatedMessage } from "./message";
 import type { KafkaTopics } from "./topic/kafka-topic.schema";
 
 export const KafkaSchemaByTopic = {
@@ -10,6 +10,6 @@ export const KafkaSchemaByTopic = {
   "product.updated": KafkaMessageIn,
 } as const satisfies Record<KafkaTopics, Type>;
 
-export type KafkaPayloadByTopic = {
+export type KafkaMessageByTopic = {
   [KTopic in KafkaTopics]: (typeof KafkaSchemaByTopic)[KTopic]["inferIn"];
 };

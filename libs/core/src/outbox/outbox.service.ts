@@ -1,5 +1,5 @@
 import { Outbox } from "#internal/database/entity/index";
-import { KafkaSchemaByTopic, type KafkaPayloadByTopic, type KafkaTopics } from "@libs/common";
+import { KafkaSchemaByTopic, type KafkaMessageByTopic, type KafkaTopics } from "@libs/common";
 import type { EntityRepository, RequiredEntityData } from "@mikro-orm/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -13,7 +13,7 @@ type CreateOutboxData<KTopic extends KafkaTopics> = Omit<
   "eventType" | "payload" | "requestId"
 > & {
   eventType: KTopic;
-  payload: KafkaPayloadByTopic[NoInfer<KTopic>]["value"];
+  payload: KafkaMessageByTopic[NoInfer<KTopic>]["value"];
 };
 
 @Injectable()

@@ -5,9 +5,9 @@ import { InjectPinoLogger, type PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
 
 @Injectable()
-export class KafkaPayloadSerializerService implements Serializer<KafkaMessageIn, KafkaMessageOut> {
+export class KafkaMessageSerializerService implements Serializer<KafkaMessageIn, KafkaMessageOut> {
   constructor(
-    @InjectPinoLogger(KafkaPayloadSerializerService.name)
+    @InjectPinoLogger(KafkaMessageSerializerService.name)
     private readonly logger: PinoLogger,
   ) {}
 

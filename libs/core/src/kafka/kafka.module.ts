@@ -1,8 +1,8 @@
 import { type DynamicModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { ClientsModule } from "@nestjs/microservices";
+import { KafkaMessageSerializerService } from "./kafka-message-serializer.service";
 import { KafkaOptionsFactory } from "./kafka-options.factory";
-import { KafkaPayloadSerializerService } from "./kafka-payload-serializer.service";
 import { kafkaConfig } from "./kafka.config";
 import { KAFKA_CLIENT } from "./kafka.constant";
 import { KafkaService } from "./kafka.service";
@@ -18,7 +18,7 @@ export class KafkaModule {
             name: KAFKA_CLIENT,
             imports: [ConfigModule.forFeature(kafkaConfig)],
             useClass: KafkaOptionsFactory,
-            extraProviders: [KafkaPayloadSerializerService],
+            extraProviders: [KafkaMessageSerializerService],
           },
         ]),
       ],

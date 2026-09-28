@@ -1,4 +1,4 @@
-import { KafkaSchemaByTopic, type KafkaPayloadByTopic, type KafkaTopics } from "@libs/common";
+import { KafkaSchemaByTopic, type KafkaMessageByTopic, type KafkaTopics } from "@libs/common";
 import { Inject, Injectable } from "@nestjs/common";
 import type { ClientKafkaProxy, KafkaOptions } from "@nestjs/microservices";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
@@ -20,7 +20,7 @@ export class KafkaService {
 
   async emit<KTopic extends KafkaTopics>(
     topic: KTopic,
-    payload: KafkaPayloadByTopic[NoInfer<KTopic>],
+    payload: KafkaMessageByTopic[NoInfer<KTopic>],
   ): Promise<void> {
     const validated = KafkaSchemaByTopic[topic].assert(payload);
 

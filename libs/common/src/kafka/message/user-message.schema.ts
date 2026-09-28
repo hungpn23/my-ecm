@@ -1,5 +1,5 @@
 import { type } from "arktype";
-import { KafkaMessageIn } from "./kafka-payload.schema";
+import { KafkaMessageIn } from "./kafka-message.schema";
 
 export const UserCreatedData = type({
   email: "string.email",

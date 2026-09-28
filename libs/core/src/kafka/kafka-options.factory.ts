@@ -1,3 +1,4 @@
+import { appConfig, type AppConfig } from "#internal/config/index";
 import { Inject, Injectable } from "@nestjs/common";
 import {
   Transport,
@@ -6,8 +7,7 @@ import {
 } from "@nestjs/microservices";
 import { logLevel, type LogEntry } from "kafkajs";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
-import { appConfig, type AppConfig } from "#internal/config/index";
-import { KafkaPayloadSerializerService } from "./kafka-payload-serializer.service";
+import { KafkaMessageSerializerService } from "./kafka-message-serializer.service";
 import { kafkaConfig, type KafkaConfig } from "./kafka.config";
 
 @Injectable()
@@ -19,7 +19,7 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
     private readonly config: KafkaConfig,
     @Inject(appConfig.KEY)
     private readonly appConf: AppConfig,
-    private readonly serializer: KafkaPayloadSerializerService,
+    private readonly serializer: KafkaMessageSerializerService,
   ) {}
 
   createClientOptions(): KafkaOptions {

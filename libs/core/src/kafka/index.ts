@@ -1,5 +1,5 @@
+export * from "./kafka-message-serializer.service";
 export * from "./kafka-options.factory";
-export * from "./kafka-payload-serializer.service";
 export * from "./kafka.config";
 export * from "./kafka.constant";
 export * from "./kafka.decorator";
