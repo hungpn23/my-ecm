@@ -91,7 +91,7 @@
     "migration:up": "turbo migration:up",
     "onboard:service": "bun scripts/onboard:service.ts",
     "prepare": "bun .husky/install.mjs",
-    "setup": "bun scripts/setup.ts && bun i"
+    "setup": "bun scripts/setup.ts && bun debezium:register && bun i"
   },
   "dependencies": {
     "dotenv-cli": "catalog:backend"
