@@ -5,7 +5,7 @@ export const UserSchema = defineEntity({
   name: AGGREGATE_TYPE.USER,
   properties: useBaseProps({
     email: p.string().unique(),
-    password: p.string().lazy().ref(),
+    password: p.string().lazy().ref().hidden(),
   }),
 });
 
