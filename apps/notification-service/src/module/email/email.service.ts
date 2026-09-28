@@ -3,13 +3,13 @@ import { Injectable } from "@nestjs/common";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { createElement } from "react";
 import { render } from "react-email";
-import { AbstractEmailProvider } from "./provider/abstract-email.provider";
+import { EmailProvider } from "./provider/email-provider.abstract";
 
 @Injectable()
 export class EmailService {
   constructor(
     @InjectPinoLogger(EmailService.name) private readonly logger: PinoLogger,
-    private readonly provider: AbstractEmailProvider,
+    private readonly provider: EmailProvider,
   ) {}
 
   async sendWelcomeEmail(data: SendWelcomeEmailData) {

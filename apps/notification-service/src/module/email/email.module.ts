@@ -2,13 +2,13 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { emailConfig, type EmailConfig } from "./email.config";
 import { EmailService } from "./email.service";
-import { AbstractEmailProvider, SesProvider, SmtpProvider } from "./provider";
+import { EmailProvider, SesProvider, SmtpProvider } from "./provider";
 
 @Module({
   imports: [ConfigModule.forFeature(emailConfig)],
   providers: [
     {
-      provide: AbstractEmailProvider,
+      provide: EmailProvider,
       inject: [emailConfig.KEY],
       useFactory: (config: EmailConfig) => {
         switch (config.EMAIL_PROVIDER) {

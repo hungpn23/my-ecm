@@ -1,10 +1,10 @@
+import { EmailProvider } from "#internal/module/email/provider/email-provider.abstract";
 import type { SendEmailData } from "@libs/email";
 import { Inject } from "@nestjs/common";
 import { createTransport, type Transporter } from "nodemailer";
-import { AbstractEmailProvider } from "#internal/module/email/provider/abstract-email.provider";
 import { SmtpConfig, smtpConfig } from "./smtp.config";
 
-export class SmtpProvider extends AbstractEmailProvider {
+export class SmtpProvider extends EmailProvider {
   client: Transporter;
   from: string;
 

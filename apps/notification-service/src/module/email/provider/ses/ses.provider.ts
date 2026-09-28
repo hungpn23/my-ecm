@@ -1,10 +1,10 @@
+import { EmailProvider } from "#internal/module/email/provider/email-provider.abstract";
 import { SendEmailCommand, SESv2Client } from "@aws-sdk/client-sesv2";
 import type { SendEmailData } from "@libs/email";
 import { Inject } from "@nestjs/common";
-import { AbstractEmailProvider } from "#internal/module/email/provider/abstract-email.provider";
 import { sesConfig, SesConfig } from "./ses.config";
 
-export class SesProvider extends AbstractEmailProvider {
+export class SesProvider extends EmailProvider {
   client: SESv2Client;
   from: string;
 
