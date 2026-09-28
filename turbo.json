@@ -26,6 +26,10 @@
       "dependsOn": ["^migration:up"],
       "cache": false
     },
+    "orm:debug": {
+      "dependsOn": ["^orm:debug"],
+      "cache": false
+    },
     "debezium:register": {
       "dependsOn": ["^debezium:register"],
       "cache": false

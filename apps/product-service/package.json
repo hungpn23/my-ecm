@@ -11,10 +11,11 @@
     "build": "bun ../../scripts/build.ts",
     "check:types": "tsc",
     "debezium:register": "bun ../../scripts/register-debezium.ts",
-    "dev": "bun -b --watch src/main.ts",
-    "discovery:export": "bun -b mikro-orm discovery:export",
-    "migration:down": "bun -b mikro-orm migration:down",
-    "migration:up": "bun -b mikro-orm migration:up",
+    "dev": "bun --watch src/main.ts",
+    "discovery:export": "bun mikro-orm discovery:export",
+    "migration:down": "bun mikro-orm migration:down",
+    "migration:up": "bun mikro-orm migration:up",
+    "orm:debug": "bun mikro-orm debug",
     "start": "bun src/main.ts"
   },
   "dependencies": {

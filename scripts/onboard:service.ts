@@ -104,12 +104,13 @@ function createPackageJson(options: OnboardOptions): string {
   const scripts = Object.fromEntries([
     ["build", "bun ../../scripts/build.ts"],
     ["check:types", "tsc"],
-    ["dev", "bun -b --watch src/main.ts"],
+    ["dev", "bun --watch src/main.ts"],
     ...(options.mikroOrm
       ? [
-          ["discovery:export", "bun -b mikro-orm discovery:export"],
-          ["migration:down", "bun -b mikro-orm migration:down"],
-          ["migration:up", "bun -b mikro-orm migration:up"],
+          ["discovery:export", "bun mikro-orm discovery:export"],
+          ["migration:down", "bun mikro-orm migration:down"],
+          ["migration:up", "bun mikro-orm migration:up"],
+          ["orm:debug", "bun mikro-orm debug"],
         ]
       : []),
     ["start", "bun src/main.ts"],
