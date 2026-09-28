@@ -120,7 +120,7 @@ export class ProductService extends BaseService<Product> {
 
   protected override _toResponse(product: Product): ProductResponse {
     const { category, ...data } = wrap(product).serialize({
-      populate: ["category"],
+      forceObject: true,
     });
 
     return {
