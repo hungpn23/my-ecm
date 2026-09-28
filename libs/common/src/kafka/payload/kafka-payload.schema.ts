@@ -1,7 +1,7 @@
-import { type } from "arktype";
 import { AnyRecord } from "#internal/common.schema";
+import { type } from "arktype";
 
-export const KafkaPayload = type({
+export const KafkaMessageIn = type({
   "key?": AnyRecord.pipe((k) => JSON.stringify(k)),
   value: AnyRecord.pipe((v) => JSON.stringify(v)),
   "headers?": AnyRecord.pipe((h) => {
@@ -14,5 +14,5 @@ export const KafkaPayload = type({
     return result;
   }),
 });
-export type KafkaPayload = typeof KafkaPayload.inferIn;
-export type KafkaMessage = typeof KafkaPayload.infer;
+export type KafkaMessageIn = typeof KafkaMessageIn.inferIn;
+export type KafkaMessageOut = typeof KafkaMessageIn.infer;
