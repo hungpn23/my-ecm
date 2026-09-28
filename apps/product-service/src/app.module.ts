@@ -1,3 +1,4 @@
+import { entities } from "#mikro-orm/generated";
 import { ArktypeValidationPipe } from "@libs/common";
 import {
   AuthModule,
@@ -6,9 +7,9 @@ import {
   JwtGuard,
   KafkaModule,
   LoggerModule,
+  OutboxModule,
   RedisModule,
 } from "@libs/core";
-import { entities } from "#mikro-orm/generated";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { CategoryModule } from "./module/category/category.module";
@@ -21,6 +22,7 @@ import { ProductModule } from "./module/product/product.module";
     LoggerModule.forRoot(),
     RedisModule.forRoot(),
     KafkaModule.forRoot(),
+    OutboxModule,
     AuthModule,
     CategoryModule,
     ProductModule,

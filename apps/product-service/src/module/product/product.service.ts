@@ -1,10 +1,10 @@
+import { Category, Product } from "#internal/database/entity/index";
 import { deepMerge, type OffsetQuery } from "@libs/common";
+import { OutboxService } from "@libs/core";
+import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, wrap, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Category, Outbox, Product } from "#internal/database/entity/index";
-import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
-import { v7 } from "uuid";
 import type {
   CreateProduct,
   PaginatedProductResponse,
@@ -15,15 +15,15 @@ import type {
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectPinoLogger(ProductService.name)
-    private readonly logger: PinoLogger,
     private readonly em: EntityManager,
+    private readonly outboxService: OutboxService,
     @InjectRepository(Category)
     private readonly categoryRepo: EntityRepository<Category>,
     @InjectRepository(Product)
     private readonly productRepo: EntityRepository<Product>,
   ) {}
 
+  @Transactional()
   async create(body: CreateProduct): Promise<ProductResponse> {
     const { categoryId, ...rest } = body;
 
@@ -33,15 +33,12 @@ export class ProductService {
     const product = this.productRepo.create({ ...rest, category });
     const response = this._toResponse(product);
 
-    this.em.create(Outbox, {
+    await this.outboxService.createAndFlush({
       aggregateType: "Product",
       aggregateId: product.id,
       eventType: "product.created",
       payload: response,
-      requestId: this.logger.logger.bindings()["reqId"] ?? v7(),
     });
-
-    await this.em.flush();
 
     return response;
   }
@@ -81,6 +78,7 @@ export class ProductService {
     return this._toResponse(product);
   }
 
+  @Transactional()
   async update(productId: string, body: UpdateProduct): Promise<ProductResponse> {
     const product = await this.productRepo.findOne({ id: productId }, { populate: ["category"] });
     if (!product) throw new NotFoundException(`Product ${productId} not found`);
@@ -96,17 +94,16 @@ export class ProductService {
 
     this.productRepo.assign(product, data);
 
+    await this.em.flush();
+
     const response = this._toResponse(product);
 
-    this.em.create(Outbox, {
+    await this.outboxService.createAndFlush({
       aggregateType: "Product",
       aggregateId: product.id,
       eventType: "product.updated",
       payload: response,
-      requestId: this.logger.logger.bindings()["reqId"] ?? v7(),
     });
-
-    await this.em.flush();
 
     return response;
   }

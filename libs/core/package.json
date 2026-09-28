@@ -16,6 +16,7 @@
   "dependencies": {
     "@libs/common": "workspace:*",
     "@mikro-orm/core": "catalog:mikro",
+    "@mikro-orm/decorators": "catalog:mikro",
     "@mikro-orm/migrations": "catalog:mikro",
     "@mikro-orm/nestjs": "catalog:mikro",
     "@mikro-orm/postgresql": "catalog:mikro",

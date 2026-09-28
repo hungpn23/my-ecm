@@ -1,16 +1,18 @@
+import { User } from "#internal/database/entity/index";
 import { type SuccessResponse } from "@libs/common";
 import {
   jwtConfig,
   jwtidBy,
+  OutboxService,
   RedisService,
   type AuthenticatedUser,
   type JwtConfig,
 } from "@libs/core";
+import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { Outbox, User } from "#internal/database/entity/index";
 import { hash, verify } from "argon2";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
@@ -30,13 +32,13 @@ export class AuthService {
     private readonly jwtConf: JwtConfig,
     @InjectRepository(User)
     private readonly userRepo: EntityRepository<User>,
-    @InjectRepository(Outbox)
-    private readonly outboxRepo: EntityRepository<Outbox>,
+    private readonly outboxService: OutboxService,
     private readonly jwtService: JwtService,
     private readonly redisService: RedisService,
     private readonly em: EntityManager,
   ) {}
 
+  @Transactional()
   async signUp({ email, password }: SignUp): Promise<TokenResponse> {
     const user = await this.em.findOne(User, { email });
     if (user) throw new BadRequestException();
@@ -46,15 +48,12 @@ export class AuthService {
       password: await hash(password),
     });
 
-    this.outboxRepo.create({
+    await this.outboxService.createAndFlush({
       aggregateType: "User",
       aggregateId: newUser.id,
       eventType: "user.created",
       payload: { email: newUser.email },
-      requestId: this.logger.logger.bindings()["reqId"] ?? v7(),
     });
-
-    await this.em.flush();
 
     this.logger.info({ userId: newUser.id, email: newUser.email }, "User created");
 
