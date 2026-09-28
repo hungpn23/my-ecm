@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "name": "DO NOI THAT CAO CAP"
+        "name": "{{$randomBankAccountName}}"
       }
   auth: inherit
 

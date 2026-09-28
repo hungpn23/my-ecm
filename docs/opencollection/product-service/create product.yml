@@ -13,7 +13,7 @@ http:
         "name": "BAN AN GO",
         "description": "Ban an 4 cho ngoi",
         "price": "1250000.00",
-        "status": "active",
+        "status": "ACTIVE",
         "categoryId": "{{category_id}}"
       }
   auth: inherit
