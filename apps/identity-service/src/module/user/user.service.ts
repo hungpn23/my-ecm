@@ -1,7 +1,7 @@
+import { User } from "#internal/database/entity/index";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { wrap, type EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { User } from "#internal/database/entity/index";
 import type { UserResponse } from "./user.schema";
 
 @Injectable()
@@ -15,6 +15,6 @@ export class UserService {
     const user = await this.userRepo.findOne({ id: userId });
     if (!user) throw new NotFoundException();
 
-    return wrap(user).toObject();
+    return wrap(user).serialize();
   }
 }
