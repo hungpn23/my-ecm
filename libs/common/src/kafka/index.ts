@@ -1,3 +1,3 @@
-export * from "./kafka-schema-by-topic";
+export * from "./kafka-message-by-topic";
 export * from "./message";
 export * from "./topic";
