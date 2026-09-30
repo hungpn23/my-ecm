@@ -82,7 +82,6 @@
     "check:lint": "oxfmt --check && oxlint",
     "check:types": "tsc && turbo check:types",
     "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' '**/.react-email' bun.lock",
-    "debezium:register": "dotenv -e .env -- turbo debezium:register",
     "dev": "dotenv -e .env -- turbo dev",
     "discovery:export": "turbo discovery:export",
     "email:dev": "bun --filter @libs/email email:dev",
@@ -92,7 +91,8 @@
     "onboard:service": "bun scripts/onboard:service.ts",
     "orm:debug": "turbo orm:debug",
     "prepare": "bun .husky/install.mjs",
-    "setup": "bun scripts/setup.ts && bun debezium:register && bun i"
+    "register:debezium": "dotenv -e .env -- turbo register:debezium",
+    "setup": "bun scripts/setup.ts && bun register:debezium && bun i"
   },
   "dependencies": {
     "dotenv-cli": "catalog:backend"
