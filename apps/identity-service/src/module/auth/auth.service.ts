@@ -1,6 +1,8 @@
 import { User } from "#internal/database/entity/index";
-import { type SuccessResponse } from "@libs/common";
+import { Uuid, type AllOrNever, type SuccessResponse } from "@libs/common";
 import {
+  AuthenticatedSeller,
+  isSeller,
   jwtConfig,
   jwtidBy,
   OutboxService,
@@ -18,9 +20,9 @@ import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
 import type { ChangePassword, SignIn, SignUp, TokenResponse } from "./auth.schema";
 
-type CreateTokenPairOptions = {
-  userId: string;
-  sessionId?: string;
+type GenerateToken = AllOrNever<AuthenticatedSeller, "shopId" | "shopRole"> & {
+  userId: Uuid;
+  sessionId?: Uuid;
 };
 
 @Injectable()
@@ -57,16 +59,27 @@ export class AuthService {
 
     this.logger.info({ userId: newUser.id, email: newUser.email }, "User created");
 
-    return await this._createTokenPair({ userId: newUser.id });
+    return await this.generateToken({ userId: newUser.id });
   }
 
   async signIn({ email, password }: SignIn): Promise<TokenResponse> {
-    const user = await this.userRepo.findOne({ email }, { fields: ["password"] });
+    const user = await this.userRepo.findOne({ email });
 
-    const isCorrectPassword = user && (await verify(user.password.get(), password));
+    if (!user) throw new BadRequestException("Invalid credentials");
+
+    const hashedPassword = await user.password.loadOrFail();
+    const isCorrectPassword = await verify(hashedPassword, password);
     if (!isCorrectPassword) throw new BadRequestException("Invalid credentials");
 
-    return await this._createTokenPair({ userId: user.id });
+    if (user.shop?.id && user.shopRole) {
+      return await this.generateToken({
+        userId: user.id,
+        shopId: user.shop.id,
+        shopRole: user.shopRole,
+      });
+    }
+
+    return await this.generateToken({ userId: user.id });
   }
 
   @Transactional()
@@ -91,24 +104,44 @@ export class AuthService {
     return { ok: true };
   }
 
-  async refreshToken({ userId, sessionId }: AuthenticatedUser): Promise<TokenResponse> {
-    return await this._createTokenPair({ userId, sessionId });
+  async refreshToken(user: AuthenticatedUser): Promise<TokenResponse> {
+    if (isSeller(user)) return await this.generateToken(user);
+    return await this.generateToken(user);
   }
 
-  private async _createTokenPair({
-    userId,
-    sessionId = v7(),
-  }: CreateTokenPairOptions): Promise<TokenResponse> {
-    const accessPayload: AuthenticatedUser = {
+  async generateToken(options: GenerateToken): Promise<TokenResponse> {
+    const { userId, sessionId = v7(), shopId, shopRole } = options;
+    const basePayload = {
       userId,
       sessionId,
-      jwtKind: "ACCESS_TOKEN",
     };
 
-    const refreshPayload: AuthenticatedUser = {
-      ...accessPayload,
-      jwtKind: "REFRESH_TOKEN",
-    };
+    let accessPayload: AuthenticatedUser | AuthenticatedSeller;
+    let refreshPayload: AuthenticatedUser | AuthenticatedSeller;
+
+    if (shopId && shopRole) {
+      accessPayload = {
+        ...basePayload,
+        shopId,
+        shopRole,
+        jwtKind: "ACCESS_TOKEN",
+      } satisfies AuthenticatedSeller;
+
+      refreshPayload = {
+        ...accessPayload,
+        jwtKind: "REFRESH_TOKEN",
+      } satisfies AuthenticatedSeller;
+    } else {
+      accessPayload = {
+        ...basePayload,
+        jwtKind: "ACCESS_TOKEN",
+      } satisfies AuthenticatedUser;
+
+      refreshPayload = {
+        ...basePayload,
+        jwtKind: "REFRESH_TOKEN",
+      } satisfies AuthenticatedUser;
+    }
 
     const jwtid = v7();
 

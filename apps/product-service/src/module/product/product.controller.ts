@@ -1,9 +1,10 @@
 import { Endpoint, OffsetQuery, Uuid } from "@libs/common";
+import { Seller } from "@libs/core";
 import { Body, Controller, Param, Query } from "@nestjs/common";
 import {
   CreateProduct,
   PaginatedProductResponse,
-  ProductResponse,
+  ProductDetailResponse,
   UpdateProduct,
 } from "./product.schema";
 import { ProductService } from "./product.service";
@@ -12,37 +13,48 @@ import { ProductService } from "./product.service";
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Endpoint("POST", { request: CreateProduct, response: ProductResponse })
-  async create(@Body({ schema: CreateProduct }) body: CreateProduct): Promise<ProductResponse> {
-    return await this.productService.create(body);
+  @Endpoint("POST", { request: CreateProduct, response: ProductDetailResponse })
+  async create(
+    @Seller("shopId") shopId: Uuid,
+    @Body({ schema: CreateProduct }) body: CreateProduct,
+  ): Promise<ProductDetailResponse> {
+    return await this.productService.create(shopId, body);
   }
 
   @Endpoint("GET", { query: OffsetQuery, response: PaginatedProductResponse })
   async find(
+    @Seller("shopId") shopId: Uuid,
     @Query({ schema: OffsetQuery }) query: OffsetQuery,
   ): Promise<PaginatedProductResponse> {
-    return await this.productService.find(query);
+    return await this.productService.find(shopId, query);
   }
 
-  @Endpoint("GET", { path: ":productId", response: ProductResponse })
-  async findOne(@Param("productId", { schema: Uuid }) id: string): Promise<ProductResponse> {
-    return await this.productService.findOne(id);
+  @Endpoint("GET", { path: ":productId", response: ProductDetailResponse })
+  async findOne(
+    @Seller("shopId") shopId: Uuid,
+    @Param("productId", { schema: Uuid }) productId: Uuid,
+  ): Promise<ProductDetailResponse> {
+    return await this.productService.findOne(shopId, productId);
   }
 
   @Endpoint("PATCH", {
     path: ":productId",
     request: UpdateProduct,
-    response: ProductResponse,
+    response: ProductDetailResponse,
   })
   async update(
-    @Param("productId", { schema: Uuid }) productId: string,
+    @Seller("shopId") shopId: Uuid,
+    @Param("productId", { schema: Uuid }) productId: Uuid,
     @Body({ schema: UpdateProduct }) body: UpdateProduct,
-  ): Promise<ProductResponse> {
-    return await this.productService.update(productId, body);
+  ): Promise<ProductDetailResponse> {
+    return await this.productService.update(shopId, productId, body);
   }
 
   @Endpoint("DELETE", { path: ":productId" })
-  async delete(@Param("productId", { schema: Uuid }) productId: string): Promise<void> {
-    await this.productService.delete(productId);
+  async delete(
+    @Seller("shopId") shopId: Uuid,
+    @Param("productId", { schema: Uuid }) productId: Uuid,
+  ): Promise<void> {
+    await this.productService.delete(shopId, productId);
   }
 }

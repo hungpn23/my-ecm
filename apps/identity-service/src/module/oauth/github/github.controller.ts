@@ -1,7 +1,5 @@
 import { Endpoint } from "@libs/common";
-import { User } from "@libs/core";
 import { Controller, UseGuards } from "@nestjs/common";
-import type { Profile } from "passport-github2";
 import { GithubGuard } from "./github.guard";
 
 @UseGuards(GithubGuard)
@@ -11,7 +9,7 @@ export class GithubController {
   async login() {}
 
   @Endpoint("GET", { path: "callback", isPublic: true })
-  callback(@User<Profile>() _profile: Profile) {
+  callback() {
     return {
       ok: true,
       message: "User information from github",

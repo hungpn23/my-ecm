@@ -1,5 +1,5 @@
 import { Category, Product } from "#internal/database/entity/index";
-import { deepMerge, type OffsetQuery } from "@libs/common";
+import { deepMerge, Uuid, type OffsetQuery } from "@libs/common";
 import { BaseService, OutboxService } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -14,6 +14,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import type {
   CreateProduct,
   PaginatedProductResponse,
+  ProductDetailResponse,
   ProductResponse,
   UpdateProduct,
 } from "./product.schema";
@@ -32,14 +33,20 @@ export class ProductService extends BaseService<Product> {
   }
 
   @Transactional()
-  async create(body: CreateProduct): Promise<ProductResponse> {
+  async create(shopId: Uuid, body: CreateProduct): Promise<ProductDetailResponse> {
     const { categoryId, ...rest } = body;
 
     const category = await this.categoryRepo.findOne({ id: categoryId });
     if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
 
-    const product = this.productRepo.create({ ...rest, category });
-    const response = this._toResponse(product);
+    const newProduct = this.productRepo.create({
+      ...rest,
+      description: rest.description,
+      category,
+      shopId,
+    });
+    const product = await this.em.populate(newProduct, ["category", "description"]);
+    const response = this._toDetailResponse(product);
 
     await this.outboxService.createAndFlush({
       aggregateType: "Product",
@@ -51,10 +58,10 @@ export class ProductService extends BaseService<Product> {
     return response;
   }
 
-  async find(query: OffsetQuery): Promise<PaginatedProductResponse> {
+  async find(shopId: Uuid, query: OffsetQuery): Promise<PaginatedProductResponse> {
     const { page, pageSize, search } = query;
 
-    let where: FilterQuery<Product> = {};
+    let where: FilterQuery<Product> = { shopId };
     if (search) {
       where = deepMerge(where, {
         $or: [{ name: { $ilike: `%${search}%` } }],
@@ -65,7 +72,7 @@ export class ProductService extends BaseService<Product> {
       populate: ["category"],
       limit: pageSize,
       offset: (page - 1) * pageSize,
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: "DESC" },
     });
 
     return {
@@ -79,16 +86,22 @@ export class ProductService extends BaseService<Product> {
     };
   }
 
-  async findOne(productId: string): Promise<ProductResponse> {
-    const product = await this.productRepo.findOne({ id: productId }, { populate: ["category"] });
+  async findOne(shopId: Uuid, productId: Uuid): Promise<ProductDetailResponse> {
+    const product = await this.productRepo.findOne(
+      { id: productId, shopId },
+      { populate: ["category", "description"] },
+    );
     if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
-    return this._toResponse(product);
+    return this._toDetailResponse(product);
   }
 
   @Transactional()
-  async update(productId: string, body: UpdateProduct): Promise<ProductResponse> {
-    const product = await this.productRepo.findOne({ id: productId }, { populate: ["category"] });
+  async update(shopId: Uuid, productId: Uuid, body: UpdateProduct): Promise<ProductDetailResponse> {
+    const product = await this.productRepo.findOne(
+      { id: productId, shopId },
+      { populate: ["category", "description"] },
+    );
     if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
     const { categoryId, ...data } = body;
@@ -97,14 +110,14 @@ export class ProductService extends BaseService<Product> {
       const category = await this.categoryRepo.findOne({ id: categoryId });
       if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
 
-      product.category = category;
+      this.productRepo.assign(product, { category });
     }
 
     this.productRepo.assign(product, data);
 
     await this.em.flush();
 
-    const response = this._toResponse(product);
+    const response = this._toDetailResponse(product);
 
     await this.outboxService.createAndFlush({
       aggregateType: "Product",
@@ -117,21 +130,34 @@ export class ProductService extends BaseService<Product> {
   }
 
   @Transactional()
-  async delete(productId: string): Promise<void> {
-    const product = await this.productRepo.findOne({ id: productId });
+  async delete(shopId: Uuid, productId: Uuid): Promise<void> {
+    const product = await this.productRepo.findOne({ id: productId, shopId });
     if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
     this.em.remove(product);
   }
 
-  protected override _toResponse(product: Product | Loaded<Product>): ProductResponse {
+  protected override _toResponse(product: Loaded<Product, "category">): ProductResponse {
     const { category, ...data } = wrap(product).serialize({
       forceObject: true,
     });
 
     return {
       ...data,
-      description: data.description ?? null,
+      categoryId: category.id,
+    };
+  }
+
+  private _toDetailResponse(
+    product: Loaded<Product, "description" | "category">,
+  ): ProductDetailResponse {
+    const { category, description, ...data } = wrap(product).serialize({
+      forceObject: true,
+    });
+
+    return {
+      ...data,
+      description: description ?? null,
       categoryId: category.id,
     };
   }

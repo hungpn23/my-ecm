@@ -1,0 +1,23 @@
+import {
+  type CanActivate,
+  type ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from "@nestjs/common";
+import type { AuthenticatedUser, AuthenticatedUserRequest } from "./auth.schema";
+import { isSeller } from "./seller.helper";
+
+@Injectable()
+export class SellerGuard implements CanActivate {
+  constructor() {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const request = context
+      .switchToHttp()
+      .getRequest<AuthenticatedUserRequest<AuthenticatedUser>>();
+
+    if (!isSeller(request.user)) throw new ForbiddenException();
+
+    return true;
+  }
+}

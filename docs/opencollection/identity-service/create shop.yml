@@ -1,17 +1,16 @@
 info:
-  name: update product
+  name: create shop
   type: http
-  seq: 8
+  seq: 11
 
 http:
-  method: PATCH
-  url: "{{product}}/products/{{product_id}}"
+  method: POST
+  url: "{{identity}}/shops"
   body:
     type: json
     data: |-
       {
-        "name": "{{$randomCity}}",
-        "categoryId": "{{category_id}}"
+        "name": "{{$randomCity}}"
       }
   auth: inherit
 
@@ -21,7 +20,7 @@ runtime:
       code: |-
         const body = res.getBody()
 
-        if (body.id) bru.setEnvVar('product_id', body.id)
+        if (body.id) bru.setEnvVar('shop_id', body.id)
 
 settings:
   encodeUrl: true

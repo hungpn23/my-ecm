@@ -9,6 +9,7 @@ import {
   LoggerModule,
   OutboxModule,
   RedisModule,
+  SellerGuard,
 } from "@libs/core";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
@@ -31,6 +32,10 @@ import { ProductModule } from "./module/product/product.module";
     {
       provide: APP_GUARD,
       useClass: JwtGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: SellerGuard,
     },
     {
       provide: APP_PIPE,

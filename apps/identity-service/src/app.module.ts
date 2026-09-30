@@ -17,6 +17,7 @@ import { GithubEnv } from "./module/oauth/github/github.config";
 import { GithubModule } from "./module/oauth/github/github.module";
 import { GoogleEnv } from "./module/oauth/google/google.config";
 import { GoogleModule } from "./module/oauth/google/google.module";
+import { ShopModule } from "./module/shop/shop.module";
 import { UserModule } from "./module/user/user.module";
 
 @Module({
@@ -28,6 +29,7 @@ import { UserModule } from "./module/user/user.module";
     KafkaModule.forRoot(),
     OutboxModule,
     AuthModule,
+    ShopModule,
     ConditionalModule.registerWhen(GoogleModule, GoogleEnv.allows, {
       debug: false,
     }),

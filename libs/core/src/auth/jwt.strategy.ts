@@ -1,7 +1,7 @@
+import { jwtidBy, RedisService } from "#internal/redis/index";
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { jwtidBy, RedisService } from "#internal/redis/index";
 import { PASSPORT_STRATEGY } from "./auth.constant";
 import type { AuthenticatedUser } from "./auth.schema";
 import { jwtConfig, type JwtConfig } from "./jwt.config";

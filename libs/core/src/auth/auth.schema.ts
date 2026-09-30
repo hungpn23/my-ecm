@@ -1,3 +1,4 @@
+import { Uuid } from "@libs/common";
 import { type } from "arktype";
 import type { Request } from "express";
 
@@ -20,12 +21,27 @@ export const JwtPayload = type({
 }).partial();
 export type JwtPayload = typeof JwtPayload.infer;
 
+export const SHOP_ROLE = ["OWNER", "ADMIN", "STAFF"] as const;
+export const ShopRole = type.enumerated(...SHOP_ROLE);
+export type ShopRole = typeof ShopRole.infer;
+
 export const AuthenticatedUser = type({
-  userId: "string",
-  sessionId: "string",
+  userId: Uuid,
+  sessionId: Uuid,
   jwtKind: JwtKind,
 }).merge(JwtPayload);
 export type AuthenticatedUser = typeof AuthenticatedUser.infer;
-export type AuthenticatedRequest<U extends object> = Omit<Request, "user"> & {
+
+export const AuthenticatedSeller = AuthenticatedUser.merge({
+  shopId: Uuid,
+  shopRole: ShopRole,
+});
+export type AuthenticatedSeller = typeof AuthenticatedSeller.infer;
+
+export type AuthenticatedUserRequest<U extends AuthenticatedUser> = Omit<Request, "user"> & {
   user: U;
+};
+
+export type AuthenticatedSellerRequest<S extends AuthenticatedSeller> = Omit<Request, "user"> & {
+  user: S;
 };

@@ -2,6 +2,7 @@ import { type } from "arktype";
 
 export const AGGREGATE_TYPE = {
   USER: "User",
+  SHOP: "Shop",
   PRODUCT: "Product",
   CATEGORY: "Category",
   OUTBOX: "Outbox",

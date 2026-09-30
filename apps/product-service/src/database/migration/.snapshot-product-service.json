@@ -368,6 +368,23 @@
           "enumItems": [],
           "mappedType": "decimal"
         },
+        "shop_id": {
+          "name": "shop_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
         "status": {
           "name": "status",
           "type": "varchar(255)",
