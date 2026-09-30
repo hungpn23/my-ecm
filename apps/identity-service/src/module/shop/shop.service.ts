@@ -62,7 +62,9 @@ export class ShopService extends BaseService<Shop> {
     };
   }
 
-  private _toDetailResponse(shop: Loaded<Shop, "description" | "owner">): ShopDetailResponse {
+  protected override _toDetailResponse(
+    shop: Loaded<Shop, "description" | "owner">,
+  ): ShopDetailResponse {
     const { owner, description, ...data } = wrap(shop).serialize({
       forceObject: true,
     });

@@ -81,7 +81,11 @@ export class CategoryService extends BaseService<Category> {
     this.em.remove(category);
   }
 
-  protected override _toResponse(category: Category | Loaded<Category>): CategoryResponse {
+  protected override _toResponse(category: Loaded<Category>): CategoryResponse {
+    return wrap(category).serialize();
+  }
+
+  protected override _toDetailResponse(category: Loaded<Category>): CategoryResponse {
     return wrap(category).serialize();
   }
 }

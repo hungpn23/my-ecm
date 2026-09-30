@@ -148,7 +148,7 @@ export class ProductService extends BaseService<Product> {
     };
   }
 
-  private _toDetailResponse(
+  protected override _toDetailResponse(
     product: Loaded<Product, "description" | "category">,
   ): ProductDetailResponse {
     const { category, description, ...data } = wrap(product).serialize({
