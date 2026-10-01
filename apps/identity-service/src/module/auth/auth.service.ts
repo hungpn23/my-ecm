@@ -15,7 +15,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { hash, verify } from "argon2";
+import { hash } from "argon2";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
 import type { ChangePassword, SignIn, SignUp, TokenResponse } from "./auth.schema";
@@ -64,18 +64,16 @@ export class AuthService {
 
   async signIn({ email, password }: SignIn): Promise<TokenResponse> {
     const user = await this.userRepo.findOne({ email });
-
     if (!user) throw new BadRequestException("Invalid credentials");
 
-    const hashedPassword = await user.password.loadOrFail();
-    const isCorrectPassword = await verify(hashedPassword, password);
-    if (!isCorrectPassword) throw new BadRequestException("Invalid credentials");
+    await user.verifyPassword(password);
 
-    if (user.shop?.id && user.shopRole) {
+    const membership = user.membership;
+    if (membership) {
       return await this.generateToken({
         userId: user.id,
-        shopId: user.shop.id,
-        shopRole: user.shopRole,
+        shopId: membership.shopId,
+        shopRole: membership.shopRole,
       });
     }
 
@@ -87,10 +85,10 @@ export class AuthService {
     userId: string,
     { oldPassword, newPassword }: ChangePassword,
   ): Promise<SuccessResponse> {
-    const user = await this.userRepo.findOne({ id: userId }, { fields: ["password"] });
+    const user = await this.userRepo.findOne({ id: userId });
+    if (!user) throw new BadRequestException("User not found");
 
-    const isCorrectPassword = user && (await verify(user.password.get(), oldPassword));
-    if (!isCorrectPassword) throw new BadRequestException("Incorrect password");
+    await user.verifyPassword(oldPassword);
 
     user.password.set(await hash(newPassword));
 

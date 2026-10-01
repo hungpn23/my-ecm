@@ -5,6 +5,16 @@ const Password = type("string >= 8").configure({ actual: () => "" });
 export const ChangePassword = type({
   oldPassword: Password,
   newPassword: Password,
+}).narrow((d, ctx) => {
+  if (d.oldPassword === d.newPassword) {
+    ctx.reject({
+      expected: "different from oldPassword",
+      actual: "",
+      path: ["newPassword"],
+    });
+  }
+
+  return true;
 });
 export type ChangePassword = typeof ChangePassword.infer;
 

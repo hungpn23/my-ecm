@@ -4,7 +4,7 @@ import { BaseService, type AuthenticatedUser } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, wrap, type Loaded } from "@mikro-orm/postgresql";
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import type {
   CreateShop,
   CreateShopResponse,
@@ -29,7 +29,6 @@ export class ShopService extends BaseService<Shop> {
   async create(userClaim: AuthenticatedUser, body: CreateShop): Promise<CreateShopResponse> {
     const user = await this.userRepo.findOne({ id: userClaim.userId });
     if (!user) throw new NotFoundException();
-    if (user.shop) throw new ConflictException("You already belongs to a shop.");
 
     const newShop = this.shopRepo.create({
       ...body,
@@ -37,7 +36,7 @@ export class ShopService extends BaseService<Shop> {
       owner: user,
     });
 
-    this.userRepo.assign(user, { shopRole: "OWNER", shop: newShop });
+    user.joinShop(newShop, "OWNER");
 
     const shop = await this.em.populate(newShop, ["owner", "description"]);
     const response = this._toDetailResponse(shop);
