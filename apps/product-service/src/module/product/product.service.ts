@@ -139,7 +139,7 @@ export class ProductService extends BaseService<Product> {
 
   protected override _toResponse(product: Loaded<Product, "category">): ProductResponse {
     const { category, ...data } = wrap(product).serialize({
-      forceObject: true,
+      populate: ["category"],
     });
 
     return {
@@ -151,13 +151,12 @@ export class ProductService extends BaseService<Product> {
   protected override _toDetailResponse(
     product: Loaded<Product, "description" | "category">,
   ): ProductDetailResponse {
-    const { category, description, ...data } = wrap(product).serialize({
-      forceObject: true,
+    const { category, ...data } = wrap(product).serialize({
+      populate: ["description", "category"],
     });
 
     return {
       ...data,
-      description: description ?? null,
       categoryId: category.id,
     };
   }

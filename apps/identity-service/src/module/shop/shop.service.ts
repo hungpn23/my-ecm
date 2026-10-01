@@ -53,7 +53,7 @@ export class ShopService extends BaseService<Shop> {
 
   protected override _toResponse(shop: Loaded<Shop, "owner">): ShopResponse {
     const { owner, ...data } = wrap(shop).serialize({
-      forceObject: true,
+      populate: ["owner"],
     });
 
     return {
@@ -65,13 +65,12 @@ export class ShopService extends BaseService<Shop> {
   protected override _toDetailResponse(
     shop: Loaded<Shop, "description" | "owner">,
   ): ShopDetailResponse {
-    const { owner, description, ...data } = wrap(shop).serialize({
-      forceObject: true,
+    const { owner, ...data } = wrap(shop).serialize({
+      populate: ["description", "owner"],
     });
 
     return {
       ...data,
-      description: description ?? null,
       ownerId: owner.id,
     };
   }
