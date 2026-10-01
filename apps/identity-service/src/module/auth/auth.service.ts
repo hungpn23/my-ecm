@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   async signIn({ email, password }: SignIn): Promise<TokenResponse> {
-    const user = await this.userRepo.findOne({ email }, { populate: ["password", "shop"] });
+    const user = await this.userRepo.findOne({ email }, { populate: ["password"] });
     if (!user) throw new BadRequestException("Invalid credentials");
 
     await user.verifyPassword(password);
