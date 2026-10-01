@@ -1,5 +1,5 @@
 import { AGGREGATE_TYPE, SHOP_ROLE, ShopRole, useBaseProps } from "@libs/core";
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p, type Loaded } from "@mikro-orm/core";
 import { BadRequestException, ConflictException } from "@nestjs/common";
 import { verify } from "argon2";
 import { Shop } from "./shop.entity";
@@ -24,9 +24,11 @@ export class User extends UserSchema.class {
     };
   }
 
-  async verifyPassword(password: string): Promise<void> {
-    const current = await this.password.loadOrFail();
+  async verifyPassword(this: Loaded<User, "password">, password: string): Promise<void> {
+    console.time("verifyPassword");
+    const current = this.password.get();
     const isMatch = await verify(current, password);
+    console.timeEnd("verifyPassword");
     if (!isMatch) throw new BadRequestException("Invalid credentials");
   }
 

@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   async signIn({ email, password }: SignIn): Promise<TokenResponse> {
-    const user = await this.userRepo.findOne({ email });
+    const user = await this.userRepo.findOne({ email }, { populate: ["password", "shop"] });
     if (!user) throw new BadRequestException("Invalid credentials");
 
     await user.verifyPassword(password);
@@ -85,7 +85,7 @@ export class AuthService {
     userId: string,
     { oldPassword, newPassword }: ChangePassword,
   ): Promise<SuccessResponse> {
-    const user = await this.userRepo.findOne({ id: userId });
+    const user = await this.userRepo.findOne({ id: userId }, { populate: ["password"] });
     if (!user) throw new BadRequestException("User not found");
 
     await user.verifyPassword(oldPassword);
