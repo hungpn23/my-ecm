@@ -25,10 +25,8 @@ export class User extends UserSchema.class {
   }
 
   async verifyPassword(this: Loaded<User, "password">, password: string): Promise<void> {
-    console.time("verifyPassword");
     const current = this.password.get();
     const isMatch = await verify(current, password);
-    console.timeEnd("verifyPassword");
     if (!isMatch) throw new BadRequestException("Invalid credentials");
   }
 
