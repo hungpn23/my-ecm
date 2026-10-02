@@ -30,8 +30,8 @@
       "dependsOn": ["^orm:debug"],
       "cache": false
     },
-    "debezium:register": {
-      "dependsOn": ["^debezium:register"],
+    "register:debezium": {
+      "dependsOn": ["^register:debezium"],
       "cache": false
     }
   },
