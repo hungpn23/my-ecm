@@ -1,4 +1,4 @@
-import { SendWelcomeMailData, Welcome } from "@libs/email";
+import { SendWelcomeEmailData, Welcome } from "@libs/email";
 import { Injectable } from "@nestjs/common";
 import { Mailer } from "@nestjs/mail";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
@@ -6,14 +6,14 @@ import { createElement } from "react";
 import { render } from "react-email";
 
 @Injectable()
-export class MailService {
+export class EmailService {
   constructor(
-    @InjectPinoLogger(MailService.name) private readonly logger: PinoLogger,
-    private readonly mailer: Mailer,
+    @InjectPinoLogger(EmailService.name) private readonly logger: PinoLogger,
+    private readonly emailSender: Mailer,
   ) {}
 
-  async sendWelcomeMail(data: SendWelcomeMailData) {
-    const result = await this.mailer.send({
+  async sendWelcomeEmail(data: SendWelcomeEmailData) {
+    const result = await this.emailSender.send({
       to: data.to,
       subject: "Welcome to My Ecommerce",
       html: await render(createElement(Welcome)),
@@ -22,7 +22,7 @@ export class MailService {
 
     this.logger.debug(
       { messageId: result.messageId, providerMessageId: result.providerMessageId },
-      "Welcome email accepted by mail transport for %s",
+      "Welcome email accepted by email transport for %s",
       data.to,
     );
   }

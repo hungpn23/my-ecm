@@ -9,7 +9,7 @@ import {
 } from "@libs/core";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
-import { MailModule } from "./module/mail/mail.module";
+import { EmailModule } from "./module/email/email.module";
 import { ProductModule } from "./module/product/product.module";
 import { UserModule } from "./module/user/user.module";
 
@@ -21,7 +21,7 @@ import { UserModule } from "./module/user/user.module";
     KafkaModule.forRoot(),
     AuthModule,
     UserModule,
-    MailModule,
+    EmailModule,
     ProductModule,
   ],
   providers: [
