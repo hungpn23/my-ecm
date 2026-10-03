@@ -1,10 +1,10 @@
 import { TokenResponse } from "#internal/module/auth/auth.schema";
-import { EntityResponse, Uuid, Varchar255 } from "@libs/common";
+import { EntityResponse, NonEmptyString, Uuid, Varchar255 } from "@libs/common";
 import { type } from "arktype";
 
 export const CreateShop = type({
   name: Varchar255,
-  "description?": "string >= 1",
+  "description?": NonEmptyString,
 });
 export type CreateShop = typeof CreateShop.infer;
 

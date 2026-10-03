@@ -19,6 +19,7 @@
     "start": "bun src/main.ts"
   },
   "dependencies": {
+    "@ark/util": "catalog:common",
     "@libs/common": "workspace:*",
     "@libs/core": "workspace:*",
     "@mikro-orm/cli": "catalog:mikro",

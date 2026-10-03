@@ -1,3 +1,4 @@
+import { NonEmptyString } from "@libs/common";
 import { AwsConfig } from "@libs/core";
 import { type } from "arkenv";
 
@@ -7,10 +8,10 @@ const DefaultEmailConfig = type({
 
 export const SmtpConfig = DefaultEmailConfig.merge({
   EMAIL_TRANSPORTER: "'smtp'",
-  SMTP_HOST: "string >= 1",
+  SMTP_HOST: NonEmptyString,
   SMTP_PORT: "number.port",
-  SMTP_USER: "string >= 1",
-  SMTP_PASS: "string >= 1",
+  SMTP_USER: NonEmptyString,
+  SMTP_PASS: NonEmptyString,
 });
 
 export const SesConfig = DefaultEmailConfig.merge({

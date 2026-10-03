@@ -1,13 +1,14 @@
+import { NonEmptyString } from "@libs/common";
 import { type ConfigType, registerAs } from "@nestjs/config";
 import arkenv from "arkenv";
 
 export const databaseConfig = registerAs("database", () => {
   const config = arkenv({
-    DB_HOST: "string >= 1",
+    DB_HOST: NonEmptyString,
     DB_PORT: "number.port",
-    DB_USER: "string >= 1",
-    DB_PASSWORD: "string >= 1",
-    DB_DATABASE: "string >= 1",
+    DB_USER: NonEmptyString,
+    DB_PASSWORD: NonEmptyString,
+    DB_DATABASE: NonEmptyString,
     DB_ENABLE_DEBUG: "boolean = false",
   });
 

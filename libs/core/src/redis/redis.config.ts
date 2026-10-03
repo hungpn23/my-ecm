@@ -1,9 +1,10 @@
+import { NonEmptyString } from "@libs/common";
 import { type ConfigType, registerAs } from "@nestjs/config";
 import arkenv from "arkenv";
 
 export const redisConfig = registerAs("redis", () => {
   const config = arkenv({
-    REDIS_HOST: "string >= 1",
+    REDIS_HOST: NonEmptyString,
     REDIS_PORT: "number.port",
     REDIS_PASSWORD: "string",
     REDIS_USERNAME: "string",

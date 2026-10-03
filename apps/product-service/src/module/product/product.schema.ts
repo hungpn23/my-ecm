@@ -1,4 +1,11 @@
-import { EntityResponse, NonNegativeDecimal, Paginated, Uuid, Varchar255 } from "@libs/common";
+import {
+  EntityResponse,
+  NonEmptyString,
+  NonNegativeDecimal,
+  Paginated,
+  Uuid,
+  Varchar255,
+} from "@libs/common";
 import { type } from "arktype";
 
 const PRODUCT_STATUS = {
@@ -10,7 +17,7 @@ export type ProductStatus = typeof ProductStatus.infer;
 
 export const CreateProduct = type({
   name: Varchar255,
-  "description?": "string >= 1",
+  "description?": NonEmptyString,
   price: NonNegativeDecimal,
   status: ProductStatus.default("ACTIVE"),
   categoryId: Uuid,
@@ -18,7 +25,7 @@ export const CreateProduct = type({
 export type CreateProduct = typeof CreateProduct.infer;
 
 export const UpdateProduct = CreateProduct.partial().merge({
-  "description?": "string >= 1 | null",
+  "description?": NonEmptyString.or("null"),
 });
 export type UpdateProduct = typeof UpdateProduct.infer;
 

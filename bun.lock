@@ -25,6 +25,7 @@
       "name": "@apps/identity-service",
       "version": "0.0.0",
       "dependencies": {
+        "@ark/util": "catalog:common",
         "@libs/common": "workspace:*",
         "@libs/core": "workspace:*",
         "@mikro-orm/cli": "catalog:mikro",
@@ -64,6 +65,7 @@
       "name": "@apps/notification-service",
       "version": "0.0.0",
       "dependencies": {
+        "@ark/util": "catalog:common",
         "@libs/common": "workspace:*",
         "@libs/core": "workspace:*",
         "@libs/email": "workspace:*",
@@ -89,6 +91,7 @@
       "name": "@apps/product-service",
       "version": "0.0.0",
       "dependencies": {
+        "@ark/util": "catalog:common",
         "@libs/common": "workspace:*",
         "@libs/core": "workspace:*",
         "@mikro-orm/cli": "catalog:mikro",
@@ -131,6 +134,7 @@
       "name": "@libs/core",
       "version": "0.0.0",
       "dependencies": {
+        "@ark/util": "catalog:common",
         "@libs/common": "workspace:*",
         "@mikro-orm/core": "catalog:mikro",
         "@mikro-orm/decorators": "catalog:mikro",
