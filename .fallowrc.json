@@ -6,7 +6,13 @@
   },
   "ignorePatterns": ["scripts/**", "tools/**", "**/migration/**"],
   "ignoreFindings": ["**/mikro-orm.config.ts", "**/*.generated.ts"],
-  "ignoreDependencies": ["@mikro-orm/cli", "pino-pretty", "@oxlint/plugins", "@react-email/ui"],
+  "ignoreDependencies": [
+    "@mikro-orm/cli",
+    "pino-pretty",
+    "@oxlint/plugins",
+    "@react-email/ui",
+    "@ark/util"
+  ],
   "duplicates": {
     "mode": "weak",
     "minOccurrences": 3

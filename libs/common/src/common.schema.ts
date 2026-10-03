@@ -3,7 +3,10 @@ import { type } from "arktype";
 export const Uuid = type("string.uuid.v7");
 export type Uuid = typeof Uuid.infer;
 
-export const Varchar = type("string <= 255");
+export const NonEmptyString = type("string >= 1").brand("NonEmptyString");
+export type NonEmptyString = typeof NonEmptyString.infer;
+
+export const Varchar255 = type("string <= 255");
 export const NonNegativeDecimal = type(/^(?:0|[1-9]\d{0,9})\.\d{2}$/).describe(
   "a non-negative decimal with up to 10 integer digits and exactly 2 fractional digits",
 );
@@ -16,7 +19,7 @@ export const AnyRecord = type.Record("string", "unknown");
 export type AnyRecord = typeof AnyRecord.infer;
 
 export const OffsetQuery = type({
-  "search?": Varchar,
+  "search?": Varchar255,
   page: type("string.integer.parse").to("number >= 1").default("1"),
   pageSize: type("string.integer.parse").to("10 <= number <= 100 % 10").default("10"),
 });

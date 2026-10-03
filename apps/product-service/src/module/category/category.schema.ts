@@ -1,9 +1,9 @@
-import { EntityResponse, Paginated, Varchar } from "@libs/common";
+import { EntityResponse, Paginated, Varchar255 } from "@libs/common";
 import { type } from "arktype";
 
 export const CreateCategory = type({
-  name: Varchar,
-  code: Varchar,
+  name: Varchar255,
+  code: Varchar255,
 });
 export type CreateCategory = typeof CreateCategory.infer;
 

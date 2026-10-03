@@ -13,6 +13,7 @@
     "check:types": "tsc"
   },
   "dependencies": {
+    "@ark/util": "catalog:common",
     "@nestjs/common": "catalog:nest",
     "@nestjs/config": "catalog:nest",
     "@nestjs/swagger": "catalog:nest",

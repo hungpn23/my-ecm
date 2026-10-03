@@ -1,15 +1,15 @@
 import { TokenResponse } from "#internal/module/auth/auth.schema";
-import { EntityResponse, Uuid, Varchar } from "@libs/common";
+import { EntityResponse, Uuid, Varchar255 } from "@libs/common";
 import { type } from "arktype";
 
 export const CreateShop = type({
-  name: Varchar,
+  name: Varchar255,
   "description?": "string >= 1",
 });
 export type CreateShop = typeof CreateShop.infer;
 
 const ShopResponse = EntityResponse.merge({
-  name: Varchar,
+  name: Varchar255,
   ownerId: Uuid,
 });
 export type ShopResponse = typeof ShopResponse.inferIn;
