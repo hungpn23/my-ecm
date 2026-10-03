@@ -1,4 +1,4 @@
-import { KafkaMessageByTopic, type KafkaTopics } from "@libs/common";
+import { KafkaMessageByTopic, type KafkaTopic } from "@libs/common";
 import { Inject, Injectable } from "@nestjs/common";
 import type { ClientKafkaProxy, KafkaOptions } from "@nestjs/microservices";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
@@ -18,7 +18,7 @@ export class KafkaService {
     this.options = this.optionsFactory.createClientOptions();
   }
 
-  async emit<KTopic extends KafkaTopics>(
+  async emit<KTopic extends KafkaTopic>(
     topic: KTopic,
     payload: KafkaMessageByTopic[NoInfer<KTopic>],
   ): Promise<void> {

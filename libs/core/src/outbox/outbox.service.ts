@@ -1,5 +1,5 @@
 import { Outbox } from "#internal/database/entity/index";
-import { KafkaMessageByTopic, type KafkaTopics } from "@libs/common";
+import { KafkaMessageByTopic, type KafkaTopic } from "@libs/common";
 import type { EntityRepository, RequiredEntityData } from "@mikro-orm/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -8,7 +8,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
 
-type CreateOutboxData<KTopic extends KafkaTopics> = Omit<
+type CreateOutboxData<KTopic extends KafkaTopic> = Omit<
   RequiredEntityData<Outbox>,
   "eventType" | "payload" | "requestId"
 > & {
@@ -27,7 +27,7 @@ export class OutboxService {
   ) {}
 
   @Transactional({ propagation: "mandatory" })
-  async createAndFlush<KTopic extends KafkaTopics>(data: CreateOutboxData<KTopic>): Promise<void> {
+  async createAndFlush<KTopic extends KafkaTopic>(data: CreateOutboxData<KTopic>): Promise<void> {
     KafkaMessageByTopic[data.eventType].assert({
       value: data.payload,
     });

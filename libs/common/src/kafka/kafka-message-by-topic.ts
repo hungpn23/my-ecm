@@ -1,6 +1,6 @@
 import type { Type } from "arktype";
 import { KafkaMessageIn, UserCreatedMessage } from "./message";
-import type { KafkaTopics } from "./topic/kafka-topic.schema";
+import type { KafkaTopic } from "./topic/kafka-topic.schema";
 
 export const KafkaMessageByTopic = {
   "user.created": UserCreatedMessage,
@@ -8,8 +8,8 @@ export const KafkaMessageByTopic = {
   "user.get": KafkaMessageIn,
   "product.created": KafkaMessageIn,
   "product.updated": KafkaMessageIn,
-} as const satisfies Record<KafkaTopics, Type>;
+} as const satisfies Record<KafkaTopic, Type>;
 
 export type KafkaMessageByTopic = {
-  [KTopic in KafkaTopics]: (typeof KafkaMessageByTopic)[KTopic]["inferIn"];
+  [KTopic in KafkaTopic]: (typeof KafkaMessageByTopic)[KTopic]["inferIn"];
 };
