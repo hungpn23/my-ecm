@@ -1,4 +1,6 @@
-import { SendEmailData } from "./send-email.schema";
+import { type } from "arktype";
 
-export const SendWelcomeEmailData = SendEmailData.pick("to");
-export type SendWelcomeEmailData = typeof SendWelcomeEmailData.infer;
+export const SendWelcomeMailData = type({
+  to: "string.email",
+});
+export type SendWelcomeMailData = typeof SendWelcomeMailData.infer;
