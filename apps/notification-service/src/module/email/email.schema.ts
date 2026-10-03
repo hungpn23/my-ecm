@@ -6,7 +6,7 @@ const DefaultEmailConfig = type({
 });
 
 export const SmtpConfig = DefaultEmailConfig.merge({
-  EMAIL_PROVIDER: "'smtp'",
+  EMAIL_TRANSPORTER: "'smtp'",
   SMTP_HOST: "string >= 1",
   SMTP_PORT: "number.port",
   SMTP_USER: "string >= 1",
@@ -14,5 +14,5 @@ export const SmtpConfig = DefaultEmailConfig.merge({
 });
 
 export const SesConfig = DefaultEmailConfig.merge({
-  EMAIL_PROVIDER: "'ses'",
+  EMAIL_TRANSPORTER: "'ses'",
 }).merge(AwsConfig);
