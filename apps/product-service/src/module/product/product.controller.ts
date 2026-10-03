@@ -1,6 +1,6 @@
 import { Endpoint, OffsetQuery, Uuid } from "@libs/common";
-import { Seller } from "@libs/core";
-import { Body, Controller, Param, Query } from "@nestjs/common";
+import { Seller, SellerGuard } from "@libs/core";
+import { Body, Controller, Param, Query, UseGuards } from "@nestjs/common";
 import {
   CreateProduct,
   PaginatedProductResponse,
@@ -9,6 +9,7 @@ import {
 } from "./product.schema";
 import { ProductService } from "./product.service";
 
+@UseGuards(SellerGuard)
 @Controller("products")
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
