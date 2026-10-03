@@ -1,26 +1,19 @@
 import { Category, Product } from "#internal/database/entity/index";
 import { deepMerge, Uuid, type OffsetQuery } from "@libs/common";
-import { BaseService, OutboxService } from "@libs/core";
+import { OutboxService } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import {
-  EntityManager,
-  EntityRepository,
-  wrap,
-  type FilterQuery,
-  type Loaded,
-} from "@mikro-orm/postgresql";
+import { EntityManager, EntityRepository, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import type {
   CreateProduct,
   PaginatedProductResponse,
   ProductDetailResponse,
-  ProductResponse,
   UpdateProduct,
 } from "./product.schema";
 
 @Injectable()
-export class ProductService extends BaseService<Product> {
+export class ProductService {
   constructor(
     private readonly em: EntityManager,
     private readonly outboxService: OutboxService,
@@ -28,9 +21,7 @@ export class ProductService extends BaseService<Product> {
     private readonly categoryRepo: EntityRepository<Category>,
     @InjectRepository(Product)
     private readonly productRepo: EntityRepository<Product>,
-  ) {
-    super();
-  }
+  ) {}
 
   @Transactional()
   async create(shopId: Uuid, body: CreateProduct): Promise<ProductDetailResponse> {
@@ -46,7 +37,7 @@ export class ProductService extends BaseService<Product> {
       shopId,
     });
     const product = await this.em.populate(newProduct, ["category", "description"]);
-    const response = this._toDetailResponse(product);
+    const response = product.toDetailResponse();
 
     await this.outboxService.createAndFlush({
       aggregateType: "Product",
@@ -76,7 +67,7 @@ export class ProductService extends BaseService<Product> {
     });
 
     return {
-      data: products.map((product) => this._toResponse(product)),
+      data: products.map((product) => product.toResponse()),
       metadata: {
         page,
         pageSize,
@@ -93,7 +84,7 @@ export class ProductService extends BaseService<Product> {
     );
     if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
-    return this._toDetailResponse(product);
+    return product.toDetailResponse();
   }
 
   @Transactional()
@@ -117,7 +108,7 @@ export class ProductService extends BaseService<Product> {
 
     await this.em.flush();
 
-    const response = this._toDetailResponse(product);
+    const response = product.toDetailResponse();
 
     await this.outboxService.createAndFlush({
       aggregateType: "Product",
@@ -135,29 +126,5 @@ export class ProductService extends BaseService<Product> {
     if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
     this.em.remove(product);
-  }
-
-  protected override _toResponse(product: Loaded<Product, "category">): ProductResponse {
-    const { category, ...data } = wrap(product).serialize({
-      populate: ["category"],
-    });
-
-    return {
-      ...data,
-      categoryId: category.id,
-    };
-  }
-
-  protected override _toDetailResponse(
-    product: Loaded<Product, "description" | "category">,
-  ): ProductDetailResponse {
-    const { category, ...data } = wrap(product).serialize({
-      populate: ["description", "category"],
-    });
-
-    return {
-      ...data,
-      categoryId: category.id,
-    };
   }
 }

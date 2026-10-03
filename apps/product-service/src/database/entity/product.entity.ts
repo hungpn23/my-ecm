@@ -1,7 +1,11 @@
-import { type ProductStatus } from "#internal/module/product/product.schema";
+import type {
+  ProductDetailResponse,
+  ProductResponse,
+  ProductStatus,
+} from "#internal/module/product/product.schema";
 import type { Uuid } from "@libs/common";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 import { Category } from "./category.entity";
 
 export const ProductSchema = defineEntity({
@@ -16,5 +20,27 @@ export const ProductSchema = defineEntity({
   }),
 });
 
-export class Product extends ProductSchema.class {}
+export class Product extends ProductSchema.class {
+  toResponse(this: Loaded<Product, "category">): ProductResponse {
+    const { category, ...data } = wrap(this).serialize({
+      populate: ["category"],
+    });
+
+    return {
+      ...data,
+      categoryId: category.id,
+    };
+  }
+
+  toDetailResponse(this: Loaded<Product, "description" | "category">): ProductDetailResponse {
+    const { category, ...data } = wrap(this).serialize({
+      populate: ["description", "category"],
+    });
+
+    return {
+      ...data,
+      categoryId: category.id,
+    };
+  }
+}
 ProductSchema.setClass(Product);

@@ -1,5 +1,6 @@
+import type { CategoryResponse } from "#internal/module/category/category.schema";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 // fallow-ignore-next-line circular-dependency
 import { Product } from "./product.entity";
 
@@ -12,5 +13,13 @@ export const CategorySchema = defineEntity({
   }),
 });
 
-export class Category extends CategorySchema.class {}
+export class Category extends CategorySchema.class {
+  toResponse(this: Loaded<Category>): CategoryResponse {
+    return wrap(this).serialize();
+  }
+
+  toDetailResponse(this: Loaded<Category>): CategoryResponse {
+    return wrap(this).serialize();
+  }
+}
 CategorySchema.setClass(Category);

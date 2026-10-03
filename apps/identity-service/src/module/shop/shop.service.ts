@@ -1,19 +1,14 @@
 import { Shop, User } from "#internal/database/entity/index";
 import { AuthService } from "#internal/module/auth/auth.service";
-import { BaseService, type AuthenticatedUser } from "@libs/core";
+import type { AuthenticatedUser } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityManager, EntityRepository, wrap, type Loaded } from "@mikro-orm/postgresql";
+import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import type {
-  CreateShop,
-  CreateShopResponse,
-  ShopDetailResponse,
-  ShopResponse,
-} from "./shop.schema";
+import type { CreateShop, CreateShopResponse } from "./shop.schema";
 
 @Injectable()
-export class ShopService extends BaseService<Shop> {
+export class ShopService {
   constructor(
     private readonly em: EntityManager,
     private readonly authService: AuthService,
@@ -21,9 +16,7 @@ export class ShopService extends BaseService<Shop> {
     private readonly shopRepo: EntityRepository<Shop>,
     @InjectRepository(User)
     private readonly userRepo: EntityRepository<User>,
-  ) {
-    super();
-  }
+  ) {}
 
   @Transactional()
   async create(userClaim: AuthenticatedUser, body: CreateShop): Promise<CreateShopResponse> {
@@ -39,7 +32,7 @@ export class ShopService extends BaseService<Shop> {
     user.joinShop(newShop, "OWNER");
 
     const shop = await this.em.populate(newShop, ["owner", "description"]);
-    const response = this._toDetailResponse(shop);
+    const response = shop.toDetailResponse();
     const tokens = await this.authService.generateToken({
       userId: userClaim.userId,
       sessionId: userClaim.sessionId,
@@ -48,29 +41,5 @@ export class ShopService extends BaseService<Shop> {
     });
 
     return { ...response, ...tokens };
-  }
-
-  protected override _toResponse(shop: Loaded<Shop, "owner">): ShopResponse {
-    const { owner, ...data } = wrap(shop).serialize({
-      populate: ["owner"],
-    });
-
-    return {
-      ...data,
-      ownerId: owner.id,
-    };
-  }
-
-  protected override _toDetailResponse(
-    shop: Loaded<Shop, "description" | "owner">,
-  ): ShopDetailResponse {
-    const { owner, ...data } = wrap(shop).serialize({
-      populate: ["description", "owner"],
-    });
-
-    return {
-      ...data,
-      ownerId: owner.id,
-    };
   }
 }

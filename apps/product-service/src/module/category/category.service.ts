@@ -1,15 +1,8 @@
 import { Category } from "#internal/database/entity/index";
 import { deepMerge, Uuid, type OffsetQuery } from "@libs/common";
-import { BaseService } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import {
-  EntityManager,
-  EntityRepository,
-  wrap,
-  type FilterQuery,
-  type Loaded,
-} from "@mikro-orm/postgresql";
+import { EntityManager, EntityRepository, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import type {
   CategoryResponse,
@@ -19,20 +12,18 @@ import type {
 } from "./category.schema";
 
 @Injectable()
-export class CategoryService extends BaseService<Category> {
+export class CategoryService {
   constructor(
     private readonly em: EntityManager,
     @InjectRepository(Category)
     private readonly categoryRepo: EntityRepository<Category>,
-  ) {
-    super();
-  }
+  ) {}
 
   @Transactional()
   async create(body: CreateCategory): Promise<CategoryResponse> {
     const category = this.categoryRepo.create(body);
 
-    return this._toResponse(category);
+    return category.toDetailResponse();
   }
 
   async find(query: OffsetQuery): Promise<PaginatedCategoryResponse> {
@@ -52,7 +43,7 @@ export class CategoryService extends BaseService<Category> {
     });
 
     return {
-      data: categories.map((category) => this._toResponse(category)),
+      data: categories.map((category) => category.toResponse()),
       metadata: {
         page,
         pageSize,
@@ -70,7 +61,7 @@ export class CategoryService extends BaseService<Category> {
     this.categoryRepo.assign(category, body);
     await this.em.flush();
 
-    return this._toResponse(category);
+    return category.toDetailResponse();
   }
 
   @Transactional()
@@ -79,13 +70,5 @@ export class CategoryService extends BaseService<Category> {
     if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
 
     this.em.remove(category);
-  }
-
-  protected override _toResponse(category: Loaded<Category>): CategoryResponse {
-    return wrap(category).serialize();
-  }
-
-  protected override _toDetailResponse(category: Loaded<Category>): CategoryResponse {
-    return wrap(category).serialize();
   }
 }

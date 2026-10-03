@@ -16,7 +16,7 @@ export class SellerGuard implements CanActivate {
       .switchToHttp()
       .getRequest<AuthenticatedUserRequest<AuthenticatedUser>>();
 
-    if (!isSeller(request.user)) throw new ForbiddenException();
+    if (!isSeller(request.user)) throw new ForbiddenException("User is not a seller");
 
     return true;
   }
