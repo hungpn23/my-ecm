@@ -1,15 +1,15 @@
 import { ConfigModule } from "@libs/core";
 import { Module } from "@nestjs/common";
-import { MailModule as NestMailModule, SesTransport, SmtpTransport } from "@nestjs/mail";
-import { mailConfig, type MailConfig } from "./mail.config";
-import { MailService } from "./mail.service";
+import { MailModule, SesTransport, SmtpTransport } from "@nestjs/mail";
+import { emailConfig, type EmailConfig } from "./email.config";
+import { EmailService } from "./email.service";
 
 @Module({
   imports: [
-    NestMailModule.forRootAsync({
-      imports: [ConfigModule.forFeatures(mailConfig)],
-      inject: [mailConfig.KEY],
-      useFactory: (config: MailConfig) => ({
+    MailModule.forRootAsync({
+      imports: [ConfigModule.forFeatures(emailConfig)],
+      inject: [emailConfig.KEY],
+      useFactory: (config: EmailConfig) => ({
         from: config.EMAIL_SENDER,
         transport:
           config.EMAIL_PROVIDER === "smtp"
@@ -30,7 +30,7 @@ import { MailService } from "./mail.service";
       }),
     }),
   ],
-  providers: [MailService],
-  exports: [MailService],
+  providers: [EmailService],
+  exports: [EmailService],
 })
-export class MailModule {}
+export class EmailModule {}
