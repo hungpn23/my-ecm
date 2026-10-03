@@ -9,11 +9,11 @@ import { render } from "react-email";
 export class EmailService {
   constructor(
     @InjectPinoLogger(EmailService.name) private readonly logger: PinoLogger,
-    private readonly emailSender: Mailer,
+    private readonly mailer: Mailer,
   ) {}
 
   async sendWelcomeEmail(data: SendWelcomeEmailData) {
-    const result = await this.emailSender.send({
+    const result = await this.mailer.send({
       to: data.to,
       subject: "Welcome to My Ecommerce",
       html: await render(createElement(Welcome)),
