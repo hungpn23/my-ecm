@@ -17,7 +17,7 @@ const CONFIG = {
   "database.password": getOrThrow("DB_PASSWORD"),
   "database.dbname": APP_NAME,
   "plugin.name": "pgoutput",
-  "snapshot.mode": "initial",
+  "snapshot.mode": "when_needed",
   "publication.autocreate.mode": "filtered",
   "table.include.list": "public.outbox",
   transforms: "outbox",
