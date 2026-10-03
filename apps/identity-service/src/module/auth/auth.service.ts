@@ -82,7 +82,7 @@ export class AuthService {
 
   @Transactional()
   async changePassword(
-    userId: string,
+    userId: Uuid,
     { oldPassword, newPassword }: ChangePassword,
   ): Promise<SuccessResponse> {
     const user = await this.userRepo.findOne({ id: userId }, { populate: ["password"] });

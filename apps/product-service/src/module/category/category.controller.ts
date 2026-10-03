@@ -32,14 +32,14 @@ export class CategoryController {
     response: CategoryResponse,
   })
   async update(
-    @Param("categoryId", { schema: Uuid }) categoryId: string,
+    @Param("categoryId", { schema: Uuid }) categoryId: Uuid,
     @Body({ schema: UpdateCategory }) body: UpdateCategory,
   ): Promise<CategoryResponse> {
     return await this.categoryService.update(categoryId, body);
   }
 
   @Endpoint("DELETE", { path: ":categoryId" })
-  async delete(@Param("categoryId", { schema: Uuid }) categoryId: string): Promise<void> {
+  async delete(@Param("categoryId", { schema: Uuid }) categoryId: Uuid): Promise<void> {
     await this.categoryService.delete(categoryId);
   }
 }

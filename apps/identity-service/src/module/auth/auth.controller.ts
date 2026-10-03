@@ -1,7 +1,7 @@
-import { Endpoint, type SuccessResponse } from "@libs/common";
+import { Endpoint, Uuid, type SuccessResponse } from "@libs/common";
 import { AuthenticatedUser, User } from "@libs/core";
 import { Body, Controller, UseGuards } from "@nestjs/common";
-import { BaseAuth, ChangePassword, type SignIn, type SignUp, TokenResponse } from "./auth.schema";
+import { BaseAuth, ChangePassword, TokenResponse, type SignIn, type SignUp } from "./auth.schema";
 import { AuthService } from "./auth.service";
 import { RefreshGuard } from "./refresh.guard";
 
@@ -31,7 +31,7 @@ export class AuthController {
 
   @Endpoint("POST", { path: "change-password", request: ChangePassword })
   async changePassword(
-    @User("userId") userId: string,
+    @User("userId") userId: Uuid,
     @Body({ schema: ChangePassword }) body: ChangePassword,
   ): Promise<SuccessResponse> {
     return await this.authService.changePassword(userId, body);

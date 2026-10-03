@@ -1,4 +1,5 @@
 import { User } from "#internal/database/entity/index";
+import type { Uuid } from "@libs/common";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { wrap, type EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
@@ -11,7 +12,7 @@ export class UserService {
     private readonly userRepo: EntityRepository<User>,
   ) {}
 
-  async getInfo(userId: string): Promise<UserResponse> {
+  async getInfo(userId: Uuid): Promise<UserResponse> {
     const user = await this.userRepo.findOne({ id: userId });
     if (!user) throw new NotFoundException();
 

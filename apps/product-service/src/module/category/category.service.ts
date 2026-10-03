@@ -1,5 +1,5 @@
 import { Category } from "#internal/database/entity/index";
-import { deepMerge, type OffsetQuery } from "@libs/common";
+import { deepMerge, Uuid, type OffsetQuery } from "@libs/common";
 import { BaseService } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -63,7 +63,7 @@ export class CategoryService extends BaseService<Category> {
   }
 
   @Transactional()
-  async update(categoryId: string, body: UpdateCategory): Promise<CategoryResponse> {
+  async update(categoryId: Uuid, body: UpdateCategory): Promise<CategoryResponse> {
     const category = await this.categoryRepo.findOne({ id: categoryId });
     if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
 
@@ -74,7 +74,7 @@ export class CategoryService extends BaseService<Category> {
   }
 
   @Transactional()
-  async delete(categoryId: string): Promise<void> {
+  async delete(categoryId: Uuid): Promise<void> {
     const category = await this.categoryRepo.findOne({ id: categoryId });
     if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
 
