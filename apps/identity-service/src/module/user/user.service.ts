@@ -1,7 +1,7 @@
 import { User } from "#internal/database/entity/index";
 import type { Uuid } from "@libs/common";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { wrap, type EntityRepository } from "@mikro-orm/postgresql";
+import { type EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import type { UserResponse } from "./user.schema";
 
@@ -13,9 +13,9 @@ export class UserService {
   ) {}
 
   async getInfo(userId: Uuid): Promise<UserResponse> {
-    const user = await this.userRepo.findOne({ id: userId });
+    const user = await this.userRepo.findOne({ id: userId }, { populate: ["shop"] });
     if (!user) throw new NotFoundException();
 
-    return wrap(user).serialize();
+    return user.toResponse();
   }
 }

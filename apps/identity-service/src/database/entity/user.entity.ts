@@ -1,8 +1,9 @@
+import { Shop } from "#internal/database/entity/index";
+import type { UserResponse } from "#internal/module/user/user.schema";
 import { AGGREGATE_TYPE, SHOP_ROLE, ShopRole, useBaseProps } from "@libs/core";
-import { defineEntity, p, type Loaded } from "@mikro-orm/core";
+import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 import { BadRequestException, ConflictException } from "@nestjs/common";
 import { verify } from "argon2";
-import { Shop } from "./shop.entity";
 
 export const UserSchema = defineEntity({
   name: AGGREGATE_TYPE.USER,
@@ -15,7 +16,7 @@ export const UserSchema = defineEntity({
 });
 
 export class User extends UserSchema.class {
-  get membership() {
+  getMembership(this: Loaded<User, "shop">) {
     if (!this.shop || !this.shopRole) return null;
 
     return {
@@ -37,6 +38,18 @@ export class User extends UserSchema.class {
 
     this.shop = shop;
     this.shopRole = role;
+  }
+
+  toResponse(this: Loaded<User, "shop">): UserResponse {
+    const { shopRole, shop, ...data } = wrap(this).serialize({
+      populate: ["shop"],
+    });
+
+    return {
+      ...data,
+      shopRole: shopRole ?? null,
+      shopId: shop?.id ?? null,
+    };
   }
 }
 UserSchema.setClass(User);

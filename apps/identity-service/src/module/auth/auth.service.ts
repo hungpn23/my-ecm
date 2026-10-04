@@ -63,12 +63,12 @@ export class AuthService {
   }
 
   async signIn({ email, password }: SignIn): Promise<TokenResponse> {
-    const user = await this.userRepo.findOne({ email }, { populate: ["password"] });
+    const user = await this.userRepo.findOne({ email }, { populate: ["password", "shop"] });
     if (!user) throw new BadRequestException("Invalid credentials");
 
     await user.verifyPassword(password);
 
-    const membership = user.membership;
+    const membership = user.getMembership();
     if (membership) {
       return await this.generateToken({
         userId: user.id,
