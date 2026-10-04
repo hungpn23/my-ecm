@@ -1,9 +1,9 @@
-import { Shop } from "#internal/database/entity/index";
 import type { UserResponse } from "#internal/module/user/user.schema";
 import { AGGREGATE_TYPE, SHOP_ROLE, ShopRole, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 import { BadRequestException, ConflictException } from "@nestjs/common";
 import { verify } from "argon2";
+import { Shop } from "./shop.entity";
 
 export const UserSchema = defineEntity({
   name: AGGREGATE_TYPE.USER,
