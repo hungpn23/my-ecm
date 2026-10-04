@@ -21,12 +21,17 @@ export const JwtPayload = type({
 }).partial();
 export type JwtPayload = typeof JwtPayload.infer;
 
+export const ROLE = ["SYSTEM_ADMIN", "USER"] as const;
+export const Role = type.enumerated(...ROLE);
+export type Role = typeof Role.infer;
+
 export const SHOP_ROLE = ["OWNER", "ADMIN", "STAFF"] as const;
 export const ShopRole = type.enumerated(...SHOP_ROLE);
 export type ShopRole = typeof ShopRole.infer;
 
 export const AuthenticatedUser = type({
   userId: Uuid,
+  role: Role,
   sessionId: Uuid,
   jwtKind: JwtKind,
 }).merge(JwtPayload);

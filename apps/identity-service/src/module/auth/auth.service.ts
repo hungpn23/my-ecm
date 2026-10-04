@@ -7,6 +7,7 @@ import {
   jwtidBy,
   OutboxService,
   RedisService,
+  Role,
   type AuthenticatedUser,
   type JwtConfig,
 } from "@libs/core";
@@ -22,6 +23,7 @@ import type { ChangePassword, SignIn, SignUp, TokenResponse } from "./auth.schem
 
 type GenerateToken = AllOrNever<AuthenticatedSeller, "shopId" | "shopRole"> & {
   userId: Uuid;
+  role: Role;
   sessionId?: Uuid;
 };
 
@@ -48,6 +50,7 @@ export class AuthService {
     const newUser = this.em.create(User, {
       email,
       password: await hash(password),
+      role: "USER",
     });
 
     await this.outboxService.createAndFlush({
@@ -59,7 +62,7 @@ export class AuthService {
 
     this.logger.info({ userId: newUser.id, email: newUser.email }, "User created");
 
-    return await this.generateToken({ userId: newUser.id });
+    return await this.generateToken({ userId: newUser.id, role: newUser.role });
   }
 
   async signIn({ email, password }: SignIn): Promise<TokenResponse> {
@@ -72,12 +75,13 @@ export class AuthService {
     if (membership) {
       return await this.generateToken({
         userId: user.id,
+        role: user.role,
         shopId: membership.shopId,
         shopRole: membership.shopRole,
       });
     }
 
-    return await this.generateToken({ userId: user.id });
+    return await this.generateToken({ userId: user.id, role: user.role });
   }
 
   @Transactional()
@@ -108,9 +112,10 @@ export class AuthService {
   }
 
   async generateToken(options: GenerateToken): Promise<TokenResponse> {
-    const { userId, sessionId = v7(), shopId, shopRole } = options;
+    const { userId, role, sessionId = v7(), shopId, shopRole } = options;
     const basePayload = {
       userId,
+      role,
       sessionId,
     };
 

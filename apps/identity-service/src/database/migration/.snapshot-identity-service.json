@@ -363,6 +363,26 @@
           "enumItems": [],
           "mappedType": "string"
         },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [
+            "SYSTEM_ADMIN",
+            "USER"
+          ],
+          "mappedType": "enum"
+        },
         "shop_id": {
           "name": "shop_id",
           "type": "uuid",
@@ -442,6 +462,12 @@
         }
       ],
       "checks": [
+        {
+          "name": "user_role_check",
+          "expression": "\"role\" in ('SYSTEM_ADMIN', 'USER')",
+          "definition": "check (\"role\" in ('SYSTEM_ADMIN', 'USER'))",
+          "columnName": "role"
+        },
         {
           "name": "user_shop_role_check",
           "expression": "\"shop_role\" in ('OWNER', 'ADMIN', 'STAFF')",

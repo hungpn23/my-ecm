@@ -35,6 +35,7 @@ export class ShopService {
     const response = shop.toDetailResponse();
     const tokens = await this.authService.generateToken({
       userId: userClaim.userId,
+      role: userClaim.role,
       sessionId: userClaim.sessionId,
       shopId: shop.id,
       shopRole: "OWNER",

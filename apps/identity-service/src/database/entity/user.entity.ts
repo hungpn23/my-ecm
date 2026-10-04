@@ -1,5 +1,5 @@
 import type { UserResponse } from "#internal/module/user/user.schema";
-import { AGGREGATE_TYPE, SHOP_ROLE, ShopRole, useBaseProps } from "@libs/core";
+import { AGGREGATE_TYPE, ROLE, SHOP_ROLE, ShopRole, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 import { BadRequestException, ConflictException } from "@nestjs/common";
 import { verify } from "argon2";
@@ -10,6 +10,7 @@ export const UserSchema = defineEntity({
   properties: useBaseProps({
     email: p.string().unique(),
     password: p.string().lazy().ref().hidden(),
+    role: p.enum(ROLE),
     shopRole: p.enum(SHOP_ROLE).nullable(),
     shop: () => p.manyToOne(Shop).nullable().lazyRef().inversedBy("users"),
   }),

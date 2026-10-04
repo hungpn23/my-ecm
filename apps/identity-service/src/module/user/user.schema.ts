@@ -1,8 +1,9 @@
 import { EntityResponse, Uuid } from "@libs/common";
-import { ShopRole } from "@libs/core";
+import { Role, ShopRole } from "@libs/core";
 
 export const UserResponse = EntityResponse.merge({
   email: "string.email",
+  role: Role,
   shopId: Uuid.or("null"),
   shopRole: ShopRole.or("null"),
 });
