@@ -1,4 +1,4 @@
-import type { CategoryResponse } from "#internal/module/category/category.schema";
+import type { CategoryResponse } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 // fallow-ignore-next-line circular-dependency

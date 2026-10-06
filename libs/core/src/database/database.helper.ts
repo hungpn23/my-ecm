@@ -1,4 +1,4 @@
-import type { AnyRecord, Uuid } from "@libs/common";
+import type { AnyRecord, Uuid } from "@libs/contract";
 import { defineConfig, p } from "@mikro-orm/core";
 import { Migrator } from "@mikro-orm/migrations";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";

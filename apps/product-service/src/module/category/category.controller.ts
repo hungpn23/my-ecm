@@ -1,12 +1,14 @@
-import { Endpoint, OffsetQuery, Uuid } from "@libs/common";
-import { Body, Controller, Param, Query } from "@nestjs/common";
-import { ApiBearerAuth } from "@nestjs/swagger";
+import { Endpoint } from "@libs/common";
 import {
   CategoryResponse,
   CreateCategory,
+  OffsetQuery,
   PaginatedCategoryResponse,
   UpdateCategory,
-} from "./category.schema";
+  Uuid,
+} from "@libs/contract";
+import { Body, Controller, Param, Query } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { CategoryService } from "./category.service";
 
 @ApiBearerAuth()

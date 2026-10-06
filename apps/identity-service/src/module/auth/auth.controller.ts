@@ -1,7 +1,16 @@
-import { Endpoint, Uuid, type SuccessResponse } from "@libs/common";
-import { AuthenticatedUser, User } from "@libs/core";
+import { Endpoint } from "@libs/common";
+import {
+  AuthenticatedUser,
+  BaseAuth,
+  ChangePassword,
+  TokenResponse,
+  Uuid,
+  type SignIn,
+  type SignUp,
+  type SuccessResponse,
+} from "@libs/contract";
+import { User } from "@libs/core";
 import { Body, Controller, UseGuards } from "@nestjs/common";
-import { BaseAuth, ChangePassword, TokenResponse, type SignIn, type SignUp } from "./auth.schema";
 import { AuthService } from "./auth.service";
 import { RefreshGuard } from "./refresh.guard";
 

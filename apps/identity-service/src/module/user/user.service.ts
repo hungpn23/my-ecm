@@ -1,9 +1,8 @@
 import { User } from "#internal/database/entity/index";
-import type { Uuid } from "@libs/common";
+import type { UserResponse, Uuid } from "@libs/contract";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { type EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import type { UserResponse } from "./user.schema";
 
 @Injectable()
 export class UserService {

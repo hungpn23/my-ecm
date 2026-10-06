@@ -1,5 +1,6 @@
-import { EntityResponse, Paginated, Varchar255 } from "@libs/common";
 import { type } from "arktype";
+import { Paginated, Varchar255 } from "../shared/common.schema";
+import { EntityResponse } from "../shared/entity-response.schema";
 
 export const CreateCategory = type({
   name: Varchar255,

@@ -1,4 +1,4 @@
-import { NonEmptyString } from "@libs/common";
+import { NonEmptyString } from "@libs/contract";
 import { AwsConfig } from "@libs/core";
 import { type } from "arkenv";
 

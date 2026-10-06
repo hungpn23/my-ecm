@@ -1,15 +1,17 @@
 import { Category } from "#internal/database/entity/index";
-import { deepMerge, Uuid, type OffsetQuery } from "@libs/common";
+import { deepMerge } from "@libs/common";
+import {
+  Uuid,
+  type CategoryResponse,
+  type CreateCategory,
+  type OffsetQuery,
+  type PaginatedCategoryResponse,
+  type UpdateCategory,
+} from "@libs/contract";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import type {
-  CategoryResponse,
-  CreateCategory,
-  PaginatedCategoryResponse,
-  UpdateCategory,
-} from "./category.schema";
 
 @Injectable()
 export class CategoryService {

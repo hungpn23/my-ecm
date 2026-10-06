@@ -1,4 +1,5 @@
-import { SendWelcomeEmailData, Welcome } from "@libs/email";
+import { SendWelcomeEmailData } from "@libs/contract";
+import { Welcome } from "@libs/email";
 import { Injectable } from "@nestjs/common";
 import { Mailer } from "@nestjs/mail";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";

@@ -1,10 +1,11 @@
+import type { AuthenticatedUser } from "@libs/contract";
 import {
   type CanActivate,
   type ExecutionContext,
   ForbiddenException,
   Injectable,
 } from "@nestjs/common";
-import type { AuthenticatedUser, AuthenticatedUserRequest } from "./auth.schema";
+import type { AuthenticatedUserRequest } from "./auth-request.type";
 import { isSeller } from "./seller.helper";
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Endpoint } from "@libs/common";
+import { UserResponse } from "@libs/contract";
 import { User } from "@libs/core";
 import { Controller } from "@nestjs/common";
-import { UserResponse } from "./user.schema";
 import { UserService } from "./user.service";
 
 @Controller("users")

@@ -1,16 +1,18 @@
 import { Category, Product } from "#internal/database/entity/index";
-import { deepMerge, Uuid, type OffsetQuery } from "@libs/common";
+import { deepMerge } from "@libs/common";
+import {
+  Uuid,
+  type CreateProduct,
+  type OffsetQuery,
+  type PaginatedProductResponse,
+  type ProductDetailResponse,
+  type UpdateProduct,
+} from "@libs/contract";
 import { OutboxService } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import type {
-  CreateProduct,
-  PaginatedProductResponse,
-  ProductDetailResponse,
-  UpdateProduct,
-} from "./product.schema";
 
 @Injectable()
 export class ProductService {

@@ -1,11 +1,5 @@
-import {
-  type AuthenticatedUser,
-  jwtConfig,
-  type JwtConfig,
-  jwtidBy,
-  PASSPORT_STRATEGY,
-  RedisService,
-} from "@libs/core";
+import type { AuthenticatedUser } from "@libs/contract";
+import { jwtConfig, type JwtConfig, jwtidBy, PASSPORT_STRATEGY, RedisService } from "@libs/core";
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";

@@ -27,6 +27,7 @@
       "dependencies": {
         "@ark/util": "catalog:common",
         "@libs/common": "workspace:*",
+        "@libs/contract": "workspace:*",
         "@libs/core": "workspace:*",
         "@mikro-orm/cli": "catalog:mikro",
         "@mikro-orm/core": "catalog:mikro",
@@ -44,7 +45,6 @@
         "@nestjs/swagger": "catalog:nest",
         "argon2": "catalog:auth",
         "arkenv": "catalog:common",
-        "arktype": "catalog:common",
         "dotenv": "catalog:backend",
         "kafkajs": "catalog:backend",
         "nestjs-pino": "catalog:logging",
@@ -67,6 +67,7 @@
       "dependencies": {
         "@ark/util": "catalog:common",
         "@libs/common": "workspace:*",
+        "@libs/contract": "workspace:*",
         "@libs/core": "workspace:*",
         "@libs/email": "workspace:*",
         "@nestjs/common": "catalog:nest",
@@ -93,6 +94,7 @@
       "dependencies": {
         "@ark/util": "catalog:common",
         "@libs/common": "workspace:*",
+        "@libs/contract": "workspace:*",
         "@libs/core": "workspace:*",
         "@mikro-orm/cli": "catalog:mikro",
         "@mikro-orm/core": "catalog:mikro",
@@ -107,7 +109,6 @@
         "@nestjs/passport": "catalog:auth",
         "@nestjs/platform-express": "catalog:nest",
         "@nestjs/swagger": "catalog:nest",
-        "arktype": "catalog:common",
         "dotenv": "catalog:backend",
         "nestjs-pino": "catalog:logging",
         "reflect-metadata": "catalog:backend",
@@ -120,6 +121,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@ark/util": "catalog:common",
+        "@libs/contract": "workspace:*",
         "@nestjs/common": "catalog:nest",
         "@nestjs/config": "catalog:nest",
         "@nestjs/swagger": "catalog:nest",
@@ -130,12 +132,21 @@
         "@types/lodash": "catalog:common",
       },
     },
+    "libs/contract": {
+      "name": "@libs/contract",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ark/util": "catalog:common",
+        "arktype": "catalog:common",
+      },
+    },
     "libs/core": {
       "name": "@libs/core",
       "version": "0.0.0",
       "dependencies": {
         "@ark/util": "catalog:common",
         "@libs/common": "workspace:*",
+        "@libs/contract": "workspace:*",
         "@mikro-orm/core": "catalog:mikro",
         "@mikro-orm/decorators": "catalog:mikro",
         "@mikro-orm/migrations": "catalog:mikro",
@@ -171,7 +182,6 @@
       "name": "@libs/email",
       "version": "0.0.0",
       "dependencies": {
-        "arktype": "catalog:common",
         "react": "catalog:email",
         "react-dom": "catalog:email",
         "react-email": "catalog:email",
@@ -414,6 +424,8 @@
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
     "@libs/common": ["@libs/common@workspace:libs/common"],
+
+    "@libs/contract": ["@libs/contract@workspace:libs/contract"],
 
     "@libs/core": ["@libs/core@workspace:libs/core"],
 

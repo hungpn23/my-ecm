@@ -21,6 +21,7 @@
   "dependencies": {
     "@ark/util": "catalog:common",
     "@libs/common": "workspace:*",
+    "@libs/contract": "workspace:*",
     "@libs/core": "workspace:*",
     "@mikro-orm/cli": "catalog:mikro",
     "@mikro-orm/core": "catalog:mikro",
@@ -35,7 +36,6 @@
     "@nestjs/passport": "catalog:auth",
     "@nestjs/platform-express": "catalog:nest",
     "@nestjs/swagger": "catalog:nest",
-    "arktype": "catalog:common",
     "dotenv": "catalog:backend",
     "nestjs-pino": "catalog:logging",
     "reflect-metadata": "catalog:backend",

@@ -117,6 +117,7 @@ function createPackageJson(options: OnboardOptions): string {
   ]);
   const dependencies: [string, string][] = [
     ["@libs/common", "workspace:*"],
+    ["@libs/contract", "workspace:*"],
     ["@libs/core", "workspace:*"],
     ["@nestjs/common", "catalog:nest"],
     ["@nestjs/core", "catalog:nest"],
@@ -168,7 +169,9 @@ function createTsConfig(): string {
 function createMain(options: OnboardOptions): string {
   const serviceTitle = toServiceTitle(options.name);
 
-  return `import { appConfig, KafkaService } from "@libs/core";
+  return `import "@libs/contract/arktype-global";
+
+import { appConfig, KafkaService } from "@libs/core";
 import { NestFactory } from "@nestjs/core";
 import { type KafkaOptions } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";

@@ -1,9 +1,4 @@
-import type {
-  ProductDetailResponse,
-  ProductResponse,
-  ProductStatus,
-} from "#internal/module/product/product.schema";
-import type { Uuid } from "@libs/common";
+import type { ProductDetailResponse, ProductResponse, ProductStatus, Uuid } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 import { Category } from "./category.entity";

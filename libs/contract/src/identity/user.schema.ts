@@ -1,5 +1,6 @@
-import { EntityResponse, Uuid } from "@libs/common";
-import { Role, ShopRole } from "@libs/core";
+import { Uuid } from "../shared/common.schema";
+import { EntityResponse } from "../shared/entity-response.schema";
+import { Role, ShopRole } from "./authenticated-user.schema";
 
 export const UserResponse = EntityResponse.merge({
   email: "string.email",

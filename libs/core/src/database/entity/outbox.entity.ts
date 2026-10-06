@@ -1,5 +1,5 @@
 import { AGGREGATE_TYPE, AggregateType } from "#internal/outbox/aggregate-type.schema";
-import { KafkaTopic, Uuid, type AnyRecord } from "@libs/common";
+import { KafkaTopic, Uuid, type AnyRecord } from "@libs/contract";
 import { defineEntity, p } from "@mikro-orm/core";
 import { v7 } from "uuid";
 

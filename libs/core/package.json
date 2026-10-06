@@ -16,6 +16,7 @@
   "dependencies": {
     "@ark/util": "catalog:common",
     "@libs/common": "workspace:*",
+    "@libs/contract": "workspace:*",
     "@mikro-orm/core": "catalog:mikro",
     "@mikro-orm/decorators": "catalog:mikro",
     "@mikro-orm/migrations": "catalog:mikro",

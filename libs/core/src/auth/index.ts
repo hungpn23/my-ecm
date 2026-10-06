@@ -1,6 +1,6 @@
+export * from "./auth-request.type";
 export * from "./auth.constant";
 export * from "./auth.module";
-export * from "./auth.schema";
 export * from "./jwt.config";
 export * from "./jwt.guard";
 export * from "./jwt.strategy";

@@ -1,3 +1,5 @@
+import "@libs/contract/arktype-global";
+
 import { ArktypeValidationPipe } from "@libs/common";
 import { appConfig, KafkaService } from "@libs/core";
 import { NestFactory } from "@nestjs/core";

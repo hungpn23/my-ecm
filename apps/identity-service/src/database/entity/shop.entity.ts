@@ -1,4 +1,4 @@
-import type { ShopDetailResponse, ShopResponse } from "#internal/module/shop/shop.schema";
+import type { ShopDetailResponse, ShopResponse } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 // fallow-ignore-next-line circular-dependency

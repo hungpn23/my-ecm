@@ -1,12 +1,14 @@
-import { Endpoint, OffsetQuery, Uuid } from "@libs/common";
-import { Seller, SellerGuard } from "@libs/core";
-import { Body, Controller, Param, Query, UseGuards } from "@nestjs/common";
+import { Endpoint } from "@libs/common";
 import {
   CreateProduct,
+  OffsetQuery,
   PaginatedProductResponse,
   ProductDetailResponse,
   UpdateProduct,
-} from "./product.schema";
+  Uuid,
+} from "@libs/contract";
+import { Seller, SellerGuard } from "@libs/core";
+import { Body, Controller, Param, Query, UseGuards } from "@nestjs/common";
 import { ProductService } from "./product.service";
 
 @UseGuards(SellerGuard)

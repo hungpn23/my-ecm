@@ -1,5 +1,6 @@
+import type { AuthenticatedSeller } from "@libs/contract";
 import { createParamDecorator, type ExecutionContext } from "@nestjs/common";
-import type { AuthenticatedSeller, AuthenticatedSellerRequest } from "./auth.schema";
+import type { AuthenticatedSellerRequest } from "./auth-request.type";
 
 export function Seller<S extends AuthenticatedSeller>(key?: keyof S): ParameterDecorator {
   const decorator = createParamDecorator((key: keyof S | undefined, context: ExecutionContext) => {

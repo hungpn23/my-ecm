@@ -1,5 +1,5 @@
 import { EmailService } from "#internal/module/email/email.service";
-import { UserCreatedData } from "@libs/common";
+import { UserCreatedData } from "@libs/contract";
 import { KafkaEvent } from "@libs/core";
 import { Controller } from "@nestjs/common";
 import { Payload } from "@nestjs/microservices";

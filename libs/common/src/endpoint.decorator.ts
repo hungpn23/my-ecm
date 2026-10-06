@@ -1,3 +1,4 @@
+import { AnyRecord, SuccessResponse } from "@libs/contract";
 import {
   applyDecorators,
   Delete,
@@ -10,8 +11,6 @@ import {
 import { ApiBearerAuth, ApiBody, ApiResponse } from "@nestjs/swagger";
 import type { Type } from "arktype";
 import { IS_PUBLIC } from "./common.constant";
-import { AnyRecord } from "./common.schema";
-import { SuccessResponse } from "./success-response.schema";
 
 export type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 

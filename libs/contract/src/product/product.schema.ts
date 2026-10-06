@@ -1,12 +1,12 @@
+import { type } from "arktype";
 import {
-  EntityResponse,
   NonEmptyString,
   NonNegativeDecimal,
   Paginated,
   Uuid,
   Varchar255,
-} from "@libs/common";
-import { type } from "arktype";
+} from "../shared/common.schema";
+import { EntityResponse } from "../shared/entity-response.schema";
 
 const PRODUCT_STATUS = {
   ACTIVE: "ACTIVE",

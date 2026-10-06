@@ -1,4 +1,5 @@
-import { KafkaMessageIn, type KafkaMessageOut, X_REQUEST_ID } from "@libs/common";
+import { X_REQUEST_ID } from "@libs/common";
+import { KafkaMessageIn, type KafkaMessageOut } from "@libs/contract";
 import { Injectable } from "@nestjs/common";
 import type { Serializer } from "@nestjs/microservices";
 import { InjectPinoLogger, type PinoLogger } from "nestjs-pino";

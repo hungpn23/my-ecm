@@ -1,6 +1,7 @@
-import { TokenResponse } from "#internal/module/auth/auth.schema";
-import { EntityResponse, NonEmptyString, Uuid, Varchar255 } from "@libs/common";
 import { type } from "arktype";
+import { NonEmptyString, Uuid, Varchar255 } from "../shared/common.schema";
+import { EntityResponse } from "../shared/entity-response.schema";
+import { TokenResponse } from "./auth.schema";
 
 export const CreateShop = type({
   name: Varchar255,

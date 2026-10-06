@@ -1,5 +1,6 @@
 import { Outbox } from "#internal/database/entity/index";
-import { KafkaMessageByTopic, type KafkaTopic } from "@libs/common";
+import { KafkaMessageByTopic } from "@libs/common";
+import type { KafkaTopic } from "@libs/contract";
 import type { EntityRepository, RequiredEntityData } from "@mikro-orm/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";

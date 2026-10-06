@@ -1,14 +1,22 @@
 import { User } from "#internal/database/entity/index";
-import { Uuid, type AllOrNever, type SuccessResponse } from "@libs/common";
+import type { AllOrNever } from "@libs/common";
 import {
   AuthenticatedSeller,
+  Role,
+  Uuid,
+  type AuthenticatedUser,
+  type ChangePassword,
+  type SignIn,
+  type SignUp,
+  type SuccessResponse,
+  type TokenResponse,
+} from "@libs/contract";
+import {
   isSeller,
   jwtConfig,
   jwtidBy,
   OutboxService,
   RedisService,
-  Role,
-  type AuthenticatedUser,
   type JwtConfig,
 } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
@@ -19,7 +27,6 @@ import { JwtService } from "@nestjs/jwt";
 import { hash } from "argon2";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
-import type { ChangePassword, SignIn, SignUp, TokenResponse } from "./auth.schema";
 
 type GenerateToken = AllOrNever<AuthenticatedSeller, "shopId" | "shopRole"> & {
   userId: Uuid;

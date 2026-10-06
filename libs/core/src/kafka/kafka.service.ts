@@ -1,4 +1,5 @@
-import { KafkaMessageByTopic, type KafkaTopic } from "@libs/common";
+import { KafkaMessageByTopic } from "@libs/common";
+import type { KafkaTopic } from "@libs/contract";
 import { Inject, Injectable } from "@nestjs/common";
 import type { ClientKafkaProxy, KafkaOptions } from "@nestjs/microservices";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";

@@ -1,6 +1,5 @@
-import { Uuid } from "@libs/common";
 import { type } from "arktype";
-import type { Request } from "express";
+import { Uuid } from "../shared/common.schema";
 
 const JWT_KIND = {
   ACCESS_TOKEN: "ACCESS_TOKEN",
@@ -42,11 +41,3 @@ export const AuthenticatedSeller = AuthenticatedUser.merge({
   shopRole: ShopRole,
 });
 export type AuthenticatedSeller = typeof AuthenticatedSeller.infer;
-
-export type AuthenticatedUserRequest<U extends AuthenticatedUser> = Omit<Request, "user"> & {
-  user: U;
-};
-
-export type AuthenticatedSellerRequest<S extends AuthenticatedSeller> = Omit<Request, "user"> & {
-  user: S;
-};

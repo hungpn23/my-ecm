@@ -1,11 +1,10 @@
 import { Shop, User } from "#internal/database/entity/index";
 import { AuthService } from "#internal/module/auth/auth.service";
-import type { AuthenticatedUser } from "@libs/core";
+import type { AuthenticatedUser, CreateShop, CreateShopResponse } from "@libs/contract";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import type { CreateShop, CreateShopResponse } from "./shop.schema";
 
 @Injectable()
 export class ShopService {

@@ -15,6 +15,7 @@
   "dependencies": {
     "@ark/util": "catalog:common",
     "@libs/common": "workspace:*",
+    "@libs/contract": "workspace:*",
     "@libs/core": "workspace:*",
     "@libs/email": "workspace:*",
     "@nestjs/common": "catalog:nest",

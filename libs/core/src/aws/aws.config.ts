@@ -1,4 +1,4 @@
-import { NonEmptyString } from "@libs/common";
+import { NonEmptyString } from "@libs/contract";
 import { type ConfigType, registerAs } from "@nestjs/config";
 import { createEnv, type } from "arkenv";
 

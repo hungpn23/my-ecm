@@ -17,7 +17,6 @@
     "email:start": "email start"
   },
   "dependencies": {
-    "arktype": "catalog:common",
     "react": "catalog:email",
     "react-dom": "catalog:email",
     "react-email": "catalog:email"

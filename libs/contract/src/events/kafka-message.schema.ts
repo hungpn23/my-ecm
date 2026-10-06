@@ -1,5 +1,5 @@
-import { AnyRecord } from "#internal/common.schema";
 import { type } from "arktype";
+import { AnyRecord } from "../shared/common.schema";
 
 export const KafkaMessageIn = type({
   "key?": AnyRecord.pipe((k) => JSON.stringify(k)),
