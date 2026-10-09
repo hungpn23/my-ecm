@@ -1,9 +1,4 @@
-import {
-  AuthMfaFailure,
-  AuthRecoveryCode,
-  AuthRefreshToken,
-  AuthTotp,
-} from "#internal/database/entity/index";
+import { MfaFailure, RecoveryCode, RefreshToken, Totp } from "#internal/database/entity/index";
 import { wrap } from "@mikro-orm/core";
 import { EntityManager, raw } from "@mikro-orm/postgresql";
 import {
@@ -31,7 +26,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
   }
 
   async getRefreshToken(id: string): Promise<RefreshTokenRecord | undefined> {
-    const row = await this.fork().findOne(AuthRefreshToken, { id });
+    const row = await this.fork().findOne(RefreshToken, { id });
     if (!row) return undefined;
 
     const { usedAt, claims, ...rest } = wrap(row).serialize({ exclude: ["revoked"] });
@@ -46,7 +41,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
   async saveRefreshToken(record: RefreshTokenRecord): Promise<void> {
     const em = this.fork();
 
-    await em.insert(AuthRefreshToken, {
+    await em.insert(RefreshToken, {
       ...record,
       usedAt: record.usedAt ?? null,
       claims: record.claims ?? null,
@@ -54,14 +49,14 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
     });
 
     // cleanup expired family tokens
-    await em.nativeDelete(AuthRefreshToken, {
+    await em.nativeDelete(RefreshToken, {
       familyExpiresAt: { $lte: record.createdAt },
     });
   }
 
   async markRefreshTokenUsed(id: string, at: Date): Promise<boolean> {
     const affected = await this.fork().nativeUpdate(
-      AuthRefreshToken,
+      RefreshToken,
       { id, usedAt: null },
       { usedAt: at },
     );
@@ -70,21 +65,21 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
   }
 
   async revokeRefreshTokenFamily(familyId: string): Promise<void> {
-    await this.fork().nativeUpdate(AuthRefreshToken, { familyId }, { revoked: true });
+    await this.fork().nativeUpdate(RefreshToken, { familyId }, { revoked: true });
   }
 
   async isRefreshTokenFamilyRevoked(familyId: string): Promise<boolean> {
-    const count = await this.fork().count(AuthRefreshToken, { familyId, revoked: true });
+    const count = await this.fork().count(RefreshToken, { familyId, revoked: true });
     return count > 0;
   }
 
   async revokeUserRefreshTokens(userId: string): Promise<void> {
-    await this.fork().nativeUpdate(AuthRefreshToken, { userId }, { revoked: true });
+    await this.fork().nativeUpdate(RefreshToken, { userId }, { revoked: true });
   }
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async getTotp(userId: string): Promise<TotpRecord | undefined> {
-    const row = await this.fork().findOne(AuthTotp, { userId });
+    const row = await this.fork().findOne(Totp, { userId });
     if (!row) return undefined;
 
     const record: TotpRecord = { secret: row.secret, confirmed: row.confirmed };
@@ -97,7 +92,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
   async saveTotp(userId: string, record: TotpRecord | null): Promise<void> {
     const em = this.fork();
     if (!record) {
-      await em.nativeDelete(AuthTotp, { userId });
+      await em.nativeDelete(Totp, { userId });
       return;
     }
 
@@ -107,13 +102,13 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
       pendingSecret: record.pendingSecret ?? null,
     };
     await em
-      .createQueryBuilder(AuthTotp)
+      .createQueryBuilder(Totp)
       .insert({ userId, ...values, lastUsedStep: record.lastUsedStep ?? null })
       .onConflict("userId")
       .merge({
         ...values,
         // A stale save must never reopen a step claimed by another request.
-        lastUsedStep: raw('greatest("auth_totp"."last_used_step", excluded."last_used_step")'),
+        lastUsedStep: raw('greatest("totp"."last_used_step", excluded."last_used_step")'),
       })
       .execute();
   }
@@ -121,7 +116,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async claimTotpStep(userId: string, step: number): Promise<boolean> {
     const affected = await this.fork().nativeUpdate(
-      AuthTotp,
+      Totp,
       { userId, $or: [{ lastUsedStep: null }, { lastUsedStep: { $lt: step } }] },
       { lastUsedStep: step },
     );
@@ -131,10 +126,10 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async saveRecoveryCodes(userId: string, hashes: string[]): Promise<void> {
     await this.fork().transactional(async (em) => {
-      await em.nativeDelete(AuthRecoveryCode, { userId });
+      await em.nativeDelete(RecoveryCode, { userId });
       if (hashes.length > 0) {
         await em.insertMany(
-          AuthRecoveryCode,
+          RecoveryCode,
           [...new Set(hashes)].map((codeHash) => ({ userId, codeHash })),
         );
       }
@@ -143,7 +138,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async consumeRecoveryCode(userId: string, hash: string): Promise<boolean> {
-    const affected = await this.fork().nativeDelete(AuthRecoveryCode, {
+    const affected = await this.fork().nativeDelete(RecoveryCode, {
       userId,
       codeHash: hash,
     });
@@ -152,15 +147,15 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   countRecoveryCodes(userId: string): Promise<number> {
-    return this.fork().count(AuthRecoveryCode, { userId });
+    return this.fork().count(RecoveryCode, { userId });
   }
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async recordMfaFailure(userId: string, windowMs: number, now: number): Promise<number> {
     // Commit the insert before counting so concurrent guesses see earlier attempts.
-    await this.fork().insert(AuthMfaFailure, { userId, failedAt: new Date(now) });
+    await this.fork().insert(MfaFailure, { userId, failedAt: new Date(now) });
     const failures = await this.countMfaFailures(userId, windowMs, now);
-    await this.fork().nativeDelete(AuthMfaFailure, {
+    await this.fork().nativeDelete(MfaFailure, {
       failedAt: { $lte: new Date(now - windowMs) },
     });
     return failures;
@@ -168,7 +163,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   countMfaFailures(userId: string, windowMs: number, now: number): Promise<number> {
-    return this.fork().count(AuthMfaFailure, {
+    return this.fork().count(MfaFailure, {
       userId,
       failedAt: { $gt: new Date(now - windowMs) },
     });
@@ -176,6 +171,6 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async clearMfaFailures(userId: string): Promise<void> {
-    await this.fork().nativeDelete(AuthMfaFailure, { userId });
+    await this.fork().nativeDelete(MfaFailure, { userId });
   }
 }

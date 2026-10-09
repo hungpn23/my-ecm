@@ -1,8 +1,8 @@
 import { defineEntity, p } from "@mikro-orm/core";
 import type { RefreshTokenRecord } from "@nestjs/authentication";
 
-export const AuthRefreshTokenSchema = defineEntity({
-  name: "AuthRefreshToken",
+export const RefreshTokenSchema = defineEntity({
+  name: "RefreshToken",
   properties: {
     id: p.text().primary(),
     familyId: p.text().index(),
@@ -16,5 +16,5 @@ export const AuthRefreshTokenSchema = defineEntity({
   },
 });
 
-export class AuthRefreshToken extends AuthRefreshTokenSchema.class {}
-AuthRefreshTokenSchema.setClass(AuthRefreshToken);
+export class RefreshToken extends RefreshTokenSchema.class {}
+RefreshTokenSchema.setClass(RefreshToken);

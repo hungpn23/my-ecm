@@ -1,7 +1,7 @@
 import { defineEntity, p } from "@mikro-orm/core";
 
-export const AuthMfaFailureSchema = defineEntity({
-  name: "AuthMfaFailure",
+export const MfaFailureSchema = defineEntity({
+  name: "MfaFailure",
   properties: {
     id: p.integer().primary().autoincrement(),
     userId: p.text(),
@@ -10,5 +10,5 @@ export const AuthMfaFailureSchema = defineEntity({
   indexes: [{ properties: ["userId", "failedAt"] }],
 });
 
-export class AuthMfaFailure extends AuthMfaFailureSchema.class {}
-AuthMfaFailureSchema.setClass(AuthMfaFailure);
+export class MfaFailure extends MfaFailureSchema.class {}
+MfaFailureSchema.setClass(MfaFailure);
