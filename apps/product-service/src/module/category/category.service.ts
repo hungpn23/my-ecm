@@ -8,24 +8,19 @@ import {
   type PaginatedCategoryResponse,
   type UpdateCategory,
 } from "@libs/contract";
-import { Transactional } from "@mikro-orm/decorators/legacy";
-import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityManager, EntityRepository, type FilterQuery } from "@mikro-orm/postgresql";
+import { EntityManager, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class CategoryService {
-  constructor(
-    private readonly em: EntityManager,
-    @InjectRepository(Category)
-    private readonly categoryRepo: EntityRepository<Category>,
-  ) {}
+  constructor(private readonly em: EntityManager) {}
 
-  @Transactional()
   async create(body: CreateCategory): Promise<CategoryResponse> {
-    const category = this.categoryRepo.create(body);
+    return this.em.transactional(async (em) => {
+      const category = em.create(Category, body);
 
-    return category.toDetailResponse();
+      return category.toDetailResponse();
+    });
   }
 
   async find(query: OffsetQuery): Promise<PaginatedCategoryResponse> {
@@ -38,7 +33,7 @@ export class CategoryService {
       });
     }
 
-    const [categories, total] = await this.categoryRepo.findAndCount(where, {
+    const [categories, total] = await this.em.findAndCount(Category, where, {
       limit: pageSize,
       offset: (page - 1) * pageSize,
       orderBy: { createdAt: "desc" },
@@ -55,22 +50,24 @@ export class CategoryService {
     };
   }
 
-  @Transactional()
   async update(categoryId: Uuid, body: UpdateCategory): Promise<CategoryResponse> {
-    const category = await this.categoryRepo.findOne({ id: categoryId });
-    if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
+    return this.em.transactional(async (em) => {
+      const category = await em.findOne(Category, { id: categoryId });
+      if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
 
-    this.categoryRepo.assign(category, body);
-    await this.em.flush();
+      em.assign(category, body);
+      await em.flush();
 
-    return category.toDetailResponse();
+      return category.toDetailResponse();
+    });
   }
 
-  @Transactional()
   async delete(categoryId: Uuid): Promise<void> {
-    const category = await this.categoryRepo.findOne({ id: categoryId });
-    if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
+    await this.em.transactional(async (em) => {
+      const category = await em.findOne(Category, { id: categoryId });
+      if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
 
-    this.em.remove(category);
+      em.remove(category);
+    });
   }
 }
