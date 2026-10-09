@@ -20,7 +20,7 @@ Required:
 
 Options:
   --mikro-orm         Enable MikroORM without entities or migrations
-  --no-auth           Omit JWT, Redis, and the global auth guard
+  --no-auth           Omit JWT verification and current user lookup
   --help              Show this message`;
 
 function parsePort(value: string, option: string): number {
@@ -217,30 +217,20 @@ await bootstrap();
 
 function createAppModule(options: OnboardOptions): string {
   const coreImports = [
-    ...(options.auth ? ["AuthModule"] : []),
+    ...(options.auth ? ["ResourceAuthenticationModule"] : []),
     "ConfigModule",
     ...(options.mikroOrm ? ["DatabaseModule"] : []),
-    ...(options.auth ? ["JwtGuard"] : []),
     "KafkaModule",
     "LoggerModule",
-    ...(options.auth ? ["RedisModule"] : []),
   ];
   const imports = [
     "ConfigModule.forRoot()",
     ...(options.mikroOrm ? ["DatabaseModule.forRoot(entities)"] : []),
     "LoggerModule.forRoot()",
     "KafkaModule.forRoot()",
-    ...(options.auth ? ["RedisModule.forRoot()", "AuthModule"] : []),
+    ...(options.auth ? ["ResourceAuthenticationModule"] : []),
   ];
   const providers = [
-    ...(options.auth
-      ? [
-          `{
-      provide: APP_GUARD,
-      useClass: JwtGuard,
-    }`,
-        ]
-      : []),
     `{
       provide: APP_PIPE,
       useClass: ArktypeValidationPipe,
@@ -267,7 +257,7 @@ ${
 `
     : ""
 }import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
-import { ${options.auth ? "APP_GUARD, " : ""}APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
+import { APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 
 @Module({
   ${moduleImports}
@@ -303,7 +293,7 @@ function createFiles(options: OnboardOptions): [string, string][] {
   const files: [string, string][] = [
     [
       ".env.example",
-      `APP_NAME=${options.name}-service\nAPP_PORT=${options.httpPort}\n${options.mikroOrm ? `\nDB_DATABASE=${options.name}-service\n` : ""}`,
+      `APP_NAME=${options.name}-service\nAPP_PORT=${options.httpPort}\n${options.mikroOrm ? `\nDB_DATABASE=${options.name}-service\n` : ""}${options.auth ? "\nAUTH_JWT_PUBLIC_KEY_PATH=/absolute/path/to/identity-es256-public.pem\nAUTH_JWT_ISSUER=my-ecm-identity\nAUTH_JWT_AUDIENCE=my-ecm-api\nIDENTITY_SERVICE_URL=http://localhost:8080\nAUTH_INTERNAL_SECRET=\n" : ""}`,
     ],
     ["package.json", createPackageJson(options)],
     ["tsconfig.json", createTsConfig()],

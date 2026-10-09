@@ -1,17 +1,16 @@
 info:
-  name: sign-up
+  name: token
   type: http
-  seq: 1
+  seq: 2
 
 http:
   method: POST
-  url: "{{identity}}/auth/sign-up"
+  url: "{{identity}}/auth/token"
   body:
     type: json
     data: |-
       {
-        "email": "{{$randomEmail}}",
-      //   "email": "hungpn23@gmail.com",
+        "email": "hungpn23@gmail.com",
         "password": "12345678"
       }
   auth: inherit

@@ -1,7 +1,6 @@
 import { type } from "arktype";
 import { NonEmptyString, Uuid, Varchar255 } from "../shared/common.schema";
 import { EntityResponse } from "../shared/entity-response.schema";
-import { TokenResponse } from "./auth.schema";
 
 export const CreateShop = type({
   name: Varchar255,
@@ -20,5 +19,5 @@ const ShopDetailResponse = ShopResponse.merge({
 });
 export type ShopDetailResponse = typeof ShopDetailResponse.inferIn;
 
-export const CreateShopResponse = ShopDetailResponse.merge(TokenResponse);
+export const CreateShopResponse = ShopDetailResponse;
 export type CreateShopResponse = typeof CreateShopResponse.inferIn;

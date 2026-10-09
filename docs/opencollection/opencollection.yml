@@ -19,22 +19,18 @@ request:
     - type: before-request
       code: |-
         const accessToken = bru.getEnvVar('access_token')
-        const refreshToken = bru.getEnvVar('refresh_token')
+        const publicRequests = ['sign-up', 'token', 'refresh', 'revoke']
 
-        if(req.getName() === 'refresh' && refreshToken) {
-          const token = 'Bearer ' + refreshToken
-          req.setHeader('Authorization', token)
-        } else {
-          const token = 'Bearer ' + accessToken
-          if (accessToken) req.setHeader('Authorization', token)
+        if (!publicRequests.includes(req.getName()) && accessToken) {
+          req.setHeader('Authorization', 'Bearer ' + accessToken)
         }
     - type: after-response
       code: |-
         const body = res.getBody()
 
-        if (body.sessionId) bru.setEnvVar('user_profile', body)
-        if (body.accessToken) bru.setEnvVar('access_token', body.accessToken)
-        if (body.refreshToken) bru.setEnvVar('refresh_token', body.refreshToken)
+        if (body?.accessToken) bru.setEnvVar('access_token', body.accessToken)
+        if (body?.refreshToken) bru.setEnvVar('refresh_token', body.refreshToken)
+        if (typeof body?.expiresIn === 'number') bru.setEnvVar('expires_in', body.expiresIn)
 bundled: false
 extensions:
   bruno:

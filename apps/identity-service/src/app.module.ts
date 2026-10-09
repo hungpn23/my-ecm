@@ -1,22 +1,9 @@
 import { entities } from "#mikro-orm/generated";
 import { ArktypeValidationPipe } from "@libs/common";
-import {
-  ConfigModule,
-  DatabaseModule,
-  JwtGuard,
-  KafkaModule,
-  LoggerModule,
-  OutboxModule,
-  RedisModule,
-} from "@libs/core";
+import { ConfigModule, DatabaseModule, KafkaModule, LoggerModule, OutboxModule } from "@libs/core";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
-import { ConditionalModule } from "@nestjs/config";
-import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
+import { APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { AuthModule } from "./module/auth/auth.module";
-import { GithubEnv } from "./module/oauth/github/github.config";
-import { GithubModule } from "./module/oauth/github/github.module";
-import { GoogleEnv } from "./module/oauth/google/google.config";
-import { GoogleModule } from "./module/oauth/google/google.module";
 import { ShopModule } from "./module/shop/shop.module";
 import { UserModule } from "./module/user/user.module";
 
@@ -25,24 +12,13 @@ import { UserModule } from "./module/user/user.module";
     ConfigModule.forRoot(),
     DatabaseModule.forRoot(entities),
     LoggerModule.forRoot(),
-    RedisModule.forRoot(),
     KafkaModule.forRoot(),
     OutboxModule,
     AuthModule,
     ShopModule,
-    ConditionalModule.registerWhen(GoogleModule, GoogleEnv.allows, {
-      debug: false,
-    }),
-    ConditionalModule.registerWhen(GithubModule, GithubEnv.allows, {
-      debug: false,
-    }),
     UserModule,
   ],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: JwtGuard,
-    },
     {
       provide: APP_PIPE,
       useClass: ArktypeValidationPipe,

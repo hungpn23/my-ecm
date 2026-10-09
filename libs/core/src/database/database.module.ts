@@ -16,16 +16,19 @@ export class DatabaseModule {
           inject: [databaseConfig.KEY, PinoLogger],
           driver: PostgreSqlDriver,
           useFactory: (config: DatabaseConfig, logger: PinoLogger) => {
+            const { enableDebug, ...rest } = config;
+
             let ormOptions: MikroOrmModuleOptions = {
-              ...config,
+              ...rest,
               entities,
             };
 
-            if (config.debug) {
+            if (enableDebug) {
               logger.setContext(DatabaseModule.name);
 
               ormOptions = {
                 ...ormOptions,
+                debug: true,
                 logger: (msg) => logger.debug(msg),
                 highlighter: new SqlHighlighter(),
               };

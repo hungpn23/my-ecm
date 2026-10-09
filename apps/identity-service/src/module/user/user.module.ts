@@ -1,6 +1,6 @@
+import { User } from "#internal/database/entity/index";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Module } from "@nestjs/common";
-import { User } from "#internal/database/entity/index";
 import { UserController } from "./user.controller";
 import { UserService } from "./user.service";
 
@@ -8,5 +8,6 @@ import { UserService } from "./user.service";
   imports: [MikroOrmModule.forFeature([User])],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {}

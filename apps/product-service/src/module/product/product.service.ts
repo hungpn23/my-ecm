@@ -1,18 +1,19 @@
 import { Category, Product } from "#internal/database/entity/index";
 import { deepMerge } from "@libs/common";
 import {
-  Uuid,
   type CreateProduct,
   type OffsetQuery,
   type PaginatedProductResponse,
   type ProductDetailResponse,
   type UpdateProduct,
+  type Uuid,
 } from "@libs/contract";
 import { OutboxService } from "@libs/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository, type FilterQuery } from "@mikro-orm/postgresql";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { AuthenticationContext } from "@nestjs/authentication";
+import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class ProductService {
@@ -23,10 +24,12 @@ export class ProductService {
     private readonly categoryRepo: EntityRepository<Category>,
     @InjectRepository(Product)
     private readonly productRepo: EntityRepository<Product>,
+    private readonly authCtx: AuthenticationContext,
   ) {}
 
   @Transactional()
-  async create(shopId: Uuid, body: CreateProduct): Promise<ProductDetailResponse> {
+  async create(body: CreateProduct): Promise<ProductDetailResponse> {
+    const shopId = this.requireShopId();
     const { categoryId, ...rest } = body;
 
     const category = await this.categoryRepo.findOne({ id: categoryId });
@@ -51,7 +54,8 @@ export class ProductService {
     return response;
   }
 
-  async find(shopId: Uuid, query: OffsetQuery): Promise<PaginatedProductResponse> {
+  async find(query: OffsetQuery): Promise<PaginatedProductResponse> {
+    const shopId = this.requireShopId();
     const { page, pageSize, search } = query;
 
     let where: FilterQuery<Product> = { shopId };
@@ -79,7 +83,8 @@ export class ProductService {
     };
   }
 
-  async findOne(shopId: Uuid, productId: Uuid): Promise<ProductDetailResponse> {
+  async findOne(productId: Uuid): Promise<ProductDetailResponse> {
+    const shopId = this.requireShopId();
     const product = await this.productRepo.findOne(
       { id: productId, shopId },
       { populate: ["category", "description"] },
@@ -90,7 +95,8 @@ export class ProductService {
   }
 
   @Transactional()
-  async update(shopId: Uuid, productId: Uuid, body: UpdateProduct): Promise<ProductDetailResponse> {
+  async update(productId: Uuid, body: UpdateProduct): Promise<ProductDetailResponse> {
+    const shopId = this.requireShopId();
     const product = await this.productRepo.findOne(
       { id: productId, shopId },
       { populate: ["category", "description"] },
@@ -123,10 +129,18 @@ export class ProductService {
   }
 
   @Transactional()
-  async delete(shopId: Uuid, productId: Uuid): Promise<void> {
+  async delete(productId: Uuid): Promise<void> {
+    const shopId = this.requireShopId();
     const product = await this.productRepo.findOne({ id: productId, shopId });
     if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
     this.em.remove(product);
+  }
+
+  private requireShopId(): Uuid {
+    const { shopId, shopRole } = this.authCtx.requireUser();
+    if (!shopId || !shopRole) throw new ForbiddenException("User is not a seller");
+
+    return shopId;
   }
 }

@@ -9,9 +9,11 @@
   },
   "scripts": {
     "build": "bun ../../scripts/build.ts",
+    "check:auth-store": "bun scripts/check-auth-store.ts",
     "check:types": "tsc",
     "dev": "bun --watch src/main.ts",
     "discovery:export": "bun mikro-orm discovery:export",
+    "migration:create": "bun mikro-orm migration:create",
     "migration:down": "bun mikro-orm migration:down",
     "migration:up": "bun mikro-orm migration:up",
     "orm:debug": "bun mikro-orm debug",
@@ -29,29 +31,20 @@
     "@mikro-orm/migrations": "catalog:mikro",
     "@mikro-orm/nestjs": "catalog:mikro",
     "@mikro-orm/postgresql": "catalog:mikro",
+    "@nestjs/authentication": "catalog:auth",
     "@nestjs/common": "catalog:nest",
     "@nestjs/config": "catalog:nest",
     "@nestjs/core": "catalog:nest",
-    "@nestjs/jwt": "catalog:auth",
     "@nestjs/microservices": "catalog:nest",
-    "@nestjs/passport": "catalog:auth",
     "@nestjs/platform-express": "catalog:nest",
     "@nestjs/swagger": "catalog:nest",
-    "argon2": "catalog:auth",
     "arkenv": "catalog:common",
+    "arktype": "catalog:common",
     "dotenv": "catalog:backend",
     "kafkajs": "catalog:backend",
     "nestjs-pino": "catalog:logging",
-    "passport-github2": "catalog:auth",
-    "passport-google-oauth20": "catalog:auth",
-    "passport-jwt": "catalog:auth",
     "reflect-metadata": "catalog:backend",
     "rxjs": "catalog:backend",
     "uuid": "catalog:backend"
-  },
-  "devDependencies": {
-    "@types/passport-github2": "catalog:auth",
-    "@types/passport-google-oauth20": "catalog:auth",
-    "@types/passport-jwt": "catalog:auth"
   }
 }

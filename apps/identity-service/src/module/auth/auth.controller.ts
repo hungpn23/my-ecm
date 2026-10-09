@@ -1,18 +1,13 @@
 import { Endpoint } from "@libs/common";
 import {
-  AuthenticatedUser,
   BaseAuth,
   ChangePassword,
+  RefreshTokenBody,
   TokenResponse,
-  Uuid,
-  type SignIn,
-  type SignUp,
   type SuccessResponse,
 } from "@libs/contract";
-import { User } from "@libs/core";
-import { Body, Controller, UseGuards } from "@nestjs/common";
+import { Body, Controller } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { RefreshGuard } from "./refresh.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -23,41 +18,47 @@ export class AuthController {
     isPublic: true,
     request: BaseAuth,
     response: TokenResponse,
+    headers: [["Cache-Control", "no-store"]],
   })
-  async register(@Body({ schema: BaseAuth }) body: SignUp): Promise<TokenResponse> {
+  async register(@Body({ schema: BaseAuth }) body: BaseAuth): Promise<TokenResponse> {
     return await this.authService.signUp(body);
   }
 
   @Endpoint("POST", {
-    path: "sign-in",
+    path: "token",
     isPublic: true,
     request: BaseAuth,
     response: TokenResponse,
+    headers: [["Cache-Control", "no-store"]],
   })
-  async login(@Body({ schema: BaseAuth }) body: SignIn): Promise<TokenResponse> {
+  async login(@Body({ schema: BaseAuth }) body: BaseAuth): Promise<TokenResponse> {
     return await this.authService.signIn(body);
   }
 
   @Endpoint("POST", { path: "change-password", request: ChangePassword })
   async changePassword(
-    @User("userId") userId: Uuid,
     @Body({ schema: ChangePassword }) body: ChangePassword,
   ): Promise<SuccessResponse> {
-    return await this.authService.changePassword(userId, body);
+    return await this.authService.changePassword(body);
   }
 
-  @Endpoint("POST", { path: "logout" })
-  async logout(@User() user: AuthenticatedUser): Promise<SuccessResponse> {
-    return await this.authService.logout(user);
+  @Endpoint("POST", { path: "token/revoke", isPublic: true, request: RefreshTokenBody })
+  async revokeToken(
+    @Body({ schema: RefreshTokenBody }) body: RefreshTokenBody,
+  ): Promise<SuccessResponse> {
+    return await this.authService.revokeToken(body);
   }
 
-  @UseGuards(RefreshGuard)
   @Endpoint("POST", {
-    path: "refresh",
+    path: "token/refresh",
     isPublic: true,
+    request: RefreshTokenBody,
     response: TokenResponse,
+    headers: [["Cache-Control", "no-store"]],
   })
-  async refreshToken(@User() user: AuthenticatedUser): Promise<TokenResponse> {
-    return await this.authService.refreshToken(user);
+  async refreshToken(
+    @Body({ schema: RefreshTokenBody }) body: RefreshTokenBody,
+  ): Promise<TokenResponse> {
+    return await this.authService.refreshToken(body);
   }
 }

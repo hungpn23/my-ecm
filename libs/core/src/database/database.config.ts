@@ -18,7 +18,7 @@ export const databaseConfig = registerAs("database", () => {
     user: config.DB_USER,
     password: config.DB_PASSWORD,
     dbName: config.DB_DATABASE,
-    debug: config.DB_ENABLE_DEBUG,
+    enableDebug: config.DB_ENABLE_DEBUG,
   };
 });
 

@@ -1,8 +1,7 @@
 import { ROLE, SHOP_ROLE, ShopRole, type UserResponse } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
-import { BadRequestException, ConflictException } from "@nestjs/common";
-import { verify } from "argon2";
+import { ConflictException } from "@nestjs/common";
 import { Shop } from "./shop.entity";
 
 export const UserSchema = defineEntity({
@@ -18,18 +17,12 @@ export const UserSchema = defineEntity({
 
 export class User extends UserSchema.class {
   getMembership(this: Loaded<User, "shop">) {
-    if (!this.shop || !this.shopRole) return null;
+    if (!this.shop || !this.shopRole) return { shopId: null, shopRole: null };
 
     return {
       shopId: this.shop.id,
       shopRole: this.shopRole,
     };
-  }
-
-  async verifyPassword(this: Loaded<User, "password">, password: string): Promise<void> {
-    const current = this.password.get();
-    const isMatch = await verify(current, password);
-    if (!isMatch) throw new BadRequestException("Invalid credentials");
   }
 
   joinShop(shop: Shop, role: ShopRole) {
@@ -42,14 +35,13 @@ export class User extends UserSchema.class {
   }
 
   toResponse(this: Loaded<User, "shop">): UserResponse {
-    const { shopRole, shop, ...data } = wrap(this).serialize({
-      populate: ["shop"],
+    const user = wrap(this).serialize({
+      exclude: ["shop", "shopRole", "password"],
     });
 
     return {
-      ...data,
-      shopRole: shopRole ?? null,
-      shopId: shop?.id ?? null,
+      ...user,
+      ...this.getMembership(),
     };
   }
 }

@@ -1,6 +1,5 @@
 import { Endpoint } from "@libs/common";
 import { UserResponse } from "@libs/contract";
-import { User } from "@libs/core";
 import { Controller } from "@nestjs/common";
 import { UserService } from "./user.service";
 
@@ -12,7 +11,7 @@ export class UserController {
     path: "info",
     response: UserResponse,
   })
-  async getInfo(@User("userId") userId: string): Promise<UserResponse> {
-    return await this.userService.getInfo(userId);
+  async getInfo(): Promise<UserResponse> {
+    return await this.userService.getInfo();
   }
 }

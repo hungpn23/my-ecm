@@ -1,6 +1,6 @@
 import { type } from "arktype";
 
-const Password = type("string >= 8").configure({ actual: () => "" });
+const Password = type("8 <= string <= 255").configure({ actual: () => "" });
 
 export const ChangePassword = type({
   oldPassword: Password,
@@ -23,11 +23,15 @@ export const BaseAuth = type({
   password: Password,
 });
 export type BaseAuth = typeof BaseAuth.infer;
-export type SignUp = BaseAuth;
-export type SignIn = BaseAuth;
+
+export const RefreshTokenBody = type({
+  refreshToken: type("string").configure({ actual: () => "" }),
+});
+export type RefreshTokenBody = typeof RefreshTokenBody.infer;
 
 export const TokenResponse = type({
   accessToken: "string",
   refreshToken: "string",
+  expiresIn: "number.integer >= 1",
 });
 export type TokenResponse = typeof TokenResponse.inferIn;

@@ -1,16 +1,17 @@
 import { AnyRecord, SuccessResponse } from "@libs/contract";
+import { Public } from "@nestjs/authentication";
 import {
   applyDecorators,
   Delete,
   Get,
+  Header,
+  HttpCode,
   Patch,
   Post,
   SerializeOptions,
-  SetMetadata,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiResponse } from "@nestjs/swagger";
 import type { Type } from "arktype";
-import { IS_PUBLIC } from "./common.constant";
 
 export type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
@@ -21,6 +22,7 @@ export type EndpointParams = {
   response: typeof AnyRecord;
   query: typeof AnyRecord;
   params: typeof AnyRecord;
+  headers: [string, string][];
 };
 
 export function Endpoint(method: HttpMethod, params: Partial<EndpointParams>) {
@@ -50,6 +52,7 @@ export function Endpoint(method: HttpMethod, params: Partial<EndpointParams>) {
       break;
     case "POST":
       decorators.push(Post(params.path));
+      decorators.push(HttpCode(200));
       break;
     case "PATCH":
       decorators.push(Patch(params.path));
@@ -60,9 +63,15 @@ export function Endpoint(method: HttpMethod, params: Partial<EndpointParams>) {
   }
 
   if (params.isPublic) {
-    decorators.push(SetMetadata(IS_PUBLIC, true));
+    decorators.push(Public());
   } else {
     decorators.push(ApiBearerAuth());
+  }
+
+  if (params.headers?.length) {
+    for (const [name, value] of params.headers) {
+      decorators.push(Header(name, value));
+    }
   }
 
   return applyDecorators(...decorators);
@@ -71,5 +80,11 @@ export function Endpoint(method: HttpMethod, params: Partial<EndpointParams>) {
 function toJsonSchema(schema: Type<unknown>, direction: "input" | "output") {
   return schema["~standard"].jsonSchema[direction]({
     target: "draft-2020-12",
+    libraryOptions: {
+      fallback: {
+        // Swagger cannot express custom predicates; the validation pipe still enforces them.
+        predicate: (ctx) => ctx.base,
+      },
+    } satisfies NonNullable<Parameters<Type<unknown>["toJsonSchema"]>[0]>,
   });
 }
