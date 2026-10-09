@@ -1,7 +1,7 @@
 import { defineEntity, p } from "@mikro-orm/core";
 
-export const AuthTotpSchema = defineEntity({
-  name: "AuthTotp",
+export const TotpSchema = defineEntity({
+  name: "Totp",
   properties: {
     userId: p.text().primary(),
     secret: p.text().hidden(),
@@ -11,5 +11,5 @@ export const AuthTotpSchema = defineEntity({
   },
 });
 
-export class AuthTotp extends AuthTotpSchema.class {}
-AuthTotpSchema.setClass(AuthTotp);
+export class Totp extends TotpSchema.class {}
+TotpSchema.setClass(Totp);

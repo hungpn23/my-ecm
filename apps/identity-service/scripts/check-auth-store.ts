@@ -1,9 +1,4 @@
-import {
-  AuthMfaFailure,
-  AuthRecoveryCode,
-  AuthRefreshToken,
-  AuthTotp,
-} from "#internal/database/entity/index";
+import { MfaFailure, RecoveryCode, RefreshToken, Totp } from "#internal/database/entity/index";
 import { AuthStore } from "#internal/module/auth/auth.store";
 import { NonEmptyString } from "@libs/contract";
 import { databaseConfig } from "@libs/core";
@@ -36,7 +31,7 @@ const orm = await MikroORM.init({
   ...applicationDatabase,
   dbName: "postgres",
   schema,
-  entities: [AuthRefreshToken, AuthTotp, AuthRecoveryCode, AuthMfaFailure],
+  entities: [RefreshToken, Totp, RecoveryCode, MfaFailure],
   debug: false,
 });
 const schemaGenerator = new SqlSchemaGenerator(orm.em.fork({ disableContextResolution: true }));
@@ -45,10 +40,10 @@ let databaseReady = false;
 function countRows() {
   const em = orm.em.fork({ useContext: false });
   return Promise.all([
-    em.count(AuthRefreshToken, {}),
-    em.count(AuthTotp, {}),
-    em.count(AuthRecoveryCode, {}),
-    em.count(AuthMfaFailure, {}),
+    em.count(RefreshToken, {}),
+    em.count(Totp, {}),
+    em.count(RecoveryCode, {}),
+    em.count(MfaFailure, {}),
   ]);
 }
 
