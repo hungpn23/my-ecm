@@ -12,7 +12,7 @@ export class ShopService {
   ) {}
 
   async create(body: CreateShop): Promise<CreateShopResponse> {
-    return this.em.transactional(async (em) => {
+    return await this.em.transactional(async (em) => {
       const user = await em.findOne(User, { id: this.authCtx.requireUser().id });
       if (!user) throw new NotFoundException();
 

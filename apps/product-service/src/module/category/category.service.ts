@@ -16,7 +16,7 @@ export class CategoryService {
   constructor(private readonly em: EntityManager) {}
 
   async create(body: CreateCategory): Promise<CategoryResponse> {
-    return this.em.transactional(async (em) => {
+    return await this.em.transactional(async (em) => {
       const category = em.create(Category, body);
 
       return category.toDetailResponse();
@@ -51,7 +51,7 @@ export class CategoryService {
   }
 
   async update(categoryId: Uuid, body: UpdateCategory): Promise<CategoryResponse> {
-    return this.em.transactional(async (em) => {
+    return await this.em.transactional(async (em) => {
       const category = await em.findOne(Category, { id: categoryId });
       if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
 

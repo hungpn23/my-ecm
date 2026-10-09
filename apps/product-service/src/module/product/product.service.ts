@@ -22,7 +22,7 @@ export class ProductService {
   ) {}
 
   async create(body: CreateProduct): Promise<ProductDetailResponse> {
-    return this.em.transactional(async (em) => {
+    return await this.em.transactional(async (em) => {
       const shopId = this.requireShopId();
       const { categoryId, ...rest } = body;
 
@@ -91,7 +91,7 @@ export class ProductService {
   }
 
   async update(productId: Uuid, body: UpdateProduct): Promise<ProductDetailResponse> {
-    return this.em.transactional(async (em) => {
+    return await this.em.transactional(async (em) => {
       const shopId = this.requireShopId();
       const product = await em.findOne(
         Product,

@@ -2,7 +2,6 @@ import { ArktypeValidationPipe } from "@libs/common";
 import { ConfigModule, KafkaModule, LoggerModule } from "@libs/core";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
-import { EmailModule } from "./module/email/email.module";
 import { ProductModule } from "./module/product/product.module";
 import { UserModule } from "./module/user/user.module";
 
@@ -12,7 +11,6 @@ import { UserModule } from "./module/user/user.module";
     LoggerModule.forRoot(),
     KafkaModule.forRoot(),
     UserModule,
-    EmailModule,
     ProductModule,
   ],
   providers: [
