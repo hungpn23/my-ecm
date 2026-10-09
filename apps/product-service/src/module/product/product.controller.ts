@@ -7,7 +7,7 @@ import {
   UpdateProduct,
   Uuid,
 } from "@libs/contract";
-import { Seller, SellerGuard } from "@libs/core";
+import { SellerGuard } from "@libs/core";
 import { Body, Controller, Param, Query, UseGuards } from "@nestjs/common";
 import { ProductService } from "./product.service";
 
@@ -18,26 +18,23 @@ export class ProductController {
 
   @Endpoint("POST", { request: CreateProduct, response: ProductDetailResponse })
   async create(
-    @Seller("shopId") shopId: Uuid,
     @Body({ schema: CreateProduct }) body: CreateProduct,
   ): Promise<ProductDetailResponse> {
-    return await this.productService.create(shopId, body);
+    return await this.productService.create(body);
   }
 
   @Endpoint("GET", { query: OffsetQuery, response: PaginatedProductResponse })
   async find(
-    @Seller("shopId") shopId: Uuid,
     @Query({ schema: OffsetQuery }) query: OffsetQuery,
   ): Promise<PaginatedProductResponse> {
-    return await this.productService.find(shopId, query);
+    return await this.productService.find(query);
   }
 
   @Endpoint("GET", { path: ":productId", response: ProductDetailResponse })
   async findOne(
-    @Seller("shopId") shopId: Uuid,
     @Param("productId", { schema: Uuid }) productId: Uuid,
   ): Promise<ProductDetailResponse> {
-    return await this.productService.findOne(shopId, productId);
+    return await this.productService.findOne(productId);
   }
 
   @Endpoint("PATCH", {
@@ -46,18 +43,14 @@ export class ProductController {
     response: ProductDetailResponse,
   })
   async update(
-    @Seller("shopId") shopId: Uuid,
     @Param("productId", { schema: Uuid }) productId: Uuid,
     @Body({ schema: UpdateProduct }) body: UpdateProduct,
   ): Promise<ProductDetailResponse> {
-    return await this.productService.update(shopId, productId, body);
+    return await this.productService.update(productId, body);
   }
 
   @Endpoint("DELETE", { path: ":productId" })
-  async delete(
-    @Seller("shopId") shopId: Uuid,
-    @Param("productId", { schema: Uuid }) productId: Uuid,
-  ): Promise<void> {
-    await this.productService.delete(shopId, productId);
+  async delete(@Param("productId", { schema: Uuid }) productId: Uuid): Promise<void> {
+    await this.productService.delete(productId);
   }
 }

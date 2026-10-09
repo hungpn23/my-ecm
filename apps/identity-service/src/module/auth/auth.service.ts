@@ -1,177 +1,156 @@
 import { User } from "#internal/database/entity/index";
-import type { AllOrNever } from "@libs/common";
 import {
-  AuthenticatedSeller,
-  Role,
+  BaseAuth,
   Uuid,
-  type AuthenticatedUser,
   type ChangePassword,
-  type SignIn,
-  type SignUp,
+  type RefreshTokenBody,
   type SuccessResponse,
   type TokenResponse,
 } from "@libs/contract";
+import { OutboxService } from "@libs/core";
+import { LockMode } from "@mikro-orm/core";
+import { EntityManager } from "@mikro-orm/postgresql";
 import {
-  isSeller,
-  jwtConfig,
-  jwtidBy,
-  OutboxService,
-  RedisService,
-  type JwtConfig,
-} from "@libs/core";
-import { Transactional } from "@mikro-orm/decorators/legacy";
-import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
-import { BadRequestException, Inject, Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { hash } from "argon2";
-import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
-import { v7 } from "uuid";
+  AuthenticationContext,
+  AuthenticationError,
+  AuthenticationStorage,
+  PasswordHasher,
+  RefreshTokenError,
+  TokenService,
+} from "@nestjs/authentication";
+import { Injectable } from "@nestjs/common";
+import { createHash } from "node:crypto";
 
-type GenerateToken = AllOrNever<AuthenticatedSeller, "shopId" | "shopRole"> & {
-  userId: Uuid;
-  role: Role;
-  sessionId?: Uuid;
-};
+type PasswordProof = { userId: Uuid; passwordHash: string };
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectPinoLogger(AuthService.name)
-    private readonly logger: PinoLogger,
-    @Inject(jwtConfig.KEY)
-    private readonly jwtConf: JwtConfig,
-    @InjectRepository(User)
-    private readonly userRepo: EntityRepository<User>,
-    private readonly outboxService: OutboxService,
-    private readonly jwtService: JwtService,
-    private readonly redisService: RedisService,
     private readonly em: EntityManager,
+    private readonly outboxService: OutboxService,
+    private readonly passwordHasher: PasswordHasher,
+    private readonly tokenService: TokenService,
+    private readonly storage: AuthenticationStorage,
+    private readonly authCtx: AuthenticationContext,
   ) {}
 
-  @Transactional()
-  async signUp({ email, password }: SignUp): Promise<TokenResponse> {
-    const user = await this.em.findOne(User, { email });
-    if (user) throw new BadRequestException();
+  async signUp({ email, password }: BaseAuth): Promise<TokenResponse> {
+    const passwordHash = await this.passwordHasher.hash(password);
 
-    const newUser = this.em.create(User, {
-      email,
-      password: await hash(password),
-      role: "USER",
+    const userId = await this.em.transactional(async (em) => {
+      const user = em.create(User, { email, password: passwordHash, role: "USER" });
+
+      await this.outboxService.createAndFlush({
+        aggregateType: "User",
+        aggregateId: user.id,
+        eventType: "user.created",
+        payload: { email: user.email },
+      });
+
+      return user.id;
     });
 
-    await this.outboxService.createAndFlush({
-      aggregateType: "User",
-      aggregateId: newUser.id,
-      eventType: "user.created",
-      payload: { email: newUser.email },
-    });
-
-    this.logger.info({ userId: newUser.id, email: newUser.email }, "User created");
-
-    return await this.generateToken({ userId: newUser.id, role: newUser.role });
+    // pass it directly bc we have nothing to prove yet
+    return await this.issueTokens({ userId, passwordHash });
   }
 
-  async signIn({ email, password }: SignIn): Promise<TokenResponse> {
-    const user = await this.userRepo.findOne({ email }, { populate: ["password", "shop"] });
-    if (!user) throw new BadRequestException("Invalid credentials");
+  async signIn({ email, password }: BaseAuth): Promise<TokenResponse> {
+    const proof = await this.authenticate({ email }, password);
+    const replacementHash = this.passwordHasher.needsRehash(proof.passwordHash)
+      ? await this.passwordHasher.hash(password)
+      : undefined;
 
-    await user.verifyPassword(password);
+    return await this.issueTokens(proof, replacementHash);
+  }
 
-    const membership = user.getMembership();
-    if (membership) {
-      return await this.generateToken({
-        userId: user.id,
-        role: user.role,
-        shopId: membership.shopId,
-        shopRole: membership.shopRole,
+  async changePassword({ oldPassword, newPassword }: ChangePassword): Promise<SuccessResponse> {
+    const { id } = this.authCtx.requireUser();
+    const proof = await this.authenticate({ id }, oldPassword);
+    const passwordHash = await this.passwordHasher.hash(newPassword);
+
+    await this.em.transactional(
+      async (em) => {
+        const lockedUser = await this.lockUserAndVerifyProof(em, proof);
+        await this.tokenService.revokeAll(lockedUser.id);
+        lockedUser.password.set(passwordHash);
+      },
+      { clear: true },
+    );
+
+    return { ok: true };
+  }
+
+  async revokeToken({ refreshToken }: RefreshTokenBody): Promise<SuccessResponse> {
+    await this.tokenService.revoke(refreshToken);
+    return { ok: true };
+  }
+
+  async refreshToken({ refreshToken }: RefreshTokenBody): Promise<TokenResponse> {
+    const id = createHash("sha256").update(refreshToken).digest("base64url");
+    const record = await this.storage.refreshTokens.getRefreshToken(id);
+    if (!Uuid.allows(record?.userId)) throw new RefreshTokenError("invalid");
+
+    const userCount = await this.em.count(User, { id: record.userId });
+    if (!userCount) {
+      await this.tokenService.revokeAll(record.userId);
+      throw new RefreshTokenError("invalid");
+    }
+
+    return this.tokenService.refresh(refreshToken);
+  }
+
+  private async authenticate(
+    where: { email: string } | { id: Uuid },
+    password: string,
+  ): Promise<PasswordProof> {
+    const user = await this.em.findOne(User, where, { populate: ["password"] });
+    const passwordHash = user?.password.get();
+    const valid = await this.passwordHasher.verify(password, passwordHash);
+
+    if (!valid || !user || !passwordHash) {
+      throw new AuthenticationError("Invalid email or password", {
+        cause: new Error(!user ? "Unknown user" : "Invalid password"),
       });
     }
 
-    return await this.generateToken({ userId: user.id, role: user.role });
+    return { userId: user.id, passwordHash };
   }
 
-  @Transactional()
-  async changePassword(
-    userId: Uuid,
-    { oldPassword, newPassword }: ChangePassword,
-  ): Promise<SuccessResponse> {
-    const user = await this.userRepo.findOne({ id: userId }, { populate: ["password"] });
-    if (!user) throw new BadRequestException("User not found");
+  private async lockUserAndVerifyProof(em: EntityManager, proof: PasswordProof) {
+    const user = await em.findOne(
+      User,
+      { id: proof.userId },
+      { populate: ["password"], lockMode: LockMode.PESSIMISTIC_WRITE, refresh: true },
+    );
 
-    await user.verifyPassword(oldPassword);
-
-    user.password.set(await hash(newPassword));
-
-    return { ok: true };
-  }
-
-  async logout({ userId, sessionId }: AuthenticatedUser): Promise<SuccessResponse> {
-    const key = jwtidBy(userId, sessionId);
-    await this.redisService.delete(key);
-
-    return { ok: true };
-  }
-
-  async refreshToken(user: AuthenticatedUser): Promise<TokenResponse> {
-    if (isSeller(user)) return await this.generateToken(user);
-    return await this.generateToken(user);
-  }
-
-  async generateToken(options: GenerateToken): Promise<TokenResponse> {
-    const { userId, role, sessionId = v7(), shopId, shopRole } = options;
-    const basePayload = {
-      userId,
-      role,
-      sessionId,
-    };
-
-    let accessPayload: AuthenticatedUser | AuthenticatedSeller;
-    let refreshPayload: AuthenticatedUser | AuthenticatedSeller;
-
-    if (shopId && shopRole) {
-      accessPayload = {
-        ...basePayload,
-        shopId,
-        shopRole,
-        jwtKind: "ACCESS_TOKEN",
-      } satisfies AuthenticatedSeller;
-
-      refreshPayload = {
-        ...accessPayload,
-        jwtKind: "REFRESH_TOKEN",
-      } satisfies AuthenticatedSeller;
-    } else {
-      accessPayload = {
-        ...basePayload,
-        jwtKind: "ACCESS_TOKEN",
-      } satisfies AuthenticatedUser;
-
-      refreshPayload = {
-        ...basePayload,
-        jwtKind: "REFRESH_TOKEN",
-      } satisfies AuthenticatedUser;
+    if (user?.password.get() !== proof.passwordHash) {
+      throw new AuthenticationError("Invalid email or password", {
+        cause: new Error(
+          !user
+            ? `User ${proof.userId} no longer exists`
+            : `Password changed concurrently for user ${proof.userId}`,
+        ),
+      });
     }
 
-    const jwtid = v7();
+    return user;
+  }
 
-    const [accessToken, refreshToken, _] = await Promise.all([
-      this.jwtService.signAsync(accessPayload, {
-        expiresIn: this.jwtConf.JWT_ACCESS_TOKEN_EXPIRES_IN_SECONDS,
-      }),
+  private async issueTokens(
+    proof: PasswordProof,
+    replacementHash?: string,
+  ): Promise<TokenResponse> {
+    return await this.em.transactional(
+      async (em) => {
+        const lockedUser = await this.lockUserAndVerifyProof(em, proof);
+        if (replacementHash) lockedUser.password.set(replacementHash);
 
-      this.jwtService.signAsync(refreshPayload, {
-        jwtid,
-        expiresIn: this.jwtConf.JWT_REFRESH_TOKEN_EXPIRES_IN_SECONDS,
-      }),
-
-      this.redisService.set(
-        jwtidBy(userId, sessionId),
-        jwtid,
-        this.jwtConf.JWT_REFRESH_TOKEN_EXPIRES_IN_SECONDS,
-      ),
-    ]);
-
-    return { accessToken, refreshToken };
+        return await this.tokenService.issue(lockedUser.id, {
+          method: "password",
+          claims: { amr: ["pwd"] },
+        });
+      },
+      { clear: true },
+    );
   }
 }

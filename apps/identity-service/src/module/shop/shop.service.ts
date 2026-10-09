@@ -1,25 +1,25 @@
 import { Shop, User } from "#internal/database/entity/index";
-import { AuthService } from "#internal/module/auth/auth.service";
-import type { AuthenticatedUser, CreateShop, CreateShopResponse } from "@libs/contract";
+import type { CreateShop, CreateShopResponse } from "@libs/contract";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
+import { AuthenticationContext } from "@nestjs/authentication";
 import { Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class ShopService {
   constructor(
     private readonly em: EntityManager,
-    private readonly authService: AuthService,
     @InjectRepository(Shop)
     private readonly shopRepo: EntityRepository<Shop>,
     @InjectRepository(User)
     private readonly userRepo: EntityRepository<User>,
+    private readonly authCtx: AuthenticationContext,
   ) {}
 
   @Transactional()
-  async create(userClaim: AuthenticatedUser, body: CreateShop): Promise<CreateShopResponse> {
-    const user = await this.userRepo.findOne({ id: userClaim.userId });
+  async create(body: CreateShop): Promise<CreateShopResponse> {
+    const user = await this.userRepo.findOne({ id: this.authCtx.requireUser().id });
     if (!user) throw new NotFoundException();
 
     const newShop = this.shopRepo.create({
@@ -31,15 +31,6 @@ export class ShopService {
     user.joinShop(newShop, "OWNER");
 
     const shop = await this.em.populate(newShop, ["owner", "description"]);
-    const response = shop.toDetailResponse();
-    const tokens = await this.authService.generateToken({
-      userId: userClaim.userId,
-      role: userClaim.role,
-      sessionId: userClaim.sessionId,
-      shopId: shop.id,
-      shopRole: "OWNER",
-    });
-
-    return { ...response, ...tokens };
+    return shop.toDetailResponse();
   }
 }

@@ -24,18 +24,17 @@
     "@mikro-orm/postgresql": "catalog:mikro",
     "@mikro-orm/seeder": "catalog:mikro",
     "@mikro-orm/sql-highlighter": "catalog:mikro",
+    "@nestjs/authentication": "catalog:auth",
     "@nestjs/common": "catalog:nest",
     "@nestjs/config": "catalog:nest",
     "@nestjs/core": "catalog:nest",
     "@nestjs/microservices": "catalog:nest",
-    "@nestjs/passport": "catalog:auth",
     "arkenv": "catalog:common",
     "arktype": "catalog:common",
     "ioredis": "catalog:backend",
     "kafkajs": "catalog:backend",
     "lodash": "catalog:common",
     "nestjs-pino": "catalog:logging",
-    "passport-jwt": "catalog:auth",
     "pino": "catalog:logging",
     "pino-http": "catalog:logging",
     "pino-pretty": "catalog:logging",
@@ -44,7 +43,9 @@
   },
   "devDependencies": {
     "@types/express": "catalog:backend",
-    "@types/lodash": "catalog:common",
-    "@types/passport-jwt": "catalog:auth"
+    "@types/lodash": "catalog:common"
+  },
+  "peerDependencies": {
+    "@nestjs/platform-express": "catalog:nest"
   }
 }

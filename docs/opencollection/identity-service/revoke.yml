@@ -1,17 +1,16 @@
 info:
-  name: change password
+  name: revoke
   type: http
-  seq: 5
+  seq: 3
 
 http:
   method: POST
-  url: "{{identity}}/auth/change-password"
+  url: "{{identity}}/auth/token/revoke"
   body:
     type: json
     data: |-
       {
-        "oldPassword": "123123123",
-        "newPassword": "12345678"
+        "refreshToken": "{{refresh_token}}"
       }
 
 runtime:

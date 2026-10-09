@@ -10,6 +10,10 @@
     "check:types": {
       "dependsOn": ["^check:types"]
     },
+    "check:auth-store": {
+      "cache": false,
+      "env": ["AUTH_STORE_TEST_DATABASE"]
+    },
     "dev": {
       "cache": false,
       "persistent": true
@@ -20,6 +24,9 @@
     },
     "migration:down": {
       "dependsOn": ["^migration:down"],
+      "cache": false
+    },
+    "migration:create": {
       "cache": false
     },
     "migration:up": {
@@ -38,12 +45,11 @@
   "globalEnv": [
     "NODE_ENV",
     "APP_HOST",
-    "JWT_ALGORITHM",
-    "JWT_ISSUER",
-    "JWT_AUDIENCE",
-    "JWT_SECRET",
-    "JWT_ACCESS_TOKEN_EXPIRES_IN_SECONDS",
-    "JWT_REFRESH_TOKEN_EXPIRES_IN_SECONDS",
+    "IDENTITY_SERVICE_URL",
+    "AUTH_INTERNAL_SECRET",
+    "AUTH_JWT_PUBLIC_KEY_PATH",
+    "AUTH_JWT_ISSUER",
+    "AUTH_JWT_AUDIENCE",
     "DB_HOST",
     "DB_PORT",
     "DB_USER",
