@@ -27,7 +27,6 @@
     "@libs/core": "workspace:*",
     "@mikro-orm/cli": "catalog:mikro",
     "@mikro-orm/core": "catalog:mikro",
-    "@mikro-orm/decorators": "catalog:mikro",
     "@mikro-orm/migrations": "catalog:mikro",
     "@mikro-orm/nestjs": "catalog:mikro",
     "@mikro-orm/postgresql": "catalog:mikro",
