@@ -14,27 +14,27 @@ import { ProductService } from "./product.service";
 @UseGuards(SellerGuard)
 @Controller("products")
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly product: ProductService) {}
 
   @Endpoint("POST", { request: CreateProduct, response: ProductDetailResponse })
   async create(
     @Body({ schema: CreateProduct }) body: CreateProduct,
   ): Promise<ProductDetailResponse> {
-    return await this.productService.create(body);
+    return await this.product.create(body);
   }
 
   @Endpoint("GET", { query: OffsetQuery, response: PaginatedProductResponse })
   async find(
     @Query({ schema: OffsetQuery }) query: OffsetQuery,
   ): Promise<PaginatedProductResponse> {
-    return await this.productService.find(query);
+    return await this.product.find(query);
   }
 
   @Endpoint("GET", { path: ":productId", response: ProductDetailResponse })
   async findOne(
     @Param("productId", { schema: Uuid }) productId: Uuid,
   ): Promise<ProductDetailResponse> {
-    return await this.productService.findOne(productId);
+    return await this.product.findOne(productId);
   }
 
   @Endpoint("PATCH", {
@@ -46,11 +46,11 @@ export class ProductController {
     @Param("productId", { schema: Uuid }) productId: Uuid,
     @Body({ schema: UpdateProduct }) body: UpdateProduct,
   ): Promise<ProductDetailResponse> {
-    return await this.productService.update(productId, body);
+    return await this.product.update(productId, body);
   }
 
   @Endpoint("DELETE", { path: ":productId" })
   async delete(@Param("productId", { schema: Uuid }) productId: Uuid): Promise<void> {
-    await this.productService.delete(productId);
+    await this.product.delete(productId);
   }
 }

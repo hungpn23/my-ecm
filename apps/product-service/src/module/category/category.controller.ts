@@ -14,18 +14,18 @@ import { CategoryService } from "./category.service";
 @ApiBearerAuth()
 @Controller("categories")
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(private readonly category: CategoryService) {}
 
   @Endpoint("POST", { request: CreateCategory, response: CategoryResponse })
   async create(@Body({ schema: CreateCategory }) body: CreateCategory): Promise<CategoryResponse> {
-    return await this.categoryService.create(body);
+    return await this.category.create(body);
   }
 
   @Endpoint("GET", { query: OffsetQuery, response: PaginatedCategoryResponse })
   async find(
     @Query({ schema: OffsetQuery }) query: OffsetQuery,
   ): Promise<PaginatedCategoryResponse> {
-    return await this.categoryService.find(query);
+    return await this.category.find(query);
   }
 
   @Endpoint("PATCH", {
@@ -37,11 +37,11 @@ export class CategoryController {
     @Param("categoryId", { schema: Uuid }) categoryId: Uuid,
     @Body({ schema: UpdateCategory }) body: UpdateCategory,
   ): Promise<CategoryResponse> {
-    return await this.categoryService.update(categoryId, body);
+    return await this.category.update(categoryId, body);
   }
 
   @Endpoint("DELETE", { path: ":categoryId" })
   async delete(@Param("categoryId", { schema: Uuid }) categoryId: Uuid): Promise<void> {
-    await this.categoryService.delete(categoryId);
+    await this.category.delete(categoryId);
   }
 }

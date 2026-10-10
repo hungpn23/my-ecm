@@ -5,13 +5,13 @@ import { UserService } from "./user.service";
 
 @Controller("users")
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly user: UserService) {}
 
   @Endpoint("GET", {
     path: "info",
     response: UserResponse,
   })
   async getInfo(): Promise<UserResponse> {
-    return await this.userService.getInfo();
+    return await this.user.getInfo();
   }
 }

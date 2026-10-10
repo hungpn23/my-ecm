@@ -27,9 +27,9 @@ type PasswordProof = { userId: Uuid; passwordHash: string };
 export class AuthService {
   constructor(
     private readonly em: EntityManager,
-    private readonly outboxService: OutboxService,
+    private readonly outbox: OutboxService,
     private readonly passwordHasher: PasswordHasher,
-    private readonly tokenService: TokenService,
+    private readonly token: TokenService,
     private readonly storage: AuthenticationStorage,
     private readonly authCtx: AuthenticationContext,
   ) {}
@@ -40,7 +40,7 @@ export class AuthService {
     const userId = await this.em.transactional(async (em) => {
       const user = em.create(User, { email, password: passwordHash, role: "USER" });
 
-      await this.outboxService.createAndFlush({
+      await this.outbox.createAndFlush({
         aggregateType: "User",
         aggregateId: user.id,
         eventType: "user.created",
@@ -71,7 +71,7 @@ export class AuthService {
     await this.em.transactional(
       async (em) => {
         const lockedUser = await this.lockUserAndVerifyProof(em, proof);
-        await this.tokenService.revokeAll(lockedUser.id);
+        await this.token.revokeAll(lockedUser.id);
         lockedUser.password.set(passwordHash);
       },
       { clear: true },
@@ -81,7 +81,7 @@ export class AuthService {
   }
 
   async revokeToken({ refreshToken }: RefreshTokenBody): Promise<SuccessResponse> {
-    await this.tokenService.revoke(refreshToken);
+    await this.token.revoke(refreshToken);
     return { ok: true };
   }
 
@@ -92,11 +92,11 @@ export class AuthService {
 
     const userCount = await this.em.count(User, { id: record.userId });
     if (!userCount) {
-      await this.tokenService.revokeAll(record.userId);
+      await this.token.revokeAll(record.userId);
       throw new RefreshTokenError("invalid");
     }
 
-    return this.tokenService.refresh(refreshToken);
+    return this.token.refresh(refreshToken);
   }
 
   private async authenticate(
@@ -145,7 +145,7 @@ export class AuthService {
         const lockedUser = await this.lockUserAndVerifyProof(em, proof);
         if (replacementHash) lockedUser.password.set(replacementHash);
 
-        return await this.tokenService.issue(lockedUser.id, {
+        return await this.token.issue(lockedUser.id, {
           method: "password",
           claims: { amr: ["pwd"] },
         });

@@ -9,12 +9,12 @@ import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 export class UserConsumer {
   constructor(
     @InjectPinoLogger(UserConsumer.name) private readonly logger: PinoLogger,
-    private readonly emailService: EmailService,
+    private readonly email: EmailService,
   ) {}
 
   @KafkaEvent("user.created")
   async handleUserCreated(@Payload({ schema: UserCreatedData }) data: UserCreatedData) {
-    await this.emailService.sendWelcomeEmail({ to: data.email });
+    await this.email.sendWelcomeEmail({ to: data.email });
 
     this.logger.info(data, "Consumed user created event");
   }

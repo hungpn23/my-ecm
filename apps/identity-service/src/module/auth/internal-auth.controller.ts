@@ -9,7 +9,7 @@ import { InternalAuthGuard } from "./internal-auth.guard";
 @UseGuards(InternalAuthGuard)
 @Controller("internal/auth")
 export class InternalAuthController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly user: UserService) {}
 
   @Endpoint("GET", {
     path: "users/:userId",
@@ -18,7 +18,7 @@ export class InternalAuthController {
     headers: [["Cache-Control", "no-store"]],
   })
   async resolve(@Param("userId", { schema: Uuid }) userId: Uuid): Promise<UserResponse> {
-    const user = await this.userService.findById(userId);
+    const user = await this.user.findById(userId);
     if (!user) throw new NotFoundException();
 
     return user;

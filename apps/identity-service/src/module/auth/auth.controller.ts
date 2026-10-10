@@ -11,7 +11,7 @@ import { AuthService } from "./auth.service";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly auth: AuthService) {}
 
   @Endpoint("POST", {
     path: "sign-up",
@@ -21,7 +21,7 @@ export class AuthController {
     headers: [["Cache-Control", "no-store"]],
   })
   async register(@Body({ schema: BaseAuth }) body: BaseAuth): Promise<TokenResponse> {
-    return await this.authService.signUp(body);
+    return await this.auth.signUp(body);
   }
 
   @Endpoint("POST", {
@@ -32,21 +32,21 @@ export class AuthController {
     headers: [["Cache-Control", "no-store"]],
   })
   async login(@Body({ schema: BaseAuth }) body: BaseAuth): Promise<TokenResponse> {
-    return await this.authService.signIn(body);
+    return await this.auth.signIn(body);
   }
 
   @Endpoint("POST", { path: "change-password", request: ChangePassword })
   async changePassword(
     @Body({ schema: ChangePassword }) body: ChangePassword,
   ): Promise<SuccessResponse> {
-    return await this.authService.changePassword(body);
+    return await this.auth.changePassword(body);
   }
 
   @Endpoint("POST", { path: "token/revoke", isPublic: true, request: RefreshTokenBody })
   async revokeToken(
     @Body({ schema: RefreshTokenBody }) body: RefreshTokenBody,
   ): Promise<SuccessResponse> {
-    return await this.authService.revokeToken(body);
+    return await this.auth.revokeToken(body);
   }
 
   @Endpoint("POST", {
@@ -59,6 +59,6 @@ export class AuthController {
   async refreshToken(
     @Body({ schema: RefreshTokenBody }) body: RefreshTokenBody,
   ): Promise<TokenResponse> {
-    return await this.authService.refreshToken(body);
+    return await this.auth.refreshToken(body);
   }
 }

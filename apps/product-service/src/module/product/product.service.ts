@@ -17,7 +17,7 @@ import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/commo
 export class ProductService {
   constructor(
     private readonly em: EntityManager,
-    private readonly outboxService: OutboxService,
+    private readonly outbox: OutboxService,
     private readonly authCtx: AuthenticationContext,
   ) {}
 
@@ -38,7 +38,7 @@ export class ProductService {
       const product = await em.populate(newProduct, ["category", "description"]);
       const response = product.toDetailResponse();
 
-      await this.outboxService.createAndFlush({
+      await this.outbox.createAndFlush({
         aggregateType: "Product",
         aggregateId: product.id,
         eventType: "product.created",
@@ -115,7 +115,7 @@ export class ProductService {
 
       const response = product.toDetailResponse();
 
-      await this.outboxService.createAndFlush({
+      await this.outbox.createAndFlush({
         aggregateType: "Product",
         aggregateId: product.id,
         eventType: "product.updated",

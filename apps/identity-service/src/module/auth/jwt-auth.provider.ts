@@ -6,7 +6,7 @@ import { UserService } from "../user/user.service";
 @Injectable()
 export class JwtAuthProvider extends JwtBearerProvider<UserResponse> {
   constructor(
-    private readonly userService: UserService,
+    private readonly user: UserService,
     registry: AuthenticationRegistry,
   ) {
     super();
@@ -16,6 +16,6 @@ export class JwtAuthProvider extends JwtBearerProvider<UserResponse> {
   protected override async validate({ sub }: JwtClaims): Promise<UserResponse | null> {
     if (!Uuid.allows(sub)) return null;
 
-    return await this.userService.findById(sub);
+    return await this.user.findById(sub);
   }
 }
