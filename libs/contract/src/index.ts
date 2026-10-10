@@ -2,7 +2,6 @@ export * from "./arktype-global";
 export * from "./email/send-welcome.schema";
 export * from "./events/kafka-message.schema";
 export * from "./events/topic/kafka-topic.schema";
-export * from "./events/topic/product-topic.schema";
 export * from "./events/topic/user-topic.schema";
 export * from "./events/user-message.schema";
 export * from "./identity/auth.schema";

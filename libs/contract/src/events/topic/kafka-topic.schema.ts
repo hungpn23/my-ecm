@@ -1,5 +1,4 @@
-import { ProductTopic } from "./product-topic.schema";
 import { UserTopic } from "./user-topic.schema";
 
-export const KafkaTopic = UserTopic.or(ProductTopic);
+export const KafkaTopic = UserTopic;
 export type KafkaTopic = typeof KafkaTopic.infer;

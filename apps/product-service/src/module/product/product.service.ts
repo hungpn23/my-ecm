@@ -36,16 +36,8 @@ export class ProductService {
         shopId,
       });
       const product = await em.populate(newProduct, ["category", "description"]);
-      const response = product.toDetailResponse();
 
-      await this.outbox.createAndFlush({
-        aggregateType: "Product",
-        aggregateId: product.id,
-        eventType: "product.created",
-        payload: response,
-      });
-
-      return response;
+      return product.toDetailResponse();
     });
   }
 
@@ -113,16 +105,7 @@ export class ProductService {
 
       await em.flush();
 
-      const response = product.toDetailResponse();
-
-      await this.outbox.createAndFlush({
-        aggregateType: "Product",
-        aggregateId: product.id,
-        eventType: "product.updated",
-        payload: response,
-      });
-
-      return response;
+      return product.toDetailResponse();
     });
   }
 
