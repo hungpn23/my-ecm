@@ -172,6 +172,7 @@ function createMain(options: OnboardOptions): string {
   return `import "@libs/contract/arktype-global";
 
 import { appConfig, KafkaService } from "@libs/core";
+import { VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { type KafkaOptions } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
@@ -189,6 +190,8 @@ async function bootstrap() {
 
   const logger = app.get(Logger);
   app.useLogger(logger);
+  app.setGlobalPrefix("api");
+  app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
   const { APP_HOST, APP_PORT } = app.get(appConfig.KEY);
 
@@ -209,6 +212,7 @@ ${options.auth ? "    .addBearerAuth()\n" : ""}    .build();
   await app.listen(APP_PORT, APP_HOST);
 
   logger.log(\`🔥 Swagger: http://\${APP_HOST}:\${APP_PORT}/swagger\`);
+  logger.log(\`🟢 HTTP: http://\${APP_HOST}:\${APP_PORT}/api\`);
 }
 
 await bootstrap();

@@ -1,6 +1,7 @@
 import "@libs/contract/arktype-global";
 
 import { appConfig } from "@libs/core";
+import { VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { Logger } from "nestjs-pino";
@@ -17,6 +18,8 @@ async function bootstrap() {
 
   const logger = app.get(Logger);
   app.useLogger(logger);
+  app.setGlobalPrefix("api");
+  app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
   const { APP_HOST, APP_PORT } = app.get(appConfig.KEY);
 
@@ -37,6 +40,7 @@ async function bootstrap() {
   await app.listen(APP_PORT, APP_HOST);
 
   logger.log(`🔥 Swagger: http://${APP_HOST}:${APP_PORT}/swagger`);
+  logger.log(`🟢 HTTP: http://${APP_HOST}:${APP_PORT}/api`);
 }
 
 await bootstrap();
