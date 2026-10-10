@@ -7,7 +7,6 @@ import {
   type SuccessResponse,
   type TokenResponse,
 } from "@libs/contract";
-import { OutboxService } from "@libs/core";
 import { LockMode } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 import {
@@ -27,7 +26,6 @@ type PasswordProof = { userId: Uuid; passwordHash: string };
 export class AuthService {
   constructor(
     private readonly em: EntityManager,
-    private readonly outbox: OutboxService,
     private readonly passwordHasher: PasswordHasher,
     private readonly token: TokenService,
     private readonly storage: AuthenticationStorage,
@@ -39,13 +37,6 @@ export class AuthService {
 
     const userId = await this.em.transactional(async (em) => {
       const user = em.create(User, { email, password: passwordHash, role: "USER" });
-
-      await this.outbox.createAndFlush({
-        aggregateType: "User",
-        aggregateId: user.id,
-        eventType: "user.created",
-        payload: { email: user.email },
-      });
 
       return user.id;
     });

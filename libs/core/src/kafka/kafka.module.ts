@@ -7,6 +7,7 @@ import { kafkaConfig } from "./kafka.config";
 import { KAFKA_CLIENT } from "./kafka.constant";
 import { KafkaService } from "./kafka.service";
 
+/** @ignore Currently unused. */
 export class KafkaModule {
   static forRoot(): DynamicModule {
     return {

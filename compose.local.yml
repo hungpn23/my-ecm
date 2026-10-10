@@ -17,17 +17,17 @@ services:
     networks:
       - network
 
-  redis:
-    extends:
-      file: .docker/compose.base.yml
-      service: redis
-    ports:
-      - "${REDIS_PORT}:6379"
-    volumes:
-      - ${PWD}/.docker/volumes/redis_data:/data
-    command: ["redis-server", "--appendonly", "yes", "--dir", "/data"]
-    networks:
-      - network
+  # redis:
+  #   extends:
+  #     file: .docker/compose.base.yml
+  #     service: redis
+  #   ports:
+  #     - "${REDIS_PORT}:6379"
+  #   volumes:
+  #     - ${PWD}/.docker/volumes/redis_data:/data
+  #   command: ["redis-server", "--appendonly", "yes", "--dir", "/data"]
+  #   networks:
+  #     - network
 
   # apisix:
   #   extends:
@@ -41,75 +41,75 @@ services:
   #   networks:
   #     - network
 
-  kafka:
-    extends:
-      file: .docker/compose.base.yml
-      service: kafka
-    ports:
-      - "${KAFKA_PORT}:${KAFKA_PORT}"
-    environment:
-      CLUSTER_ID: "1L6g7nGhU-eAKfL--X25wo"
-      KAFKA_NODE_ID: 1
+  # kafka:
+  #   extends:
+  #     file: .docker/compose.base.yml
+  #     service: kafka
+  #   ports:
+  #     - "${KAFKA_PORT}:${KAFKA_PORT}"
+  #   environment:
+  #     CLUSTER_ID: "1L6g7nGhU-eAKfL--X25wo"
+  #     KAFKA_NODE_ID: 1
 
-      KAFKA_PROCESS_ROLES: broker,controller
-      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  #     KAFKA_PROCESS_ROLES: broker,controller
+  #     KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-      KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:${KAFKA_PORT},CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:${KAFKA_PORT}
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+  #     KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:${KAFKA_PORT},CONTROLLER://0.0.0.0:9093
+  #     KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:${KAFKA_PORT}
+  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+  #     KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+  #     KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
 
-      KAFKA_LOG_DIRS: /var/lib/kafka/data
+  #     KAFKA_LOG_DIRS: /var/lib/kafka/data
 
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-    volumes:
-      - kafka_data:/var/lib/kafka/data
-    networks:
-      - network
+  #     KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+  #   volumes:
+  #     - kafka_data:/var/lib/kafka/data
+  #   networks:
+  #     - network
 
-  kafka-connect:
-    extends:
-      file: .docker/compose.base.yml
-      service: kafka-connect
-    ports:
-      - "${KAFKA_CONNECT_PORT}:8083"
-    environment:
-      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
-      CONNECT_GROUP_ID: my-ecm-connect-group
-      CONNECT_CONFIG_STORAGE_TOPIC: my-ecm.connect.configs
-      CONNECT_OFFSET_STORAGE_TOPIC: my-ecm.connect.offsets
-      CONNECT_STATUS_STORAGE_TOPIC: my-ecm.connect.status
-      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
-      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
-      CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
-      CONNECT_PLUGIN_PATH: /usr/share/confluent-hub-components
-    depends_on:
-      - db
-      - kafka
-    networks:
-      - network
+  # kafka-connect:
+  #   extends:
+  #     file: .docker/compose.base.yml
+  #     service: kafka-connect
+  #   ports:
+  #     - "${KAFKA_CONNECT_PORT}:8083"
+  #   environment:
+  #     CONNECT_BOOTSTRAP_SERVERS: kafka:9092
+  #     CONNECT_GROUP_ID: my-ecm-connect-group
+  #     CONNECT_CONFIG_STORAGE_TOPIC: my-ecm.connect.configs
+  #     CONNECT_OFFSET_STORAGE_TOPIC: my-ecm.connect.offsets
+  #     CONNECT_STATUS_STORAGE_TOPIC: my-ecm.connect.status
+  #     CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+  #     CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+  #     CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+  #     CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+  #     CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+  #     CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+  #     CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+  #     CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
+  #     CONNECT_PLUGIN_PATH: /usr/share/confluent-hub-components
+  #   depends_on:
+  #     - db
+  #     - kafka
+  #   networks:
+  #     - network
 
-  kafka-ui:
-    extends:
-      file: .docker/compose.base.yml
-      service: kafka-ui
-    ports:
-      - ${KAFKA_UI_PORT}:8080
-    environment:
-      KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-    networks:
-      - network
+  # kafka-ui:
+  #   extends:
+  #     file: .docker/compose.base.yml
+  #     service: kafka-ui
+  #   ports:
+  #     - ${KAFKA_UI_PORT}:8080
+  #   environment:
+  #     KAFKA_CLUSTERS_0_NAME: local
+  #     KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+  #   networks:
+  #     - network
 
 volumes:
-  kafka_data:
+  # kafka_data:
 
 networks:
   network:

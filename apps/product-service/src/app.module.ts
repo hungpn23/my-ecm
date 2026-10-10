@@ -3,9 +3,7 @@ import { ArktypeValidationPipe } from "@libs/common";
 import {
   ConfigModule,
   DatabaseModule,
-  KafkaModule,
   LoggerModule,
-  OutboxModule,
   ResourceAuthenticationModule,
 } from "@libs/core";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
@@ -18,8 +16,6 @@ import { ProductModule } from "./module/product/product.module";
     ConfigModule.forRoot(),
     DatabaseModule.forRoot(entities),
     LoggerModule.forRoot(),
-    KafkaModule.forRoot(),
-    OutboxModule,
     ResourceAuthenticationModule,
     CategoryModule,
     ProductModule,

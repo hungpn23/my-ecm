@@ -8,7 +8,6 @@ import {
   type UpdateProduct,
   type Uuid,
 } from "@libs/contract";
-import { OutboxService } from "@libs/core";
 import { EntityManager, type FilterQuery } from "@mikro-orm/postgresql";
 import { AuthenticationContext } from "@nestjs/authentication";
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
@@ -17,7 +16,6 @@ import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/commo
 export class ProductService {
   constructor(
     private readonly em: EntityManager,
-    private readonly outbox: OutboxService,
     private readonly authCtx: AuthenticationContext,
   ) {}
 

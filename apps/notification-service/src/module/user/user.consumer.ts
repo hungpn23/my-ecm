@@ -12,6 +12,7 @@ export class UserConsumer {
     private readonly email: EmailService,
   ) {}
 
+  /** @ignore Currently unused. */
   @KafkaEvent("user.created")
   async handleUserCreated(@Payload({ schema: UserCreatedData }) data: UserCreatedData) {
     await this.email.sendWelcomeEmail({ to: data.email });

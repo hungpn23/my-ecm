@@ -83,7 +83,7 @@
     "orm:debug": "turbo orm:debug",
     "prepare": "bun .husky/install.mjs",
     "register:debezium": "dotenv -e .env -- turbo register:debezium",
-    "setup": "bun i && bun scripts/setup.ts && bun register:debezium"
+    "setup": "bun i && bun scripts/setup.ts"
   },
   "dependencies": {
     "dotenv-cli": "catalog:backend"

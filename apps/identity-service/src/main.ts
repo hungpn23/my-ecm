@@ -1,10 +1,9 @@
 import "@libs/contract/arktype-global";
 
-import { appConfig, KafkaService } from "@libs/core";
+import { appConfig } from "@libs/core";
 import { NestFactory } from "@nestjs/core";
-import { type KafkaOptions } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { Logger, registerMicroserviceLogging } from "nestjs-pino";
+import { Logger } from "nestjs-pino";
 import "reflect-metadata";
 import { AppModule } from "./app.module";
 
@@ -29,12 +28,12 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("swagger", app, documentFactory);
 
-  const ms = app.connectMicroservice<KafkaOptions>(app.get(KafkaService).options, {
-    deferInitialization: true,
-  });
-  registerMicroserviceLogging(ms);
+  // const ms = app.connectMicroservice<KafkaOptions>(app.get(KafkaService).options, {
+  //   deferInitialization: true,
+  // });
+  // registerMicroserviceLogging(ms);
 
-  await app.startAllMicroservices();
+  // await app.startAllMicroservices();
   await app.listen(APP_PORT, APP_HOST);
 
   logger.log(`🔥 Swagger: http://${APP_HOST}:${APP_PORT}/swagger`);
