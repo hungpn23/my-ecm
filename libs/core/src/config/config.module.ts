@@ -6,13 +6,14 @@ import {
   type ConfigModuleOptions,
 } from "@nestjs/config";
 import { appConfig } from "./app.config";
+import { tcpConfig } from "./tcp.config";
 
 export class ConfigModule {
   static forRoot(options?: ConfigModuleOptions): DynamicModule {
     const defaultOptions: ConfigModuleOptions = {
       isGlobal: true,
       expandVariables: true,
-      load: [appConfig],
+      load: [appConfig, tcpConfig],
     };
 
     return {

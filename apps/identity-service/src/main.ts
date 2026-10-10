@@ -1,10 +1,11 @@
 import "@libs/contract/arktype-global";
 
-import { appConfig } from "@libs/core";
+import { appConfig, tcpConfig, type AppConfig, type TcpConfig } from "@libs/core";
 import { VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
+import { Transport, type TcpOptions } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { Logger } from "nestjs-pino";
+import { Logger, registerMicroserviceLogging } from "nestjs-pino";
 import "reflect-metadata";
 import { AppModule } from "./app.module";
 
@@ -21,7 +22,10 @@ async function bootstrap() {
   app.setGlobalPrefix("api");
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
-  const { APP_HOST, APP_PORT } = app.get(appConfig.KEY);
+  const { APP_HOST, APP_PORT } = app.get<unknown, AppConfig>(appConfig.KEY);
+  const { IDENTITY_SERVICE_TCP_HOST, IDENTITY_SERVICE_TCP_PORT } = app.get<unknown, TcpConfig>(
+    tcpConfig.KEY,
+  );
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("Identity Service API")
@@ -31,16 +35,28 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("swagger", app, documentFactory);
 
+  const ms = app.connectMicroservice<TcpOptions>(
+    {
+      transport: Transport.TCP,
+      options: {
+        host: IDENTITY_SERVICE_TCP_HOST,
+        port: IDENTITY_SERVICE_TCP_PORT,
+      },
+    },
+    { deferInitialization: true },
+  );
+
   // const ms = app.connectMicroservice<KafkaOptions>(app.get(KafkaService).options, {
   //   deferInitialization: true,
   // });
-  // registerMicroserviceLogging(ms);
+  registerMicroserviceLogging(ms);
 
-  // await app.startAllMicroservices();
+  await app.startAllMicroservices();
   await app.listen(APP_PORT, APP_HOST);
 
   logger.log(`🔥 Swagger: http://${APP_HOST}:${APP_PORT}/swagger`);
   logger.log(`🟢 HTTP: http://${APP_HOST}:${APP_PORT}/api`);
+  logger.log(`🔵 TCP: ${IDENTITY_SERVICE_TCP_HOST}:${IDENTITY_SERVICE_TCP_PORT}`);
 }
 
 await bootstrap();
