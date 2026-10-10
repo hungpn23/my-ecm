@@ -8,11 +8,8 @@ import {
 } from "../shared/common.schema";
 import { EntityResponse } from "../shared/entity-response.schema";
 
-const PRODUCT_STATUS = {
-  ACTIVE: "ACTIVE",
-  INACTIVE: "INACTIVE",
-} as const;
-const ProductStatus = type.enumerated(...Object.values(PRODUCT_STATUS));
+const PRODUCT_STATUS = ["ACTIVE", "INACTIVE"] as const;
+const ProductStatus = type.enumerated(...PRODUCT_STATUS);
 export type ProductStatus = typeof ProductStatus.infer;
 
 export const CreateProduct = type({
