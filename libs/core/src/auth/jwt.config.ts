@@ -5,7 +5,7 @@ import arkenv from "arkenv";
 import { createPublicKey } from "node:crypto";
 import { readFileSync } from "node:fs";
 
-export const jwtVerifyConfig = registerAs("jwtVerify", () => {
+export const jwtConfig = registerAs("jwt", () => {
   const env = arkenv({
     AUTH_JWT_PUBLIC_KEY_PATH: NonEmptyString,
     AUTH_JWT_ISSUER: NonEmptyString,
@@ -21,4 +21,4 @@ export const jwtVerifyConfig = registerAs("jwtVerify", () => {
   } satisfies JwtVerifierOptions;
 });
 
-export type JwtVerifyConfig = ConfigType<typeof jwtVerifyConfig>;
+export type JwtConfig = ConfigType<typeof jwtConfig>;

@@ -1,4 +1,4 @@
-import { ConfigModule, internalAuthConfig } from "@libs/core";
+import { ConfigModule } from "@libs/core";
 import { AuthenticationModule } from "@nestjs/authentication";
 import { Module } from "@nestjs/common";
 import { UserModule } from "../user/user.module";
@@ -7,9 +7,7 @@ import { AuthConsumer } from "./auth.consumer";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { AuthStore } from "./auth.store";
-import { InternalAuthController } from "./internal-auth.controller";
-import { InternalAuthGuard } from "./internal-auth.guard";
-import { JwtAuthProvider } from "./jwt-auth.provider";
+import { JwtAuth } from "./jwt-auth.provider";
 
 @Module({
   imports: [
@@ -18,10 +16,9 @@ import { JwtAuthProvider } from "./jwt-auth.provider";
       inject: [authConfig.KEY],
       useFactory: (config: AuthConfig) => config,
     }),
-    ConfigModule.forFeatures(internalAuthConfig),
     UserModule,
   ],
-  providers: [AuthService, JwtAuthProvider, AuthStore, InternalAuthGuard],
-  controllers: [AuthController, InternalAuthController, AuthConsumer],
+  providers: [AuthService, JwtAuth, AuthStore],
+  controllers: [AuthController, AuthConsumer],
 })
 export class AuthModule {}

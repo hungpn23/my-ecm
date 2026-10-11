@@ -45,8 +45,6 @@
   "globalEnv": [
     "NODE_ENV",
     "APP_HOST",
-    "IDENTITY_SERVICE_URL",
-    "AUTH_INTERNAL_SECRET",
     "AUTH_JWT_PUBLIC_KEY_PATH",
     "AUTH_JWT_ISSUER",
     "AUTH_JWT_AUDIENCE",

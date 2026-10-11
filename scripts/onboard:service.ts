@@ -221,7 +221,7 @@ await bootstrap();
 
 function createAppModule(options: OnboardOptions): string {
   const coreImports = [
-    ...(options.auth ? ["ResourceAuthenticationModule"] : []),
+    ...(options.auth ? ["ResourceAuthModule"] : []),
     "ConfigModule",
     ...(options.mikroOrm ? ["DatabaseModule"] : []),
     "KafkaModule",
@@ -232,7 +232,7 @@ function createAppModule(options: OnboardOptions): string {
     ...(options.mikroOrm ? ["DatabaseModule.forRoot(entities)"] : []),
     "LoggerModule.forRoot()",
     "KafkaModule.forRoot()",
-    ...(options.auth ? ["ResourceAuthenticationModule"] : []),
+    ...(options.auth ? ["ResourceAuthModule"] : []),
   ];
   const providers = [
     `{
@@ -297,7 +297,7 @@ function createFiles(options: OnboardOptions): [string, string][] {
   const files: [string, string][] = [
     [
       ".env.example",
-      `APP_NAME=${options.name}-service\nAPP_PORT=${options.httpPort}\n${options.mikroOrm ? `\nDB_DATABASE=${options.name}-service\n` : ""}${options.auth ? "\nAUTH_JWT_PUBLIC_KEY_PATH=/absolute/path/to/identity-es256-public.pem\nAUTH_JWT_ISSUER=my-ecm-identity\nAUTH_JWT_AUDIENCE=my-ecm-api\nIDENTITY_SERVICE_URL=http://localhost:8080\nAUTH_INTERNAL_SECRET=\n" : ""}`,
+      `APP_NAME=${options.name}-service\nAPP_PORT=${options.httpPort}\n${options.mikroOrm ? `\nDB_DATABASE=${options.name}-service\n` : ""}${options.auth ? "\nAUTH_JWT_PUBLIC_KEY_PATH=/absolute/path/to/identity-es256-public.pem\nAUTH_JWT_ISSUER=my-ecm-identity\nAUTH_JWT_AUDIENCE=my-ecm-api\n" : ""}`,
     ],
     ["package.json", createPackageJson(options)],
     ["tsconfig.json", createTsConfig()],

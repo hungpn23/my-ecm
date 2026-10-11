@@ -2,12 +2,12 @@ import { ExternalUserResponse, Uuid } from "@libs/contract";
 import { AuthenticationRegistry, JwtBearerProvider, type JwtClaims } from "@nestjs/authentication";
 import { Inject, Injectable } from "@nestjs/common";
 import { IdentityClient } from "../microservice";
-import { jwtVerifyConfig, type JwtVerifyConfig } from "./jwt-verify.config";
+import { jwtConfig, type JwtConfig } from "./jwt.config";
 
 @Injectable()
-export class ResourceJwtAuth extends JwtBearerProvider<ExternalUserResponse> {
+export class ResourceAuth extends JwtBearerProvider<ExternalUserResponse> {
   constructor(
-    @Inject(jwtVerifyConfig.KEY) config: JwtVerifyConfig,
+    @Inject(jwtConfig.KEY) config: JwtConfig,
     registry: AuthenticationRegistry,
     private readonly identityClient: IdentityClient,
   ) {

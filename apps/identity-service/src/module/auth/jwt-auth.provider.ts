@@ -4,7 +4,7 @@ import { Injectable } from "@nestjs/common";
 import { UserService } from "../user/user.service";
 
 @Injectable()
-export class JwtAuthProvider extends JwtBearerProvider<UserResponse> {
+export class JwtAuth extends JwtBearerProvider<UserResponse> {
   constructor(
     private readonly user: UserService,
     registry: AuthenticationRegistry,
