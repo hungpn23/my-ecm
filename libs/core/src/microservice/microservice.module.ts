@@ -1,10 +1,8 @@
 import type { DynamicModule } from "@nestjs/common";
 import { ClientsModule, Transport, type ClientsProviderAsyncOptions } from "@nestjs/microservices";
 import { ConfigModule, tcpConfig, type TcpConfig } from "../config";
-import { IdentityClient } from "./identity.client";
+import { IdentityClient, NotificationClient, ProductClient } from "./microservice-clients";
 import type { MicroserviceClient } from "./microservice.schema";
-import { NotificationClient } from "./notification.client";
-import { ProductClient } from "./product.client";
 
 export class MicroserviceModule {
   static registerAsync(...clients: MicroserviceClient[]): DynamicModule {
