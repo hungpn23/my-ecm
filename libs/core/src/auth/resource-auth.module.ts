@@ -4,7 +4,6 @@ import { Module } from "@nestjs/common";
 import { MicroserviceModule } from "../microservice";
 import { jwtConfig } from "./jwt.config";
 import { ResourceAuth } from "./resource-auth.provider";
-import { SellerGuard } from "./seller.guard";
 
 @Module({
   imports: [
@@ -12,7 +11,6 @@ import { SellerGuard } from "./seller.guard";
     ConfigModule.forFeatures(jwtConfig),
     MicroserviceModule.registerAsync("IDENTITY_SERVICE"),
   ],
-  providers: [ResourceAuth, SellerGuard],
-  exports: [SellerGuard],
+  providers: [ResourceAuth],
 })
 export class ResourceAuthModule {}
