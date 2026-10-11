@@ -7,6 +7,7 @@ import {
   type SuccessResponse,
   type TokenResponse,
 } from "@libs/contract";
+import { NotificationClient } from "@libs/core";
 import { LockMode } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 import {
@@ -30,6 +31,7 @@ export class AuthService {
     private readonly token: TokenService,
     private readonly storage: AuthenticationStorage,
     private readonly authCtx: AuthenticationContext,
+    private readonly notificationClient: NotificationClient,
   ) {}
 
   async signUp({ email, password }: BaseAuth): Promise<TokenResponse> {
@@ -37,6 +39,8 @@ export class AuthService {
 
     const userId = await this.em.transactional(async (em) => {
       const user = em.create(User, { email, password: passwordHash, role: "USER" });
+
+      this.notificationClient.emit("user.created", { email: user.email });
 
       return user.id;
     });

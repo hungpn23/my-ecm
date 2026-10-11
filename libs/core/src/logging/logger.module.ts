@@ -1,6 +1,5 @@
 import { deepMerge, X_REQUEST_ID } from "@libs/common";
 import type { DynamicModule } from "@nestjs/common";
-import { KafkaContext } from "@nestjs/microservices";
 import { LoggerModule as RootLoggerModule, type Params } from "nestjs-pino";
 import { v7 } from "uuid";
 
@@ -30,7 +29,7 @@ export class LoggerModule {
         quietRpcLogger: true,
         genReqId: (ctx) => {
           return (
-            ctx.switchToRpc().getContext<KafkaContext>().getMessage().headers?.[X_REQUEST_ID] ??
+            // ctx.switchToRpc().getContext<KafkaContext>().getMessage().headers?.[X_REQUEST_ID] ??
             v7()
           );
         },

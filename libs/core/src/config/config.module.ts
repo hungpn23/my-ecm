@@ -19,7 +19,6 @@ export class ConfigModule {
     return {
       module: ConfigModule,
       imports: [RootConfigModule.forRoot(deepMerge(defaultOptions, options))],
-      exports: [RootConfigModule],
     };
   }
 
