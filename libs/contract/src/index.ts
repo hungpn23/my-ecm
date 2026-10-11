@@ -7,6 +7,8 @@ export * from "./events/user-message.schema";
 export * from "./identity/auth.schema";
 export * from "./identity/shop.schema";
 export * from "./identity/user.schema";
+export * from "./microservice/command-payload";
+export * from "./microservice/event-payload";
 export * from "./product/category.schema";
 export * from "./product/product.schema";
 export * from "./shared/common.schema";

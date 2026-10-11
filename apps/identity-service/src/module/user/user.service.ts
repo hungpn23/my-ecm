@@ -17,8 +17,6 @@ export class UserService {
 
   async findById(userId: Uuid): Promise<UserResponse | null> {
     const user = await this.em.findOne(User, { id: userId }, { populate: ["shop"] });
-    if (!user) return null;
-
-    return user.toResponse();
+    return user?.toResponse() ?? null;
   }
 }

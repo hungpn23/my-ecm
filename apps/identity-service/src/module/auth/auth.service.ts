@@ -40,7 +40,7 @@ export class AuthService {
     const userId = await this.em.transactional(async (em) => {
       const user = em.create(User, { email, password: passwordHash, role: "USER" });
 
-      this.notificationClient.emit("user.created", { email: user.email });
+      await this.notificationClient.emit("user.created", { email: user.email });
 
       return user.id;
     });

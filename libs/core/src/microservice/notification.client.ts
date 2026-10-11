@@ -1,7 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import type { ClientProxy } from "@nestjs/microservices";
+import { lastValueFrom } from "rxjs";
 import { InjectMicroserviceClient } from "./microservice.decorator";
-import type { MicroserviceEvent } from "./microservice.event";
+import type { MicroserviceEvent } from "./microservice.schema";
+import { PayloadByEvent } from "./payload-by-event";
 
 @Injectable()
 export class NotificationClient {
@@ -9,7 +11,12 @@ export class NotificationClient {
     @InjectMicroserviceClient("NOTIFICATION_SERVICE") private readonly client: ClientProxy,
   ) {}
 
-  emit(event: MicroserviceEvent, payload: any) {
-    this.client.emit(event, payload);
+  async emit<Event extends MicroserviceEvent>(
+    event: Event,
+    payload: PayloadByEvent[NoInfer<Event>],
+  ): Promise<void> {
+    const validated = PayloadByEvent[event].assert(payload);
+
+    return await lastValueFrom(this.client.emit(event, validated));
   }
 }
