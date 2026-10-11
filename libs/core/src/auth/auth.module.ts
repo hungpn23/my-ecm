@@ -1,16 +1,16 @@
 import { ConfigModule } from "#internal/config/index";
-import { AuthenticationModule } from "@nestjs/authentication";
+import { AuthenticationModule as NestAuthModule } from "@nestjs/authentication";
 import { Module } from "@nestjs/common";
 import { MicroserviceModule } from "../microservice";
+import { JwtAuth } from "./jwt-auth.provider";
 import { jwtConfig } from "./jwt.config";
-import { ResourceAuth } from "./resource-auth.provider";
 
 @Module({
   imports: [
-    AuthenticationModule.forRoot(),
+    NestAuthModule.forRoot(),
     ConfigModule.forFeatures(jwtConfig),
     MicroserviceModule.registerAsync("IDENTITY_SERVICE"),
   ],
-  providers: [ResourceAuth],
+  providers: [JwtAuth],
 })
-export class ResourceAuthModule {}
+export class AuthModule {}

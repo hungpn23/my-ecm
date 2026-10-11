@@ -5,7 +5,7 @@ import { IdentityClient } from "../microservice";
 import { jwtConfig, type JwtConfig } from "./jwt.config";
 
 @Injectable()
-export class ResourceAuth extends JwtBearerProvider<ExternalUserResponse> {
+export class JwtAuth extends JwtBearerProvider<ExternalUserResponse> {
   constructor(
     @Inject(jwtConfig.KEY) config: JwtConfig,
     registry: AuthenticationRegistry,
