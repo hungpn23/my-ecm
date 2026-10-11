@@ -1,4 +1,4 @@
-import { CurrentUser, type Uuid } from "@libs/contract";
+import { ExternalUserResponse, type Uuid } from "@libs/contract";
 import { Inject, Injectable, ServiceUnavailableException } from "@nestjs/common";
 import { type } from "arktype";
 import {
@@ -19,7 +19,7 @@ export class IdentityCurrentUserClient {
   ) {}
 
   // TEMPORARY: Replace HTTP inside this method with Kafka request/reply when that transport is added.
-  async findById(userId: Uuid): Promise<CurrentUser | null> {
+  async findById(userId: Uuid): Promise<ExternalUserResponse | null> {
     let response: Response;
     let body: unknown;
 
@@ -37,8 +37,8 @@ export class IdentityCurrentUserClient {
       throw new ServiceUnavailableException("Identity user lookup unavailable");
     }
 
-    const user = CurrentUser(body);
-    if (user instanceof type.errors || user.id !== userId) {
+    const user = ExternalUserResponse(body);
+    if (user instanceof type.errors || user?.id !== userId) {
       throw new ServiceUnavailableException("Invalid identity user response");
     }
 

@@ -18,7 +18,7 @@ export class InternalAuthController {
     headers: [["Cache-Control", "no-store"]],
   })
   async resolve(@Param("userId", { schema: Uuid }) userId: Uuid): Promise<UserResponse> {
-    const user = await this.user.findById(userId);
+    const user = await this.user.findOne({ id: userId });
     if (!user) throw new NotFoundException();
 
     return user;

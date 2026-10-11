@@ -16,8 +16,8 @@ export const UserResponse = EntityResponse.merge({
 }).merge(type({ shopId: Uuid, shopRole: ShopRole }).or({ shopId: "null", shopRole: "null" }));
 export type UserResponse = typeof UserResponse.inferIn;
 
-export const CurrentUser = UserResponse.merge({
+export const ExternalUserResponse = UserResponse.merge({
   createdAt: "string.date.iso.parse",
   updatedAt: "string.date.iso.parse",
-});
-export type CurrentUser = typeof CurrentUser.infer;
+}).or("null");
+export type ExternalUserResponse = typeof ExternalUserResponse.infer;
