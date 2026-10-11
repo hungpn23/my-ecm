@@ -1,21 +1,21 @@
-import { ExternalUserResponse, Uuid } from "@libs/contract";
+import { UserResponse, Uuid } from "@libs/contract";
 import { AuthenticationRegistry, JwtBearerProvider, type JwtClaims } from "@nestjs/authentication";
 import { Inject, Injectable } from "@nestjs/common";
 import { IdentityClient } from "../microservice";
 import { jwtConfig, type JwtConfig } from "./jwt.config";
 
 @Injectable()
-export class JwtAuth extends JwtBearerProvider<ExternalUserResponse> {
+export class JwtAuth extends JwtBearerProvider<UserResponse> {
   constructor(
     @Inject(jwtConfig.KEY) config: JwtConfig,
-    registry: AuthenticationRegistry,
     private readonly identityClient: IdentityClient,
+    registry: AuthenticationRegistry,
   ) {
     super(config);
     registry.registerProvider(this);
   }
 
-  protected override async validate({ sub }: JwtClaims): Promise<ExternalUserResponse | null> {
+  protected override async validate({ sub }: JwtClaims): Promise<UserResponse | null> {
     if (!Uuid.allows(sub)) return null;
 
     return await this.identityClient.send("get.user", { id: sub });

@@ -3,7 +3,6 @@ import { AuthenticationModule as NestAuthModule } from "@nestjs/authentication";
 import { Module } from "@nestjs/common";
 import { UserModule } from "../user/user.module";
 import { authConfig, type AuthConfig } from "./auth.config";
-import { AuthConsumer } from "./auth.consumer";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { AuthStore } from "./auth.store";
@@ -19,6 +18,6 @@ import { JwtAuth } from "./jwt-auth.provider";
     UserModule,
   ],
   providers: [AuthService, JwtAuth, AuthStore],
-  controllers: [AuthController, AuthConsumer],
+  controllers: [AuthController],
 })
 export class AuthModule {}

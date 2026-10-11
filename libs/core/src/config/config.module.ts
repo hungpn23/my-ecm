@@ -1,7 +1,7 @@
 import { deepMerge } from "@libs/common";
 import type { DynamicModule } from "@nestjs/common";
 import {
-  ConfigModule as RootConfigModule,
+  ConfigModule as NestConfigModule,
   type ConfigFactory,
   type ConfigModuleOptions,
 } from "@nestjs/config";
@@ -18,12 +18,12 @@ export class ConfigModule {
 
     return {
       module: ConfigModule,
-      imports: [RootConfigModule.forRoot(deepMerge(defaultOptions, options))],
+      imports: [NestConfigModule.forRoot(deepMerge(defaultOptions, options))],
     };
   }
 
   static forFeatures(...configs: ConfigFactory[]): DynamicModule {
-    const imports = configs.map((config) => RootConfigModule.forFeature(config));
+    const imports = configs.map((config) => NestConfigModule.forFeature(config));
 
     return {
       module: ConfigModule,

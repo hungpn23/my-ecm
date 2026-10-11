@@ -1,6 +1,6 @@
 import { deepMerge, X_REQUEST_ID } from "@libs/common";
 import type { DynamicModule } from "@nestjs/common";
-import { LoggerModule as RootLoggerModule, type Params } from "nestjs-pino";
+import { LoggerModule as PinoLoggerModule, type Params } from "nestjs-pino";
 import { v7 } from "uuid";
 
 export class LoggerModule {
@@ -38,7 +38,7 @@ export class LoggerModule {
 
     return {
       module: LoggerModule,
-      imports: [RootLoggerModule.forRoot(deepMerge(defaultParams, params))],
+      imports: [PinoLoggerModule.forRoot(deepMerge(defaultParams, params))],
     };
   }
 }
