@@ -16,11 +16,10 @@ abstract class MicroserviceClient {
   ) {
     const validated = PayloadByCommand[command].assert(payload);
 
-    const raw = await lastValueFrom(
-      this.client.send<ResponseByCommand[NoInfer<Command>]>(command, validated),
-    );
+    const response$ = this.client.send<ResponseByCommand[NoInfer<Command>]>(command, validated);
+    const response = await lastValueFrom(response$);
 
-    return ResponseByCommand[command].assert(raw);
+    return ResponseByCommand[command].assert(response);
   }
 
   async emit<Event extends MicroserviceEvent>(

@@ -297,7 +297,7 @@ function createFiles(options: OnboardOptions): [string, string][] {
   const files: [string, string][] = [
     [
       ".env.example",
-      `APP_NAME=${options.name}-service\nAPP_PORT=${options.httpPort}\n${options.mikroOrm ? `\nDB_DATABASE=${options.name}-service\n` : ""}${options.auth ? "\nAUTH_JWT_PUBLIC_KEY_PATH=/absolute/path/to/identity-es256-public.pem\nAUTH_JWT_ISSUER=my-ecm-identity\nAUTH_JWT_AUDIENCE=my-ecm-api\n" : ""}`,
+      `APP_NAME=${options.name}-service\nAPP_PORT=${options.httpPort}\n${options.mikroOrm ? `\nDB_DATABASE=${options.name}-service\n` : ""}${options.auth ? "\nAUTH_JWT_PUBLIC_KEY_PATH=/absolute/path/to/identity-ed25519-public.pem\nAUTH_JWT_ISSUER=my-ecm-identity\nAUTH_JWT_AUDIENCE=my-ecm-api\n" : ""}`,
     ],
     ["package.json", createPackageJson(options)],
     ["tsconfig.json", createTsConfig()],

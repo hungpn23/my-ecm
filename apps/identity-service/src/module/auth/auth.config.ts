@@ -25,7 +25,7 @@ export const authConfig = registerAs("auth", () => {
   return {
     accessToken: {
       key: createPrivateKey(readFileSync(env.AUTH_JWT_PRIVATE_KEY_PATH)),
-      alg: "ES256",
+      alg: "EdDSA",
       issuer: env.AUTH_JWT_ISSUER,
       audience: env.AUTH_JWT_AUDIENCE,
       type: "at+jwt",

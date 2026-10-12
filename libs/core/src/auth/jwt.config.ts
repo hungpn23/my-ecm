@@ -14,7 +14,7 @@ export const jwtConfig = registerAs("jwt", () => {
 
   return {
     key: createPublicKey(readFileSync(env.AUTH_JWT_PUBLIC_KEY_PATH)),
-    algorithms: ["ES256"],
+    algorithms: ["EdDSA"],
     issuer: env.AUTH_JWT_ISSUER,
     audience: env.AUTH_JWT_AUDIENCE,
     type: "at+jwt",
