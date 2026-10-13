@@ -15,9 +15,11 @@
   "dependencies": {
     "@ark/util": "catalog:common",
     "@libs/contract": "workspace:*",
+    "@mikro-orm/core": "catalog:mikro",
     "@nestjs/authentication": "catalog:auth",
     "@nestjs/common": "catalog:nest",
     "@nestjs/config": "catalog:nest",
+    "@nestjs/core": "catalog:nest",
     "@nestjs/swagger": "catalog:nest",
     "arktype": "catalog:common",
     "lodash": "catalog:common"

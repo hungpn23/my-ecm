@@ -10,7 +10,7 @@ import {
 } from "@libs/contract";
 import { EntityManager, type FilterQuery } from "@mikro-orm/postgresql";
 import { AuthenticationContext } from "@nestjs/authentication";
-import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 
 @Injectable()
 export class ProductService {
@@ -24,8 +24,7 @@ export class ProductService {
       const shopId = this._requireShopId();
       const { categoryId, ...rest } = body;
 
-      const category = await em.findOne(Category, { id: categoryId });
-      if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
+      const category = await em.findOneOrFail(Category, { id: categoryId });
 
       const newProduct = em.create(Product, {
         ...rest,
@@ -70,12 +69,11 @@ export class ProductService {
 
   async findOne(productId: Uuid): Promise<ProductDetailResponse> {
     const shopId = this._requireShopId();
-    const product = await this.em.findOne(
+    const product = await this.em.findOneOrFail(
       Product,
       { id: productId, shopId },
       { populate: ["category", "description"] },
     );
-    if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
     return product.toDetailResponse();
   }
@@ -83,18 +81,16 @@ export class ProductService {
   async update(productId: Uuid, body: UpdateProduct): Promise<ProductDetailResponse> {
     return await this.em.transactional(async (em) => {
       const shopId = this._requireShopId();
-      const product = await em.findOne(
+      const product = await em.findOneOrFail(
         Product,
         { id: productId, shopId },
         { populate: ["category", "description"] },
       );
-      if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
       const { categoryId, ...data } = body;
 
       if (categoryId) {
-        const category = await em.findOne(Category, { id: categoryId });
-        if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
+        const category = await em.findOneOrFail(Category, { id: categoryId });
 
         em.assign(product, { category });
       }
@@ -110,8 +106,7 @@ export class ProductService {
   async delete(productId: Uuid): Promise<void> {
     await this.em.transactional(async (em) => {
       const shopId = this._requireShopId();
-      const product = await em.findOne(Product, { id: productId, shopId });
-      if (!product) throw new NotFoundException(`Product ${productId} not found`);
+      const product = await em.findOneOrFail(Product, { id: productId, shopId });
 
       em.remove(product);
     });

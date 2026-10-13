@@ -2,7 +2,7 @@ import { Shop, User } from "#internal/database/entity/index";
 import type { CreateShop, CreateShopResponse } from "@libs/contract";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { AuthenticationContext } from "@nestjs/authentication";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class ShopService {
@@ -13,8 +13,7 @@ export class ShopService {
 
   async create(body: CreateShop): Promise<CreateShopResponse> {
     return await this.em.transactional(async (em) => {
-      const user = await em.findOne(User, { id: this.authCtx.requireUser().id });
-      if (!user) throw new NotFoundException();
+      const user = await em.findOneOrFail(User, { id: this.authCtx.requireUser().id });
 
       const newShop = em.create(Shop, {
         ...body,

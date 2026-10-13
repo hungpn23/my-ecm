@@ -1,8 +1,8 @@
 import { entities } from "#mikro-orm/generated";
-import { ArktypeValidationPipe } from "@libs/common";
+import { ArktypeValidationPipe, MikroOrmExceptionFilter } from "@libs/common";
 import { AuthModule, ConfigModule, DatabaseModule, LoggerModule } from "@libs/core";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
-import { APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { CategoryModule } from "./module/category/category.module";
 import { ProductModule } from "./module/product/product.module";
 
@@ -16,6 +16,10 @@ import { ProductModule } from "./module/product/product.module";
     ProductModule,
   ],
   providers: [
+    {
+      provide: APP_FILTER,
+      useClass: MikroOrmExceptionFilter,
+    },
     {
       provide: APP_PIPE,
       useClass: ArktypeValidationPipe,

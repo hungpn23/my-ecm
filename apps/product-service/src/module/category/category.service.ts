@@ -9,7 +9,7 @@ import {
   type UpdateCategory,
 } from "@libs/contract";
 import { EntityManager, type FilterQuery } from "@mikro-orm/postgresql";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class CategoryService {
@@ -52,8 +52,7 @@ export class CategoryService {
 
   async update(categoryId: Uuid, body: UpdateCategory): Promise<CategoryResponse> {
     return await this.em.transactional(async (em) => {
-      const category = await em.findOne(Category, { id: categoryId });
-      if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
+      const category = await em.findOneOrFail(Category, { id: categoryId });
 
       em.assign(category, body);
       await em.flush();
@@ -64,8 +63,7 @@ export class CategoryService {
 
   async delete(categoryId: Uuid): Promise<void> {
     await this.em.transactional(async (em) => {
-      const category = await em.findOne(Category, { id: categoryId });
-      if (!category) throw new NotFoundException(`Category ${categoryId} not found`);
+      const category = await em.findOneOrFail(Category, { id: categoryId });
 
       em.remove(category);
     });
