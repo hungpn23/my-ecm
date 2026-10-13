@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import type { ClientProxy } from "@nestjs/microservices";
-import { lastValueFrom } from "rxjs";
+import { lastValueFrom, timeout } from "rxjs";
 import { InjectMicroserviceClient } from "./microservice.decorator";
 import type { MicroserviceCommand, MicroserviceEvent } from "./microservice.schema";
 import { PayloadByCommand } from "./payload-by-command";
@@ -13,10 +13,13 @@ abstract class MicroserviceClient {
   async send<Command extends MicroserviceCommand>(
     command: Command,
     payload: PayloadByCommand[NoInfer<Command>],
+    timeoutMs: number = 3000,
   ) {
     const validated = PayloadByCommand[command].assert(payload);
 
-    const response$ = this.client.send<ResponseByCommand[NoInfer<Command>]>(command, validated);
+    const response$ = this.client
+      .send<ResponseByCommand[NoInfer<Command>]>(command, validated)
+      .pipe(timeout(timeoutMs));
     const response = await lastValueFrom(response$);
 
     return ResponseByCommand[command].assert(response);

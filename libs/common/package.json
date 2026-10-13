@@ -20,9 +20,11 @@
     "@nestjs/common": "catalog:nest",
     "@nestjs/config": "catalog:nest",
     "@nestjs/core": "catalog:nest",
+    "@nestjs/microservices": "catalog:nest",
     "@nestjs/swagger": "catalog:nest",
     "arktype": "catalog:common",
-    "lodash": "catalog:common"
+    "lodash": "catalog:common",
+    "rxjs": "catalog:backend"
   },
   "devDependencies": {
     "@types/lodash": "catalog:common"
