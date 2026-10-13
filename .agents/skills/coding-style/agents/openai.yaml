@@ -1,0 +1,4 @@
+interface:
+  display_name: "Coding style"
+  short_description: "Match my-ecm naming, typing, and code formatting"
+  default_prompt: "Use $coding-style to match the current my-ecm code style for this change."
