@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "bun ../../scripts/build.ts",
-    "check:types": "tsc",
+    "check:types": "bun check",
     "dev": "bun --watch src/main.ts",
     "start": "bun src/main.ts"
   },
