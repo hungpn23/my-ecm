@@ -46,26 +46,26 @@ export class AuthService {
     });
 
     // pass it directly bc we have nothing to prove yet
-    return await this.issueTokens({ userId, passwordHash });
+    return await this._issueTokens({ userId, passwordHash });
   }
 
   async signIn({ email, password }: BaseAuth): Promise<TokenResponse> {
-    const proof = await this.authenticate({ email }, password);
+    const proof = await this._authenticate({ email }, password);
     const replacementHash = this.passwordHasher.needsRehash(proof.passwordHash)
       ? await this.passwordHasher.hash(password)
       : undefined;
 
-    return await this.issueTokens(proof, replacementHash);
+    return await this._issueTokens(proof, replacementHash);
   }
 
   async changePassword({ oldPassword, newPassword }: ChangePassword): Promise<SuccessResponse> {
     const { id } = this.authCtx.requireUser();
-    const proof = await this.authenticate({ id }, oldPassword);
+    const proof = await this._authenticate({ id }, oldPassword);
     const passwordHash = await this.passwordHasher.hash(newPassword);
 
     await this.em.transactional(
       async (em) => {
-        const lockedUser = await this.lockUserAndVerifyProof(em, proof);
+        const lockedUser = await this._lockUserAndVerifyProof(em, proof);
         await this.token.revokeAll(lockedUser.id);
         lockedUser.password.set(passwordHash);
       },
@@ -94,7 +94,7 @@ export class AuthService {
     return this.token.refresh(refreshToken);
   }
 
-  private async authenticate(
+  private async _authenticate(
     where: { email: string } | { id: Uuid },
     password: string,
   ): Promise<PasswordProof> {
@@ -111,7 +111,7 @@ export class AuthService {
     return { userId: user.id, passwordHash };
   }
 
-  private async lockUserAndVerifyProof(em: EntityManager, proof: PasswordProof) {
+  private async _lockUserAndVerifyProof(em: EntityManager, proof: PasswordProof) {
     const user = await em.findOne(
       User,
       { id: proof.userId },
@@ -131,13 +131,13 @@ export class AuthService {
     return user;
   }
 
-  private async issueTokens(
+  private async _issueTokens(
     proof: PasswordProof,
     replacementHash?: string,
   ): Promise<TokenResponse> {
     return await this.em.transactional(
       async (em) => {
-        const lockedUser = await this.lockUserAndVerifyProof(em, proof);
+        const lockedUser = await this._lockUserAndVerifyProof(em, proof);
         if (replacementHash) lockedUser.password.set(replacementHash);
 
         return await this.token.issue(lockedUser.id, {

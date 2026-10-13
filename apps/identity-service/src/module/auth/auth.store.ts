@@ -19,14 +19,14 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
     storage.registerSource({ refreshTokens: this, mfa: this });
   }
 
-  private fork() {
+  private _fork() {
     return this.em.fork({
       disableContextResolution: true,
     });
   }
 
   async getRefreshToken(id: string): Promise<RefreshTokenRecord | undefined> {
-    const row = await this.fork().findOne(RefreshToken, { id });
+    const row = await this._fork().findOne(RefreshToken, { id });
     if (!row) return undefined;
 
     const { usedAt, claims, ...rest } = wrap(row).serialize({ exclude: ["revoked"] });
@@ -39,7 +39,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
   }
 
   async saveRefreshToken(record: RefreshTokenRecord): Promise<void> {
-    const em = this.fork();
+    const em = this._fork();
 
     await em.insert(RefreshToken, {
       ...record,
@@ -55,7 +55,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
   }
 
   async markRefreshTokenUsed(id: string, at: Date): Promise<boolean> {
-    const affected = await this.fork().nativeUpdate(
+    const affected = await this._fork().nativeUpdate(
       RefreshToken,
       { id, usedAt: null },
       { usedAt: at },
@@ -65,21 +65,21 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
   }
 
   async revokeRefreshTokenFamily(familyId: string): Promise<void> {
-    await this.fork().nativeUpdate(RefreshToken, { familyId }, { revoked: true });
+    await this._fork().nativeUpdate(RefreshToken, { familyId }, { revoked: true });
   }
 
   async isRefreshTokenFamilyRevoked(familyId: string): Promise<boolean> {
-    const count = await this.fork().count(RefreshToken, { familyId, revoked: true });
+    const count = await this._fork().count(RefreshToken, { familyId, revoked: true });
     return count > 0;
   }
 
   async revokeUserRefreshTokens(userId: string): Promise<void> {
-    await this.fork().nativeUpdate(RefreshToken, { userId }, { revoked: true });
+    await this._fork().nativeUpdate(RefreshToken, { userId }, { revoked: true });
   }
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async getTotp(userId: string): Promise<TotpRecord | undefined> {
-    const row = await this.fork().findOne(Totp, { userId });
+    const row = await this._fork().findOne(Totp, { userId });
     if (!row) return undefined;
 
     const record: TotpRecord = { secret: row.secret, confirmed: row.confirmed };
@@ -90,7 +90,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async saveTotp(userId: string, record: TotpRecord | null): Promise<void> {
-    const em = this.fork();
+    const em = this._fork();
     if (!record) {
       await em.nativeDelete(Totp, { userId });
       return;
@@ -115,7 +115,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async claimTotpStep(userId: string, step: number): Promise<boolean> {
-    const affected = await this.fork().nativeUpdate(
+    const affected = await this._fork().nativeUpdate(
       Totp,
       { userId, $or: [{ lastUsedStep: null }, { lastUsedStep: { $lt: step } }] },
       { lastUsedStep: step },
@@ -125,7 +125,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async saveRecoveryCodes(userId: string, hashes: string[]): Promise<void> {
-    await this.fork().transactional(async (em) => {
+    await this._fork().transactional(async (em) => {
       await em.nativeDelete(RecoveryCode, { userId });
       if (hashes.length > 0) {
         await em.insertMany(
@@ -138,7 +138,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async consumeRecoveryCode(userId: string, hash: string): Promise<boolean> {
-    const affected = await this.fork().nativeDelete(RecoveryCode, {
+    const affected = await this._fork().nativeDelete(RecoveryCode, {
       userId,
       codeHash: hash,
     });
@@ -147,15 +147,15 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   countRecoveryCodes(userId: string): Promise<number> {
-    return this.fork().count(RecoveryCode, { userId });
+    return this._fork().count(RecoveryCode, { userId });
   }
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async recordMfaFailure(userId: string, windowMs: number, now: number): Promise<number> {
     // Commit the insert before counting so concurrent guesses see earlier attempts.
-    await this.fork().insert(MfaFailure, { userId, failedAt: new Date(now) });
+    await this._fork().insert(MfaFailure, { userId, failedAt: new Date(now) });
     const failures = await this.countMfaFailures(userId, windowMs, now);
-    await this.fork().nativeDelete(MfaFailure, {
+    await this._fork().nativeDelete(MfaFailure, {
       failedAt: { $lte: new Date(now - windowMs) },
     });
     return failures;
@@ -163,7 +163,7 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   countMfaFailures(userId: string, windowMs: number, now: number): Promise<number> {
-    return this.fork().count(MfaFailure, {
+    return this._fork().count(MfaFailure, {
       userId,
       failedAt: { $gt: new Date(now - windowMs) },
     });
@@ -171,6 +171,6 @@ export class AuthStore implements RefreshTokenStore, MfaStore {
 
   // TEMPORARY: Required by MfaStore; unused by current application flows.
   async clearMfaFailures(userId: string): Promise<void> {
-    await this.fork().nativeDelete(MfaFailure, { userId });
+    await this._fork().nativeDelete(MfaFailure, { userId });
   }
 }

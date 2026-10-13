@@ -21,7 +21,7 @@ export class ProductService {
 
   async create(body: CreateProduct): Promise<ProductDetailResponse> {
     return await this.em.transactional(async (em) => {
-      const shopId = this.requireShopId();
+      const shopId = this._requireShopId();
       const { categoryId, ...rest } = body;
 
       const category = await em.findOne(Category, { id: categoryId });
@@ -40,7 +40,7 @@ export class ProductService {
   }
 
   async find(query: OffsetQuery): Promise<PaginatedProductResponse> {
-    const shopId = this.requireShopId();
+    const shopId = this._requireShopId();
     const { page, pageSize, search } = query;
 
     let where: FilterQuery<Product> = { shopId };
@@ -69,7 +69,7 @@ export class ProductService {
   }
 
   async findOne(productId: Uuid): Promise<ProductDetailResponse> {
-    const shopId = this.requireShopId();
+    const shopId = this._requireShopId();
     const product = await this.em.findOne(
       Product,
       { id: productId, shopId },
@@ -82,7 +82,7 @@ export class ProductService {
 
   async update(productId: Uuid, body: UpdateProduct): Promise<ProductDetailResponse> {
     return await this.em.transactional(async (em) => {
-      const shopId = this.requireShopId();
+      const shopId = this._requireShopId();
       const product = await em.findOne(
         Product,
         { id: productId, shopId },
@@ -109,7 +109,7 @@ export class ProductService {
 
   async delete(productId: Uuid): Promise<void> {
     await this.em.transactional(async (em) => {
-      const shopId = this.requireShopId();
+      const shopId = this._requireShopId();
       const product = await em.findOne(Product, { id: productId, shopId });
       if (!product) throw new NotFoundException(`Product ${productId} not found`);
 
@@ -117,7 +117,7 @@ export class ProductService {
     });
   }
 
-  private requireShopId(): Uuid {
+  private _requireShopId(): Uuid {
     const { shopId, shopRole } = this.authCtx.requireUser();
     if (!shopId || !shopRole) throw new ForbiddenException("User is not a seller");
 

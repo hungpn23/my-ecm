@@ -31,6 +31,10 @@ formatter-excluded lint plugin sources under `tools/oxlint/anti-slop/`.
 ## Apply only the relevant conventions
 
 - Match existing identifier vocabulary, casing, filename suffixes, and import paths.
+- Prefix every private class method with `_`, keeping the rest of the name in camelCase,
+  such as `_authenticate`. Apply this to async and static private
+  methods too. Keep an existing `_` prefix without adding another. Update all references
+  when renaming. This rule does not apply to private properties or constructor parameters.
 - Reuse existing parameter types and preserve the local choice between positional
   arguments, typed object arguments, and destructuring.
 - Derive types from their existing schemas or owners. Keep framework declaration merging

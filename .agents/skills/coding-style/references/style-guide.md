@@ -18,6 +18,13 @@ Examples illustrate syntax and naming only. They do not prescribe business behav
 ## Names and file conventions
 
 - Use `camelCase` for variables, properties, parameters, and ordinary functions.
+- Prefix private class methods with `_` followed by camelCase, including async and static
+  methods. Preserve an existing prefix and update every reference when renaming.
+  Private properties and constructor parameters keep their existing names.
+  Examples: `_fork` in `apps/identity-service/src/module/auth/auth.store.ts`,
+  `_authenticate`, `_lockUserAndVerifyProof`, and `_issueTokens` in
+  `apps/identity-service/src/module/auth/auth.service.ts`, and `_requireShopId` in
+  `apps/product-service/src/module/product/product.service.ts`.
 - Use `PascalCase` for classes, type aliases, interfaces, schema values, and components.
   A schema and its inferred type may intentionally share a name.
 - Use `UPPER_SNAKE_CASE` for fixed registries, enum source values, injection tokens, and
