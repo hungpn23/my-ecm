@@ -5,7 +5,7 @@ import {
   StandardSchemaValidationPipe,
   type StandardSchemaValidationPipeOptions,
 } from "@nestjs/common";
-import { deepMerge } from "./deep-merge";
+import { deepMerge } from "../helper/deep-merge";
 
 @Injectable()
 export class ArktypeValidationPipe extends StandardSchemaValidationPipe {
