@@ -7,4 +7,3 @@ export * from "./error-handling/rxjs.exception-filter";
 export * from "./helper/deep-merge";
 export * from "./kafka/kafka-message-by-topic";
 export * from "./pipe/arktype-validation.pipe";
-export * from "./type/all-or-never.type";
