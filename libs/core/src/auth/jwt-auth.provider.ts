@@ -1,4 +1,4 @@
-import type { IdentityClient } from "#internal/microservice/microservice-clients";
+import { IdentityClient } from "#internal/microservice/microservice-clients";
 import { UserResponse, Uuid } from "@libs/contract";
 import { AuthenticationRegistry, JwtBearerProvider, type JwtClaims } from "@nestjs/authentication";
 import { Inject, Injectable } from "@nestjs/common";

@@ -1,4 +1,4 @@
-export { Outbox } from "@libs/core";
+export * from "@libs/core/entities";
 export * from "./mfa-failure.entity";
 export * from "./recovery-code.entity";
 export * from "./refresh-token.entity";
