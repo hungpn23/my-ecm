@@ -5,8 +5,8 @@ import { throwError, type Observable } from "rxjs";
 import { RpcException } from "./rpc.exception";
 
 @Catch()
-export class GlobalRpcExceptionFilter extends BaseRpcExceptionFilter {
-  private readonly logger = new Logger(GlobalRpcExceptionFilter.name);
+export class RpcExceptionFilter extends BaseRpcExceptionFilter {
+  private readonly logger = new Logger(RpcExceptionFilter.name);
 
   override catch(exception: any): Observable<never> {
     let error: RpcError = RPC_ERROR.INTERNAL_SERVER_ERROR satisfies RpcError;
