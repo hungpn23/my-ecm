@@ -13,7 +13,7 @@ export function defineDatabaseConfig({
   return defineConfig({
     ...config,
     driver: PostgreSqlDriver,
-    entities: ["src/database/entity/index.ts"],
+    entities: ["src/database/entity/*.entity.ts"],
     extensions: [SeedManager, Migrator],
     seeder: { pathTs: "src/database/seeders" },
     migrations: {
