@@ -1,4 +1,4 @@
-import { appConfig, type AppConfig } from "#internal/config/index";
+import { appConfig, type AppConfig } from "#internal/config/app.config";
 import { Inject, Injectable } from "@nestjs/common";
 import {
   Transport,

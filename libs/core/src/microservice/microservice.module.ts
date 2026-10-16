@@ -1,6 +1,7 @@
+import { ConfigModule } from "#internal/config/config.module";
+import { tcpConfig, type TcpConfig } from "#internal/config/tcp.config";
 import type { DynamicModule } from "@nestjs/common";
 import { ClientsModule, Transport, type ClientsProviderAsyncOptions } from "@nestjs/microservices";
-import { ConfigModule, tcpConfig, type TcpConfig } from "../config";
 import { IdentityClient, NotificationClient, ProductClient } from "./microservice-clients";
 import type { MicroserviceClient } from "./microservice.schema";
 

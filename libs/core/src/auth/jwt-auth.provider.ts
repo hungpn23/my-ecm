@@ -1,7 +1,7 @@
+import type { IdentityClient } from "#internal/microservice/microservice-clients";
 import { UserResponse, Uuid } from "@libs/contract";
 import { AuthenticationRegistry, JwtBearerProvider, type JwtClaims } from "@nestjs/authentication";
 import { Inject, Injectable } from "@nestjs/common";
-import { IdentityClient } from "../microservice";
 import { jwtConfig, type JwtConfig } from "./jwt.config";
 
 @Injectable()
