@@ -1,4 +1,4 @@
-import { RpcError } from "@libs/common";
+import { RpcError } from "@libs/contract";
 import { HttpException, Injectable } from "@nestjs/common";
 import type { ClientProxy } from "@nestjs/microservices";
 import { catchError, lastValueFrom, timeout } from "rxjs";

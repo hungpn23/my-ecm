@@ -12,8 +12,8 @@ import { TimeoutError } from "rxjs";
 type HandledError = TimeoutError;
 
 @Catch(TimeoutError)
-export class RpcCallerExceptionFilter extends BaseExceptionFilter {
-  private readonly logger = new Logger(RpcCallerExceptionFilter.name);
+export class RxjsExceptionFilter extends BaseExceptionFilter {
+  private readonly logger = new Logger(RxjsExceptionFilter.name);
 
   override catch(exception: HandledError, host: ArgumentsHost) {
     this.logger.warn(`${exception.name}: ${exception.message}`);

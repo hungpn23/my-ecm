@@ -1,6 +1,6 @@
 import "@libs/contract/arktype-global";
 
-import { ArktypeValidationPipe } from "@libs/common";
+import { ArktypeValidationPipe, GlobalRpcExceptionFilter } from "@libs/common";
 import { appConfig, tcpConfig, type AppConfig, type TcpConfig } from "@libs/core";
 import { VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
@@ -47,11 +47,9 @@ async function bootstrap() {
     { deferInitialization: true },
   );
 
-  // const ms = app.connectMicroservice<KafkaOptions>(app.get(KafkaService).options, {
-  //   deferInitialization: true,
-  // });
   registerMicroserviceLogging(ms);
   ms.useGlobalPipes(new ArktypeValidationPipe());
+  ms.useGlobalFilters(new GlobalRpcExceptionFilter());
 
   await app.startAllMicroservices();
   await app.listen(APP_PORT, APP_HOST);
