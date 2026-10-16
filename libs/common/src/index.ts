@@ -5,5 +5,4 @@ export * from "./error-handling/rpc.exception";
 export * from "./error-handling/rpc.exception-filter";
 export * from "./error-handling/rxjs.exception-filter";
 export * from "./helper/deep-merge";
-export * from "./kafka/kafka-message-by-topic";
 export * from "./pipe/arktype-validation.pipe";

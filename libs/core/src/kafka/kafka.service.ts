@@ -1,4 +1,3 @@
-import { KafkaMessageByTopic } from "@libs/common";
 import type { KafkaTopic } from "@libs/contract";
 import { Inject, Injectable } from "@nestjs/common";
 import type { ClientKafkaProxy, KafkaOptions } from "@nestjs/microservices";
@@ -6,6 +5,7 @@ import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { lastValueFrom } from "rxjs";
 import { KafkaOptionsFactory } from "./kafka-options.factory";
 import { KAFKA_CLIENT } from "./kafka.constant";
+import { MessageByTopic } from "./message-by-topic";
 
 @Injectable()
 export class KafkaService {
@@ -21,9 +21,9 @@ export class KafkaService {
 
   async emit<KTopic extends KafkaTopic>(
     topic: KTopic,
-    payload: KafkaMessageByTopic[NoInfer<KTopic>],
+    payload: MessageByTopic[NoInfer<KTopic>],
   ): Promise<void> {
-    const validated = KafkaMessageByTopic[topic].assert(payload);
+    const validated = MessageByTopic[topic].assert(payload);
 
     return await lastValueFrom(this.client.emit(topic, validated));
   }
