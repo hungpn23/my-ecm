@@ -4,7 +4,7 @@ import { type } from "arktype";
 export const RpcError = type({
   statusCode: type.valueOf(HttpStatus),
   code: "string",
-  message: "string",
+  message: "unknown",
 });
 export type RpcError = typeof RpcError.infer;
 

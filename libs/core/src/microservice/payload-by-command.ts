@@ -1,9 +1,9 @@
-import { GetUserPayload } from "@libs/contract";
+import { GetUserByIdPayload } from "@libs/contract";
 import type { Type } from "arktype";
 import type { MicroserviceCommand } from "./microservice.schema";
 
 export const PayloadByCommand = {
-  "get.user": GetUserPayload,
+  "get.user.by-id": GetUserByIdPayload,
 } as const satisfies Record<MicroserviceCommand, Type>;
 
 export type PayloadByCommand = {

@@ -3,7 +3,7 @@ import type { Type } from "arktype";
 import type { MicroserviceCommand } from "./microservice.schema";
 
 export const ResponseByCommand = {
-  "get.user": TcpUserResponse,
+  "get.user.by-id": TcpUserResponse,
 } as const satisfies Record<MicroserviceCommand, Type>;
 
 export type ResponseByCommand = {

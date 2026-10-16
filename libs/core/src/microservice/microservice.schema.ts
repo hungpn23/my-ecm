@@ -12,6 +12,6 @@ export const MICROSERVICE_EVENTS = ["user.created"] as const;
 export const MicroserviceEvent = type.enumerated(...MICROSERVICE_EVENTS);
 export type MicroserviceEvent = typeof MicroserviceEvent.infer;
 
-export const MICROSERVICE_COMMANDS = ["get.user"] as const;
+export const MICROSERVICE_COMMANDS = ["get.user.by-id"] as const;
 export const MicroserviceCommand = type.enumerated(...MICROSERVICE_COMMANDS);
 export type MicroserviceCommand = typeof MicroserviceCommand.infer;

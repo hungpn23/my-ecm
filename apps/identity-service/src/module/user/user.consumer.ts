@@ -1,4 +1,4 @@
-import { GetUserPayload, UserResponse } from "@libs/contract";
+import { GetUserByIdPayload, UserResponse } from "@libs/contract";
 import type { MicroserviceCommand } from "@libs/core";
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
@@ -8,9 +8,9 @@ import { UserRpcService } from "./user.rpc-service";
 export class UserConsumer {
   constructor(private readonly user: UserRpcService) {}
 
-  @MessagePattern<MicroserviceCommand>("get.user")
+  @MessagePattern<MicroserviceCommand>("get.user.by-id")
   async getUser(
-    @Payload({ schema: GetUserPayload }) payload: GetUserPayload,
+    @Payload({ schema: GetUserByIdPayload }) payload: GetUserByIdPayload,
   ): Promise<UserResponse | null> {
     return await this.user.findOne(payload);
   }

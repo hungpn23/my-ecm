@@ -1,6 +1,8 @@
 import { RPC_ERROR, type RpcError } from "@libs/contract";
 import { Catch, HttpException, Logger } from "@nestjs/common";
 import { BaseRpcExceptionFilter } from "@nestjs/microservices";
+import { isObject } from "lodash";
+import { STATUS_CODES } from "node:http";
 import { throwError, type Observable } from "rxjs";
 import { RpcException } from "./rpc.exception";
 
@@ -19,9 +21,15 @@ export class RpcExceptionFilter extends BaseRpcExceptionFilter {
 
     if (exception instanceof HttpException) {
       const statusCode = exception.getStatus();
-      const { errorCode = `HTTP_${statusCode}`, message } = exception;
 
-      error = { statusCode, code: errorCode, message } satisfies RpcError;
+      const defaultErrorCode = STATUS_CODES[statusCode] ?? `Unknown Error (${statusCode})`;
+      const code = exception.errorCode ?? defaultErrorCode;
+
+      const response = exception.getResponse();
+      let message: unknown = exception.message;
+      if (isObject(response) && "message" in response) message = response.message;
+
+      error = { statusCode, code, message } satisfies RpcError;
 
       return throwError(() => error);
     }
