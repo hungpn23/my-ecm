@@ -5,6 +5,5 @@ export * from "./endpoint.decorator";
 export * from "./kafka/kafka-message-by-topic";
 export * from "./mikro-orm.exception-filter";
 export * from "./rpc-caller.exception-filter";
-export * from "./rpc-error.schema";
 export * from "./throw-rpc-error";
 export * from "./x-request-id.constant";
