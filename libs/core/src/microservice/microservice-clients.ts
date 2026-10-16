@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { RpcError } from "@libs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import type { ClientProxy } from "@nestjs/microservices";
-import { lastValueFrom, timeout } from "rxjs";
+import { catchError, lastValueFrom, timeout } from "rxjs";
 import { InjectMicroserviceClient } from "./microservice.decorator";
 import type { MicroserviceCommand, MicroserviceEvent } from "./microservice.schema";
 import { PayloadByCommand } from "./payload-by-command";
@@ -19,7 +20,13 @@ abstract class MicroserviceClient {
 
     const response$ = this.client
       .send<ResponseByCommand[NoInfer<Command>]>(command, validated)
-      .pipe(timeout(timeoutMs));
+      .pipe(
+        timeout(timeoutMs),
+        catchError((e: RpcError) => {
+          if (RpcError.allows(e)) throw new HttpException(e, e.statusCode);
+          throw e;
+        }),
+      );
     const response = await lastValueFrom(response$);
 
     return ResponseByCommand[command].assert(response);

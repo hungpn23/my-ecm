@@ -11,7 +11,7 @@ export class UserController {
     path: "info",
     response: UserResponse,
   })
-  async getInfo(): Promise<UserResponse> {
-    return await this.user.getInfo();
+  getInfo(): UserResponse {
+    return this.user.getInfo();
   }
 }
