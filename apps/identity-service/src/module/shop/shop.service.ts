@@ -8,12 +8,12 @@ import { Injectable } from "@nestjs/common";
 export class ShopService {
   constructor(
     private readonly em: EntityManager,
-    private readonly authCtx: AuthenticationContext,
+    private readonly authContext: AuthenticationContext,
   ) {}
 
   async create(body: CreateShop): Promise<CreateShopResponse> {
     return await this.em.transactional(async (em) => {
-      const user = await em.findOneOrFail(User, { id: this.authCtx.requireUser().id });
+      const user = await em.findOneOrFail(User, { id: this.authContext.requireUser().id });
 
       const newShop = em.create(Shop, {
         ...body,

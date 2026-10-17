@@ -8,11 +8,11 @@ import { Injectable } from "@nestjs/common";
 export class UserService {
   constructor(
     private readonly em: EntityManager,
-    private readonly authCtx: AuthenticationContext,
+    private readonly authContext: AuthenticationContext,
   ) {}
 
   getInfo(): UserResponse {
-    return this.authCtx.requireUser();
+    return this.authContext.requireUser();
   }
 
   async findOne(where: GetUserByIdPayload): Promise<UserResponse | null> {

@@ -8,20 +8,20 @@ import {
   type UpdateProduct,
   type Uuid,
 } from "@libs/contract";
+import { SellerContext } from "@libs/core";
 import { EntityManager, type FilterQuery } from "@mikro-orm/postgresql";
-import { AuthenticationContext } from "@nestjs/authentication";
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class ProductService {
   constructor(
     private readonly em: EntityManager,
-    private readonly authCtx: AuthenticationContext,
+    private readonly sellerContext: SellerContext,
   ) {}
 
   async create(body: CreateProduct): Promise<ProductDetailResponse> {
     return await this.em.transactional(async (em) => {
-      const shopId = this._requireShopId();
+      const shopId = this.sellerContext.shopId;
       const { categoryId, ...rest } = body;
 
       const category = await em.findOneOrFail(Category, { id: categoryId });
@@ -39,7 +39,7 @@ export class ProductService {
   }
 
   async find(query: OffsetQuery): Promise<PaginatedProductResponse> {
-    const shopId = this._requireShopId();
+    const shopId = this.sellerContext.shopId;
     const { page, pageSize, search } = query;
 
     let where: FilterQuery<Product> = { shopId };
@@ -68,7 +68,7 @@ export class ProductService {
   }
 
   async findOne(productId: Uuid): Promise<ProductDetailResponse> {
-    const shopId = this._requireShopId();
+    const shopId = this.sellerContext.shopId;
     const product = await this.em.findOneOrFail(
       Product,
       { id: productId, shopId },
@@ -80,7 +80,7 @@ export class ProductService {
 
   async update(productId: Uuid, body: UpdateProduct): Promise<ProductDetailResponse> {
     return await this.em.transactional(async (em) => {
-      const shopId = this._requireShopId();
+      const shopId = this.sellerContext.shopId;
       const product = await em.findOneOrFail(
         Product,
         { id: productId, shopId },
@@ -105,17 +105,10 @@ export class ProductService {
 
   async delete(productId: Uuid): Promise<void> {
     await this.em.transactional(async (em) => {
-      const shopId = this._requireShopId();
+      const shopId = this.sellerContext.shopId;
       const product = await em.findOneOrFail(Product, { id: productId, shopId });
 
       em.remove(product);
     });
-  }
-
-  private _requireShopId(): Uuid {
-    const { shopId, shopRole } = this.authCtx.requireUser();
-    if (!shopId || !shopRole) throw new ForbiddenException("User is not a seller");
-
-    return shopId;
   }
 }

@@ -7,11 +7,9 @@ import {
   UpdateProduct,
   Uuid,
 } from "@libs/contract";
-import { SellerGuard } from "@libs/core";
-import { Body, Controller, Param, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Param, Query } from "@nestjs/common";
 import { ProductService } from "./product.service";
 
-@UseGuards(SellerGuard)
 @Controller("products")
 export class ProductController {
   constructor(private readonly product: ProductService) {}

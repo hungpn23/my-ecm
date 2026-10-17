@@ -16,19 +16,8 @@ export const UserSchema = defineEntity({
 });
 
 export class User extends UserSchema.class {
-  getMembership(this: Loaded<User, "shop">) {
-    if (!this.shop || !this.shopRole) return { shopId: null, shopRole: null };
-
-    return {
-      shopId: this.shop.id,
-      shopRole: this.shopRole,
-    };
-  }
-
   joinShop(shop: Shop, role: ShopRole) {
-    if (this.shop || this.shopRole) {
-      throw new ConflictException("User already belongs to a shop.");
-    }
+    if (this.shop && this.shopRole) throw new ConflictException("User already belongs to a shop.");
 
     this.shop = shop;
     this.shopRole = role;
@@ -41,8 +30,14 @@ export class User extends UserSchema.class {
 
     return {
       ...user,
-      ...this.getMembership(),
+      ...this._getMembership(),
     };
+  }
+
+  private _getMembership(this: Loaded<User, "shop">) {
+    if (!this.shop || !this.shopRole) return { shopId: null, shopRole: null };
+
+    return { shopId: this.shop.id, shopRole: this.shopRole };
   }
 }
 UserSchema.setClass(User);

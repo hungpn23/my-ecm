@@ -35,7 +35,7 @@ Examples illustrate syntax and naming only. They do not prescribe business behav
 - Name values by their role. Existing vocabulary includes `body`, `query`, `payload`,
   `data`, `options`, `config`, `env`, `record`, `proof`, `result`, and `response`.
   Choose the term used by comparable code instead of mechanically renaming every input.
-- Keep established short dependency names such as `em`, `authCtx`, and `logger` where they
+- Keep established short dependency names such as `em`, `authContext`, and `logger` where they
   already identify the same role. Use plural names for collections and descriptive names
   for intermediate values, such as `passwordHash`, `replacementHash`, or `response$`.
 - Do not introduce `I` prefixes for interfaces or structural suffixes solely to announce

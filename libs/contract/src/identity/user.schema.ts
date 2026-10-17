@@ -15,6 +15,7 @@ export const UserResponse = EntityResponse.merge({
   role: Role,
 }).merge(type({ shopId: Uuid, shopRole: ShopRole }).or({ shopId: "null", shopRole: "null" }));
 export type UserResponse = typeof UserResponse.inferIn;
+export type SellerResponse = Extract<UserResponse, { shopId: Uuid }>;
 
 export const TcpUserResponse = UserResponse.merge({
   createdAt: "string.date.iso.parse",

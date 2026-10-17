@@ -30,7 +30,7 @@ export class AuthService {
     private readonly passwordHasher: PasswordHasher,
     private readonly token: TokenService,
     private readonly storage: AuthenticationStorage,
-    private readonly authCtx: AuthenticationContext,
+    private readonly authContext: AuthenticationContext,
     private readonly notificationClient: NotificationClient,
   ) {}
 
@@ -59,7 +59,7 @@ export class AuthService {
   }
 
   async changePassword({ oldPassword, newPassword }: ChangePassword): Promise<SuccessResponse> {
-    const { id } = this.authCtx.requireUser();
+    const { id } = this.authContext.requireUser();
     const proof = await this._authenticate({ id }, oldPassword);
     const passwordHash = await this.passwordHasher.hash(newPassword);
 
