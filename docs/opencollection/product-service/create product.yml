@@ -10,9 +10,9 @@ http:
     type: json
     data: |-
       {
-        "name": "BAN AN GO",
-        "description": "Ban an 4 cho ngoi",
-        "price": "1250000.00",
+        "name": "{{$randomProductName}}",
+        "description": "{{$randomProductAdjective}}",
+        "price": "{{$randomInt}}.00",
         "status": "ACTIVE",
         "categoryId": "{{category_id}}"
       }

@@ -11,6 +11,7 @@ export * from "./microservice/command-payload.schema";
 export * from "./microservice/event-payload.schema";
 export * from "./microservice/rpc-error.schema";
 export * from "./product/category.schema";
+export * from "./product/product-catalog.schema";
 export * from "./product/product.schema";
 export * from "./shared/common.schema";
 export * from "./shared/entity-response.schema";

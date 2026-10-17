@@ -7,9 +7,12 @@ export const NonEmptyString = type("string >= 1").brand("NonEmptyString");
 export type NonEmptyString = typeof NonEmptyString.infer;
 
 export const Varchar255 = type("string <= 255");
-export const NonNegativeDecimal = type(/^(?:0|[1-9]\d{0,9})\.\d{2}$/).describe(
-  "a non-negative decimal with up to 10 integer digits and exactly 2 fractional digits",
-);
+
+export const NonNegativeDecimal = type(/^(?:0|[1-9]\d{0,9})\.\d{2}$/)
+  .brand("NonNegativeDecimal")
+  .describe("a non-negative decimal with up to 10 integer digits and exactly 2 fractional digits");
+export type NonNegativeDecimal = typeof NonNegativeDecimal.infer;
+
 export const DateToISOString = type("Date").pipe(
   (date) => date.toISOString(),
   type("string.date.iso").configure({ format: "date-time" }),

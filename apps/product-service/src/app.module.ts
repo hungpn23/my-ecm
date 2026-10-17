@@ -4,6 +4,7 @@ import { AuthModule, ConfigModule, DatabaseModule, LoggerModule } from "@libs/co
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { CategoryModule } from "./module/category/category.module";
+import { ProductCatalogModule } from "./module/product-catalog/product-catalog.module";
 import { ProductModule } from "./module/product/product.module";
 
 @Module({
@@ -14,6 +15,7 @@ import { ProductModule } from "./module/product/product.module";
     AuthModule,
     CategoryModule,
     ProductModule,
+    ProductCatalogModule,
   ],
   providers: [
     {

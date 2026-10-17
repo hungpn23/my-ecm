@@ -1,0 +1,36 @@
+import { Endpoint } from "@libs/common";
+import {
+  PaginatedProductResponse,
+  ProductCatalogQuery,
+  ProductDetailResponse,
+  Uuid,
+} from "@libs/contract";
+import { Controller, Param, Query } from "@nestjs/common";
+import { ProductCatalogService } from "./product-catalog.service";
+
+@Controller("catalog/products")
+export class ProductCatalogController {
+  constructor(private readonly productCatalog: ProductCatalogService) {}
+
+  @Endpoint("GET", {
+    isPublic: true,
+    query: ProductCatalogQuery,
+    response: PaginatedProductResponse,
+  })
+  async find(
+    @Query({ schema: ProductCatalogQuery }) query: ProductCatalogQuery,
+  ): Promise<PaginatedProductResponse> {
+    return await this.productCatalog.find(query);
+  }
+
+  @Endpoint("GET", {
+    path: ":productId",
+    isPublic: true,
+    response: ProductDetailResponse,
+  })
+  async findOne(
+    @Param("productId", { schema: Uuid }) productId: Uuid,
+  ): Promise<ProductDetailResponse> {
+    return await this.productCatalog.findOne(productId);
+  }
+}
