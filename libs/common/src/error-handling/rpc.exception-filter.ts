@@ -15,11 +15,7 @@ export class RpcExceptionFilter extends BaseRpcExceptionFilter {
 
     if (exception instanceof RpcException) {
       error = exception.payload satisfies RpcError;
-
-      return throwError(() => error);
-    }
-
-    if (exception instanceof HttpException) {
+    } else if (exception instanceof HttpException) {
       const statusCode = exception.getStatus();
 
       const defaultErrorCode = STATUS_CODES[statusCode] ?? `Unknown Error (${statusCode})`;
@@ -30,11 +26,7 @@ export class RpcExceptionFilter extends BaseRpcExceptionFilter {
       if (isObject(response) && "message" in response) message = response.message;
 
       error = { statusCode, code, message } satisfies RpcError;
-
-      return throwError(() => error);
-    }
-
-    if (exception instanceof Error) {
+    } else if (exception instanceof Error) {
       this.logger.error(exception);
       if (exception.cause) this.logger.error(`[REASON]: ${JSON.stringify(exception.cause)}`);
     }
