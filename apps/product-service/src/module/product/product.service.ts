@@ -21,7 +21,6 @@ export class ProductService {
 
   async create(body: CreateProduct): Promise<ProductDetail> {
     return await this.em.transactional(async (em) => {
-      const shopId = this.sellerContext.shopId;
       const { categoryId, ...rest } = body;
 
       const category = await em.findOneOrFail(CategoryEntity, { id: categoryId });
@@ -30,7 +29,7 @@ export class ProductService {
         ...rest,
         description: rest.description,
         category,
-        shopId,
+        shopId: this.sellerContext.shopId,
       });
       const product = await em.populate(newProduct, ["category", "description"]);
 
@@ -39,10 +38,9 @@ export class ProductService {
   }
 
   async find(query: OffsetQuery): Promise<PaginatedProductResponse> {
-    const shopId = this.sellerContext.shopId;
     const { page, pageSize, search } = query;
 
-    let where: FilterQuery<ProductEntity> = { shopId };
+    let where: FilterQuery<ProductEntity> = { shopId: this.sellerContext.shopId };
     if (search) {
       where = deepMerge(where, {
         $or: [{ name: { $ilike: `%${search}%` } }],
@@ -68,10 +66,9 @@ export class ProductService {
   }
 
   async findOne(productId: Uuid): Promise<ProductDetail> {
-    const shopId = this.sellerContext.shopId;
     const product = await this.em.findOneOrFail(
       ProductEntity,
-      { id: productId, shopId },
+      { id: productId, shopId: this.sellerContext.shopId },
       { populate: ["category", "description"] },
     );
 
@@ -80,10 +77,9 @@ export class ProductService {
 
   async update(productId: Uuid, body: UpdateProduct): Promise<ProductDetail> {
     return await this.em.transactional(async (em) => {
-      const shopId = this.sellerContext.shopId;
       const product = await em.findOneOrFail(
         ProductEntity,
-        { id: productId, shopId },
+        { id: productId, shopId: this.sellerContext.shopId },
         { populate: ["category", "description"] },
       );
 
@@ -105,8 +101,10 @@ export class ProductService {
 
   async delete(productId: Uuid): Promise<void> {
     await this.em.transactional(async (em) => {
-      const shopId = this.sellerContext.shopId;
-      const product = await em.findOneOrFail(ProductEntity, { id: productId, shopId });
+      const product = await em.findOneOrFail(ProductEntity, {
+        id: productId,
+        shopId: this.sellerContext.shopId,
+      });
 
       em.remove(product);
     });

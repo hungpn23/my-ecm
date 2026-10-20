@@ -29,6 +29,7 @@
     "@mikro-orm/nestjs": "catalog:mikro",
     "@mikro-orm/postgresql": "catalog:mikro",
     "@nestjs/authentication": "catalog:auth",
+    "@nestjs/authorization": "catalog:auth",
     "@nestjs/common": "catalog:nest",
     "@nestjs/config": "catalog:nest",
     "@nestjs/core": "catalog:nest",

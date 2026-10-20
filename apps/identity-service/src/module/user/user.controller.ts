@@ -1,5 +1,6 @@
 import { Endpoint } from "@libs/common";
 import { User } from "@libs/contract";
+import { Can } from "@nestjs/authorization";
 import { Controller } from "@nestjs/common";
 import { UserService } from "./user.service";
 
@@ -7,6 +8,7 @@ import { UserService } from "./user.service";
 export class UserController {
   constructor(private readonly user: UserService) {}
 
+  @Can.Anyone()
   @Endpoint("GET", {
     path: "info",
     response: User,

@@ -21,7 +21,8 @@
         "@mikro-orm/sql-highlighter": "1.0.1"
       },
       "auth": {
-        "@nestjs/authentication": "0.1.1"
+        "@nestjs/authentication": "0.1.1",
+        "@nestjs/authorization": "^0.1.0"
       },
       "logging": {
         "nestjs-pino": "5.2.0",

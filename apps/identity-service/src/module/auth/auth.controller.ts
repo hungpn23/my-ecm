@@ -6,6 +6,7 @@ import {
   TokenResponse,
   type SuccessResponse,
 } from "@libs/contract";
+import { Can } from "@nestjs/authorization";
 import { Body, Controller } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 
@@ -35,6 +36,7 @@ export class AuthController {
     return await this.auth.signIn(body);
   }
 
+  @Can.Anyone()
   @Endpoint("POST", { path: "change-password", request: ChangePassword })
   async changePassword(
     @Body({ schema: ChangePassword }) body: ChangePassword,
