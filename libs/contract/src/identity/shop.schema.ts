@@ -8,16 +8,13 @@ export const CreateShop = type({
 });
 export type CreateShop = typeof CreateShop.infer;
 
-const ShopResponse = EntityResponse.merge({
+const Shop = EntityResponse.merge({
   name: Varchar255,
   ownerId: Uuid,
 });
-export type ShopResponse = typeof ShopResponse.inferIn;
+export type Shop = typeof Shop.inferIn;
 
-const ShopDetailResponse = ShopResponse.merge({
+export const ShopDetail = Shop.merge({
   description: "string | null",
 });
-export type ShopDetailResponse = typeof ShopDetailResponse.inferIn;
-
-export const CreateShopResponse = ShopDetailResponse;
-export type CreateShopResponse = typeof CreateShopResponse.inferIn;
+export type ShopDetail = typeof ShopDetail.inferIn;

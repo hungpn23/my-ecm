@@ -1,6 +1,6 @@
 import { Endpoint } from "@libs/common";
 import {
-  CategoryResponse,
+  Category,
   CreateCategory,
   OffsetQuery,
   PaginatedCategoryResponse,
@@ -16,8 +16,8 @@ import { CategoryService } from "./category.service";
 export class CategoryController {
   constructor(private readonly category: CategoryService) {}
 
-  @Endpoint("POST", { request: CreateCategory, response: CategoryResponse })
-  async create(@Body({ schema: CreateCategory }) body: CreateCategory): Promise<CategoryResponse> {
+  @Endpoint("POST", { request: CreateCategory, response: Category })
+  async create(@Body({ schema: CreateCategory }) body: CreateCategory): Promise<Category> {
     return await this.category.create(body);
   }
 
@@ -31,12 +31,12 @@ export class CategoryController {
   @Endpoint("PATCH", {
     path: ":categoryId",
     request: UpdateCategory,
-    response: CategoryResponse,
+    response: Category,
   })
   async update(
     @Param("categoryId", { schema: Uuid }) categoryId: Uuid,
     @Body({ schema: UpdateCategory }) body: UpdateCategory,
-  ): Promise<CategoryResponse> {
+  ): Promise<Category> {
     return await this.category.update(categoryId, body);
   }
 

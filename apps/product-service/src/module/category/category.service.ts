@@ -2,7 +2,7 @@ import { CategoryEntity } from "#internal/database/entity/index";
 import { deepMerge } from "@libs/common";
 import {
   Uuid,
-  type CategoryResponse,
+  type Category,
   type CreateCategory,
   type OffsetQuery,
   type PaginatedCategoryResponse,
@@ -15,7 +15,7 @@ import { Injectable } from "@nestjs/common";
 export class CategoryService {
   constructor(private readonly em: EntityManager) {}
 
-  async create(body: CreateCategory): Promise<CategoryResponse> {
+  async create(body: CreateCategory): Promise<Category> {
     return await this.em.transactional(async (em) => {
       const category = em.create(CategoryEntity, body);
 
@@ -50,7 +50,7 @@ export class CategoryService {
     };
   }
 
-  async update(categoryId: Uuid, body: UpdateCategory): Promise<CategoryResponse> {
+  async update(categoryId: Uuid, body: UpdateCategory): Promise<Category> {
     return await this.em.transactional(async (em) => {
       const category = await em.findOneOrFail(CategoryEntity, { id: categoryId });
 

@@ -10,14 +10,14 @@ export const SHOP_ROLE = ["OWNER", "ADMIN", "STAFF"] as const;
 export const ShopRole = type.enumerated(...SHOP_ROLE);
 export type ShopRole = typeof ShopRole.infer;
 
-export const UserResponse = EntityResponse.merge({
+export const User = EntityResponse.merge({
   email: "string.email",
   role: Role,
 }).merge(type({ shopId: Uuid, shopRole: ShopRole }).or({ shopId: "null", shopRole: "null" }));
-export type UserResponse = typeof UserResponse.inferIn;
-export type SellerResponse = Extract<UserResponse, { shopId: Uuid }>;
+export type User = typeof User.inferIn;
+export type Seller = Extract<User, { shopId: Uuid }>;
 
-export const TcpUserResponse = UserResponse.merge({
+export const TcpUserResponse = User.merge({
   createdAt: "string.date.iso.parse",
   updatedAt: "string.date.iso.parse",
 }).or("null");

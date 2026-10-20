@@ -1,4 +1,4 @@
-import { ROLE, SHOP_ROLE, ShopRole, type UserResponse } from "@libs/contract";
+import { ROLE, SHOP_ROLE, ShopRole, type User } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 import { ConflictException } from "@nestjs/common";
@@ -23,7 +23,7 @@ export class UserEntity extends UserSchema.class {
     this.shopRole = role;
   }
 
-  toResponse(this: Loaded<UserEntity, "shop">): UserResponse {
+  toResponse(this: Loaded<UserEntity, "shop">): User {
     const user = wrap(this).serialize({
       exclude: ["shop", "shopRole", "password"],
     });

@@ -1,5 +1,5 @@
-import type { SellerResponse, UserResponse } from "@libs/contract";
+import type { Seller, User } from "@libs/contract";
 
-export function isSeller(user: UserResponse): user is SellerResponse {
+export function isSeller(user: User): user is Seller {
   return !!user.shopId && !!user.shopRole;
 }
