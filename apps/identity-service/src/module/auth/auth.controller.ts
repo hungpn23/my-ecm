@@ -16,7 +16,7 @@ export class AuthController {
 
   @Endpoint("POST", {
     path: "sign-up",
-    isPublic: true,
+    public: true,
     request: BaseAuth,
     response: TokenResponse,
     headers: [["Cache-Control", "no-store"]],
@@ -27,7 +27,7 @@ export class AuthController {
 
   @Endpoint("POST", {
     path: "token",
-    isPublic: true,
+    public: true,
     request: BaseAuth,
     response: TokenResponse,
     headers: [["Cache-Control", "no-store"]],
@@ -44,7 +44,7 @@ export class AuthController {
     return await this.auth.changePassword(body);
   }
 
-  @Endpoint("POST", { path: "token/revoke", isPublic: true, request: RefreshTokenBody })
+  @Endpoint("POST", { path: "token/revoke", public: true, request: RefreshTokenBody })
   async revokeToken(
     @Body({ schema: RefreshTokenBody }) body: RefreshTokenBody,
   ): Promise<SuccessResponse> {
@@ -53,7 +53,7 @@ export class AuthController {
 
   @Endpoint("POST", {
     path: "token/refresh",
-    isPublic: true,
+    public: true,
     request: RefreshTokenBody,
     response: TokenResponse,
     headers: [["Cache-Control", "no-store"]],

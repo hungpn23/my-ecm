@@ -17,7 +17,7 @@ export type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
 export type EndpointParams = {
   path: string | string[];
-  isPublic: boolean;
+  public: boolean;
   request: typeof AnyRecord;
   response: typeof AnyRecord;
   query: typeof AnyRecord;
@@ -62,7 +62,7 @@ export function Endpoint(method: HttpMethod, params: Partial<EndpointParams>) {
       break;
   }
 
-  if (params.isPublic) {
+  if (params.public) {
     decorators.push(Public());
   } else {
     decorators.push(ApiBearerAuth());
