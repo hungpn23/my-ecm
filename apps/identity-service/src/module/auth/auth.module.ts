@@ -1,5 +1,6 @@
 import { ConfigModule } from "@libs/core";
 import { AuthenticationModule as NestAuthModule } from "@nestjs/authentication";
+import { AuthorizationModule } from "@nestjs/authorization";
 import { Module } from "@nestjs/common";
 import { UserModule } from "../user/user.module";
 import { authConfig, type AuthConfig } from "./auth.config";
@@ -15,6 +16,7 @@ import { JwtAuth } from "./jwt-auth.provider";
       inject: [authConfig.KEY],
       useFactory: (config: AuthConfig) => config,
     }),
+    AuthorizationModule.forRoot(),
     UserModule,
   ],
   providers: [AuthService, JwtAuth, AuthStore],

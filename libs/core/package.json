@@ -24,6 +24,7 @@
     "@mikro-orm/seeder": "catalog:mikro",
     "@mikro-orm/sql-highlighter": "catalog:mikro",
     "@nestjs/authentication": "catalog:auth",
+    "@nestjs/authorization": "catalog:auth",
     "@nestjs/common": "catalog:nest",
     "@nestjs/config": "catalog:nest",
     "@nestjs/core": "catalog:nest",
