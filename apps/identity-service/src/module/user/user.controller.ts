@@ -1,5 +1,5 @@
 import { Endpoint } from "@libs/common";
-import { UserResponse } from "@libs/contract";
+import { User } from "@libs/contract";
 import { Controller } from "@nestjs/common";
 import { UserService } from "./user.service";
 
@@ -9,9 +9,9 @@ export class UserController {
 
   @Endpoint("GET", {
     path: "info",
-    response: UserResponse,
+    response: User,
   })
-  getInfo(): UserResponse {
+  getInfo(): User {
     return this.user.getInfo();
   }
 }

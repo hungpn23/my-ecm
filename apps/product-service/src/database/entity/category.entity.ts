@@ -1,4 +1,4 @@
-import type { CategoryResponse } from "@libs/contract";
+import type { Category } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 // fallow-ignore-next-line circular-dependency
@@ -14,11 +14,11 @@ export const CategorySchema = defineEntity({
 });
 
 export class CategoryEntity extends CategorySchema.class {
-  toResponse(this: Loaded<CategoryEntity>): CategoryResponse {
+  toResponse(this: Loaded<CategoryEntity>): Category {
     return wrap(this).serialize();
   }
 
-  toDetailResponse(this: Loaded<CategoryEntity>): CategoryResponse {
+  toDetailResponse(this: Loaded<CategoryEntity>): Category {
     return wrap(this).serialize();
   }
 }

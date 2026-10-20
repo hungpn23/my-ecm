@@ -3,7 +3,7 @@ import {
   ProductCatalogSort,
   type PaginatedProductResponse,
   type ProductCatalogQuery,
-  type ProductDetailResponse,
+  type ProductDetail,
   type Uuid,
 } from "@libs/contract";
 import { EntityManager, type FilterQuery, type QueryOrderMap } from "@mikro-orm/postgresql";
@@ -60,7 +60,7 @@ export class ProductCatalogService {
     };
   }
 
-  async findOne(productId: Uuid): Promise<ProductDetailResponse> {
+  async findOne(productId: Uuid): Promise<ProductDetail> {
     const product = await this.em.findOneOrFail(
       ProductEntity,
       { id: productId, status: "ACTIVE" },

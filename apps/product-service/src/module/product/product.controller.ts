@@ -3,7 +3,7 @@ import {
   CreateProduct,
   OffsetQuery,
   PaginatedProductResponse,
-  ProductDetailResponse,
+  ProductDetail,
   UpdateProduct,
   Uuid,
 } from "@libs/contract";
@@ -14,10 +14,8 @@ import { ProductService } from "./product.service";
 export class ProductController {
   constructor(private readonly product: ProductService) {}
 
-  @Endpoint("POST", { request: CreateProduct, response: ProductDetailResponse })
-  async create(
-    @Body({ schema: CreateProduct }) body: CreateProduct,
-  ): Promise<ProductDetailResponse> {
+  @Endpoint("POST", { request: CreateProduct, response: ProductDetail })
+  async create(@Body({ schema: CreateProduct }) body: CreateProduct): Promise<ProductDetail> {
     return await this.product.create(body);
   }
 
@@ -28,22 +26,20 @@ export class ProductController {
     return await this.product.find(query);
   }
 
-  @Endpoint("GET", { path: ":productId", response: ProductDetailResponse })
-  async findOne(
-    @Param("productId", { schema: Uuid }) productId: Uuid,
-  ): Promise<ProductDetailResponse> {
+  @Endpoint("GET", { path: ":productId", response: ProductDetail })
+  async findOne(@Param("productId", { schema: Uuid }) productId: Uuid): Promise<ProductDetail> {
     return await this.product.findOne(productId);
   }
 
   @Endpoint("PATCH", {
     path: ":productId",
     request: UpdateProduct,
-    response: ProductDetailResponse,
+    response: ProductDetail,
   })
   async update(
     @Param("productId", { schema: Uuid }) productId: Uuid,
     @Body({ schema: UpdateProduct }) body: UpdateProduct,
-  ): Promise<ProductDetailResponse> {
+  ): Promise<ProductDetail> {
     return await this.product.update(productId, body);
   }
 

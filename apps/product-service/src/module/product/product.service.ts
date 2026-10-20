@@ -4,7 +4,7 @@ import {
   type CreateProduct,
   type OffsetQuery,
   type PaginatedProductResponse,
-  type ProductDetailResponse,
+  type ProductDetail,
   type UpdateProduct,
   type Uuid,
 } from "@libs/contract";
@@ -19,7 +19,7 @@ export class ProductService {
     private readonly sellerContext: SellerContext,
   ) {}
 
-  async create(body: CreateProduct): Promise<ProductDetailResponse> {
+  async create(body: CreateProduct): Promise<ProductDetail> {
     return await this.em.transactional(async (em) => {
       const shopId = this.sellerContext.shopId;
       const { categoryId, ...rest } = body;
@@ -67,7 +67,7 @@ export class ProductService {
     };
   }
 
-  async findOne(productId: Uuid): Promise<ProductDetailResponse> {
+  async findOne(productId: Uuid): Promise<ProductDetail> {
     const shopId = this.sellerContext.shopId;
     const product = await this.em.findOneOrFail(
       ProductEntity,
@@ -78,7 +78,7 @@ export class ProductService {
     return product.toDetailResponse();
   }
 
-  async update(productId: Uuid, body: UpdateProduct): Promise<ProductDetailResponse> {
+  async update(productId: Uuid, body: UpdateProduct): Promise<ProductDetail> {
     return await this.em.transactional(async (em) => {
       const shopId = this.sellerContext.shopId;
       const product = await em.findOneOrFail(

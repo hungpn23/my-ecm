@@ -1,4 +1,4 @@
-import { GetUserByIdPayload, UserResponse } from "@libs/contract";
+import { GetUserByIdPayload, User } from "@libs/contract";
 import type { MicroserviceCommand } from "@libs/core";
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
@@ -11,7 +11,7 @@ export class UserConsumer {
   @MessagePattern<MicroserviceCommand>("get.user.by-id")
   async getUser(
     @Payload({ schema: GetUserByIdPayload }) payload: GetUserByIdPayload,
-  ): Promise<UserResponse | null> {
+  ): Promise<User | null> {
     return await this.user.findOne(payload);
   }
 }

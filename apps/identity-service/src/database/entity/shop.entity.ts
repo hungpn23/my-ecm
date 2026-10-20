@@ -1,4 +1,4 @@
-import type { ShopDetailResponse, ShopResponse } from "@libs/contract";
+import type { ShopDetail, Shop } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 // fallow-ignore-next-line circular-dependency
@@ -15,7 +15,7 @@ export const ShopSchema = defineEntity({
 });
 
 export class ShopEntity extends ShopSchema.class {
-  toResponse(this: Loaded<ShopEntity, "owner">): ShopResponse {
+  toResponse(this: Loaded<ShopEntity, "owner">): Shop {
     const { owner, ...data } = wrap(this).serialize({
       populate: ["owner"],
     });
@@ -26,7 +26,7 @@ export class ShopEntity extends ShopSchema.class {
     };
   }
 
-  toDetailResponse(this: Loaded<ShopEntity, "description" | "owner">): ShopDetailResponse {
+  toDetailResponse(this: Loaded<ShopEntity, "description" | "owner">): ShopDetail {
     const { owner, ...data } = wrap(this).serialize({
       populate: ["description", "owner"],
     });

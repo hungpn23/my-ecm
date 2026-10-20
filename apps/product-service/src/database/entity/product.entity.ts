@@ -1,7 +1,7 @@
 import type {
   NonNegativeDecimal,
-  ProductDetailResponse,
-  ProductResponse,
+  ProductDetail,
+  Product,
   ProductStatus,
   Uuid,
 } from "@libs/contract";
@@ -22,7 +22,7 @@ export const ProductSchema = defineEntity({
 });
 
 export class ProductEntity extends ProductSchema.class {
-  toResponse(this: Loaded<ProductEntity, "category">): ProductResponse {
+  toResponse(this: Loaded<ProductEntity, "category">): Product {
     const { category, ...data } = wrap(this).serialize({
       populate: ["category"],
     });
@@ -33,7 +33,7 @@ export class ProductEntity extends ProductSchema.class {
     };
   }
 
-  toDetailResponse(this: Loaded<ProductEntity, "description" | "category">): ProductDetailResponse {
+  toDetailResponse(this: Loaded<ProductEntity, "description" | "category">): ProductDetail {
     const { category, ...data } = wrap(this).serialize({
       populate: ["description", "category"],
     });

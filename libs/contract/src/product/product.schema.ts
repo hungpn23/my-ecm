@@ -26,19 +26,19 @@ export const UpdateProduct = CreateProduct.partial().merge({
 });
 export type UpdateProduct = typeof UpdateProduct.infer;
 
-const ProductResponse = EntityResponse.merge({
+const Product = EntityResponse.merge({
   name: Varchar255,
   price: NonNegativeDecimal,
   status: ProductStatus,
   categoryId: Uuid,
   shopId: Uuid,
 });
-export type ProductResponse = typeof ProductResponse.inferIn;
+export type Product = typeof Product.inferIn;
 
-export const ProductDetailResponse = ProductResponse.merge({
+export const ProductDetail = Product.merge({
   description: "string | null",
 });
-export type ProductDetailResponse = typeof ProductDetailResponse.inferIn;
+export type ProductDetail = typeof ProductDetail.inferIn;
 
-export const PaginatedProductResponse = Paginated(ProductResponse);
+export const PaginatedProductResponse = Paginated(Product);
 export type PaginatedProductResponse = typeof PaginatedProductResponse.inferIn;
