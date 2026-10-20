@@ -2,7 +2,7 @@ import { ROLE, SHOP_ROLE, ShopRole, type UserResponse } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 import { ConflictException } from "@nestjs/common";
-import { Shop } from "./shop.entity";
+import { ShopEntity } from "./shop.entity";
 
 export const UserSchema = defineEntity({
   name: AGGREGATE_TYPE.USER,
@@ -11,19 +11,19 @@ export const UserSchema = defineEntity({
     password: p.string().lazy().ref().hidden(),
     role: p.enum(ROLE),
     shopRole: p.enum(SHOP_ROLE).nullable(),
-    shop: () => p.manyToOne(Shop).nullable().lazyRef().inversedBy("users"),
+    shop: () => p.manyToOne(ShopEntity).nullable().lazyRef().inversedBy("users"),
   }),
 });
 
-export class User extends UserSchema.class {
-  joinShop(shop: Shop, role: ShopRole) {
+export class UserEntity extends UserSchema.class {
+  joinShop(shop: ShopEntity, role: ShopRole) {
     if (this.shop && this.shopRole) throw new ConflictException("User already belongs to a shop.");
 
     this.shop = shop;
     this.shopRole = role;
   }
 
-  toResponse(this: Loaded<User, "shop">): UserResponse {
+  toResponse(this: Loaded<UserEntity, "shop">): UserResponse {
     const user = wrap(this).serialize({
       exclude: ["shop", "shopRole", "password"],
     });
@@ -34,10 +34,10 @@ export class User extends UserSchema.class {
     };
   }
 
-  private _getMembership(this: Loaded<User, "shop">) {
+  private _getMembership(this: Loaded<UserEntity, "shop">) {
     if (!this.shop || !this.shopRole) return { shopId: null, shopRole: null };
 
     return { shopId: this.shop.id, shopRole: this.shopRole };
   }
 }
-UserSchema.setClass(User);
+UserSchema.setClass(UserEntity);

@@ -2,20 +2,20 @@ import type { ShopDetailResponse, ShopResponse } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
 // fallow-ignore-next-line circular-dependency
-import { User } from "./user.entity";
+import { UserEntity } from "./user.entity";
 
 export const ShopSchema = defineEntity({
   name: AGGREGATE_TYPE.SHOP,
   properties: useBaseProps({
     name: p.string(),
     description: p.text().nullable().lazy().ref(),
-    owner: () => p.oneToOne(User).lazyRef(),
-    users: () => p.oneToMany(User).mappedBy("shop"),
+    owner: () => p.oneToOne(UserEntity).lazyRef(),
+    users: () => p.oneToMany(UserEntity).mappedBy("shop"),
   }),
 });
 
-export class Shop extends ShopSchema.class {
-  toResponse(this: Loaded<Shop, "owner">): ShopResponse {
+export class ShopEntity extends ShopSchema.class {
+  toResponse(this: Loaded<ShopEntity, "owner">): ShopResponse {
     const { owner, ...data } = wrap(this).serialize({
       populate: ["owner"],
     });
@@ -26,7 +26,7 @@ export class Shop extends ShopSchema.class {
     };
   }
 
-  toDetailResponse(this: Loaded<Shop, "description" | "owner">): ShopDetailResponse {
+  toDetailResponse(this: Loaded<ShopEntity, "description" | "owner">): ShopDetailResponse {
     const { owner, ...data } = wrap(this).serialize({
       populate: ["description", "owner"],
     });
@@ -37,4 +37,4 @@ export class Shop extends ShopSchema.class {
     };
   }
 }
-ShopSchema.setClass(Shop);
+ShopSchema.setClass(ShopEntity);

@@ -1,4 +1,4 @@
-import { Category, Product } from "#internal/database/entity/index";
+import { CategoryEntity, ProductEntity } from "#internal/database/entity/index";
 import { deepMerge } from "@libs/common";
 import {
   type CreateProduct,
@@ -24,9 +24,9 @@ export class ProductService {
       const shopId = this.sellerContext.shopId;
       const { categoryId, ...rest } = body;
 
-      const category = await em.findOneOrFail(Category, { id: categoryId });
+      const category = await em.findOneOrFail(CategoryEntity, { id: categoryId });
 
-      const newProduct = em.create(Product, {
+      const newProduct = em.create(ProductEntity, {
         ...rest,
         description: rest.description,
         category,
@@ -42,14 +42,14 @@ export class ProductService {
     const shopId = this.sellerContext.shopId;
     const { page, pageSize, search } = query;
 
-    let where: FilterQuery<Product> = { shopId };
+    let where: FilterQuery<ProductEntity> = { shopId };
     if (search) {
       where = deepMerge(where, {
         $or: [{ name: { $ilike: `%${search}%` } }],
       });
     }
 
-    const [products, total] = await this.em.findAndCount(Product, where, {
+    const [products, total] = await this.em.findAndCount(ProductEntity, where, {
       populate: ["category"],
       limit: pageSize,
       offset: (page - 1) * pageSize,
@@ -70,7 +70,7 @@ export class ProductService {
   async findOne(productId: Uuid): Promise<ProductDetailResponse> {
     const shopId = this.sellerContext.shopId;
     const product = await this.em.findOneOrFail(
-      Product,
+      ProductEntity,
       { id: productId, shopId },
       { populate: ["category", "description"] },
     );
@@ -82,7 +82,7 @@ export class ProductService {
     return await this.em.transactional(async (em) => {
       const shopId = this.sellerContext.shopId;
       const product = await em.findOneOrFail(
-        Product,
+        ProductEntity,
         { id: productId, shopId },
         { populate: ["category", "description"] },
       );
@@ -90,7 +90,7 @@ export class ProductService {
       const { categoryId, ...data } = body;
 
       if (categoryId) {
-        const category = await em.findOneOrFail(Category, { id: categoryId });
+        const category = await em.findOneOrFail(CategoryEntity, { id: categoryId });
 
         em.assign(product, { category });
       }
@@ -106,7 +106,7 @@ export class ProductService {
   async delete(productId: Uuid): Promise<void> {
     await this.em.transactional(async (em) => {
       const shopId = this.sellerContext.shopId;
-      const product = await em.findOneOrFail(Product, { id: productId, shopId });
+      const product = await em.findOneOrFail(ProductEntity, { id: productId, shopId });
 
       em.remove(product);
     });

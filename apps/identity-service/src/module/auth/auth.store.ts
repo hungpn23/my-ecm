@@ -1,4 +1,4 @@
-import { RefreshToken } from "#internal/database/entity/index";
+import { RefreshTokenEntity } from "#internal/database/entity/index";
 import { wrap } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 import {
@@ -24,7 +24,7 @@ export class AuthStore implements RefreshTokenStore {
   }
 
   async getRefreshToken(id: string): Promise<RefreshTokenRecord | undefined> {
-    const row = await this._fork().findOne(RefreshToken, { id });
+    const row = await this._fork().findOne(RefreshTokenEntity, { id });
     if (!row) return undefined;
 
     const { usedAt, claims, ...rest } = wrap(row).serialize({ exclude: ["revoked"] });
@@ -39,7 +39,7 @@ export class AuthStore implements RefreshTokenStore {
   async saveRefreshToken(record: RefreshTokenRecord): Promise<void> {
     const em = this._fork();
 
-    await em.insert(RefreshToken, {
+    await em.insert(RefreshTokenEntity, {
       ...record,
       usedAt: record.usedAt ?? null,
       claims: record.claims ?? null,
@@ -47,14 +47,14 @@ export class AuthStore implements RefreshTokenStore {
     });
 
     // cleanup expired family tokens
-    await em.nativeDelete(RefreshToken, {
+    await em.nativeDelete(RefreshTokenEntity, {
       familyExpiresAt: { $lte: record.createdAt },
     });
   }
 
   async markRefreshTokenUsed(id: string, at: Date): Promise<boolean> {
     const affected = await this._fork().nativeUpdate(
-      RefreshToken,
+      RefreshTokenEntity,
       { id, usedAt: null },
       { usedAt: at },
     );
@@ -63,15 +63,15 @@ export class AuthStore implements RefreshTokenStore {
   }
 
   async revokeRefreshTokenFamily(familyId: string): Promise<void> {
-    await this._fork().nativeUpdate(RefreshToken, { familyId }, { revoked: true });
+    await this._fork().nativeUpdate(RefreshTokenEntity, { familyId }, { revoked: true });
   }
 
   async isRefreshTokenFamilyRevoked(familyId: string): Promise<boolean> {
-    const count = await this._fork().count(RefreshToken, { familyId, revoked: true });
+    const count = await this._fork().count(RefreshTokenEntity, { familyId, revoked: true });
     return count > 0;
   }
 
   async revokeUserRefreshTokens(userId: string): Promise<void> {
-    await this._fork().nativeUpdate(RefreshToken, { userId }, { revoked: true });
+    await this._fork().nativeUpdate(RefreshTokenEntity, { userId }, { revoked: true });
   }
 }

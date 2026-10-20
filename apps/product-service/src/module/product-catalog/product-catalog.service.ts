@@ -1,4 +1,4 @@
-import { Product } from "#internal/database/entity/index";
+import { ProductEntity } from "#internal/database/entity/index";
 import {
   ProductCatalogSort,
   type PaginatedProductResponse,
@@ -20,7 +20,7 @@ export class ProductCatalogService {
       throw new BadRequestException("minPrice must not be greater than maxPrice");
     }
 
-    const conditions: FilterQuery<Product>[] = [{ status: "ACTIVE" }];
+    const conditions: FilterQuery<ProductEntity>[] = [{ status: "ACTIVE" }];
 
     if (search) {
       conditions.push({ name: { $ilike: `%${this._escapeLike(search)}%` } });
@@ -39,7 +39,7 @@ export class ProductCatalogService {
     }
 
     const [products, total] = await this.em.findAndCount(
-      Product,
+      ProductEntity,
       { $and: conditions },
       {
         populate: ["category"],
@@ -62,7 +62,7 @@ export class ProductCatalogService {
 
   async findOne(productId: Uuid): Promise<ProductDetailResponse> {
     const product = await this.em.findOneOrFail(
-      Product,
+      ProductEntity,
       { id: productId, status: "ACTIVE" },
       { populate: ["category", "description"] },
     );
@@ -70,7 +70,7 @@ export class ProductCatalogService {
     return product.toDetailResponse();
   }
 
-  private _toOrderBy(sort: ProductCatalogSort): QueryOrderMap<Product> {
+  private _toOrderBy(sort: ProductCatalogSort): QueryOrderMap<ProductEntity> {
     switch (sort) {
       case "price_asc":
         return { price: "ASC", id: "ASC" };
