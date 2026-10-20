@@ -1,4 +1,4 @@
-import { Shop, User } from "#internal/database/entity/index";
+import { ShopEntity, UserEntity } from "#internal/database/entity/index";
 import type { CreateShop, CreateShopResponse } from "@libs/contract";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { AuthenticationContext } from "@nestjs/authentication";
@@ -13,9 +13,9 @@ export class ShopService {
 
   async create(body: CreateShop): Promise<CreateShopResponse> {
     return await this.em.transactional(async (em) => {
-      const user = await em.findOneOrFail(User, { id: this.authContext.requireUser().id });
+      const user = await em.findOneOrFail(UserEntity, { id: this.authContext.requireUser().id });
 
-      const newShop = em.create(Shop, {
+      const newShop = em.create(ShopEntity, {
         ...body,
         description: body.description,
         owner: user,

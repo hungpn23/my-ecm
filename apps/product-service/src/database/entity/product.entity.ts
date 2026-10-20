@@ -7,7 +7,7 @@ import type {
 } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
-import { Category } from "./category.entity";
+import { CategoryEntity } from "./category.entity";
 
 export const ProductSchema = defineEntity({
   name: AGGREGATE_TYPE.PRODUCT,
@@ -17,12 +17,12 @@ export const ProductSchema = defineEntity({
     description: p.text().nullable().lazy().ref(),
     price: p.decimal().precision(12).scale(2).$type<NonNegativeDecimal>(),
     status: p.string().$type<ProductStatus>(),
-    category: () => p.manyToOne(Category).lazyRef().inversedBy("products"),
+    category: () => p.manyToOne(CategoryEntity).lazyRef().inversedBy("products"),
   }),
 });
 
-export class Product extends ProductSchema.class {
-  toResponse(this: Loaded<Product, "category">): ProductResponse {
+export class ProductEntity extends ProductSchema.class {
+  toResponse(this: Loaded<ProductEntity, "category">): ProductResponse {
     const { category, ...data } = wrap(this).serialize({
       populate: ["category"],
     });
@@ -33,7 +33,7 @@ export class Product extends ProductSchema.class {
     };
   }
 
-  toDetailResponse(this: Loaded<Product, "description" | "category">): ProductDetailResponse {
+  toDetailResponse(this: Loaded<ProductEntity, "description" | "category">): ProductDetailResponse {
     const { category, ...data } = wrap(this).serialize({
       populate: ["description", "category"],
     });
@@ -44,4 +44,4 @@ export class Product extends ProductSchema.class {
     };
   }
 }
-ProductSchema.setClass(Product);
+ProductSchema.setClass(ProductEntity);

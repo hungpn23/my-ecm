@@ -20,5 +20,5 @@ export const OutboxSchema = defineEntity({
   },
 });
 
-export class Outbox extends OutboxSchema.class {}
-OutboxSchema.setClass(Outbox);
+export class OutboxEntity extends OutboxSchema.class {}
+OutboxSchema.setClass(OutboxEntity);

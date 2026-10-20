@@ -1,4 +1,4 @@
-import { Outbox } from "#internal/database/entity/outbox.entity";
+import { OutboxEntity } from "#internal/database/entity/outbox.entity";
 import { MessageByTopic } from "#internal/kafka/message-by-topic";
 import type { KafkaTopic } from "@libs/contract";
 import type { RequiredEntityData } from "@mikro-orm/core";
@@ -8,7 +8,7 @@ import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
 
 type CreateOutboxData<KTopic extends KafkaTopic> = Omit<
-  RequiredEntityData<Outbox>,
+  RequiredEntityData<OutboxEntity>,
   "eventType" | "payload" | "requestId"
 > & {
   eventType: KTopic;
@@ -30,7 +30,7 @@ export class OutboxService {
           value: data.payload,
         });
 
-        em.create(Outbox, {
+        em.create(OutboxEntity, {
           ...data,
           requestId: this.logger.logger.bindings()["reqId"] ?? v7(),
         });

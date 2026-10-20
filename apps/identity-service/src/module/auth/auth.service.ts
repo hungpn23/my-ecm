@@ -1,4 +1,4 @@
-import { User } from "#internal/database/entity/index";
+import { UserEntity } from "#internal/database/entity/index";
 import {
   BaseAuth,
   Uuid,
@@ -38,7 +38,7 @@ export class AuthService {
     const passwordHash = await this.passwordHasher.hash(password);
 
     const userId = await this.em.transactional(async (em) => {
-      const user = em.create(User, { email, password: passwordHash, role: "USER" });
+      const user = em.create(UserEntity, { email, password: passwordHash, role: "USER" });
 
       await this.notificationClient.emit("user.created", { email: user.email });
 
@@ -85,7 +85,7 @@ export class AuthService {
     const record = await this.storage.refreshTokens.getRefreshToken(id);
     if (!Uuid.allows(record?.userId)) throw new RefreshTokenError("invalid");
 
-    const userCount = await this.em.count(User, { id: record.userId });
+    const userCount = await this.em.count(UserEntity, { id: record.userId });
     if (!userCount) {
       await this.token.revokeAll(record.userId);
       throw new RefreshTokenError("invalid");
@@ -98,7 +98,7 @@ export class AuthService {
     where: { email: string } | { id: Uuid },
     password: string,
   ): Promise<PasswordProof> {
-    const user = await this.em.findOne(User, where, { populate: ["password"] });
+    const user = await this.em.findOne(UserEntity, where, { populate: ["password"] });
     const passwordHash = user?.password.get();
     const valid = await this.passwordHasher.verify(password, passwordHash);
 
@@ -113,7 +113,7 @@ export class AuthService {
 
   private async _lockUserAndVerifyProof(em: EntityManager, proof: PasswordProof) {
     const user = await em.findOne(
-      User,
+      UserEntity,
       { id: proof.userId },
       { populate: ["password"], lockMode: LockMode.PESSIMISTIC_WRITE, refresh: true },
     );

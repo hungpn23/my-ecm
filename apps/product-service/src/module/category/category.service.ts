@@ -1,4 +1,4 @@
-import { Category } from "#internal/database/entity/index";
+import { CategoryEntity } from "#internal/database/entity/index";
 import { deepMerge } from "@libs/common";
 import {
   Uuid,
@@ -17,7 +17,7 @@ export class CategoryService {
 
   async create(body: CreateCategory): Promise<CategoryResponse> {
     return await this.em.transactional(async (em) => {
-      const category = em.create(Category, body);
+      const category = em.create(CategoryEntity, body);
 
       return category.toDetailResponse();
     });
@@ -26,14 +26,14 @@ export class CategoryService {
   async find(query: OffsetQuery): Promise<PaginatedCategoryResponse> {
     const { page, pageSize, search } = query;
 
-    let where: FilterQuery<Category> = {};
+    let where: FilterQuery<CategoryEntity> = {};
     if (search) {
       where = deepMerge(where, {
         $or: [{ name: { $ilike: `%${search}%` } }, { code: { $ilike: `%${search}%` } }],
       });
     }
 
-    const [categories, total] = await this.em.findAndCount(Category, where, {
+    const [categories, total] = await this.em.findAndCount(CategoryEntity, where, {
       limit: pageSize,
       offset: (page - 1) * pageSize,
       orderBy: { createdAt: "desc" },
@@ -52,7 +52,7 @@ export class CategoryService {
 
   async update(categoryId: Uuid, body: UpdateCategory): Promise<CategoryResponse> {
     return await this.em.transactional(async (em) => {
-      const category = await em.findOneOrFail(Category, { id: categoryId });
+      const category = await em.findOneOrFail(CategoryEntity, { id: categoryId });
 
       em.assign(category, body);
       await em.flush();
@@ -63,7 +63,7 @@ export class CategoryService {
 
   async delete(categoryId: Uuid): Promise<void> {
     await this.em.transactional(async (em) => {
-      const category = await em.findOneOrFail(Category, { id: categoryId });
+      const category = await em.findOneOrFail(CategoryEntity, { id: categoryId });
 
       em.remove(category);
     });

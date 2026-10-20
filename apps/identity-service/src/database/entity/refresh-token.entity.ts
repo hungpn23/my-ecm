@@ -16,5 +16,5 @@ export const RefreshTokenSchema = defineEntity({
   },
 });
 
-export class RefreshToken extends RefreshTokenSchema.class {}
-RefreshTokenSchema.setClass(RefreshToken);
+export class RefreshTokenEntity extends RefreshTokenSchema.class {}
+RefreshTokenSchema.setClass(RefreshTokenEntity);

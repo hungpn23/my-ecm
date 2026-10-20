@@ -1,4 +1,4 @@
-import { RefreshToken } from "#internal/database/entity/index";
+import { RefreshTokenEntity } from "#internal/database/entity/index";
 import { AuthStore } from "#internal/module/auth/auth.store";
 import { NonEmptyString } from "@libs/contract";
 import { databaseConfig } from "@libs/core";
@@ -31,7 +31,7 @@ const orm = await MikroORM.init({
   ...applicationDatabase,
   dbName: "postgres",
   schema,
-  entities: [RefreshToken],
+  entities: [RefreshTokenEntity],
   debug: false,
 });
 const schemaGenerator = new SqlSchemaGenerator(orm.em.fork({ disableContextResolution: true }));
@@ -39,7 +39,7 @@ let databaseReady = false;
 
 function countRows() {
   const em = orm.em.fork({ useContext: false });
-  return em.count(RefreshToken, {});
+  return em.count(RefreshTokenEntity, {});
 }
 
 try {
