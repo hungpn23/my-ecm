@@ -8,7 +8,7 @@ export class ProductCatalogController {
   constructor(private readonly productCatalog: ProductCatalogService) {}
 
   @Endpoint("GET", {
-    isPublic: true,
+    public: true,
     query: ProductCatalogQuery,
     response: PaginatedProductResponse,
   })
@@ -20,7 +20,7 @@ export class ProductCatalogController {
 
   @Endpoint("GET", {
     path: ":productId",
-    isPublic: true,
+    public: true,
     response: ProductDetail,
   })
   async findOne(@Param("productId", { schema: Uuid }) productId: Uuid): Promise<ProductDetail> {
