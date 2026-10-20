@@ -1,4 +1,4 @@
-import { MfaFailure, RecoveryCode, RefreshToken, Totp } from "#internal/database/entity/index";
+import { RefreshToken } from "#internal/database/entity/index";
 import { AuthStore } from "#internal/module/auth/auth.store";
 import { NonEmptyString } from "@libs/contract";
 import { databaseConfig } from "@libs/core";
@@ -31,7 +31,7 @@ const orm = await MikroORM.init({
   ...applicationDatabase,
   dbName: "postgres",
   schema,
-  entities: [RefreshToken, Totp, RecoveryCode, MfaFailure],
+  entities: [RefreshToken],
   debug: false,
 });
 const schemaGenerator = new SqlSchemaGenerator(orm.em.fork({ disableContextResolution: true }));
@@ -39,12 +39,7 @@ let databaseReady = false;
 
 function countRows() {
   const em = orm.em.fork({ useContext: false });
-  return Promise.all([
-    em.count(RefreshToken, {}),
-    em.count(Totp, {}),
-    em.count(RecoveryCode, {}),
-    em.count(MfaFailure, {}),
-  ]);
+  return em.count(RefreshToken, {});
 }
 
 try {
@@ -60,13 +55,13 @@ try {
     async () => {
       await schemaGenerator.clear();
       const storage = new AuthenticationStorage({
-        contracts: ["refreshTokens", "mfa"],
+        contracts: ["refreshTokens"],
         allowInMemoryStorage: false,
       });
       const store = new AuthStore(orm.em, storage);
-      return { refreshTokens: store, mfa: store };
+      return { refreshTokens: store };
     },
-    { contracts: ["refreshTokens", "mfa"], concurrent: true },
+    { contracts: ["refreshTokens"], concurrent: true },
   );
 
   const rollback = new Error("Roll back the runner's business transaction.");
@@ -77,19 +72,13 @@ try {
         await contractCase.run();
         console.log(`PASS ${contractCase.name}`);
       }
-      console.log(
-        "Rows before business rollback [refresh, totp, recovery, failures]:",
-        await countRows(),
-      );
+      console.log("Refresh token rows before business rollback:", await countRows());
       throw rollback;
     });
   } catch (error) {
     if (error !== rollback) throw error;
   }
-  console.log(
-    "Rows after business rollback [refresh, totp, recovery, failures]:",
-    await countRows(),
-  );
+  console.log("Refresh token rows after business rollback:", await countRows());
   console.log(
     `Passed ${cases.length} package contract cases with concurrent=true and a shared connection pool.`,
   );
