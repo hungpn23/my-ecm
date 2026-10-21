@@ -8,7 +8,7 @@ import {
   type UpdateProduct,
   type Uuid,
 } from "@libs/contract";
-import { SellerContext } from "@libs/core";
+import { ShopContext } from "@libs/core";
 import { EntityManager, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
 
@@ -16,7 +16,7 @@ import { Injectable } from "@nestjs/common";
 export class ProductService {
   constructor(
     private readonly em: EntityManager,
-    private readonly sellerContext: SellerContext,
+    private readonly shopContext: ShopContext,
   ) {}
 
   async create(body: CreateProduct): Promise<ProductDetail> {
@@ -29,7 +29,7 @@ export class ProductService {
         ...rest,
         description: rest.description,
         category,
-        shopId: this.sellerContext.shopId,
+        shopId: this.shopContext.shopId,
       });
       const product = await em.populate(newProduct, ["category", "description"]);
 
@@ -40,7 +40,7 @@ export class ProductService {
   async find(query: OffsetQuery): Promise<PaginatedProductResponse> {
     const { page, pageSize, search } = query;
 
-    let where: FilterQuery<ProductEntity> = { shopId: this.sellerContext.shopId };
+    let where: FilterQuery<ProductEntity> = { shopId: this.shopContext.shopId };
     if (search) {
       where = deepMerge(where, {
         $or: [{ name: { $ilike: `%${search}%` } }],
@@ -68,7 +68,7 @@ export class ProductService {
   async findOne(productId: Uuid): Promise<ProductDetail> {
     const product = await this.em.findOneOrFail(
       ProductEntity,
-      { id: productId, shopId: this.sellerContext.shopId },
+      { id: productId, shopId: this.shopContext.shopId },
       { populate: ["category", "description"] },
     );
 
@@ -79,7 +79,7 @@ export class ProductService {
     return await this.em.transactional(async (em) => {
       const product = await em.findOneOrFail(
         ProductEntity,
-        { id: productId, shopId: this.sellerContext.shopId },
+        { id: productId, shopId: this.shopContext.shopId },
         { populate: ["category", "description"] },
       );
 
@@ -103,7 +103,7 @@ export class ProductService {
     await this.em.transactional(async (em) => {
       const product = await em.findOneOrFail(ProductEntity, {
         id: productId,
-        shopId: this.sellerContext.shopId,
+        shopId: this.shopContext.shopId,
       });
 
       em.remove(product);

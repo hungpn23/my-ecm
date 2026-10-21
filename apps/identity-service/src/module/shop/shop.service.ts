@@ -13,15 +13,15 @@ export class ShopService {
 
   async create(body: CreateShop): Promise<ShopDetail> {
     return await this.em.transactional(async (em) => {
-      const user = await em.findOneOrFail(UserEntity, { id: this.authContext.requireUser().id });
+      const owner = await em.findOneOrFail(UserEntity, { id: this.authContext.requireUser().id });
 
       const newShop = em.create(ShopEntity, {
         ...body,
         description: body.description,
-        owner: user,
+        owner,
       });
 
-      user.joinShop(newShop, "OWNER");
+      newShop.addMember(owner, "OWNER");
 
       const shop = await em.populate(newShop, ["owner", "description"]);
       return shop.toDetailResponse();
