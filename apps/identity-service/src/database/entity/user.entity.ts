@@ -1,7 +1,6 @@
-import { ROLE, SHOP_ROLE, ShopRole, type User } from "@libs/contract";
+import { ROLE, SHOP_ROLE, type User } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
-import { ConflictException } from "@nestjs/common";
 import { ShopEntity } from "./shop.entity";
 
 export const UserSchema = defineEntity({
@@ -16,13 +15,6 @@ export const UserSchema = defineEntity({
 });
 
 export class UserEntity extends UserSchema.class {
-  joinShop(shop: ShopEntity, role: ShopRole) {
-    if (this.shop && this.shopRole) throw new ConflictException("User already belongs to a shop.");
-
-    this.shop = shop;
-    this.shopRole = role;
-  }
-
   toResponse(this: Loaded<UserEntity, "shop">): User {
     const user = wrap(this).serialize({
       exclude: ["shop", "shopRole", "password"],

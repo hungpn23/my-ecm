@@ -1,26 +1,26 @@
 import type { User } from "@libs/contract";
-import { isSeller } from "@libs/core";
+import { isShopMember } from "@libs/core";
 import { Policy } from "@nestjs/authorization";
 
 @Policy()
 export class ProductPolicy {
   view(user: User | null) {
-    return isSeller(user);
+    return isShopMember(user);
   }
 
   viewDetail(user: User | null) {
-    return isSeller(user);
+    return isShopMember(user);
   }
 
   create(user: User | null) {
-    return isSeller(user);
+    return isShopMember(user);
   }
 
   update(user: User | null) {
-    return isSeller(user);
+    return isShopMember(user);
   }
 
   delete(user: User | null) {
-    return isSeller(user);
+    return isShopMember(user);
   }
 }
