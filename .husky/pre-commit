@@ -1,1 +1,1 @@
-bun fmt --staged
+bun fmt --staged && bun lint --staged --fix

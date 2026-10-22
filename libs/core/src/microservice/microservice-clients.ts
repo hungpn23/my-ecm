@@ -21,7 +21,7 @@ abstract class MicroserviceClient {
 
     const response$ = this.client.send<ResponseByCommand[NoInfer<Command>]>(command, validated).pipe(
       timeout(timeoutMs),
-      catchError((e: RpcError) => {
+      catchError((e: unknown) => {
         if (RpcError.allows(e)) throw new HttpException(e, e.statusCode);
         throw e;
       }),

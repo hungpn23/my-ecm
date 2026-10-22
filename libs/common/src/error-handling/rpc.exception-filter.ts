@@ -12,7 +12,7 @@ import { RpcException } from "./rpc.exception";
 export class RpcExceptionFilter extends BaseRpcExceptionFilter {
   private readonly logger = new Logger(RpcExceptionFilter.name);
 
-  override catch(exception: any): Observable<never> {
+  override catch(exception: unknown): Observable<never> {
     let error: RpcError = RPC_ERROR.INTERNAL_SERVER_ERROR satisfies RpcError;
 
     if (exception instanceof RpcException) {

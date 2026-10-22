@@ -17,7 +17,7 @@ export class CategoryService {
   constructor(private readonly em: EntityManager) {}
 
   async create(body: CreateCategory): Promise<Category> {
-    return await this.em.transactional(async (em) => {
+    return await this.em.transactional((em) => {
       const category = em.create(CategoryEntity, body);
 
       return category.toDetailResponse();

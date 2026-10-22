@@ -19,4 +19,4 @@ export const RPC_ERROR = {
     code: "NOT_IMPLEMENTED",
     message: "Not implemented yet",
   },
-} as const satisfies Record<string, RpcError | ((...args: any[]) => RpcError)>;
+} as const satisfies Record<string, RpcError | ((...args: unknown[]) => RpcError)>;
