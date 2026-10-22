@@ -1,13 +1,8 @@
 import { Endpoint } from "@libs/common";
-import {
-  BaseAuth,
-  ChangePassword,
-  RefreshTokenBody,
-  TokenResponse,
-  type SuccessResponse,
-} from "@libs/contract";
+import { BaseAuth, ChangePassword, RefreshTokenBody, type SuccessResponse, TokenResponse } from "@libs/contract";
 import { Can } from "@nestjs/authorization";
 import { Body, Controller } from "@nestjs/common";
+
 import { AuthService } from "./auth.service";
 
 @Controller("auth")
@@ -38,16 +33,16 @@ export class AuthController {
 
   @Can.Anyone()
   @Endpoint("POST", { path: "change-password", request: ChangePassword })
-  async changePassword(
-    @Body({ schema: ChangePassword }) body: ChangePassword,
-  ): Promise<SuccessResponse> {
+  async changePassword(@Body({ schema: ChangePassword }) body: ChangePassword): Promise<SuccessResponse> {
     return await this.auth.changePassword(body);
   }
 
-  @Endpoint("POST", { path: "token/revoke", public: true, request: RefreshTokenBody })
-  async revokeToken(
-    @Body({ schema: RefreshTokenBody }) body: RefreshTokenBody,
-  ): Promise<SuccessResponse> {
+  @Endpoint("POST", {
+    path: "token/revoke",
+    public: true,
+    request: RefreshTokenBody,
+  })
+  async revokeToken(@Body({ schema: RefreshTokenBody }) body: RefreshTokenBody): Promise<SuccessResponse> {
     return await this.auth.revokeToken(body);
   }
 
@@ -58,9 +53,7 @@ export class AuthController {
     response: TokenResponse,
     headers: [["Cache-Control", "no-store"]],
   })
-  async refreshToken(
-    @Body({ schema: RefreshTokenBody }) body: RefreshTokenBody,
-  ): Promise<TokenResponse> {
+  async refreshToken(@Body({ schema: RefreshTokenBody }) body: RefreshTokenBody): Promise<TokenResponse> {
     return await this.auth.refreshToken(body);
   }
 }

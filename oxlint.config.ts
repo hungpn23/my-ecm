@@ -1,12 +1,7 @@
 import { defineConfig } from "oxlint";
 
 export default defineConfig({
-  ignorePatterns: [
-    "tools/oxlint/anti-slop/**",
-    "bun.lock",
-    "**/*/entities.generated.ts",
-    "**/migration/*",
-  ],
+  ignorePatterns: ["tools/oxlint/anti-slop/**", "bun.lock", "**/*/entities.generated.ts", "**/migration/*"],
   jsPlugins: [
     {
       name: "anti-slop",

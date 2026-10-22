@@ -1,28 +1,23 @@
-import { RefreshTokenEntity } from "#internal/database/entity/index";
-import { AuthStore } from "#internal/module/auth/auth.store";
+import { randomUUID } from "node:crypto";
+import { resolve } from "node:path";
+
 import { NonEmptyString } from "@libs/contract";
 import { databaseConfig } from "@libs/core";
 import { MikroORM, SqlSchemaGenerator } from "@mikro-orm/postgresql";
 import { AuthenticationStorage } from "@nestjs/authentication";
 import { authenticationStoreContract } from "@nestjs/authentication/testing";
 import { config } from "dotenv";
-import { randomUUID } from "node:crypto";
-import { resolve } from "node:path";
+
+import { RefreshTokenEntity } from "#internal/database/entity/index";
+import { AuthStore } from "#internal/module/auth/auth.store";
 import "reflect-metadata";
 
 config({ path: resolve(import.meta.dirname, "../.env"), quiet: true });
 
 const applicationDatabase = databaseConfig();
-const testDatabase = NonEmptyString.assert(
-  process.env["AUTH_STORE_TEST_DATABASE"] ?? "identity-auth-contract",
-);
-if (
-  !/^[a-z][a-z0-9_-]*-auth-contract$/.test(testDatabase) ||
-  testDatabase === applicationDatabase.dbName
-) {
-  throw new Error(
-    "AUTH_STORE_TEST_DATABASE must end in -auth-contract and differ from DB_DATABASE.",
-  );
+const testDatabase = NonEmptyString.assert(process.env["AUTH_STORE_TEST_DATABASE"] ?? "identity-auth-contract");
+if (!/^[a-z][a-z0-9_-]*-auth-contract$/.test(testDatabase) || testDatabase === applicationDatabase.dbName) {
+  throw new Error("AUTH_STORE_TEST_DATABASE must end in -auth-contract and differ from DB_DATABASE.");
 }
 
 // Only this run's namespace is created, truncated and dropped, in a separate test database.
@@ -79,9 +74,7 @@ try {
     if (error !== rollback) throw error;
   }
   console.log("Refresh token rows after business rollback:", await countRows());
-  console.log(
-    `Passed ${cases.length} package contract cases with concurrent=true and a shared connection pool.`,
-  );
+  console.log(`Passed ${cases.length} package contract cases with concurrent=true and a shared connection pool.`);
 } finally {
   try {
     if (databaseReady) {

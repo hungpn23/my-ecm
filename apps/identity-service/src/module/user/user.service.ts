@@ -1,8 +1,9 @@
-import { UserEntity } from "#internal/database/entity/index";
 import type { GetUserByIdPayload, User } from "@libs/contract";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { AuthenticationContext } from "@nestjs/authentication";
 import { Injectable } from "@nestjs/common";
+
+import { UserEntity } from "#internal/database/entity/index";
 
 @Injectable()
 export class UserService {

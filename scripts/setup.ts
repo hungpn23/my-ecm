@@ -1,5 +1,6 @@
-import { Glob } from "bun";
 import { dirname, join } from "node:path";
+
+import { Glob } from "bun";
 
 const root = process.cwd();
 const envExampleGlob = new Glob("**/.env.example");

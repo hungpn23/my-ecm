@@ -1,4 +1,5 @@
 import { type } from "arktype";
+
 import { NonNegativeDecimal, OffsetQuery, Uuid } from "../shared/common.schema";
 
 export const PRODUCT_CATALOG_SORT = ["newest", "price_asc", "price_desc", "name_asc"] as const;

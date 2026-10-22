@@ -1,10 +1,10 @@
 import "@libs/contract/arktype-global";
 
 import { ArktypeValidationPipe, RpcExceptionFilter } from "@libs/common";
-import { appConfig, tcpConfig, type AppConfig, type TcpConfig } from "@libs/core";
+import { type AppConfig, appConfig, type TcpConfig, tcpConfig } from "@libs/core";
 import { VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { Transport, type TcpOptions } from "@nestjs/microservices";
+import { type TcpOptions, Transport } from "@nestjs/microservices";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { Logger, registerMicroserviceLogging } from "nestjs-pino";
 import "reflect-metadata";
@@ -24,9 +24,7 @@ async function bootstrap() {
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
   const { APP_HOST, APP_PORT } = app.get<unknown, AppConfig>(appConfig.KEY);
-  const { IDENTITY_SERVICE_TCP_HOST, IDENTITY_SERVICE_TCP_PORT } = app.get<unknown, TcpConfig>(
-    tcpConfig.KEY,
-  );
+  const { IDENTITY_SERVICE_TCP_HOST, IDENTITY_SERVICE_TCP_PORT } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("Identity Service API")

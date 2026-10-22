@@ -1,9 +1,10 @@
+import { createPublicKey } from "node:crypto";
+import { readFileSync } from "node:fs";
+
 import { NonEmptyString } from "@libs/contract";
 import type { JwtVerifierOptions } from "@nestjs/authentication";
 import { type ConfigType, registerAs } from "@nestjs/config";
 import arkenv from "arkenv";
-import { createPublicKey } from "node:crypto";
-import { readFileSync } from "node:fs";
 
 export const jwtConfig = registerAs("jwt", () => {
   const env = arkenv({

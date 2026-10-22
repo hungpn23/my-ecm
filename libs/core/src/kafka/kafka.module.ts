@@ -1,13 +1,14 @@
 import { type DynamicModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { ClientsModule } from "@nestjs/microservices";
+
 import { KafkaOptionsFactory } from "./kafka-options.factory";
 import { kafkaConfig } from "./kafka.config";
 import { KAFKA_CLIENT } from "./kafka.constant";
 import { KafkaService } from "./kafka.service";
 import { MessageSerializerService } from "./message-serializer.service";
 
-/** @ignore Currently unused. */
+/** @ignore Currently Unused. */
 export class KafkaModule {
   static forRoot(): DynamicModule {
     return {

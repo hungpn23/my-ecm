@@ -62,9 +62,7 @@ const response = await fetch(`${KAFKA_CONNECT_URL}/connectors/${APP_NAME}/config
 });
 
 if (!response.ok) {
-  throw new Error(
-    `Failed to register ${APP_NAME}: HTTP ${response.status} ${await response.text()}`,
-  );
+  throw new Error(`Failed to register ${APP_NAME}: HTTP ${response.status} ${await response.text()}`);
 }
 
 console.log(`✅ Registered connector: ${APP_NAME}`);

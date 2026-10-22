@@ -1,6 +1,7 @@
 import { type User, Uuid } from "@libs/contract";
 import { AuthenticationRegistry, JwtBearerProvider, type JwtClaims } from "@nestjs/authentication";
 import { Injectable } from "@nestjs/common";
+
 import { UserService } from "../user/user.service";
 
 @Injectable()

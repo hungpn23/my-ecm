@@ -1,4 +1,3 @@
-import { CategoryEntity, ProductEntity } from "#internal/database/entity/index";
 import { deepMerge } from "@libs/common";
 import {
   type CreateProduct,
@@ -12,6 +11,8 @@ import { ShopContext } from "@libs/core";
 import { EntityManager, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
 
+import { CategoryEntity, ProductEntity } from "#internal/database/entity/index";
+
 @Injectable()
 export class ProductService {
   constructor(
@@ -23,7 +24,9 @@ export class ProductService {
     return await this.em.transactional(async (em) => {
       const { categoryId, ...rest } = body;
 
-      const category = await em.findOneOrFail(CategoryEntity, { id: categoryId });
+      const category = await em.findOneOrFail(CategoryEntity, {
+        id: categoryId,
+      });
 
       const newProduct = em.create(ProductEntity, {
         ...rest,
@@ -86,7 +89,9 @@ export class ProductService {
       const { categoryId, ...data } = body;
 
       if (categoryId) {
-        const category = await em.findOneOrFail(CategoryEntity, { id: categoryId });
+        const category = await em.findOneOrFail(CategoryEntity, {
+          id: categoryId,
+        });
 
         em.assign(product, { category });
       }

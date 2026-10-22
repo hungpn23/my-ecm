@@ -1,12 +1,9 @@
-import { RefreshTokenEntity } from "#internal/database/entity/index";
 import { wrap } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
-import {
-  AuthenticationStorage,
-  type RefreshTokenRecord,
-  type RefreshTokenStore,
-} from "@nestjs/authentication";
+import { AuthenticationStorage, type RefreshTokenRecord, type RefreshTokenStore } from "@nestjs/authentication";
 import { Injectable } from "@nestjs/common";
+
+import { RefreshTokenEntity } from "#internal/database/entity/index";
 
 @Injectable()
 export class AuthStore implements RefreshTokenStore {
@@ -27,7 +24,9 @@ export class AuthStore implements RefreshTokenStore {
     const row = await this._fork().findOne(RefreshTokenEntity, { id });
     if (!row) return undefined;
 
-    const { usedAt, claims, ...rest } = wrap(row).serialize({ exclude: ["revoked"] });
+    const { usedAt, claims, ...rest } = wrap(row).serialize({
+      exclude: ["revoked"],
+    });
 
     const record: RefreshTokenRecord = rest;
     if (usedAt) record.usedAt = usedAt;
@@ -53,11 +52,7 @@ export class AuthStore implements RefreshTokenStore {
   }
 
   async markRefreshTokenUsed(id: string, at: Date): Promise<boolean> {
-    const affected = await this._fork().nativeUpdate(
-      RefreshTokenEntity,
-      { id, usedAt: null },
-      { usedAt: at },
-    );
+    const affected = await this._fork().nativeUpdate(RefreshTokenEntity, { id, usedAt: null }, { usedAt: at });
 
     return affected === 1;
   }
@@ -67,7 +62,10 @@ export class AuthStore implements RefreshTokenStore {
   }
 
   async isRefreshTokenFamilyRevoked(familyId: string): Promise<boolean> {
-    const count = await this._fork().count(RefreshTokenEntity, { familyId, revoked: true });
+    const count = await this._fork().count(RefreshTokenEntity, {
+      familyId,
+      revoked: true,
+    });
     return count > 0;
   }
 

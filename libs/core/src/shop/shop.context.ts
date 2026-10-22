@@ -1,6 +1,7 @@
 import type { ShopMember, Uuid } from "@libs/contract";
 import { AuthenticationContext } from "@nestjs/authentication";
 import { ForbiddenException, Injectable } from "@nestjs/common";
+
 import { isShopMember } from "./shop.helper";
 
 @Injectable()

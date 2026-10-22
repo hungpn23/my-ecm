@@ -2,6 +2,7 @@ import { Endpoint } from "@libs/common";
 import { User } from "@libs/contract";
 import { Can } from "@nestjs/authorization";
 import { Controller } from "@nestjs/common";
+
 import { UserService } from "./user.service";
 
 @Controller("users")

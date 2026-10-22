@@ -4,7 +4,8 @@ import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import { type DynamicModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { PinoLogger } from "nestjs-pino";
-import { databaseConfig, type DatabaseConfig } from "./database.config";
+
+import { type DatabaseConfig, databaseConfig } from "./database.config";
 
 export class DatabaseModule {
   static forRoot(entities: readonly EntitySchema[]): DynamicModule {

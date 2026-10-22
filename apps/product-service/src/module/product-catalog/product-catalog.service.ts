@@ -1,13 +1,14 @@
-import { ProductEntity } from "#internal/database/entity/index";
 import {
-  ProductCatalogSort,
   type PaginatedProductResponse,
   type ProductCatalogQuery,
+  ProductCatalogSort,
   type ProductDetail,
   type Uuid,
 } from "@libs/contract";
 import { EntityManager, type FilterQuery, type QueryOrderMap } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable } from "@nestjs/common";
+
+import { ProductEntity } from "#internal/database/entity/index";
 
 @Injectable()
 export class ProductCatalogService {

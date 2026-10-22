@@ -1,15 +1,15 @@
+import { createPrivateKey } from "node:crypto";
+import { readFileSync } from "node:fs";
+
 import { NonEmptyString } from "@libs/contract";
 import type { AuthenticationModuleOptions, Duration } from "@nestjs/authentication";
 import { type ConfigType, registerAs } from "@nestjs/config";
 import arkenv from "arkenv";
 import { type } from "arktype";
-import { createPrivateKey } from "node:crypto";
-import { readFileSync } from "node:fs";
 
 const DurationString = type("string").narrow(
   (value, ctx): value is Exclude<Duration, number> =>
-    /^\d+(?:\.\d+)?(?:ms|s|m|h|d|w)$/.test(value) ||
-    ctx.mustBe("a duration with an explicit unit, such as '15m'"),
+    /^\d+(?:\.\d+)?(?:ms|s|m|h|d|w)$/.test(value) || ctx.mustBe("a duration with an explicit unit, such as '15m'"),
 );
 
 export const authConfig = registerAs("auth", () => {

@@ -1,4 +1,5 @@
 import { type } from "arktype";
+
 import { KafkaMessageIn } from "./kafka-message.schema";
 
 export const UserCreatedData = type({

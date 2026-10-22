@@ -148,9 +148,7 @@ function createPackageJson(options: OnboardOptions): string {
       type: "module",
       imports: packageImports,
       scripts,
-      dependencies: Object.fromEntries(
-        dependencies.sort(([left], [right]) => left.localeCompare(right)),
-      ),
+      dependencies: Object.fromEntries(dependencies.sort(([left], [right]) => left.localeCompare(right))),
       devDependencies: {},
     },
     null,
@@ -249,9 +247,7 @@ function createAppModule(options: OnboardOptions): string {
       ? `import { ${coreImports.join(", ")} } from "@libs/core";`
       : `import {\n  ${coreImports.join(",\n  ")},\n} from "@libs/core";`;
   const moduleImports =
-    imports.length <= 3
-      ? `imports: [${imports.join(", ")}],`
-      : `imports: [\n    ${imports.join(",\n    ")},\n  ],`;
+    imports.length <= 3 ? `imports: [${imports.join(", ")}],` : `imports: [\n    ${imports.join(",\n    ")},\n  ],`;
 
   return `import { ArktypeValidationPipe } from "@libs/common";
 ${coreImport}

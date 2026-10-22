@@ -1,11 +1,6 @@
 import { type } from "arktype";
-import {
-  NonEmptyString,
-  NonNegativeDecimal,
-  Paginated,
-  Uuid,
-  Varchar255,
-} from "../shared/common.schema";
+
+import { NonEmptyString, NonNegativeDecimal, Paginated, Uuid, Varchar255 } from "../shared/common.schema";
 import { EntityResponse } from "../shared/entity-response.schema";
 
 const PRODUCT_STATUS = ["ACTIVE", "INACTIVE"] as const;

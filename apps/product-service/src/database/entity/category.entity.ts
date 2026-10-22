@@ -1,6 +1,7 @@
 import type { Category } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
-import { defineEntity, p, wrap, type Loaded } from "@mikro-orm/core";
+import { defineEntity, type Loaded, p, wrap } from "@mikro-orm/core";
+
 // fallow-ignore-next-line circular-dependency
 import { ProductEntity } from "./product.entity";
 

@@ -1,15 +1,6 @@
 import { AnyRecord, SuccessResponse } from "@libs/contract";
 import { Public } from "@nestjs/authentication";
-import {
-  applyDecorators,
-  Delete,
-  Get,
-  Header,
-  HttpCode,
-  Patch,
-  Post,
-  SerializeOptions,
-} from "@nestjs/common";
+import { applyDecorators, Delete, Get, Header, HttpCode, Patch, Post, SerializeOptions } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiResponse } from "@nestjs/swagger";
 import type { Type } from "arktype";
 

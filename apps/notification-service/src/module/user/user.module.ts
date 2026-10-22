@@ -1,5 +1,7 @@
-import { EmailModule } from "#internal/module/email/email.module";
 import { Module } from "@nestjs/common";
+
+import { EmailModule } from "#internal/module/email/email.module";
+
 import { UserConsumer } from "./user.consumer";
 
 @Module({

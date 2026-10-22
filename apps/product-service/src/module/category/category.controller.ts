@@ -1,14 +1,8 @@
 import { Endpoint } from "@libs/common";
-import {
-  Category,
-  CreateCategory,
-  OffsetQuery,
-  PaginatedCategoryResponse,
-  UpdateCategory,
-  Uuid,
-} from "@libs/contract";
+import { Category, CreateCategory, OffsetQuery, PaginatedCategoryResponse, UpdateCategory, Uuid } from "@libs/contract";
 import { Can } from "@nestjs/authorization";
 import { Body, Controller, Param, Query } from "@nestjs/common";
+
 import { CategoryPolicy } from "./category.policy";
 import { CategoryService } from "./category.service";
 
@@ -24,9 +18,7 @@ export class CategoryController {
 
   @Can.Anyone()
   @Endpoint("GET", { query: OffsetQuery, response: PaginatedCategoryResponse })
-  async find(
-    @Query({ schema: OffsetQuery }) query: OffsetQuery,
-  ): Promise<PaginatedCategoryResponse> {
+  async find(@Query({ schema: OffsetQuery }) query: OffsetQuery): Promise<PaginatedCategoryResponse> {
     return await this.category.find(query);
   }
 
