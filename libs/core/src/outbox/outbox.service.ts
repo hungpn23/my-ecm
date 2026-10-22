@@ -26,14 +26,14 @@ export class OutboxService {
 
   async createAndFlush<KTopic extends KafkaTopic>(data: CreateOutboxData<KTopic>): Promise<void> {
     await this.em.transactional(
-      async (em) => {
+      (em) => {
         MessageByTopic[data.eventType].assert({
           value: data.payload,
         });
 
         em.create(OutboxEntity, {
           ...data,
-          requestId: this.logger.logger.bindings()["reqId"] ?? v7(),
+          requestId: String(this.logger.logger.bindings()["reqId"] ?? v7()),
         });
       },
       { propagation: "mandatory" },

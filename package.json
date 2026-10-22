@@ -69,7 +69,7 @@
     "check:auth-store": "dotenv -e .env -- turbo check:auth-store --filter=@apps/identity-service",
     "check:env": "bun scripts/check:env.ts",
     "check:fallow": "bunx fallow --skip health",
-    "check:fix": "bun fmt && oxlint --fix",
+    "check:fix": "bun fmt && bun lint --fix",
     "check:types": "bun check && turbo check:types",
     "clean": "rimraf --glob '**/node_modules' '**/.turbo' '**/dist' '**/.react-email' bun.lock",
     "dev": "dotenv -e .env -- turbo dev",
@@ -92,11 +92,9 @@
     "@types/bun": "1.4.3",
     "fallow": "3.27.0",
     "husky": "9.1.7",
-    "oxlint": "1.80.0",
-    "oxlint-tsgolint": "7.0.2002",
     "rimraf": "6.1.3",
     "turbo": "2.11.2",
     "typescript": "7.0.2"
   },
-  "packageManager": "bun@1.4.4"
+  "packageManager": "bun@1.4.4-canary.1"
 }
