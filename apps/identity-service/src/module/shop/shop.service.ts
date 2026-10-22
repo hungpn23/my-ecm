@@ -1,8 +1,9 @@
-import { ShopEntity, UserEntity } from "#internal/database/entity/index";
 import type { CreateShop, ShopDetail } from "@libs/contract";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { AuthenticationContext } from "@nestjs/authentication";
 import { Injectable } from "@nestjs/common";
+
+import { ShopEntity, UserEntity } from "#internal/database/entity/index";
 
 @Injectable()
 export class ShopService {
@@ -13,7 +14,9 @@ export class ShopService {
 
   async create(body: CreateShop): Promise<ShopDetail> {
     return await this.em.transactional(async (em) => {
-      const owner = await em.findOneOrFail(UserEntity, { id: this.authContext.requireUser().id });
+      const owner = await em.findOneOrFail(UserEntity, {
+        id: this.authContext.requireUser().id,
+      });
 
       const newShop = em.create(ShopEntity, {
         ...body,

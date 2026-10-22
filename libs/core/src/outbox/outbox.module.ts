@@ -1,7 +1,8 @@
 import { Global, Module } from "@nestjs/common";
+
 import { OutboxService } from "./outbox.service";
 
-/** @ignore Currently unused. */
+/** @ignore Currently Unused. */
 @Global()
 @Module({
   providers: [OutboxService],

@@ -2,7 +2,8 @@ import type { DynamicModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { Redis } from "ioredis";
 import { PinoLogger } from "nestjs-pino";
-import { redisConfig, type RedisConfig } from "./redis.config";
+
+import { type RedisConfig, redisConfig } from "./redis.config";
 import { REDIS_CLIENT } from "./redis.constant";
 import { RedisService } from "./redis.service";
 

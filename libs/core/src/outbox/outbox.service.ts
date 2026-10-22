@@ -1,11 +1,12 @@
-import { OutboxEntity } from "#internal/database/entity/outbox.entity";
-import { MessageByTopic } from "#internal/kafka/message-by-topic";
 import type { KafkaTopic } from "@libs/contract";
 import type { RequiredEntityData } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { v7 } from "uuid";
+
+import { OutboxEntity } from "#internal/database/entity/outbox.entity";
+import { MessageByTopic } from "#internal/kafka/message-by-topic";
 
 type CreateOutboxData<KTopic extends KafkaTopic> = Omit<
   RequiredEntityData<OutboxEntity>,

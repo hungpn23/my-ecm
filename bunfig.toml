@@ -1,2 +1,10 @@
 [run]
 bun = true
+
+[fmt]
+sortImports = true
+sortPackageJson = true
+jsdoc = true
+editorconfig = false
+printWidth = 120
+ignorePatterns = ["tools/oxlint/anti-slop/**", "**/*/entities.generated.ts", "**/migration/*"]

@@ -2,10 +2,11 @@ import {
   Injectable,
   Optional,
   StandardSchemaValidationPipe,
-  UnprocessableEntityException,
   type StandardSchemaValidationPipeOptions,
+  UnprocessableEntityException,
 } from "@nestjs/common";
 import { ArkErrors } from "arktype";
+
 import { deepMerge } from "../helper/deep-merge";
 
 @Injectable()

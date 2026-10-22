@@ -1,4 +1,5 @@
 import { type } from "arktype";
+
 import { NonEmptyString, Uuid, Varchar255 } from "../shared/common.schema";
 import { EntityResponse } from "../shared/entity-response.schema";
 

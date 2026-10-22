@@ -1,8 +1,10 @@
-import { ConfigModule } from "#internal/config/config.module";
-import { MicroserviceModule } from "#internal/microservice/microservice.module";
 import { AuthenticationModule as NestAuthModule } from "@nestjs/authentication";
 import { AuthorizationModule } from "@nestjs/authorization";
 import { Module } from "@nestjs/common";
+
+import { ConfigModule } from "#internal/config/config.module";
+import { MicroserviceModule } from "#internal/microservice/microservice.module";
+
 import { JwtAuth } from "./jwt-auth.provider";
 import { jwtConfig } from "./jwt.config";
 

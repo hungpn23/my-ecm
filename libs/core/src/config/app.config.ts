@@ -3,8 +3,7 @@ import arkenv from "arkenv";
 import { type } from "arktype";
 
 const ServiceName = type("string").narrow(
-  (s, ctx): s is `${string}-service` =>
-    s.endsWith("-service") || ctx.mustBe("a string ending with '-service'"),
+  (s, ctx): s is `${string}-service` => s.endsWith("-service") || ctx.mustBe("a string ending with '-service'"),
 );
 
 export const appConfig = registerAs("app", () =>

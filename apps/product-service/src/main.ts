@@ -24,15 +24,9 @@ async function bootstrap() {
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
   const { APP_HOST, APP_PORT } = app.get<unknown, AppConfig>(appConfig.KEY);
-  const { PRODUCT_SERVICE_TCP_HOST, PRODUCT_SERVICE_TCP_PORT } = app.get<unknown, TcpConfig>(
-    tcpConfig.KEY,
-  );
+  const { PRODUCT_SERVICE_TCP_HOST, PRODUCT_SERVICE_TCP_PORT } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle("Product Service API")
-    .setVersion("1.0")
-    .addBearerAuth()
-    .build();
+  const swaggerConfig = new DocumentBuilder().setTitle("Product Service API").setVersion("1.0").addBearerAuth().build();
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("swagger", app, documentFactory);
 

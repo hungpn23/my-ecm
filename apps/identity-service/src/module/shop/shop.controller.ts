@@ -2,6 +2,7 @@ import { Endpoint } from "@libs/common";
 import { CreateShop, ShopDetail } from "@libs/contract";
 import { Can } from "@nestjs/authorization";
 import { Body, Controller } from "@nestjs/common";
+
 import { ShopPolicy } from "./shop.policy";
 import { ShopService } from "./shop.service";
 

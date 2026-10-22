@@ -1,4 +1,5 @@
 import { type } from "arktype";
+
 import { Uuid } from "../shared/common.schema";
 import { EntityResponse } from "../shared/entity-response.schema";
 
@@ -13,7 +14,12 @@ export type ShopRole = typeof ShopRole.infer;
 export const User = EntityResponse.merge({
   email: "string.email",
   role: Role,
-}).merge(type({ shopId: Uuid, shopRole: ShopRole }).or({ shopId: "null", shopRole: "null" }));
+}).merge(
+  type({ shopId: Uuid, shopRole: ShopRole }).or({
+    shopId: "null",
+    shopRole: "null",
+  }),
+);
 export type User = typeof User.inferIn;
 export type ShopMember = Extract<User, { shopId: Uuid }>;
 

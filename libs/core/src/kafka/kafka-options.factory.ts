@@ -1,13 +1,11 @@
-import { appConfig, type AppConfig } from "#internal/config/app.config";
 import { Inject, Injectable } from "@nestjs/common";
-import {
-  Transport,
-  type ClientsModuleOptionsFactory,
-  type KafkaOptions,
-} from "@nestjs/microservices";
-import { logLevel, type LogEntry } from "kafkajs";
+import { type ClientsModuleOptionsFactory, type KafkaOptions, Transport } from "@nestjs/microservices";
+import { type LogEntry, logLevel } from "kafkajs";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
-import { kafkaConfig, type KafkaConfig } from "./kafka.config";
+
+import { type AppConfig, appConfig } from "#internal/config/app.config";
+
+import { type KafkaConfig, kafkaConfig } from "./kafka.config";
 import { MessageSerializerService } from "./message-serializer.service";
 
 @Injectable()

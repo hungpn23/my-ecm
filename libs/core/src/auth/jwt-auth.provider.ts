@@ -1,8 +1,10 @@
-import { IdentityClient } from "#internal/microservice/microservice-clients";
 import { User, Uuid } from "@libs/contract";
 import { AuthenticationRegistry, JwtBearerProvider, type JwtClaims } from "@nestjs/authentication";
 import { Inject, Injectable } from "@nestjs/common";
-import { jwtConfig, type JwtConfig } from "./jwt.config";
+
+import { IdentityClient } from "#internal/microservice/microservice-clients";
+
+import { type JwtConfig, jwtConfig } from "./jwt.config";
 
 @Injectable()
 export class JwtAuth extends JwtBearerProvider<User> {

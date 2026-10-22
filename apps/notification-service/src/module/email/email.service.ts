@@ -22,7 +22,10 @@ export class EmailService {
     });
 
     this.logger.debug(
-      { messageId: result.messageId, providerMessageId: result.providerMessageId },
+      {
+        messageId: result.messageId,
+        providerMessageId: result.providerMessageId,
+      },
       "Welcome email accepted by email transport for %s",
       data.to,
     );

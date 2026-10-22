@@ -1,5 +1,6 @@
 import { GetUserByIdPayload } from "@libs/contract";
 import type { Type } from "arktype";
+
 import type { MicroserviceCommand } from "./microservice.schema";
 
 export const PayloadByCommand = {

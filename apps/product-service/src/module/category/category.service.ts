@@ -1,15 +1,16 @@
-import { CategoryEntity } from "#internal/database/entity/index";
 import { deepMerge } from "@libs/common";
 import {
-  Uuid,
   type Category,
   type CreateCategory,
   type OffsetQuery,
   type PaginatedCategoryResponse,
   type UpdateCategory,
+  Uuid,
 } from "@libs/contract";
 import { EntityManager, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
+
+import { CategoryEntity } from "#internal/database/entity/index";
 
 @Injectable()
 export class CategoryService {
@@ -52,7 +53,9 @@ export class CategoryService {
 
   async update(categoryId: Uuid, body: UpdateCategory): Promise<Category> {
     return await this.em.transactional(async (em) => {
-      const category = await em.findOneOrFail(CategoryEntity, { id: categoryId });
+      const category = await em.findOneOrFail(CategoryEntity, {
+        id: categoryId,
+      });
 
       em.assign(category, body);
       await em.flush();
@@ -63,7 +66,9 @@ export class CategoryService {
 
   async delete(categoryId: Uuid): Promise<void> {
     await this.em.transactional(async (em) => {
-      const category = await em.findOneOrFail(CategoryEntity, { id: categoryId });
+      const category = await em.findOneOrFail(CategoryEntity, {
+        id: categoryId,
+      });
 
       em.remove(category);
     });

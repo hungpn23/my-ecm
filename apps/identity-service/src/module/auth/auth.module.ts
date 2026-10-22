@@ -2,8 +2,9 @@ import { ConfigModule } from "@libs/core";
 import { AuthenticationModule as NestAuthModule } from "@nestjs/authentication";
 import { AuthorizationModule } from "@nestjs/authorization";
 import { Module } from "@nestjs/common";
+
 import { UserModule } from "../user/user.module";
-import { authConfig, type AuthConfig } from "./auth.config";
+import { type AuthConfig, authConfig } from "./auth.config";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { AuthStore } from "./auth.store";

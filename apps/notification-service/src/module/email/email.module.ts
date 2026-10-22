@@ -1,7 +1,8 @@
 import { ConfigModule } from "@libs/core";
 import { Module } from "@nestjs/common";
 import { MailModule, MailTransport, SesTransport, SmtpTransport } from "@nestjs/mail";
-import { emailConfig, type EmailConfig } from "./email.config";
+
+import { type EmailConfig, emailConfig } from "./email.config";
 import { EmailService } from "./email.service";
 
 @Module({

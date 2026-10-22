@@ -9,6 +9,7 @@ import {
 } from "@libs/contract";
 import { Can } from "@nestjs/authorization";
 import { Body, Controller, Param, Query } from "@nestjs/common";
+
 import { ProductPolicy } from "./product.policy";
 import { ProductService } from "./product.service";
 
@@ -24,9 +25,7 @@ export class ProductController {
 
   @Can(ProductPolicy, "view")
   @Endpoint("GET", { query: OffsetQuery, response: PaginatedProductResponse })
-  async find(
-    @Query({ schema: OffsetQuery }) query: OffsetQuery,
-  ): Promise<PaginatedProductResponse> {
+  async find(@Query({ schema: OffsetQuery }) query: OffsetQuery): Promise<PaginatedProductResponse> {
     return await this.product.find(query);
   }
 

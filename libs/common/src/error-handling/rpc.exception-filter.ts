@@ -1,9 +1,11 @@
+import { STATUS_CODES } from "node:http";
+
 import { RPC_ERROR, type RpcError } from "@libs/contract";
 import { Catch, HttpException, Logger } from "@nestjs/common";
 import { BaseRpcExceptionFilter } from "@nestjs/microservices";
 import { isObject } from "lodash";
-import { STATUS_CODES } from "node:http";
-import { throwError, type Observable } from "rxjs";
+import { type Observable, throwError } from "rxjs";
+
 import { RpcException } from "./rpc.exception";
 
 @Catch()

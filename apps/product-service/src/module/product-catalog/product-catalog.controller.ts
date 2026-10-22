@@ -1,6 +1,7 @@
 import { Endpoint } from "@libs/common";
 import { PaginatedProductResponse, ProductCatalogQuery, ProductDetail, Uuid } from "@libs/contract";
 import { Controller, Param, Query } from "@nestjs/common";
+
 import { ProductCatalogService } from "./product-catalog.service";
 
 @Controller("catalog/products")
@@ -12,9 +13,7 @@ export class ProductCatalogController {
     query: ProductCatalogQuery,
     response: PaginatedProductResponse,
   })
-  async find(
-    @Query({ schema: ProductCatalogQuery }) query: ProductCatalogQuery,
-  ): Promise<PaginatedProductResponse> {
+  async find(@Query({ schema: ProductCatalogQuery }) query: ProductCatalogQuery): Promise<PaginatedProductResponse> {
     return await this.productCatalog.find(query);
   }
 

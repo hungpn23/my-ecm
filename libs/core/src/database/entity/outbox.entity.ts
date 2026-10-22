@@ -1,7 +1,8 @@
-import { AGGREGATE_TYPE, AggregateType } from "#internal/outbox/aggregate-type.schema";
-import { KafkaTopic, Uuid, type AnyRecord } from "@libs/contract";
+import { type AnyRecord, KafkaTopic, Uuid } from "@libs/contract";
 import { defineEntity, p } from "@mikro-orm/core";
 import { v7 } from "uuid";
+
+import { AGGREGATE_TYPE, AggregateType } from "#internal/outbox/aggregate-type.schema";
 
 export const OutboxSchema = defineEntity({
   name: AGGREGATE_TYPE.OUTBOX,

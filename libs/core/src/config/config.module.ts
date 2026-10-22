@@ -1,10 +1,7 @@
 import { deepMerge } from "@libs/common";
 import type { DynamicModule } from "@nestjs/common";
-import {
-  ConfigModule as NestConfigModule,
-  type ConfigFactory,
-  type ConfigModuleOptions,
-} from "@nestjs/config";
+import { type ConfigFactory, ConfigModule as NestConfigModule, type ConfigModuleOptions } from "@nestjs/config";
+
 import { appConfig } from "./app.config";
 import { tcpConfig } from "./tcp.config";
 

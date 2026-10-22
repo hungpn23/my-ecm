@@ -1,11 +1,12 @@
-import { UserEntity } from "#internal/database/entity/index";
+import { createHash } from "node:crypto";
+
 import {
   BaseAuth,
-  Uuid,
   type ChangePassword,
   type RefreshTokenBody,
   type SuccessResponse,
   type TokenResponse,
+  Uuid,
 } from "@libs/contract";
 import { NotificationClient } from "@libs/core";
 import { LockMode } from "@mikro-orm/core";
@@ -19,7 +20,8 @@ import {
   TokenService,
 } from "@nestjs/authentication";
 import { Injectable } from "@nestjs/common";
-import { createHash } from "node:crypto";
+
+import { UserEntity } from "#internal/database/entity/index";
 
 type PasswordProof = { userId: Uuid; passwordHash: string };
 
@@ -38,7 +40,11 @@ export class AuthService {
     const passwordHash = await this.passwordHasher.hash(password);
 
     const userId = await this.em.transactional(async (em) => {
-      const user = em.create(UserEntity, { email, password: passwordHash, role: "USER" });
+      const user = em.create(UserEntity, {
+        email,
+        password: passwordHash,
+        role: "USER",
+      });
 
       await this.notificationClient.emit("user.created", { email: user.email });
 
@@ -94,11 +100,10 @@ export class AuthService {
     return this.token.refresh(refreshToken);
   }
 
-  private async _authenticate(
-    where: { email: string } | { id: Uuid },
-    password: string,
-  ): Promise<PasswordProof> {
-    const user = await this.em.findOne(UserEntity, where, { populate: ["password"] });
+  private async _authenticate(where: { email: string } | { id: Uuid }, password: string): Promise<PasswordProof> {
+    const user = await this.em.findOne(UserEntity, where, {
+      populate: ["password"],
+    });
     const passwordHash = user?.password.get();
     const valid = await this.passwordHasher.verify(password, passwordHash);
 
@@ -115,15 +120,17 @@ export class AuthService {
     const user = await em.findOne(
       UserEntity,
       { id: proof.userId },
-      { populate: ["password"], lockMode: LockMode.PESSIMISTIC_WRITE, refresh: true },
+      {
+        populate: ["password"],
+        lockMode: LockMode.PESSIMISTIC_WRITE,
+        refresh: true,
+      },
     );
 
     if (user?.password.get() !== proof.passwordHash) {
       throw new AuthenticationError("Invalid email or password", {
         cause: new Error(
-          !user
-            ? `User ${proof.userId} no longer exists`
-            : `Password changed concurrently for user ${proof.userId}`,
+          !user ? `User ${proof.userId} no longer exists` : `Password changed concurrently for user ${proof.userId}`,
         ),
       });
     }
@@ -131,10 +138,7 @@ export class AuthService {
     return user;
   }
 
-  private async _issueTokens(
-    proof: PasswordProof,
-    replacementHash?: string,
-  ): Promise<TokenResponse> {
+  private async _issueTokens(proof: PasswordProof, replacementHash?: string): Promise<TokenResponse> {
     return await this.em.transactional(
       async (em) => {
         const lockedUser = await this._lockUserAndVerifyProof(em, proof);
