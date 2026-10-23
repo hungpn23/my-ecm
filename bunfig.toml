@@ -31,3 +31,26 @@ plugins = ["./tools/oxlint/anti-slop/index.ts"]
 "anti-slop/no-unsafe-dictionary-type" = "error"
 "anti-slop/no-widen-then-assert" = "error"
 "anti-slop/require-safety-comment-for-type-assertion" = "error"
+"accessor-pairs" = "error"
+"array-callback-return" = "error" # or "warn"
+"arrow-body-style" = "error" # or "warn"
+"block-scoped-var" = "error" # or "warn"
+"camelcase" = "error"
+"consistent-return" = "error"
+"complexity" = ["error", { variant = "modified" }] # or "warn"
+"consistent-this" = "error" # or "warn"
+curly = ["error", "multi-line", "consistent"]
+"default-case" = "error" # or "warn"
+"default-case-last" = "error" # or "warn"
+"default-param-last" = "error" # or "warn"
+"dot-notation" = "error" # or "warn"
+"eqeqeq" = "error" # or "warn"
+"func-name-matching" = "error" # or "warn"
+"func-names" = "error"
+"guard-for-in" = "error" # or "warn"
+"logical-assignment-operators" = "error" # or "warn"
+"max-classes-per-file" = "error" # or "warn"
+"max-depth" = "error" # or "warn"
+"max-lines-per-function" = ["error", { skipBlankLines = true, skipComments = true }]
+"max-nested-callbacks" = ["error", 2]
+"max-statements" = ["error", 10, { ignoreTopLevelFunctions = true }]

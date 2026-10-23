@@ -27,12 +27,9 @@ export class LoggerModule {
       microservice: {
         autoLogging: false,
         quietRpcLogger: true,
-        genReqId: (_ctx) => {
-          return (
-            // ctx.switchToRpc().getContext<KafkaContext>().getMessage().headers?.[X_REQUEST_ID] ??
-            v7()
-          );
-        },
+        genReqId: (_ctx) =>
+          // ctx.switchToRpc().getContext<KafkaContext>().getMessage().headers?.[X_REQUEST_ID] ??
+          v7(),
       },
     };
 

@@ -4,7 +4,9 @@ import { ClientsModule, type ClientsProviderAsyncOptions, Transport } from "@nes
 import { ConfigModule } from "#internal/config/config.module";
 import { type TcpConfig, tcpConfig } from "#internal/config/tcp.config";
 
-import { IdentityClient, NotificationClient, ProductClient } from "./microservice-clients";
+import { IdentityClient } from "./client/identity.client";
+import { NotificationClient } from "./client/notification.client";
+import { ProductClient } from "./client/product.client";
 import type { MicroserviceClient } from "./microservice.schema";
 
 export class MicroserviceModule {

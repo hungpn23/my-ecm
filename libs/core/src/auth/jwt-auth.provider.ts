@@ -2,7 +2,7 @@ import { User, Uuid } from "@libs/contract";
 import { AuthenticationRegistry, JwtBearerProvider, type JwtClaims } from "@nestjs/authentication";
 import { Inject, Injectable } from "@nestjs/common";
 
-import { IdentityClient } from "#internal/microservice/microservice-clients";
+import { IdentityClient } from "#internal/microservice/client/identity.client";
 
 import { type JwtConfig, jwtConfig } from "./jwt.config";
 
