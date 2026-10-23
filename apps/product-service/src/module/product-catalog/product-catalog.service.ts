@@ -6,7 +6,7 @@ import {
   type Uuid,
 } from "@libs/contract";
 import { EntityManager, type FilterQuery, type QueryOrderMap } from "@mikro-orm/postgresql";
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 
 import { ProductEntity } from "#internal/database/entity/index";
 
@@ -15,40 +15,14 @@ export class ProductCatalogService {
   constructor(private readonly em: EntityManager) {}
 
   async find(query: ProductCatalogQuery): Promise<PaginatedProductResponse> {
-    const { page, pageSize, search, categoryId, minPrice, maxPrice, sort } = query;
+    const { page, pageSize, sort } = query;
 
-    if (minPrice && maxPrice && Number(minPrice) > Number(maxPrice)) {
-      throw new BadRequestException("minPrice must not be greater than maxPrice");
-    }
-
-    const conditions: FilterQuery<ProductEntity>[] = [{ status: "ACTIVE" }];
-
-    if (search) {
-      conditions.push({ name: { $ilike: `%${this._escapeLike(search)}%` } });
-    }
-
-    if (categoryId) {
-      conditions.push({ category: categoryId });
-    }
-
-    if (minPrice) {
-      conditions.push({ price: { $gte: minPrice } });
-    }
-
-    if (maxPrice) {
-      conditions.push({ price: { $lte: maxPrice } });
-    }
-
-    const [products, total] = await this.em.findAndCount(
-      ProductEntity,
-      { $and: conditions },
-      {
-        populate: ["category"],
-        limit: pageSize,
-        offset: (page - 1) * pageSize,
-        orderBy: this._toOrderBy(sort),
-      },
-    );
+    const [products, total] = await this.em.findAndCount(ProductEntity, this._toWhere(query), {
+      populate: ["category"],
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+      orderBy: this._toOrderBy(sort),
+    });
 
     return {
       data: products.map((product) => product.toResponse()),
@@ -71,6 +45,17 @@ export class ProductCatalogService {
     return product.toDetailResponse();
   }
 
+  private _toWhere({ search, categoryId, minPrice, maxPrice }: ProductCatalogQuery): FilterQuery<ProductEntity> {
+    const where: FilterQuery<ProductEntity>[] = [{ status: "ACTIVE" }];
+
+    if (search) where.push({ name: { $ilike: `%${this._escapeLike(search)}%` } });
+    if (categoryId) where.push({ category: categoryId });
+    if (minPrice) where.push({ price: { $gte: minPrice } });
+    if (maxPrice) where.push({ price: { $lte: maxPrice } });
+
+    return { $and: where };
+  }
+
   private _toOrderBy(sort: ProductCatalogSort): QueryOrderMap<ProductEntity> {
     switch (sort) {
       case "price_asc":
@@ -81,6 +66,8 @@ export class ProductCatalogService {
         return { name: "ASC", id: "ASC" };
       case "newest":
         return { createdAt: "DESC", id: "DESC" };
+      default:
+        return { id: "ASC" };
     }
   }
 

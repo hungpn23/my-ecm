@@ -1,6 +1,6 @@
 import { AnyRecord, SuccessResponse } from "@libs/contract";
 import { Public } from "@nestjs/authentication";
-import { applyDecorators, Delete, Get, Header, HttpCode, Patch, Post, SerializeOptions } from "@nestjs/common";
+import { applyDecorators, Delete, Get, Header, Patch, Post, SerializeOptions } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiResponse } from "@nestjs/swagger";
 import type { Type } from "arktype";
 
@@ -19,45 +19,15 @@ export type EndpointParams = {
 export function Endpoint(method: HttpMethod, params: Partial<EndpointParams>) {
   const decorators: MethodDecorator[] = [];
 
-  if (params.query) {
-    // TODO: Add query parameter decorators
-  }
-
-  if (params.params) {
-    // TODO: Add path parameter decorators
-  }
-
   if (params.request) decorators.push(ApiBody({ schema: toJsonSchema(params.request, "input") }));
 
-  if (params.response) {
-    decorators.push(SerializeOptions({ schema: params.response }));
-    decorators.push(ApiResponse({ schema: toJsonSchema(params.response, "output") }));
-  } else {
-    decorators.push(SerializeOptions({ schema: SuccessResponse }));
-    decorators.push(ApiResponse({ schema: toJsonSchema(SuccessResponse, "output") }));
-  }
-
-  switch (method) {
-    case "GET":
-      decorators.push(Get(params.path));
-      break;
-    case "POST":
-      decorators.push(Post(params.path));
-      decorators.push(HttpCode(200));
-      break;
-    case "PATCH":
-      decorators.push(Patch(params.path));
-      break;
-    case "DELETE":
-      decorators.push(Delete(params.path));
-      break;
-  }
-
-  if (params.public) {
-    decorators.push(Public());
-  } else {
-    decorators.push(ApiBearerAuth());
-  }
+  const response = params.response ?? SuccessResponse;
+  decorators.push(
+    SerializeOptions({ schema: response }),
+    ApiResponse({ schema: toJsonSchema(response, "output") }),
+    getRouteDecorator(method, params.path),
+  );
+  decorators.push(params.public ? Public() : ApiBearerAuth());
 
   if (params.headers?.length) {
     for (const [name, value] of params.headers) {
@@ -66,6 +36,21 @@ export function Endpoint(method: HttpMethod, params: Partial<EndpointParams>) {
   }
 
   return applyDecorators(...decorators);
+}
+
+function getRouteDecorator(method: HttpMethod, path: EndpointParams["path"] | undefined): MethodDecorator {
+  switch (method) {
+    case "GET":
+      return Get(path);
+    case "POST":
+      return Post(path);
+    case "PATCH":
+      return Patch(path);
+    case "DELETE":
+      return Delete(path);
+    default:
+      throw new Error(`Unsupported HTTP method`);
+  }
 }
 
 function toJsonSchema(schema: Type<unknown>, direction: "input" | "output") {

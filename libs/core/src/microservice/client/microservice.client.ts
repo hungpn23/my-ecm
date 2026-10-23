@@ -1,15 +1,14 @@
 import { RpcError } from "@libs/contract";
-import { HttpException, Injectable } from "@nestjs/common";
+import { HttpException } from "@nestjs/common";
 import type { ClientProxy } from "@nestjs/microservices";
 import { catchError, lastValueFrom, timeout } from "rxjs";
 
-import { InjectMicroserviceClient } from "./microservice.decorator";
-import type { MicroserviceCommand, MicroserviceEvent } from "./microservice.schema";
-import { PayloadByCommand } from "./payload-by-command";
-import { PayloadByEvent } from "./payload-by-event";
-import { ResponseByCommand } from "./response-by-command";
+import type { MicroserviceCommand, MicroserviceEvent } from "../microservice.schema";
+import { PayloadByCommand } from "../payload-by-command";
+import { PayloadByEvent } from "../payload-by-event";
+import { ResponseByCommand } from "../response-by-command";
 
-abstract class MicroserviceClient {
+export abstract class AbstractMicroserviceClient {
   constructor(protected readonly client: ClientProxy) {}
 
   async send<Command extends MicroserviceCommand>(
@@ -35,26 +34,5 @@ abstract class MicroserviceClient {
     const validated = PayloadByEvent[event].assert(payload);
 
     return await lastValueFrom(this.client.emit(event, validated));
-  }
-}
-
-@Injectable()
-export class IdentityClient extends MicroserviceClient {
-  constructor(@InjectMicroserviceClient("IDENTITY_SERVICE") client: ClientProxy) {
-    super(client);
-  }
-}
-
-@Injectable()
-export class NotificationClient extends MicroserviceClient {
-  constructor(@InjectMicroserviceClient("NOTIFICATION_SERVICE") client: ClientProxy) {
-    super(client);
-  }
-}
-
-@Injectable()
-export class ProductClient extends MicroserviceClient {
-  constructor(@InjectMicroserviceClient("PRODUCT_SERVICE") client: ClientProxy) {
-    super(client);
   }
 }
