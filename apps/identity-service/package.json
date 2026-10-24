@@ -8,7 +8,6 @@
     "#mikro-orm/generated": "./entities.generated.ts"
   },
   "scripts": {
-    "build": "bun ../../scripts/build.ts",
     "check:auth-store": "bun scripts/check-auth-store.ts",
     "check:types": "bun check",
     "dev": "bun --watch src/main.ts",
