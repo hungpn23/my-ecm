@@ -32,17 +32,16 @@ const orm = await MikroORM.init({
 const schemaGenerator = new SqlSchemaGenerator(orm.em.fork({ disableContextResolution: true }));
 let databaseReady = false;
 
-function countRows() {
+async function countRows(): Promise<number> {
   const em = orm.em.fork({ useContext: false });
-  return em.count(RefreshTokenEntity, {});
+  return await em.count(RefreshTokenEntity, {});
 }
 
 try {
   const schemaHelper = orm.driver.getPlatform().getSchemaHelper();
   if (!schemaHelper) throw new Error("The PostgreSQL schema helper is unavailable.");
   const exists = await schemaHelper.databaseExists(orm.em.getConnection(), testDatabase);
-  if (exists) await orm.reconnect({ dbName: testDatabase });
-  else await orm.schema.createDatabase(testDatabase);
+  await (exists ? orm.reconnect({ dbName: testDatabase }) : orm.schema.createDatabase(testDatabase));
   databaseReady = true;
   await orm.schema.create();
 
@@ -63,10 +62,11 @@ try {
   // Store forks commit independently while sharing the outer transaction's connection pool.
   try {
     await orm.em.fork().transactional(async () => {
-      for (const contractCase of cases) {
+      await Array.fromAsync(cases, async (contractCase) => {
         await contractCase.run();
         console.log(`PASS ${contractCase.name}`);
-      }
+        return contractCase;
+      });
       console.log("Refresh token rows before business rollback:", await countRows());
       throw rollback;
     });

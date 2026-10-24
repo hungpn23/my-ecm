@@ -11,15 +11,11 @@ export class RedisService {
     return await this.redis.get(key);
   }
 
-  async set(key: string, value: string, ttlInSeconds?: number) {
-    if (ttlInSeconds) {
-      await this.redis.set(key, value, "EX", ttlInSeconds);
-    } else {
-      await this.redis.set(key, value);
-    }
+  async set(key: string, value: string, ttlInSeconds?: number): Promise<void> {
+    await (ttlInSeconds ? this.redis.set(key, value, "EX", ttlInSeconds) : this.redis.set(key, value));
   }
 
-  async delete(key: string) {
+  async delete(key: string): Promise<void> {
     await this.redis.del(key);
   }
 

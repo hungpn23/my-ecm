@@ -16,7 +16,7 @@ export const ShopSchema = defineEntity({
 });
 
 export class ShopEntity extends ShopSchema.class {
-  addMember(user: Loaded<UserEntity>, shopRole: ShopRole) {
+  addMember(user: Loaded<UserEntity>, shopRole: ShopRole): void {
     user.shop = this;
     user.shopRole = shopRole;
   }

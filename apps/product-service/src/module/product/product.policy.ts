@@ -4,23 +4,23 @@ import { Policy } from "@nestjs/authorization";
 
 @Policy()
 export class ProductPolicy {
-  view(user: User | null) {
+  view(user: User | null): boolean {
     return isShopMember(user);
   }
 
-  viewDetail(user: User | null) {
+  viewDetail(user: User | null): boolean {
     return isShopMember(user);
   }
 
-  create(user: User | null) {
+  create(user: User | null): boolean {
     return isShopMember(user);
   }
 
-  update(user: User | null) {
+  update(user: User | null): boolean {
     return isShopMember(user);
   }
 
-  delete(user: User | null) {
+  delete(user: User | null): boolean {
     return isShopMember(user);
   }
 }

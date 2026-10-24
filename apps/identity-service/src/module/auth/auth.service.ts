@@ -9,7 +9,7 @@ import {
   Uuid,
 } from "@libs/contract";
 import { NotificationClient } from "@libs/core";
-import { LockMode } from "@mikro-orm/core";
+import { type Loaded, LockMode } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 import {
   AuthenticationContext,
@@ -23,7 +23,10 @@ import { Injectable } from "@nestjs/common";
 
 import { UserEntity } from "#internal/database/entity/index";
 
-type PasswordProof = { userId: Uuid; passwordHash: string };
+interface PasswordProof {
+  userId: Uuid;
+  passwordHash: string;
+}
 
 @Injectable()
 export class AuthService {
@@ -97,7 +100,7 @@ export class AuthService {
       throw new RefreshTokenError("invalid");
     }
 
-    return this.token.refresh(refreshToken);
+    return await this.token.refresh(refreshToken);
   }
 
   private async _authenticate(where: { email: string } | { id: Uuid }, password: string): Promise<PasswordProof> {
@@ -109,14 +112,17 @@ export class AuthService {
 
     if (!valid || !user || !passwordHash) {
       throw new AuthenticationError("Invalid email or password", {
-        cause: new Error(!user ? "Unknown user" : "Invalid password"),
+        cause: new Error(user ? "Invalid password" : "Unknown user"),
       });
     }
 
     return { userId: user.id, passwordHash };
   }
 
-  private async _lockUserAndVerifyProof(em: EntityManager, proof: PasswordProof) {
+  private async _lockUserAndVerifyProof(
+    em: EntityManager,
+    proof: PasswordProof,
+  ): Promise<Loaded<UserEntity, "password">> {
     const user = await em.findOne(
       UserEntity,
       { id: proof.userId },
@@ -130,7 +136,7 @@ export class AuthService {
     if (user?.password.get() !== proof.passwordHash) {
       throw new AuthenticationError("Invalid email or password", {
         cause: new Error(
-          !user ? `User ${proof.userId} no longer exists` : `Password changed concurrently for user ${proof.userId}`,
+          user ? `Password changed concurrently for user ${proof.userId}` : `User ${proof.userId} no longer exists`,
         ),
       });
     }

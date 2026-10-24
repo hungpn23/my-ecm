@@ -1,5 +1,10 @@
 import type { DynamicModule } from "@nestjs/common";
-import { ClientsModule, type ClientsProviderAsyncOptions, Transport } from "@nestjs/microservices";
+import {
+  ClientsModule,
+  type ClientsProviderAsyncOptions,
+  type TcpClientOptions,
+  Transport,
+} from "@nestjs/microservices";
 
 import { ConfigModule } from "#internal/config/config.module";
 import { type TcpConfig, tcpConfig } from "#internal/config/tcp.config";
@@ -23,7 +28,7 @@ export class MicroserviceModule {
       name: client,
       imports: [ConfigModule.forFeatures(tcpConfig)],
       inject: [tcpConfig.KEY],
-      useFactory: (config: TcpConfig) => ({
+      useFactory: (config: TcpConfig): TcpClientOptions => ({
         transport: Transport.TCP,
         options: {
           host: config[`${client}_TCP_HOST`],

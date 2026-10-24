@@ -1,6 +1,7 @@
+import type { ReactElement } from "react";
 import { Body, Container, Head, Heading, Html, Preview, Text } from "react-email";
 
-export function Welcome() {
+export function Welcome(): ReactElement {
   const title = "Welcome to My Ecommerce";
 
   return (

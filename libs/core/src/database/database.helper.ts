@@ -1,5 +1,5 @@
 import type { AnyRecord, Uuid } from "@libs/contract";
-import { defineConfig, p } from "@mikro-orm/core";
+import { defineConfig, p, type UniversalPropertyOptionsBuilder } from "@mikro-orm/core";
 import { Migrator } from "@mikro-orm/migrations";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { SeedManager } from "@mikro-orm/seeder";
@@ -22,7 +22,17 @@ export function defineDatabaseConfig({ enableDebug, ...config }: DatabaseConfig)
   });
 }
 
-export function useBaseProps<T extends AnyRecord>(props: T) {
+export interface BaseProps {
+  id: UniversalPropertyOptionsBuilder<
+    Uuid,
+    ReturnType<ReturnType<ReturnType<typeof p.uuid>["primary"]>["onCreate"]>["~options"],
+    keyof ReturnType<ReturnType<typeof p.uuid>["primary"]>
+  >;
+  createdAt: ReturnType<ReturnType<typeof p.datetime>["onCreate"]>;
+  updatedAt: ReturnType<ReturnType<ReturnType<typeof p.datetime>["onCreate"]>["onUpdate"]>;
+}
+
+export function useBaseProps<T extends AnyRecord>(props: T): T & BaseProps {
   return {
     id: p
       .uuid()
