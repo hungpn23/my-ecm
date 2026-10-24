@@ -9,6 +9,8 @@ export const tcpConfig = registerAs("tcp", () =>
     PRODUCT_SERVICE_TCP_PORT: "number.port",
     NOTIFICATION_SERVICE_TCP_HOST: "string.host",
     NOTIFICATION_SERVICE_TCP_PORT: "number.port",
+    ORDER_SERVICE_TCP_HOST: "string.host",
+    ORDER_SERVICE_TCP_PORT: "number.port",
   }),
 );
 
