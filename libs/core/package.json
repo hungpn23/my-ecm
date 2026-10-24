@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@ark/util": "catalog:common",
+    "@arkenv/core": "catalog:common",
     "@libs/common": "workspace:*",
     "@libs/contract": "workspace:*",
     "@mikro-orm/core": "catalog:mikro",
@@ -29,7 +30,6 @@
     "@nestjs/config": "catalog:nest",
     "@nestjs/core": "catalog:nest",
     "@nestjs/microservices": "catalog:nest",
-    "arkenv": "catalog:common",
     "arktype": "catalog:common",
     "ioredis": "catalog:backend",
     "kafkajs": "catalog:backend",

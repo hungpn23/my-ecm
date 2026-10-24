@@ -1,6 +1,6 @@
+import arkenv from "@arkenv/core";
 import { NonEmptyString } from "@libs/contract";
 import { type ConfigType, registerAs } from "@nestjs/config";
-import arkenv from "arkenv";
 
 export const databaseConfig = registerAs("database", () => {
   const config = arkenv({

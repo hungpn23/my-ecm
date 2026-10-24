@@ -22,6 +22,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@ark/util": "catalog:common",
+        "@arkenv/core": "catalog:common",
         "@libs/common": "workspace:*",
         "@libs/contract": "workspace:*",
         "@libs/core": "workspace:*",
@@ -38,7 +39,6 @@
         "@nestjs/microservices": "catalog:nest",
         "@nestjs/platform-express": "catalog:nest",
         "@nestjs/swagger": "catalog:nest",
-        "arkenv": "catalog:common",
         "arktype": "catalog:common",
         "dotenv": "catalog:backend",
         "kafkajs": "catalog:backend",
@@ -53,6 +53,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@ark/util": "catalog:common",
+        "@arkenv/core": "catalog:common",
         "@libs/common": "workspace:*",
         "@libs/contract": "workspace:*",
         "@libs/core": "workspace:*",
@@ -64,7 +65,7 @@
         "@nestjs/microservices": "catalog:nest",
         "@nestjs/platform-express": "catalog:nest",
         "@nestjs/swagger": "catalog:nest",
-        "arkenv": "catalog:common",
+        "arktype": "catalog:common",
         "nestjs-pino": "catalog:logging",
         "react": "catalog:email",
         "react-email": "catalog:email",
@@ -138,6 +139,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@ark/util": "catalog:common",
+        "@arkenv/core": "catalog:common",
         "@libs/common": "workspace:*",
         "@libs/contract": "workspace:*",
         "@mikro-orm/core": "catalog:mikro",
@@ -152,7 +154,6 @@
         "@nestjs/config": "catalog:nest",
         "@nestjs/core": "catalog:nest",
         "@nestjs/microservices": "catalog:nest",
-        "arkenv": "catalog:common",
         "arktype": "catalog:common",
         "ioredis": "catalog:backend",
         "kafkajs": "catalog:backend",
@@ -203,10 +204,10 @@
       "uuid": "14.0.2",
     },
     "common": {
-      "@ark/util": "0.56.2",
+      "@ark/util": "0.56.8",
+      "@arkenv/core": "1.0.0-rc.4",
       "@types/lodash": "4.17.25",
-      "arkenv": "0.12.3",
-      "arktype": "2.2.3",
+      "arktype": "2.2.9",
       "lodash": "4.18.1",
     },
     "email": {
@@ -249,9 +250,11 @@
 
     "@apps/product-service": ["@apps/product-service@workspace:apps/product-service"],
 
-    "@ark/schema": ["@ark/schema@0.56.2", "", { "dependencies": { "@ark/util": "0.56.2" } }, "sha512-Qx4D2JFbBWpntiHZaTv7bGG4H/M2rigiknezKg/WVyDSaLdE4YCcWAOoFB7pjjDqHbbV2OqRfntm1nnXvwMexg=="],
+    "@ark/schema": ["@ark/schema@0.56.8", "", { "dependencies": { "@ark/util": "0.56.8" } }, "sha512-R05TOe85oQBGFFw2zKMuZpqkXibLKuC/aJt6VwFn5Cjc4x3NkWfhvGRpRDycNkj3ddcHnOPtIsmjVowJO9Yxdw=="],
 
-    "@ark/util": ["@ark/util@0.56.2", "", {}, "sha512-9kU2sUE38FZEGG7l3hamYMBieLYEJh2L1mrYD2eXpT+78EnQSV1bhjxJhnxGBMSTbtwpBSDNSK+K60WvaI/DTQ=="],
+    "@ark/util": ["@ark/util@0.56.8", "", {}, "sha512-XLiQyGfpJcws1zCtp2Cva8s1oheCdFn1Rt6JSyC4NnkDrpwCJnlaiawuuOc1Z97vMH+jEzW5vyyf0xOju5wUQA=="],
+
+    "@arkenv/core": ["@arkenv/core@1.0.0-rc.4", "", { "peerDependencies": { "arktype": "^2.1.22" } }, "sha512-KO87DcYqWq1MJEDAx10Mtki9wzeUUeKDDiDhCbU9sp5Zg2U2VxyZcPXd1dv/T55i6gGo0Y9iYni/ksm0kLL6MA=="],
 
     "@babel/code-frame": ["@babel/code-frame@7.29.7", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.29.7", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw=="],
 
@@ -595,11 +598,9 @@
 
     "argparse": ["argparse@2.0.1", "", {}, "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="],
 
-    "arkenv": ["arkenv@0.12.3", "", { "peerDependencies": { "arktype": "^2.1.22" }, "optionalPeers": ["arktype"] }, "sha512-MX1/O52eG+XysuCotCyBvjZBbBk4qFbefqSYcb337gLwYOgNQhbtDrTOr+biMhjfAyGo3s+3Kn+fLH4aYgxTtg=="],
+    "arkregex": ["arkregex@0.0.14", "", { "dependencies": { "@ark/util": "0.56.8" } }, "sha512-G3I/uCtWE0IKQiPh0qqmmAFDdtjZKZQ5mNPR6gJBeAMZ7VqYCpoaDeXnLju2Zo6ywExtmxZJELeVFb0MPDjPyA=="],
 
-    "arkregex": ["arkregex@0.0.8", "", { "dependencies": { "@ark/util": "0.56.2" } }, "sha512-PJcx6G1kQTgLKPUbeYlYecDRaKq15AMSGVajlKFYWlPeJRQL+j3dKE6tyMs40HZ99djS1l9Vhl3ezAHy9JBIqQ=="],
-
-    "arktype": ["arktype@2.2.3", "", { "dependencies": { "@ark/schema": "0.56.2", "@ark/util": "0.56.2", "arkregex": "0.0.8" } }, "sha512-7W+0RLTUNJiBFIIZXwOQxSR8Z273IAd6IvqBeG9+gHnQKFsIx2C0iOtGTmMrPnlX4qLXyc5+ll7A0BIj9WrbTg=="],
+    "arktype": ["arktype@2.2.9", "", { "dependencies": { "@ark/schema": "0.56.8", "@ark/util": "0.56.8", "arkregex": "0.0.14" } }, "sha512-Cja0IMEn19rB35on9da1i1z6QMasuS7ULffXbetCry09jvCGYT8Bi1KgYiqri5FymF4nQAXkM90yksYkgSK2EA=="],
 
     "atomic-sleep": ["atomic-sleep@1.0.0", "", {}, "sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ=="],
 

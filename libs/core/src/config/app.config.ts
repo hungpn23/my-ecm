@@ -1,5 +1,5 @@
+import arkenv from "@arkenv/core";
 import { type ConfigType, registerAs } from "@nestjs/config";
-import arkenv from "arkenv";
 import { type } from "arktype";
 
 const ServiceName = type("string").narrow(

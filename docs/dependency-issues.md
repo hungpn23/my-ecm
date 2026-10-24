@@ -41,8 +41,8 @@ In the root `package.json`, under `workspaces.catalogs.common`:
 
 ```json
 {
-  "@ark/util": "0.56.2",
-  "arktype": "2.2.3"
+  "@ark/util": "0.56.8",
+  "arktype": "2.2.9"
 }
 ```
 

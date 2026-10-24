@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@ark/util": "catalog:common",
+    "@arkenv/core": "catalog:common",
     "@libs/common": "workspace:*",
     "@libs/contract": "workspace:*",
     "@libs/core": "workspace:*",
@@ -25,7 +26,7 @@
     "@nestjs/microservices": "catalog:nest",
     "@nestjs/platform-express": "catalog:nest",
     "@nestjs/swagger": "catalog:nest",
-    "arkenv": "catalog:common",
+    "arktype": "catalog:common",
     "nestjs-pino": "catalog:logging",
     "react": "catalog:email",
     "react-email": "catalog:email",
