@@ -12,7 +12,7 @@
     "@oxlint/plugins",
     "@react-email/ui",
     "@ark/util",
-    "@inquirer/checkbox"
+    "@clack/prompts"
   ],
   "duplicates": {
     "mode": "weak",

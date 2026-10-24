@@ -1,6 +1,6 @@
 import { dirname, join } from "node:path";
 
-import checkbox from "@inquirer/checkbox";
+import { confirm, isCancel, log, multiselect } from "@clack/prompts";
 import { Glob } from "bun";
 
 async function main(): Promise<void> {
@@ -17,33 +17,45 @@ async function main(): Promise<void> {
     throw new Error(`apps/${requiredApp}/package.json is required.`);
   }
 
-  const selected = await checkbox({
-    message: "Select apps to run",
-    choices: apps.map((app) => ({
-      name: app,
-      value: app,
-      checked: app === requiredApp,
-      disabled: app === requiredApp ? "(always enabled)" : false,
-    })),
-    shortcuts: { all: null, invert: null },
-  });
+  log.info(`${requiredApp.replace(/-service$/, "")} (always enabled)`);
+  const optionalApps = apps.filter((app) => app !== requiredApp);
+  if (optionalApps.length === 0) {
+    const start = await confirm({ message: `Start ${requiredApp.replace(/-service$/, "")}?`, initialValue: true });
+    if (isCancel(start) || !start) {
+      process.exitCode = isCancel(start) ? 130 : 0;
+      return;
+    }
+  }
 
-  const child = Bun.spawn([process.execPath, "run", "dev", ...selected.map((app) => `--filter=./apps/${app}`)], {
-    cwd: root,
-    stdin: "inherit",
-    stdout: "inherit",
-    stderr: "inherit",
-  });
+  const selected =
+    optionalApps.length > 0
+      ? await multiselect({
+          message: "Select additional apps to run",
+          options: optionalApps.map((app) => ({ label: app.replace(/-service$/, ""), value: app })),
+          required: false,
+        })
+      : [];
+
+  if (isCancel(selected)) {
+    process.exitCode = 130;
+    return;
+  }
+
+  const child = Bun.spawn(
+    [process.execPath, "run", "dev", ...[requiredApp, ...selected].map((app) => `--filter=./apps/${app}`)],
+    {
+      cwd: root,
+      stdin: "inherit",
+      stdout: "inherit",
+      stderr: "inherit",
+    },
+  );
   process.exitCode = await child.exited;
 }
 
 try {
   await main();
 } catch (error) {
-  if (error instanceof Error && error.name === "ExitPromptError") {
-    process.exitCode = 130;
-  } else {
-    console.error(error instanceof Error ? error.message : error);
-    process.exitCode = 1;
-  }
+  console.error(error instanceof Error ? error.message : error);
+  process.exitCode = 1;
 }
