@@ -1,10 +1,10 @@
 import { createPrivateKey } from "node:crypto";
 import { readFileSync } from "node:fs";
 
+import arkenv from "@arkenv/core";
 import { NonEmptyString } from "@libs/contract";
 import type { AuthenticationModuleOptions, Duration } from "@nestjs/authentication";
 import { type ConfigType, registerAs } from "@nestjs/config";
-import arkenv from "arkenv";
 import { type } from "arktype";
 
 const DurationString = type("string").narrow(

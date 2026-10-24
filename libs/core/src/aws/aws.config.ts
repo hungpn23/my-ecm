@@ -1,6 +1,6 @@
+import arkenv, { type } from "@arkenv/core";
 import { NonEmptyString } from "@libs/contract";
 import { type ConfigType, registerAs } from "@nestjs/config";
-import { createEnv, type } from "arkenv";
 
 export const AwsConfig = type({
   AWS_REGION: NonEmptyString,
@@ -9,6 +9,6 @@ export const AwsConfig = type({
   AWS_SECRET_ACCESS_KEY: NonEmptyString,
 });
 
-export const awsConfig = registerAs("aws", () => createEnv(AwsConfig));
+export const awsConfig = registerAs("aws", () => arkenv(AwsConfig));
 
 export type AwsConfig = ConfigType<typeof awsConfig>;
