@@ -50,6 +50,7 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
               case logLevel.DEBUG:
                 this.logger.debug(rest, msg);
                 break;
+              case logLevel.NOTHING:
               default:
                 this.logger.trace(rest, msg);
             }

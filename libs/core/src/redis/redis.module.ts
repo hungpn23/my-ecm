@@ -17,7 +17,7 @@ export class RedisModule {
         {
           inject: [redisConfig.KEY, PinoLogger],
           provide: REDIS_CLIENT,
-          useFactory: (redisConf: RedisConfig, logger: PinoLogger) => {
+          useFactory: (redisConf: RedisConfig, logger: PinoLogger): Redis => {
             logger.setContext(RedisModule.name);
 
             const redis: Redis = new Redis(redisConf);

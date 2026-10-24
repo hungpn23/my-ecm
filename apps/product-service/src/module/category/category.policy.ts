@@ -3,15 +3,15 @@ import { Policy } from "@nestjs/authorization";
 
 @Policy()
 export class CategoryPolicy {
-  create(user: User | null) {
+  create(user: User | null): boolean {
     return user?.role === "SYSTEM_ADMIN";
   }
 
-  update(user: User | null) {
+  update(user: User | null): boolean {
     return user?.role === "SYSTEM_ADMIN";
   }
 
-  delete(user: User | null) {
+  delete(user: User | null): boolean {
     return user?.role === "SYSTEM_ADMIN";
   }
 }

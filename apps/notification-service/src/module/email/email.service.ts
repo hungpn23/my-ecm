@@ -13,7 +13,7 @@ export class EmailService {
     private readonly mailer: Mailer,
   ) {}
 
-  async sendWelcomeEmail(data: SendWelcomeEmailData) {
+  async sendWelcomeEmail(data: SendWelcomeEmailData): Promise<void> {
     const result = await this.mailer.send({
       to: data.to,
       subject: "Welcome to My Ecommerce",

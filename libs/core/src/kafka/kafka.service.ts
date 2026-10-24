@@ -1,7 +1,6 @@
 import type { KafkaTopic } from "@libs/contract";
 import { Inject, Injectable } from "@nestjs/common";
 import type { ClientKafkaProxy, KafkaOptions } from "@nestjs/microservices";
-import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { lastValueFrom } from "rxjs";
 
 import { KafkaOptionsFactory } from "./kafka-options.factory";
@@ -13,7 +12,6 @@ export class KafkaService {
   readonly options: KafkaOptions;
 
   constructor(
-    @InjectPinoLogger(KafkaService.name) private readonly logger: PinoLogger,
     @Inject(KAFKA_CLIENT) private readonly client: ClientKafkaProxy,
     private readonly optionsFactory: KafkaOptionsFactory,
   ) {

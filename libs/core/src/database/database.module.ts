@@ -1,7 +1,7 @@
 import { MikroOrmModule, type MikroOrmModuleOptions } from "@mikro-orm/nestjs";
 import { EntitySchema, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
-import { type DynamicModule } from "@nestjs/common";
+import type { DynamicModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { PinoLogger } from "nestjs-pino";
 
@@ -30,7 +30,7 @@ export class DatabaseModule {
               ormOptions = {
                 ...ormOptions,
                 debug: true,
-                logger: (msg) => logger.debug(msg),
+                logger: (msg): void => logger.debug(msg),
                 highlighter: new SqlHighlighter(),
               };
             }

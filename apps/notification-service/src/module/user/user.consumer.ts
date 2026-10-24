@@ -15,7 +15,7 @@ export class UserConsumer {
 
   /** @ignore Currently Unused. */
   @KafkaEvent("user.created")
-  async handleUserCreated(@Payload({ schema: UserCreatedData }) data: UserCreatedData) {
+  async handleUserCreated(@Payload({ schema: UserCreatedData }) data: UserCreatedData): Promise<void> {
     await this.email.sendWelcomeEmail({ to: data.email });
 
     this.logger.info(data, "Consumed user created event");

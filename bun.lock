@@ -129,6 +129,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@ark/util": "catalog:common",
+        "@nestjs/common": "catalog:nest",
         "arktype": "catalog:common",
       },
     },

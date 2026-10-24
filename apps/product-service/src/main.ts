@@ -5,12 +5,12 @@ import { type AppConfig, appConfig, type TcpConfig, tcpConfig } from "@libs/core
 import { VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { type TcpOptions, Transport } from "@nestjs/microservices";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { DocumentBuilder, type OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import { Logger, registerMicroserviceLogging } from "nestjs-pino";
 import "reflect-metadata";
 import { AppModule } from "./app.module";
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
     routeConflictPolicy: { duplicate: "error", shadow: "error" },
@@ -27,7 +27,7 @@ async function bootstrap() {
   const { PRODUCT_SERVICE_TCP_HOST, PRODUCT_SERVICE_TCP_PORT } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder().setTitle("Product Service API").setVersion("1.0").addBearerAuth().build();
-  const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
+  const documentFactory = (): OpenAPIObject => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup("swagger", app, documentFactory);
 
   const ms = app.connectMicroservice<TcpOptions>(

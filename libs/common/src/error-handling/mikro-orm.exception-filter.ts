@@ -16,7 +16,7 @@ type HandledError = NotFoundError | OptimisticLockError;
 export class MikroOrmExceptionFilter extends BaseExceptionFilter {
   private readonly logger = new Logger(MikroOrmExceptionFilter.name);
 
-  override catch(exception: HandledError, host: ArgumentsHost) {
+  override catch(exception: HandledError, host: ArgumentsHost): void {
     this.logger.warn(`${exception.name}: ${exception.message}`);
 
     super.catch(this._toHttpException(exception), host);

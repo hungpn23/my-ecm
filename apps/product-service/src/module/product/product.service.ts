@@ -1,11 +1,11 @@
 import { deepMerge } from "@libs/common";
-import {
-  type CreateProduct,
-  type OffsetQuery,
-  type PaginatedProductResponse,
-  type ProductDetail,
-  type UpdateProduct,
-  type Uuid,
+import type {
+  CreateProduct,
+  OffsetQuery,
+  PaginatedProductResponse,
+  ProductDetail,
+  UpdateProduct,
+  Uuid,
 } from "@libs/contract";
 import { ShopContext } from "@libs/core";
 import { EntityManager, type FilterQuery } from "@mikro-orm/postgresql";

@@ -1,4 +1,4 @@
-import { ROLE, SHOP_ROLE, type User } from "@libs/contract";
+import { ROLE, SHOP_ROLE, type ShopMember, type User } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, type Loaded, p, wrap } from "@mikro-orm/core";
 
@@ -27,7 +27,9 @@ export class UserEntity extends UserSchema.class {
     };
   }
 
-  private _getMembership(this: Loaded<UserEntity, "shop">) {
+  private _getMembership(
+    this: Loaded<UserEntity, "shop">,
+  ): Pick<ShopMember, "shopId" | "shopRole"> | { shopId: null; shopRole: null } {
     if (!this.shop || !this.shopRole) return { shopId: null, shopRole: null };
 
     return { shopId: this.shop.id, shopRole: this.shopRole };

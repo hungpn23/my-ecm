@@ -14,8 +14,8 @@ export abstract class AbstractMicroserviceClient {
   async send<Command extends MicroserviceCommand>(
     command: Command,
     payload: PayloadByCommand[NoInfer<Command>],
-    timeoutMs: number = 3000,
-  ) {
+    timeoutMs = 3000,
+  ): Promise<(typeof ResponseByCommand)[Command]["infer"]> {
     const validated = PayloadByCommand[command].assert(payload);
 
     const response$ = this.client.send<ResponseByCommand[NoInfer<Command>]>(command, validated).pipe(

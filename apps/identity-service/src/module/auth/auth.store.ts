@@ -14,12 +14,6 @@ export class AuthStore implements RefreshTokenStore {
     storage.registerSource({ refreshTokens: this });
   }
 
-  private _fork() {
-    return this.em.fork({
-      disableContextResolution: true,
-    });
-  }
-
   async getRefreshToken(id: string): Promise<RefreshTokenRecord | undefined> {
     const row = await this._fork().findOne(RefreshTokenEntity, { id });
     if (!row) return undefined;
@@ -71,5 +65,11 @@ export class AuthStore implements RefreshTokenStore {
 
   async revokeUserRefreshTokens(userId: string): Promise<void> {
     await this._fork().nativeUpdate(RefreshTokenEntity, { userId }, { revoked: true });
+  }
+
+  private _fork(): EntityManager {
+    return this.em.fork({
+      disableContextResolution: true,
+    });
   }
 }
