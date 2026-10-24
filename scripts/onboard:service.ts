@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 
+import { confirm, group, text } from "@clack/prompts";
 import { Glob } from "bun";
 
 import turboConfig from "../turbo.json" with { type: "json" };
@@ -15,23 +16,6 @@ type OnboardOptions = {
 
 type ServiceOptions = OnboardOptions & { httpPort: number; tcpPort: number };
 
-type ParseResult = { kind: "help" } | { kind: "options"; options: OnboardOptions };
-
-const usage = `Usage:
-  bun run onboard:service --name <name> [options]
-
-Required:
-  --name <name>       Service name in kebab-case, without -service
-
-Options:
-  --http-port <port>  HTTP port (default: highest apps/*/.env.example APP_PORT + 1)
-  --tcp-port <port>   TCP port (default: highest root .env.example TCP port + 1)
-  --db                Enable MikroORM without entities or migrations
-  --help              Show this message
-
-Authentication is always enabled. App .env.example is copied to .env.
-Shared TCP config, turbo.json and root env files are updated automatically.`;
-
 function parsePort(value: string, option: string): number {
   if (!/^\d+$/.test(value)) throw new Error(`${option} must be an integer.`);
 
@@ -41,65 +25,15 @@ function parsePort(value: string, option: string): number {
   return port;
 }
 
-function parseArguments(arguments_: readonly string[]): ParseResult {
-  let name: string | undefined;
-  let httpPort: number | undefined;
-  let tcpPort: number | undefined;
-  let db = false;
+function validatePort(value: string, label: string): string | undefined {
+  if (value === "") return;
 
-  for (let index = 0; index < arguments_.length; index += 1) {
-    const argument = arguments_[index];
-    if (!argument) continue;
-
-    switch (argument) {
-      case "--":
-        break;
-      case "--help":
-        return { kind: "help" };
-      case "--db":
-        db = true;
-        break;
-      case "--name": {
-        const value = arguments_[index + 1];
-        if (!value) throw new Error("--name requires a value.");
-        if (name) throw new Error("--name can only be provided once.");
-        name = value;
-        index += 1;
-        break;
-      }
-      case "--http-port": {
-        const value = arguments_[index + 1];
-        if (!value) throw new Error("--http-port requires a value.");
-        if (httpPort !== undefined) throw new Error("--http-port can only be provided once.");
-        httpPort = parsePort(value, "--http-port");
-        index += 1;
-        break;
-      }
-      case "--tcp-port": {
-        const value = arguments_[index + 1];
-        if (!value) throw new Error("--tcp-port requires a value.");
-        if (tcpPort !== undefined) throw new Error("--tcp-port can only be provided once.");
-        tcpPort = parsePort(value, "--tcp-port");
-        index += 1;
-        break;
-      }
-      default:
-        throw new Error(`Unknown option: ${argument}`);
-    }
+  try {
+    parsePort(value, label);
+    return;
+  } catch (error) {
+    return error instanceof Error ? error.message : "Invalid port.";
   }
-
-  if (!name) throw new Error("--name is required.");
-  if (!/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(name)) {
-    throw new Error("--name must use kebab-case.");
-  }
-  if (name.endsWith("-service")) {
-    throw new Error("--name must omit the -service suffix.");
-  }
-
-  return {
-    kind: "options",
-    options: { name, httpPort, tcpPort, db },
-  };
 }
 
 function toServiceTitle(name: string): string {
@@ -413,14 +347,14 @@ async function createService(options: OnboardOptions): Promise<void> {
     nextPort(
       httpContents,
       /^[ \t]*(?:export[ \t]+)?APP_PORT[ \t]*=[ \t]*["']?(\d+)["']?[ \t]*(?:#.*)?$/gm,
-      "--http-port",
+      "HTTP port",
     );
   const tcpPort =
     options.tcpPort ??
     nextPort(
       [envExample],
       /^[ \t]*(?:export[ \t]+)?[A-Z][A-Z0-9_]*_TCP_PORT[ \t]*=[ \t]*["']?(\d+)["']?[ \t]*(?:#.*)?$/gm,
-      "--tcp-port",
+      "TCP port",
     );
   const updatedExample = appendTcpEnv(envExample, tcpPrefix, tcpPort);
   const updatedEnv = existsSync(envPath)
@@ -456,19 +390,70 @@ async function createService(options: OnboardOptions): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  const result = parseArguments(Bun.argv.slice(2));
-
-  if (result.kind === "help") {
-    console.log(usage);
-    return;
+  if (!process.stdin.isTTY || !process.stdout.isTTY) {
+    throw new Error("onboard:service requires an interactive terminal.");
   }
 
-  await createService(result.options);
+  if (Bun.argv.length > 2) {
+    throw new Error("Run bun onboard:service without arguments.");
+  }
+
+  const { name, httpPort, tcpPort, db } = await group(
+    {
+      name: () =>
+        text({
+          message: "Service name (kebab-case, without -service)",
+          validate: (value) => {
+            if (!value || !/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(value)) {
+              return "Service name must use kebab-case.";
+            }
+            if (value.endsWith("-service")) return "Omit the -service suffix.";
+            if (existsSync(join(import.meta.dir, "../apps", `${value}-service`))) {
+              return `apps/${value}-service already exists.`;
+            }
+            return;
+          },
+        }),
+      httpPort: () =>
+        text({
+          message: "HTTP port (leave blank to choose automatically)",
+          validate: (value) => validatePort(value ?? "", "HTTP port"),
+        }),
+      tcpPort: () =>
+        text({
+          message: "TCP port (leave blank to choose automatically)",
+          validate: (value) => validatePort(value ?? "", "TCP port"),
+        }),
+      db: () =>
+        confirm({
+          message: "Enable MikroORM?",
+          initialValue: false,
+          active: "yes",
+          inactive: "no",
+        }),
+    },
+    {
+      onCancel: () => {
+        throw new DOMException("Onboarding cancelled.", "AbortError");
+      },
+    },
+  );
+
+  await createService({
+    name,
+    httpPort: httpPort === "" ? undefined : parsePort(httpPort, "HTTP port"),
+    tcpPort: tcpPort === "" ? undefined : parsePort(tcpPort, "TCP port"),
+    db,
+  });
 }
 
 try {
   await main();
 } catch (error) {
-  console.error(error instanceof Error ? error.message : error);
-  process.exitCode = 1;
+  if (error instanceof Error && error.name === "AbortError") {
+    process.exitCode = 130;
+  } else {
+    console.error(error instanceof Error ? error.message : error);
+    process.exitCode = 1;
+  }
 }
