@@ -3,10 +3,6 @@
   "ui": "stream",
   "concurrency": "15",
   "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".react-email/**"]
-    },
     "check:types": {
       "dependsOn": ["^check:types"]
     },

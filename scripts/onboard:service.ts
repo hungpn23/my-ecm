@@ -117,7 +117,6 @@ function createPackageJson(options: OnboardOptions): string {
       }
     : { "#internal/*": "./src/*.ts" };
   const scripts = Object.fromEntries([
-    ["build", "bun ../../scripts/build.ts"],
     ["check:types", "bun check"],
     ["dev", "bun --watch src/main.ts"],
     ...(options.db
