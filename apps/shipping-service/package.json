@@ -28,6 +28,7 @@
     "@nestjs/common": "catalog:nest",
     "@nestjs/core": "catalog:nest",
     "@nestjs/microservices": "catalog:nest",
+    "@nestjs/observe": "catalog:nest",
     "@nestjs/platform-express": "catalog:nest",
     "@nestjs/swagger": "catalog:nest",
     "dotenv": "catalog:backend",
