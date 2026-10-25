@@ -1,3 +1,8 @@
+/**
+ * @deprecated The Kafka/outbox/Debezium pipeline is deprecated.
+ * This registration script is retained for existing deployments only.
+ */
+
 function getOrThrow(name: string): string {
   const value = process.env[name];
   if (!value) throw new Error(`Missing environment variable: ${name}`);
