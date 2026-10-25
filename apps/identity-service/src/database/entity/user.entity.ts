@@ -2,6 +2,8 @@ import { ROLE, SHOP_ROLE, type ShopMember, type User } from "@libs/contract";
 import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
 import { defineEntity, type Loaded, p, wrap } from "@mikro-orm/core";
 
+// fallow-ignore-next-line circular-dependency
+import { AddressEntity } from "./address.entity";
 import { ShopEntity } from "./shop.entity";
 
 export const UserSchema = defineEntity({
@@ -12,13 +14,14 @@ export const UserSchema = defineEntity({
     role: p.enum(ROLE),
     shopRole: p.enum(SHOP_ROLE).nullable(),
     shop: () => p.manyToOne(ShopEntity).nullable().lazyRef().inversedBy("users"),
+    addresses: () => p.oneToMany(AddressEntity).mappedBy("user"),
   }),
 });
 
 export class UserEntity extends UserSchema.class {
   toResponse(this: Loaded<UserEntity, "shop">): User {
     const user = wrap(this).serialize({
-      exclude: ["shop", "shopRole", "password"],
+      exclude: ["shop", "shopRole", "password", "addresses"],
     });
 
     return {

@@ -107,6 +107,7 @@
       "name": "@apps/order-service",
       "version": "0.0.0",
       "dependencies": {
+        "@ark/util": "catalog:common",
         "@libs/common": "workspace:*",
         "@libs/contract": "workspace:*",
         "@libs/core": "workspace:*",
