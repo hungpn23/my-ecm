@@ -180,6 +180,29 @@
         "uuid": "catalog:backend",
       },
     },
+    "apps/shipping-service": {
+      "name": "@apps/shipping-service",
+      "version": "0.0.0",
+      "dependencies": {
+        "@libs/common": "workspace:*",
+        "@libs/contract": "workspace:*",
+        "@libs/core": "workspace:*",
+        "@mikro-orm/cli": "catalog:mikro",
+        "@mikro-orm/core": "catalog:mikro",
+        "@mikro-orm/migrations": "catalog:mikro",
+        "@mikro-orm/nestjs": "catalog:mikro",
+        "@mikro-orm/postgresql": "catalog:mikro",
+        "@nestjs/common": "catalog:nest",
+        "@nestjs/core": "catalog:nest",
+        "@nestjs/microservices": "catalog:nest",
+        "@nestjs/platform-express": "catalog:nest",
+        "@nestjs/swagger": "catalog:nest",
+        "dotenv": "catalog:backend",
+        "nestjs-pino": "catalog:logging",
+        "reflect-metadata": "catalog:backend",
+        "rxjs": "catalog:backend",
+      },
+    },
     "libs/common": {
       "name": "@libs/common",
       "version": "0.0.0",
@@ -330,6 +353,8 @@
     "@apps/payment-service": ["@apps/payment-service@workspace:apps/payment-service"],
 
     "@apps/product-service": ["@apps/product-service@workspace:apps/product-service"],
+
+    "@apps/shipping-service": ["@apps/shipping-service@workspace:apps/shipping-service"],
 
     "@ark/schema": ["@ark/schema@0.56.8", "", { "dependencies": { "@ark/util": "0.56.8" } }, "sha512-R05TOe85oQBGFFw2zKMuZpqkXibLKuC/aJt6VwFn5Cjc4x3NkWfhvGRpRDycNkj3ddcHnOPtIsmjVowJO9Yxdw=="],
 

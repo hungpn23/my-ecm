@@ -1,0 +1,39 @@
+{
+  "name": "@apps/shipping-service",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#internal/*": "./src/*.ts",
+    "#mikro-orm/generated": "./entities.generated.ts"
+  },
+  "scripts": {
+    "check:types": "bun check",
+    "dev": "bun --watch src/main.ts",
+    "discovery:export": "bun mikro-orm discovery:export",
+    "migration:down": "bun mikro-orm migration:down",
+    "migration:up": "bun mikro-orm migration:up",
+    "orm:debug": "bun mikro-orm debug",
+    "start": "bun src/main.ts"
+  },
+  "dependencies": {
+    "@libs/common": "workspace:*",
+    "@libs/contract": "workspace:*",
+    "@libs/core": "workspace:*",
+    "@mikro-orm/cli": "catalog:mikro",
+    "@mikro-orm/core": "catalog:mikro",
+    "@mikro-orm/migrations": "catalog:mikro",
+    "@mikro-orm/nestjs": "catalog:mikro",
+    "@mikro-orm/postgresql": "catalog:mikro",
+    "@nestjs/common": "catalog:nest",
+    "@nestjs/core": "catalog:nest",
+    "@nestjs/microservices": "catalog:nest",
+    "@nestjs/platform-express": "catalog:nest",
+    "@nestjs/swagger": "catalog:nest",
+    "dotenv": "catalog:backend",
+    "nestjs-pino": "catalog:logging",
+    "reflect-metadata": "catalog:backend",
+    "rxjs": "catalog:backend"
+  },
+  "devDependencies": {}
+}

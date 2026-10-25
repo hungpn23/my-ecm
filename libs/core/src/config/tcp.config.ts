@@ -15,6 +15,8 @@ export const tcpConfig = registerAs("tcp", () =>
     INVENTORY_SERVICE_TCP_PORT: "number.port",
     PAYMENT_SERVICE_TCP_HOST: "string.host",
     PAYMENT_SERVICE_TCP_PORT: "number.port",
+    SHIPPING_SERVICE_TCP_HOST: "string.host",
+    SHIPPING_SERVICE_TCP_PORT: "number.port",
   }),
 );
 
