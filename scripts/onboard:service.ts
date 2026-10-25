@@ -56,6 +56,7 @@ function createPackageJson(options: OnboardOptions): string {
     ...(options.db
       ? [
           ["discovery:export", "bun mikro-orm discovery:export"],
+          ["migration:create", "bun mikro-orm migration:create"],
           ["migration:down", "bun mikro-orm migration:down"],
           ["migration:up", "bun mikro-orm migration:up"],
           ["orm:debug", "bun mikro-orm debug"],
