@@ -8,10 +8,14 @@ import { KAFKA_CLIENT } from "./kafka.constant";
 import { KafkaService } from "./kafka.service";
 import { MessageSerializerService } from "./message-serializer.service";
 
-/** @ignore Currently Unused. */
+/**
+ * @ignore Currently Unused.
+ * @deprecated The Kafka/outbox/Debezium pipeline is deprecated. Do not use it for new integrations.
+ */
 export class KafkaModule {
   static forRoot(): DynamicModule {
     return {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated -- Retained for existing integrations.
       module: KafkaModule,
       global: true,
       imports: [
