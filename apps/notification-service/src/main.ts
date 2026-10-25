@@ -8,11 +8,14 @@ import { type TcpOptions, Transport } from "@nestjs/microservices";
 import { DocumentBuilder, type OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import { Logger, registerMicroserviceLogging } from "nestjs-pino";
 import "reflect-metadata";
-import { AppModule } from "./app.module";
+import { AppModule, ObserveInstrument } from "./app.module";
 
 async function bootstrap(): Promise<void> {
+  if (!ObserveInstrument) throw new Error("Observe instrument is unavailable");
+
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
+    instrument: ObserveInstrument,
     routeConflictPolicy: { duplicate: "error", shadow: "error" },
   });
 
