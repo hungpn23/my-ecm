@@ -17,7 +17,7 @@
   "duplicates": {
     "mode": "weak",
     "minOccurrences": 3,
-    "ignore": ["apps/*/src/main.ts"]
+    "ignore": ["apps/*/src/main.ts", "apps/*/src/app.module.ts"]
   },
   "rules": {
     "unused-class-members": "off"

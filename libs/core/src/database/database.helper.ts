@@ -17,6 +17,13 @@ export function defineDatabaseConfig({ enableDebug, ...config }: DatabaseConfig)
     migrations: {
       path: "dist/database/migration",
       pathTs: "src/database/migration",
+      fileName: (timestamp: string, name?: string): string => {
+        if (!name) {
+          throw new Error("Specify migration name via `mikro-orm migration:create --name=...`");
+        }
+
+        return `Migration${timestamp}_${name}`;
+      },
     },
     debug: enableDebug,
   });
