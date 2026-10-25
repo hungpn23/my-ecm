@@ -42,7 +42,6 @@
     "uuid": "catalog:backend"
   },
   "devDependencies": {
-    "@types/express": "catalog:backend",
     "@types/lodash": "catalog:common"
   },
   "peerDependencies": {
