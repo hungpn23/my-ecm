@@ -19,3 +19,4 @@ export * from "./shared/entity-response.schema";
 export * from "./shared/success-response.schema";
 export * from "./events/topic/kafka-topic.schema";
 export * from "./events/topic/user-topic.schema";
+export * from "./identity/address.schema";
