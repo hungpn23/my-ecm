@@ -71,11 +71,6 @@ curly = ["error", "multi-line", "consistent"]
 "no-useless-catch" = "error"
 "no-var" = "error"
 "prefer-const" = "error"
-"@typescript-eslint/prefer-destructuring" = [
-  "error",
-  { object = true, array = true },
-  { enforceForRenamedProperties = true, enforceForDeclarationWithTypeAnnotation = true },
-]
 "prefer-rest-params" = "error"
 "preserve-caught-error" = "error"
 "unicorn/no-array-for-each" = "error"
