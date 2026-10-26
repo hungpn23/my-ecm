@@ -28,12 +28,11 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
           clientId: this.appConf.APP_NAME,
           brokers: [`${this.config.KAFKA_HOST}:${this.config.KAFKA_PORT}`],
           logCreator: () => (entry: LogEntry) => {
-            const { message, error, ...rest } = entry.log;
+            const {
+              log: { message, error, ...rest },
+            } = entry;
 
-            let msg = message;
-            if (Error.isError(error)) {
-              msg = error.message;
-            }
+            const msg = Error.isError(error) ? error.message : message;
 
             this.logger.setContext(`Kafka${entry.namespace}`);
 

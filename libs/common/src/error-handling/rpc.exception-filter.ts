@@ -24,8 +24,7 @@ export class RpcExceptionFilter extends BaseRpcExceptionFilter {
       const code = exception.errorCode ?? defaultErrorCode;
 
       const response = exception.getResponse();
-      let message: unknown = exception.message;
-      if (isObject(response) && "message" in response) message = response.message;
+      const message = isObject(response) && "message" in response ? response.message : exception.message;
 
       error = { statusCode, code, message } satisfies RpcError;
     } else if (exception instanceof Error) {
