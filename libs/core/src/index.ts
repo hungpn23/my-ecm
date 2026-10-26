@@ -39,3 +39,4 @@ export * from "./microservice/client/identity.client";
 export * from "./microservice/client/microservice.client";
 export * from "./microservice/client/notification.client";
 export * from "./microservice/client/product.client";
+export * from "./microservice/client/inventory.client";

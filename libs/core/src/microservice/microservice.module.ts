@@ -10,6 +10,7 @@ import { ConfigModule } from "#internal/config/config.module";
 import { type TcpConfig, tcpConfig } from "#internal/config/tcp.config";
 
 import { IdentityClient } from "./client/identity.client";
+import { InventoryClient } from "./client/inventory.client";
 import { NotificationClient } from "./client/notification.client";
 import { ProductClient } from "./client/product.client";
 import type { MicroserviceClient } from "./microservice.schema";
@@ -18,6 +19,7 @@ export class MicroserviceModule {
   static registerAsync(...clients: MicroserviceClient[]): DynamicModule {
     const clientRegistry = {
       IDENTITY_SERVICE: IdentityClient,
+      INVENTORY_SERVICE: InventoryClient,
       NOTIFICATION_SERVICE: NotificationClient,
       PRODUCT_SERVICE: ProductClient,
     } as const;

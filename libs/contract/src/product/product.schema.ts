@@ -4,7 +4,7 @@ import { NonEmptyString, NonNegativeDecimal, Paginated, Uuid, Varchar255 } from 
 import { EntityResponse } from "../shared/entity-response.schema";
 
 const PRODUCT_STATUS = ["ACTIVE", "INACTIVE"] as const;
-const ProductStatus = type.enumerated(...PRODUCT_STATUS);
+export const ProductStatus = type.enumerated(...PRODUCT_STATUS);
 export type ProductStatus = typeof ProductStatus.infer;
 
 export const CreateProduct = type({
