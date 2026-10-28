@@ -1,7 +1,7 @@
 import { UserCreatedPayload } from "@libs/contract";
 import type { Type } from "arktype";
 
-import type { MicroserviceEvent } from "./microservice.schema";
+import type { MicroserviceEvent } from "./microservice.rpc-schema";
 
 export const PayloadByEvent = {
   "user.created": UserCreatedPayload,

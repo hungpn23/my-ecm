@@ -13,7 +13,7 @@ import { IdentityClient } from "./client/identity.client";
 import { InventoryClient } from "./client/inventory.client";
 import { NotificationClient } from "./client/notification.client";
 import { ProductClient } from "./client/product.client";
-import type { MicroserviceClient } from "./microservice.schema";
+import type { MicroserviceClient } from "./microservice.rpc-schema";
 
 export class MicroserviceModule {
   static registerAsync(...clients: MicroserviceClient[]): DynamicModule {

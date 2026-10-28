@@ -3,7 +3,7 @@ import { HttpException } from "@nestjs/common";
 import type { ClientProxy } from "@nestjs/microservices";
 import { catchError, lastValueFrom, timeout } from "rxjs";
 
-import type { MicroserviceCommand, MicroserviceEvent } from "../microservice.schema";
+import type { MicroserviceCommand, MicroserviceEvent } from "../microservice.rpc-schema";
 import { PayloadByCommand } from "../payload-by-command";
 import { PayloadByEvent } from "../payload-by-event";
 import { ResponseByCommand } from "../response-by-command";

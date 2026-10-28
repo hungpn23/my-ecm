@@ -1,7 +1,9 @@
 import { type } from "arktype";
 
-import { NonEmptyString, NonNegativeDecimal, Paginated, Uuid, Varchar255 } from "../shared/common.schema";
-import { EntityResponse } from "../shared/entity-response.schema";
+import { Paginated } from "../shared/common.schema";
+import { EntityHttpResponse } from "../shared/entity-response.schema";
+import { NonNegativeDecimal } from "../shared/number.schema";
+import { NonEmptyString, Uuid, Varchar255 } from "../shared/string.schema";
 
 const PRODUCT_STATUS = ["ACTIVE", "INACTIVE"] as const;
 export const ProductStatus = type.enumerated(...PRODUCT_STATUS);
@@ -21,7 +23,7 @@ export const UpdateProduct = CreateProduct.partial().merge({
 });
 export type UpdateProduct = typeof UpdateProduct.infer;
 
-const Product = EntityResponse.merge({
+export const Product = EntityHttpResponse.merge({
   name: Varchar255,
   price: NonNegativeDecimal,
   status: ProductStatus,
