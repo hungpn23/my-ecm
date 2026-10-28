@@ -6,6 +6,7 @@ import { createObserveModule } from "@nestjs/observe";
 
 import { entities } from "#mikro-orm/generated";
 
+import { AddressModule } from "./module/address/address.module";
 import { AuthModule } from "./module/auth/auth.module";
 import { ShopModule } from "./module/shop/shop.module";
 import { UserModule } from "./module/user/user.module";
@@ -28,6 +29,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     LoggerModule.forRoot(),
     MicroserviceModule.registerAsync("NOTIFICATION_SERVICE"),
     AuthModule,
+    AddressModule,
     ShopModule,
     UserModule,
   ],

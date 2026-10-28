@@ -1,7 +1,7 @@
 import { type } from "arktype";
 
-import { Uuid } from "../shared/common.schema";
-import { EntityResponse } from "../shared/entity-response.schema";
+import { EntityHttpResponse } from "../shared/entity-response.schema";
+import { Uuid } from "../shared/string.schema";
 
 export const ROLE = ["SYSTEM_ADMIN", "USER"] as const;
 export const Role = type.enumerated(...ROLE);
@@ -11,7 +11,7 @@ export const SHOP_ROLE = ["OWNER", "ADMIN", "STAFF"] as const;
 export const ShopRole = type.enumerated(...SHOP_ROLE);
 export type ShopRole = typeof ShopRole.infer;
 
-export const User = EntityResponse.merge({
+export const User = EntityHttpResponse.merge({
   email: "string.email",
   role: Role,
 }).merge(
@@ -22,9 +22,3 @@ export const User = EntityResponse.merge({
 );
 export type User = typeof User.inferIn;
 export type ShopMember = Extract<User, { shopId: Uuid }>;
-
-export const TcpUserResponse = User.merge({
-  createdAt: "string.date.iso.parse",
-  updatedAt: "string.date.iso.parse",
-}).or("null");
-export type TcpUserResponse = typeof TcpUserResponse.infer;

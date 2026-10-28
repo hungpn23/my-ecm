@@ -1,0 +1,32 @@
+info:
+  name: edit
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: "{{identity}}/addresses/{{address_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "recipientName": "Nguyễn Văn A",
+        "phone": "0907654321",
+        "address": "456 Nguyễn Trãi, TP. Hồ Chí Minh"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const body = res.getBody()
+
+        if (body.id) bru.setEnvVar('address_id', body.id)
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

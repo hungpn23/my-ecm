@@ -1,6 +1,8 @@
 import { type } from "arktype";
 
-import { NonNegativeDecimal, OffsetQuery, Uuid } from "../shared/common.schema";
+import { OffsetQuery } from "../shared/common.schema";
+import { NonNegativeDecimal } from "../shared/number.schema";
+import { Uuid } from "../shared/string.schema";
 
 export const PRODUCT_CATALOG_SORT = ["newest", "price_asc", "price_desc", "name_asc"] as const;
 export const ProductCatalogSort = type.enumerated(...PRODUCT_CATALOG_SORT);

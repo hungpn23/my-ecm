@@ -1,7 +1,7 @@
 import { type } from "arktype";
 
-import { NonEmptyString, Uuid, Varchar255 } from "../shared/common.schema";
-import { EntityResponse } from "../shared/entity-response.schema";
+import { EntityHttpResponse } from "../shared/entity-response.schema";
+import { NonEmptyString, Uuid, Varchar255 } from "../shared/string.schema";
 
 export const CreateShop = type({
   name: Varchar255,
@@ -9,7 +9,7 @@ export const CreateShop = type({
 });
 export type CreateShop = typeof CreateShop.infer;
 
-const Shop = EntityResponse.merge({
+const Shop = EntityHttpResponse.merge({
   name: Varchar255,
   ownerId: Uuid,
 });
