@@ -26,8 +26,8 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix("api");
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
-  const { APP_HOST, APP_PORT } = app.get<unknown, AppConfig>(appConfig.KEY);
-  const { NOTIFICATION_SERVICE_TCP_HOST, NOTIFICATION_SERVICE_TCP_PORT } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
+  const { appHost, appPort } = app.get<unknown, AppConfig>(appConfig.KEY);
+  const { notificationServiceTcpHost, notificationServiceTcpPort } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("Notification Service API")
@@ -41,8 +41,8 @@ async function bootstrap(): Promise<void> {
     {
       transport: Transport.TCP,
       options: {
-        host: NOTIFICATION_SERVICE_TCP_HOST,
-        port: NOTIFICATION_SERVICE_TCP_PORT,
+        host: notificationServiceTcpHost,
+        port: notificationServiceTcpPort,
       },
     },
     { deferInitialization: true },
@@ -53,11 +53,11 @@ async function bootstrap(): Promise<void> {
   ms.useGlobalFilters(new RpcExceptionFilter());
 
   await app.startAllMicroservices();
-  await app.listen(APP_PORT, APP_HOST);
+  await app.listen(appPort, appHost);
 
-  logger.log(`🔥 Swagger: http://${APP_HOST}:${APP_PORT}/swagger`);
-  logger.log(`🟢 HTTP: http://${APP_HOST}:${APP_PORT}/api`);
-  logger.log(`🔵 TCP: ${NOTIFICATION_SERVICE_TCP_HOST}:${NOTIFICATION_SERVICE_TCP_PORT}`);
+  logger.log(`🔥 Swagger: http://${appHost}:${appPort}/swagger`);
+  logger.log(`🟢 HTTP: http://${appHost}:${appPort}/api`);
+  logger.log(`🔵 TCP: ${notificationServiceTcpHost}:${notificationServiceTcpPort}`);
 }
 
 await bootstrap();

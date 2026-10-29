@@ -42,17 +42,17 @@ export class AuthService {
   async signUp({ email, password }: BaseAuth): Promise<TokenResponse> {
     const passwordHash = await this.passwordHasher.hash(password);
 
-    const userId = await this.em.transactional(async (em) => {
+    const userId = await this.em.transactional((em) => {
       const user = em.create(UserEntity, {
         email,
         password: passwordHash,
         role: "USER",
       });
 
-      await this.notificationClient.emit("user.created", { email: user.email });
-
       return user.id;
     });
+
+    await this.notificationClient.emit("user.created", { email });
 
     // pass it directly bc we have nothing to prove yet
     return await this._issueTokens({ userId, passwordHash });

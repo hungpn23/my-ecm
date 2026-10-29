@@ -1,13 +1,7 @@
-import { type } from "arktype";
-
+import { UserCreatedPayload } from "../microservice/event-payload.rpc-schema";
 import { KafkaMessageIn } from "./kafka-message.schema";
 
-export const UserCreatedData = type({
-  email: "string.email",
-});
-export type UserCreatedData = typeof UserCreatedData.infer;
-
 export const UserCreatedMessage = KafkaMessageIn.merge({
-  value: UserCreatedData,
+  value: UserCreatedPayload,
 });
 export type UserCreatedMessage = typeof UserCreatedMessage.inferIn;

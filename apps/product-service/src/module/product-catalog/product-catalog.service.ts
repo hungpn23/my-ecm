@@ -48,7 +48,7 @@ export class ProductCatalogService {
   private _toWhere({ search, categoryId, minPrice, maxPrice }: ProductCatalogQuery): FilterQuery<ProductEntity> {
     const where: FilterQuery<ProductEntity>[] = [{ status: "ACTIVE" }];
 
-    if (search) where.push({ name: { $ilike: `%${this._escapeLike(search)}%` } });
+    if (search) where.push({ name: { $ilike: `%${search}%` } });
     if (categoryId) where.push({ category: categoryId });
     if (minPrice) where.push({ price: { $gte: minPrice } });
     if (maxPrice) where.push({ price: { $lte: maxPrice } });
@@ -69,9 +69,5 @@ export class ProductCatalogService {
       default:
         return { id: "ASC" };
     }
-  }
-
-  private _escapeLike(value: string): string {
-    return value.replace(/[\\%_]/g, (char) => `\\${char}`);
   }
 }

@@ -11,26 +11,26 @@ import { EmailService } from "./email.service";
       imports: [ConfigModule.forFeatures(emailConfig)],
       inject: [emailConfig.KEY],
       useFactory: (config: EmailConfig) => {
-        switch (config.EMAIL_TRANSPORTER) {
+        switch (config.emailTransporter) {
           case "smtp":
             return {
-              from: config.EMAIL_SENDER,
+              from: config.emailSender,
               transport: new SmtpTransport({
-                host: config.SMTP_HOST,
-                port: config.SMTP_PORT,
-                secure: config.SMTP_PORT === 465,
-                auth: { user: config.SMTP_USER, pass: config.SMTP_PASS },
+                host: config.smtpHost,
+                port: config.smtpPort,
+                secure: config.smtpPort === 465,
+                auth: { user: config.smtpUser, pass: config.smtpPass },
               }),
             };
           case "ses":
             return {
-              from: config.EMAIL_SENDER,
+              from: config.emailSender,
               transport: new SesTransport({
-                region: config.AWS_REGION,
-                endpoint: config.AWS_ENDPOINT_URL,
+                region: config.awsRegion,
+                endpoint: config.awsEndpointUrl,
                 credentials: {
-                  accessKeyId: config.AWS_ACCESS_KEY_ID,
-                  secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+                  accessKeyId: config.awsAccessKeyId,
+                  secretAccessKey: config.awsSecretAccessKey,
                 },
               }),
             };

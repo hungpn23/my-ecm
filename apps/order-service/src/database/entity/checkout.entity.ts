@@ -1,9 +1,10 @@
-import { CHECKOUT_STATUS, type NonNegativeDecimal, PAYMENT_METHOD, type Uuid } from "@libs/contract";
-import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
+import { CHECKOUT_STATUSES, type NonNegativeDecimal, PAYMENT_METHODS, type Uuid } from "@libs/contract";
+import { ENTITY_NAME, useBaseProps } from "@libs/core";
 import { defineEntity, p } from "@mikro-orm/core";
 
 export const CheckoutSchema = defineEntity({
-  name: AGGREGATE_TYPE.CHECKOUT,
+  name: ENTITY_NAME.CHECKOUT,
+  tableName: "checkout",
   properties: useBaseProps({
     userId: p.uuid().$type<Uuid>(),
     shopId: p.uuid().$type<Uuid>(),
@@ -16,8 +17,8 @@ export const CheckoutSchema = defineEntity({
     recipientName: p.string(),
     phone: p.string(),
     shippingAddress: p.text(),
-    paymentMethod: p.enum(PAYMENT_METHOD),
-    status: p.enum(CHECKOUT_STATUS),
+    paymentMethod: p.enum(PAYMENT_METHODS),
+    status: p.enum(CHECKOUT_STATUSES),
     expiresAt: p.datetime().nullable(),
   }),
   checks: [

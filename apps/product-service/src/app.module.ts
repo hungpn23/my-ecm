@@ -17,10 +17,10 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     ObserveModule.forRootAsync({
       inject: [appConfig.KEY],
       useFactory: (config: AppConfig) => ({
-        appKey: config.OBSERVE_APP_KEY,
-        appSecret: config.OBSERVE_APP_SECRET,
-        serviceId: config.APP_NAME,
-        debug: config.OBSERVE_ENABLE_DEBUG,
+        appKey: config.observeAppKey,
+        appSecret: config.observeAppSecret,
+        serviceId: config.appName,
+        debug: config.observeEnableDebug,
       }),
     }),
     ConfigModule.forRoot(),

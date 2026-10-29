@@ -1,17 +1,13 @@
 import type { GetUserByIdPayload, User } from "@libs/contract";
-import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
 
-import { UserEntity } from "#internal/database/entity/index";
+import { UserService } from "./user.service";
 
 @Injectable()
 export class UserRpcService {
-  constructor(private readonly em: EntityManager) {}
+  constructor(private readonly user: UserService) {}
 
   async findOne(where: GetUserByIdPayload): Promise<User | null> {
-    const em = this.em.fork();
-
-    const user = await em.findOne(UserEntity, where, { populate: ["shop"] });
-    return user?.toResponse() ?? null;
+    return await this.user.findOne(where);
   }
 }

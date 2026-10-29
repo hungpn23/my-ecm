@@ -16,7 +16,7 @@ export class AuthController {
     response: TokenResponse,
     headers: [["Cache-Control", "no-store"]],
   })
-  async register(@Body({ schema: BaseAuth }) body: BaseAuth): Promise<TokenResponse> {
+  async signUp(@Body({ schema: BaseAuth }) body: BaseAuth): Promise<TokenResponse> {
     return await this.auth.signUp(body);
   }
 
@@ -27,7 +27,7 @@ export class AuthController {
     response: TokenResponse,
     headers: [["Cache-Control", "no-store"]],
   })
-  async login(@Body({ schema: BaseAuth }) body: BaseAuth): Promise<TokenResponse> {
+  async signIn(@Body({ schema: BaseAuth }) body: BaseAuth): Promise<TokenResponse> {
     return await this.auth.signIn(body);
   }
 

@@ -26,8 +26,8 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix("api");
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
-  const { APP_HOST, APP_PORT } = app.get<unknown, AppConfig>(appConfig.KEY);
-  const { PRODUCT_SERVICE_TCP_HOST, PRODUCT_SERVICE_TCP_PORT } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
+  const { appHost, appPort } = app.get<unknown, AppConfig>(appConfig.KEY);
+  const { productServiceTcpHost, productServiceTcpPort } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder().setTitle("Product Service API").setVersion("1.0").addBearerAuth().build();
   const documentFactory = (): OpenAPIObject => SwaggerModule.createDocument(app, swaggerConfig);
@@ -37,8 +37,8 @@ async function bootstrap(): Promise<void> {
     {
       transport: Transport.TCP,
       options: {
-        host: PRODUCT_SERVICE_TCP_HOST,
-        port: PRODUCT_SERVICE_TCP_PORT,
+        host: productServiceTcpHost,
+        port: productServiceTcpPort,
       },
     },
     { deferInitialization: true },
@@ -49,11 +49,11 @@ async function bootstrap(): Promise<void> {
   ms.useGlobalFilters(new RpcExceptionFilter());
 
   await app.startAllMicroservices();
-  await app.listen(APP_PORT, APP_HOST);
+  await app.listen(appPort, appHost);
 
-  logger.log(`🔥 Swagger: http://${APP_HOST}:${APP_PORT}/swagger`);
-  logger.log(`🟢 HTTP: http://${APP_HOST}:${APP_PORT}/api`);
-  logger.log(`🔵 TCP: ${PRODUCT_SERVICE_TCP_HOST}:${PRODUCT_SERVICE_TCP_PORT}`);
+  logger.log(`🔥 Swagger: http://${appHost}:${appPort}/swagger`);
+  logger.log(`🟢 HTTP: http://${appHost}:${appPort}/api`);
+  logger.log(`🔵 TCP: ${productServiceTcpHost}:${productServiceTcpPort}`);
 }
 
 await bootstrap();

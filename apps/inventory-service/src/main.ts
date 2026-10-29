@@ -26,8 +26,8 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix("api");
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
-  const { APP_HOST, APP_PORT } = app.get<unknown, AppConfig>(appConfig.KEY);
-  const { INVENTORY_SERVICE_TCP_HOST, INVENTORY_SERVICE_TCP_PORT } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
+  const { appHost, appPort } = app.get<unknown, AppConfig>(appConfig.KEY);
+  const { inventoryServiceTcpHost, inventoryServiceTcpPort } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("Inventory Service API")
@@ -41,8 +41,8 @@ async function bootstrap(): Promise<void> {
     {
       transport: Transport.TCP,
       options: {
-        host: INVENTORY_SERVICE_TCP_HOST,
-        port: INVENTORY_SERVICE_TCP_PORT,
+        host: inventoryServiceTcpHost,
+        port: inventoryServiceTcpPort,
       },
     },
     { deferInitialization: true },
@@ -52,11 +52,11 @@ async function bootstrap(): Promise<void> {
   ms.useGlobalFilters(new RpcExceptionFilter());
 
   await app.startAllMicroservices();
-  await app.listen(APP_PORT, APP_HOST);
+  await app.listen(appPort, appHost);
 
-  logger.log(`🔥 Swagger: http://${APP_HOST}:${APP_PORT}/swagger`);
-  logger.log(`🟢 HTTP: http://${APP_HOST}:${APP_PORT}/api`);
-  logger.log(`🔵 TCP: ${INVENTORY_SERVICE_TCP_HOST}:${INVENTORY_SERVICE_TCP_PORT}`);
+  logger.log(`🔥 Swagger: http://${appHost}:${appPort}/swagger`);
+  logger.log(`🟢 HTTP: http://${appHost}:${appPort}/api`);
+  logger.log(`🔵 TCP: ${inventoryServiceTcpHost}:${inventoryServiceTcpPort}`);
 }
 
 await bootstrap();
