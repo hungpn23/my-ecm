@@ -1,12 +1,13 @@
 import type { Shop, ShopDetail, ShopRole } from "@libs/contract";
-import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
+import { ENTITY_NAME, useBaseProps } from "@libs/core";
 import { defineEntity, type Loaded, p, wrap } from "@mikro-orm/core";
 
 // fallow-ignore-next-line circular-dependency
 import { UserEntity } from "./user.entity";
 
 export const ShopSchema = defineEntity({
-  name: AGGREGATE_TYPE.SHOP,
+  name: ENTITY_NAME.SHOP,
+  tableName: "shop",
   properties: useBaseProps({
     name: p.string(),
     description: p.text().nullable().lazy().ref(),

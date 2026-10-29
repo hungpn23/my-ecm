@@ -116,7 +116,7 @@ function createTsConfig(): string {
 
 function createMain(options: OnboardOptions): string {
   const serviceTitle = toServiceTitle(options.name);
-  const tcpPrefix = toTcpPrefix(options.name);
+  const tcpProperty = toTcpProperty(options.name);
 
   return `import "@libs/contract/arktype-global";
 
@@ -146,8 +146,8 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix("api");
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
-  const { APP_HOST, APP_PORT } = app.get<unknown, AppConfig>(appConfig.KEY);
-  const { ${tcpPrefix}_TCP_HOST, ${tcpPrefix}_TCP_PORT } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
+  const { appHost, appPort } = app.get<unknown, AppConfig>(appConfig.KEY);
+  const { ${tcpProperty}Host, ${tcpProperty}Port } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("${serviceTitle} Service API")
@@ -161,8 +161,8 @@ async function bootstrap(): Promise<void> {
     {
       transport: Transport.TCP,
       options: {
-        host: ${tcpPrefix}_TCP_HOST,
-        port: ${tcpPrefix}_TCP_PORT,
+        host: ${tcpProperty}Host,
+        port: ${tcpProperty}Port,
       },
     },
     { deferInitialization: true },
@@ -172,11 +172,11 @@ async function bootstrap(): Promise<void> {
   ms.useGlobalFilters(new RpcExceptionFilter());
 
   await app.startAllMicroservices();
-  await app.listen(APP_PORT, APP_HOST);
+  await app.listen(appPort, appHost);
 
-  logger.log(\`🔥 Swagger: http://\${APP_HOST}:\${APP_PORT}/swagger\`);
-  logger.log(\`🟢 HTTP: http://\${APP_HOST}:\${APP_PORT}/api\`);
-  logger.log(\`🔵 TCP: \${${tcpPrefix}_TCP_HOST}:\${${tcpPrefix}_TCP_PORT}\`);
+  logger.log(\`🔥 Swagger: http://\${appHost}:\${appPort}/swagger\`);
+  logger.log(\`🟢 HTTP: http://\${appHost}:\${appPort}/api\`);
+  logger.log(\`🔵 TCP: \${${tcpProperty}Host}:\${${tcpProperty}Port}\`);
 }
 
 await bootstrap();
@@ -201,10 +201,10 @@ function createAppModule(options: OnboardOptions): string {
     `ObserveModule.forRootAsync({
       inject: [appConfig.KEY],
       useFactory: (config: AppConfig) => ({
-        appKey: config.OBSERVE_APP_KEY,
-        appSecret: config.OBSERVE_APP_SECRET,
-        serviceId: config.APP_NAME,
-        debug: config.OBSERVE_ENABLE_DEBUG,
+        appKey: config.observeAppKey,
+        appSecret: config.observeAppSecret,
+        serviceId: config.appName,
+        debug: config.observeEnableDebug,
       }),
     })`,
     "ConfigModule.forRoot()",
@@ -301,6 +301,11 @@ function createFiles(options: ServiceOptions): [string, string][] {
   return files;
 }
 
+function toTcpProperty(name: string): string {
+  const [first, ...rest] = name.split("-");
+  return `${first}${rest.map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`).join("")}ServiceTcp`;
+}
+
 function toTcpPrefix(name: string): string {
   return `${name.replaceAll("-", "_").toUpperCase()}_SERVICE`;
 }
@@ -352,7 +357,9 @@ async function createService(options: OnboardOptions): Promise<void> {
     readFile(tcpConfigPath, "utf8"),
   ]);
   const tcpPrefix = toTcpPrefix(options.name);
-  const tcpMarker = "  }),";
+  const tcpMarker = "  });";
+  const tcpReturnMarker = "  };";
+  const tcpProperty = toTcpProperty(options.name);
 
   if (new RegExp(`^[ \\t]*${tcpPrefix}_TCP_(?:HOST|PORT)[ \\t]*:`, "m").test(tcpSource)) {
     throw new Error(`${tcpPrefix} is already registered in tcp.config.ts.`);
@@ -388,6 +395,10 @@ async function createService(options: OnboardOptions): Promise<void> {
     tcpMarker,
     `    ${tcpPrefix}_TCP_HOST: "string.host",\n    ${tcpPrefix}_TCP_PORT: "number.port",\n${tcpMarker}`,
   );
+  const updatedTcpMapping = updatedTcpSource.replace(
+    tcpReturnMarker,
+    `    ${tcpProperty}Host: env.${tcpPrefix}_TCP_HOST,\n    ${tcpProperty}Port: env.${tcpPrefix}_TCP_PORT,\n${tcpReturnMarker}`,
+  );
   const globalEnv = [...turboConfig.globalEnv];
   const lastTcpIndex = globalEnv.findLastIndex((key) => /_TCP_(?:HOST|PORT)$/.test(key));
   const tcpKeys = [`${tcpPrefix}_TCP_HOST`, `${tcpPrefix}_TCP_PORT`].filter((key) => !globalEnv.includes(key));
@@ -404,7 +415,7 @@ async function createService(options: OnboardOptions): Promise<void> {
     }),
   );
   await copyFile(join(serviceDirectory, ".env.example"), join(serviceDirectory, ".env"));
-  await writeFile(tcpConfigPath, updatedTcpSource);
+  await writeFile(tcpConfigPath, updatedTcpMapping);
   await writeFile(join(root, "turbo.json"), `${JSON.stringify(updatedTurbo, null, 2)}\n`);
   await writeFile(envExamplePath, updatedExample);
   await writeFile(envPath, updatedEnv);

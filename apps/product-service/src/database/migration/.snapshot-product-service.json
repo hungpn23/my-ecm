@@ -387,20 +387,23 @@
         },
         "status": {
           "name": "status",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "unique": false,
-          "length": 255,
+          "length": null,
           "precision": null,
           "scale": null,
           "default": null,
           "comment": null,
           "collation": null,
-          "enumItems": [],
-          "mappedType": "string"
+          "enumItems": [
+            "ACTIVE",
+            "INACTIVE"
+          ],
+          "mappedType": "enum"
         },
         "updated_at": {
           "name": "updated_at",
@@ -432,7 +435,14 @@
           "unique": true
         }
       ],
-      "checks": [],
+      "checks": [
+        {
+          "name": "product_status_check",
+          "expression": "\"status\" in ('ACTIVE', 'INACTIVE')",
+          "definition": "check (\"status\" in ('ACTIVE', 'INACTIVE'))",
+          "columnName": "status"
+        }
+      ],
       "triggers": [],
       "foreignKeys": {
         "product_category_id_foreign": {

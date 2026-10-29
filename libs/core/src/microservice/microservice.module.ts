@@ -24,6 +24,13 @@ export class MicroserviceModule {
       PRODUCT_SERVICE: ProductClient,
     } as const;
 
+    const addresses = {
+      IDENTITY_SERVICE: { host: "identityServiceTcpHost", port: "identityServiceTcpPort" },
+      INVENTORY_SERVICE: { host: "inventoryServiceTcpHost", port: "inventoryServiceTcpPort" },
+      NOTIFICATION_SERVICE: { host: "notificationServiceTcpHost", port: "notificationServiceTcpPort" },
+      PRODUCT_SERVICE: { host: "productServiceTcpHost", port: "productServiceTcpPort" },
+    } as const;
+
     const providers = clients.map((client) => clientRegistry[client]);
 
     const options = clients.map((client) => ({
@@ -33,8 +40,8 @@ export class MicroserviceModule {
       useFactory: (config: TcpConfig): TcpClientOptions => ({
         transport: Transport.TCP,
         options: {
-          host: config[`${client}_TCP_HOST`],
-          port: config[`${client}_TCP_PORT`],
+          host: config[addresses[client].host],
+          port: config[addresses[client].port],
         },
       }),
     })) satisfies ClientsProviderAsyncOptions[];

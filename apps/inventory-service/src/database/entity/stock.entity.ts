@@ -1,12 +1,13 @@
 import type { Uuid } from "@libs/contract";
-import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
+import { ENTITY_NAME, useBaseProps } from "@libs/core";
 import { defineEntity, p } from "@mikro-orm/core";
 
 // fallow-ignore-next-line circular-dependency
 import { ReservationEntity } from "./reservation.entity";
 
 export const StockSchema = defineEntity({
-  name: AGGREGATE_TYPE.STOCK,
+  name: ENTITY_NAME.STOCK,
+  tableName: "stock",
   properties: useBaseProps({
     productId: p.uuid().unique().$type<Uuid>(),
     shopId: p.uuid().$type<Uuid>(),

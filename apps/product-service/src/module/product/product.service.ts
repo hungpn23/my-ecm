@@ -1,4 +1,3 @@
-import { deepMerge } from "@libs/common";
 import type {
   CreateProduct,
   OffsetQuery,
@@ -43,12 +42,10 @@ export class ProductService {
   async find(query: OffsetQuery): Promise<PaginatedProductResponse> {
     const { page, pageSize, search } = query;
 
-    let where: FilterQuery<ProductEntity> = { shopId: this.shopContext.shopId };
-    if (search) {
-      where = deepMerge(where, {
-        $or: [{ name: { $ilike: `%${search}%` } }],
-      });
-    }
+    const conditions: FilterQuery<ProductEntity>[] = [{ shopId: this.shopContext.shopId }];
+    if (search) conditions.push({ name: { $ilike: `%${search}%` } });
+
+    const where: FilterQuery<ProductEntity> = { $and: conditions };
 
     const [products, total] = await this.em.findAndCount(ProductEntity, where, {
       populate: ["category"],

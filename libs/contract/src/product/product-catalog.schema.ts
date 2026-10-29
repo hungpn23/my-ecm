@@ -4,8 +4,8 @@ import { OffsetQuery } from "../shared/common.schema";
 import { NonNegativeDecimal } from "../shared/number.schema";
 import { Uuid } from "../shared/string.schema";
 
-export const PRODUCT_CATALOG_SORT = ["newest", "price_asc", "price_desc", "name_asc"] as const;
-export const ProductCatalogSort = type.enumerated(...PRODUCT_CATALOG_SORT);
+export const PRODUCT_CATALOG_SORTS = ["newest", "price_asc", "price_desc", "name_asc"] as const;
+export const ProductCatalogSort = type.enumerated(...PRODUCT_CATALOG_SORTS);
 export type ProductCatalogSort = typeof ProductCatalogSort.infer;
 
 export const ProductCatalogQuery = OffsetQuery.merge({

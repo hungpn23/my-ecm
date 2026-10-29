@@ -1,7 +1,7 @@
-import { UserCreatedData } from "@libs/contract";
-import { KafkaEvent } from "@libs/core";
+import { UserCreatedPayload } from "@libs/contract";
+import type { MicroserviceEvent } from "@libs/core";
 import { Controller } from "@nestjs/common";
-import { Payload } from "@nestjs/microservices";
+import { EventPattern, Payload } from "@nestjs/microservices";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 
 import { EmailService } from "#internal/module/email/email.service";
@@ -13,9 +13,8 @@ export class UserConsumer {
     private readonly email: EmailService,
   ) {}
 
-  /** @ignore Currently Unused. */
-  @KafkaEvent("user.created")
-  async handleUserCreated(@Payload({ schema: UserCreatedData }) data: UserCreatedData): Promise<void> {
+  @EventPattern<MicroserviceEvent>("user.created")
+  async handleUserCreated(@Payload({ schema: UserCreatedPayload }) data: UserCreatedPayload): Promise<void> {
     await this.email.sendWelcomeEmail({ to: data.email });
 
     this.logger.info(data, "Consumed user created event");

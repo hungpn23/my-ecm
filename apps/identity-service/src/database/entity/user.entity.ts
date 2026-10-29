@@ -1,5 +1,5 @@
-import { ROLE, SHOP_ROLE, type ShopMember, type User } from "@libs/contract";
-import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
+import { ROLES, SHOP_ROLES, type ShopMember, type User } from "@libs/contract";
+import { ENTITY_NAME, useBaseProps } from "@libs/core";
 import { defineEntity, type Loaded, p, wrap } from "@mikro-orm/core";
 
 // fallow-ignore-next-line circular-dependency
@@ -7,12 +7,13 @@ import { AddressEntity } from "./address.entity";
 import { ShopEntity } from "./shop.entity";
 
 export const UserSchema = defineEntity({
-  name: AGGREGATE_TYPE.USER,
+  name: ENTITY_NAME.USER,
+  tableName: "user",
   properties: useBaseProps({
     email: p.string().unique(),
     password: p.string().lazy().ref().hidden(),
-    role: p.enum(ROLE),
-    shopRole: p.enum(SHOP_ROLE).nullable(),
+    role: p.enum(ROLES),
+    shopRole: p.enum(SHOP_ROLES).nullable(),
     shop: () => p.manyToOne(ShopEntity).nullable().lazyRef().inversedBy("users"),
     addresses: () => p.oneToMany(AddressEntity).mappedBy("user"),
   }),

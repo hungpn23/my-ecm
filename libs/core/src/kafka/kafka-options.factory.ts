@@ -25,8 +25,8 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
       transport: Transport.KAFKA,
       options: {
         client: {
-          clientId: this.appConf.APP_NAME,
-          brokers: [`${this.config.KAFKA_HOST}:${this.config.KAFKA_PORT}`],
+          clientId: this.appConf.appName,
+          brokers: [`${this.config.kafkaHost}:${this.config.kafkaPort}`],
           logCreator: () => (entry: LogEntry) => {
             const { message, error, ...rest } = entry.log;
 
@@ -57,11 +57,11 @@ export class KafkaOptionsFactory implements ClientsModuleOptionsFactory {
           },
         },
         consumer: {
-          groupId: `${this.appConf.APP_NAME}-group`,
-          sessionTimeout: this.config.KAFKA_SESSION_TIMEOUT,
-          heartbeatInterval: this.config.KAFKA_HEARTBEAT_INTERVAL,
-          rebalanceTimeout: this.config.KAFKA_REBALANCE_TIMEOUT,
-          maxWaitTimeInMs: this.config.KAFKA_MAX_WAIT_TIME,
+          groupId: `${this.appConf.appName}-group`,
+          sessionTimeout: this.config.kafkaSessionTimeout,
+          heartbeatInterval: this.config.kafkaHeartbeatInterval,
+          rebalanceTimeout: this.config.kafkaRebalanceTimeout,
+          maxWaitTimeInMs: this.config.kafkaMaxWaitTime,
         },
         serializer: this.serializer,
       },

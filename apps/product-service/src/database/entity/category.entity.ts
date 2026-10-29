@@ -1,12 +1,13 @@
 import type { Category } from "@libs/contract";
-import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
+import { ENTITY_NAME, useBaseProps } from "@libs/core";
 import { defineEntity, type Loaded, p, wrap } from "@mikro-orm/core";
 
 // fallow-ignore-next-line circular-dependency
 import { ProductEntity } from "./product.entity";
 
 export const CategorySchema = defineEntity({
-  name: AGGREGATE_TYPE.CATEGORY,
+  name: ENTITY_NAME.CATEGORY,
+  tableName: "category",
   properties: useBaseProps({
     name: p.string(),
     code: p.string().unique(),

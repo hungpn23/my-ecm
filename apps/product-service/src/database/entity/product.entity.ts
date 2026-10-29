@@ -1,17 +1,18 @@
-import type { NonNegativeDecimal, Product, ProductDetail, ProductStatus, Uuid } from "@libs/contract";
-import { AGGREGATE_TYPE, useBaseProps } from "@libs/core";
+import { type NonNegativeDecimal, type Product, PRODUCT_STATUSES, type ProductDetail, type Uuid } from "@libs/contract";
+import { ENTITY_NAME, useBaseProps } from "@libs/core";
 import { defineEntity, type Loaded, p, wrap } from "@mikro-orm/core";
 
 import { CategoryEntity } from "./category.entity";
 
 export const ProductSchema = defineEntity({
-  name: AGGREGATE_TYPE.PRODUCT,
+  name: ENTITY_NAME.PRODUCT,
+  tableName: "product",
   properties: useBaseProps({
     shopId: p.uuid().$type<Uuid>(),
     name: p.string(),
     description: p.text().nullable().lazy().ref(),
     price: p.decimal().precision(12).scale(2).$type<NonNegativeDecimal>(),
-    status: p.string().$type<ProductStatus>(),
+    status: p.enum(PRODUCT_STATUSES),
     category: () => p.manyToOne(CategoryEntity).lazyRef().inversedBy("products"),
   }),
 });

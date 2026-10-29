@@ -9,6 +9,14 @@ export const AwsConfig = type({
   AWS_SECRET_ACCESS_KEY: NonEmptyString,
 });
 
-export const awsConfig = registerAs("aws", () => arkenv(AwsConfig));
+export const awsConfig = registerAs("aws", () => {
+  const env = arkenv(AwsConfig);
+  return {
+    awsRegion: env.AWS_REGION,
+    awsEndpointUrl: env.AWS_ENDPOINT_URL,
+    awsAccessKeyId: env.AWS_ACCESS_KEY_ID,
+    awsSecretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+  };
+});
 
 export type AwsConfig = ConfigType<typeof awsConfig>;

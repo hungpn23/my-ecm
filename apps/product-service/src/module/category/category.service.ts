@@ -1,4 +1,3 @@
-import { deepMerge } from "@libs/common";
 import {
   type Category,
   type CreateCategory,
@@ -27,17 +26,15 @@ export class CategoryService {
   async find(query: OffsetQuery): Promise<PaginatedCategoryResponse> {
     const { page, pageSize, search } = query;
 
-    let where: FilterQuery<CategoryEntity> = {};
-    if (search) {
-      where = deepMerge(where, {
-        $or: [{ name: { $ilike: `%${search}%` } }, { code: { $ilike: `%${search}%` } }],
-      });
-    }
+    const conditions: FilterQuery<CategoryEntity>[] = [];
+    if (search) conditions.push({ $or: [{ name: { $ilike: `%${search}%` } }, { code: { $ilike: `%${search}%` } }] });
+
+    const where: FilterQuery<CategoryEntity> = conditions.length > 0 ? { $and: conditions } : {};
 
     const [categories, total] = await this.em.findAndCount(CategoryEntity, where, {
       limit: pageSize,
       offset: (page - 1) * pageSize,
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: "DESC" },
     });
 
     return {
