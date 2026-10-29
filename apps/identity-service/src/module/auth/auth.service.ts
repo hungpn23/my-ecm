@@ -23,10 +23,7 @@ import { Injectable } from "@nestjs/common";
 
 import { UserEntity } from "#internal/database/entity/index";
 
-interface PasswordProof {
-  userId: Uuid;
-  passwordHash: string;
-}
+import type { PasswordProof } from "./auth.interface";
 
 @Injectable()
 export class AuthService {
