@@ -1,6 +1,8 @@
 import { type } from "arktype";
 
-const Password = type("8 <= string <= 255").configure({ actual: () => "" });
+import { Varchar255 } from "../shared/string.schema";
+
+const Password = Varchar255.and("string >= 8").configure({ actual: () => "" });
 
 export const ChangePassword = type({
   oldPassword: Password,
@@ -19,7 +21,7 @@ export const ChangePassword = type({
 export type ChangePassword = typeof ChangePassword.infer;
 
 export const BaseAuth = type({
-  email: "string.email",
+  email: Varchar255.and("string.email"),
   password: Password,
 });
 export type BaseAuth = typeof BaseAuth.infer;
