@@ -1,20 +1,11 @@
-import { AnyRecord, SuccessResponse } from "@libs/contract";
+import { SuccessResponse } from "@libs/contract";
 import { Public } from "@nestjs/authentication";
 import { applyDecorators, Delete, Get, Header, Patch, Post, SerializeOptions } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiResponse } from "@nestjs/swagger";
 import type { JsonSchema, Type } from "arktype";
 
-export type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
-
-export interface EndpointParams {
-  path: string | string[];
-  public: boolean;
-  request: typeof AnyRecord;
-  response: typeof AnyRecord;
-  query: typeof AnyRecord;
-  params: typeof AnyRecord;
-  headers: [string, string][];
-}
+import type { EndpointParams } from "./endpoint.interface";
+import type { HttpMethod } from "./endpoint.type";
 
 function getRouteDecorator(method: HttpMethod, path: EndpointParams["path"] | undefined): MethodDecorator {
   switch (method) {
