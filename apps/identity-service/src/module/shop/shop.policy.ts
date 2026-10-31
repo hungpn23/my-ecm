@@ -5,6 +5,6 @@ import { Policy } from "@nestjs/authorization";
 @Policy()
 export class ShopPolicy {
   create(user: User | null): boolean {
-    return !isShopMember(user);
+    return !!user && !isShopMember(user);
   }
 }

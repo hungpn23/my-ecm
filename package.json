@@ -10,6 +10,7 @@
         "@nestjs/microservices": "12.2.0",
         "@nestjs/platform-express": "12.2.0",
         "@nestjs/swagger": "12.0.4",
+        "@nestjs/testing": "12.2.0",
         "@nestjs/observe": "0.3.17"
       },
       "mikro": {
@@ -82,7 +83,8 @@
     "orm:debug": "turbo orm:debug",
     "prepare": "bun .husky/install.mjs",
     "register:debezium": "dotenv -e .env -- turbo register:debezium",
-    "setup": "bun i && bun scripts/setup.ts"
+    "setup": "bun i && bun scripts/setup.ts",
+    "test": "bun test"
   },
   "dependencies": {
     "dotenv-cli": "catalog:backend"
