@@ -108,8 +108,8 @@ services:
   #   networks:
   #     - network
 
-volumes:
-  # kafka_data:
+# volumes:
+# kafka_data:
 
 networks:
   network:
