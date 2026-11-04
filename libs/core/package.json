@@ -30,6 +30,7 @@
     "@nestjs/config": "catalog:nest",
     "@nestjs/core": "catalog:nest",
     "@nestjs/microservices": "catalog:nest",
+    "@nestjs/observe": "catalog:nest",
     "arktype": "catalog:common",
     "ioredis": "catalog:backend",
     "kafkajs": "catalog:backend",

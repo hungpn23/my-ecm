@@ -71,7 +71,6 @@ function createPackageJson(options: OnboardOptions): string {
     ["@nestjs/common", "catalog:nest"],
     ["@nestjs/core", "catalog:nest"],
     ["@nestjs/microservices", "catalog:nest"],
-    ["@nestjs/observe", "catalog:nest"],
     ["@nestjs/platform-express", "catalog:nest"],
     ["@nestjs/swagger", "catalog:nest"],
     ["nestjs-pino", "catalog:logging"],
@@ -121,14 +120,14 @@ function createMain(options: OnboardOptions): string {
   return `import "@libs/contract/arktype-global";
 
 import { ArktypeValidationPipe, RpcExceptionFilter } from "@libs/common";
-import { type AppConfig, appConfig, type TcpConfig, tcpConfig } from "@libs/core";
+import { type AppConfig, appConfig, ObserveInstrument, type TcpConfig, tcpConfig } from "@libs/core";
 import { VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { type TcpOptions, Transport } from "@nestjs/microservices";
 import { DocumentBuilder, type OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import { Logger, registerMicroserviceLogging } from "nestjs-pino";
 import "reflect-metadata";
-import { AppModule, ObserveInstrument } from "./app.module";
+import { AppModule } from "./app.module";
 
 async function bootstrap(): Promise<void> {
   if (!ObserveInstrument) throw new Error("Observe instrument is unavailable");
@@ -190,23 +189,14 @@ function createAppModule(options: OnboardOptions): string {
     "RxjsExceptionFilter",
   ];
   const coreImports = [
-    "type AppConfig",
-    "appConfig",
     "AuthModule",
     "ConfigModule",
     ...(options.db ? ["DatabaseModule"] : []),
     "LoggerModule",
+    "ObserveModule",
   ];
   const imports = [
-    `ObserveModule.forRootAsync({
-      inject: [appConfig.KEY],
-      useFactory: (config: AppConfig) => ({
-        appKey: config.observeAppKey,
-        appSecret: config.observeAppSecret,
-        serviceId: config.appName,
-        debug: config.observeEnableDebug,
-      }),
-    })`,
+    "ObserveModule.forRoot()",
     "ConfigModule.forRoot()",
     ...(options.db ? ["DatabaseModule.forRoot(entities)"] : []),
     "LoggerModule.forRoot()",
@@ -245,11 +235,7 @@ function createAppModule(options: OnboardOptions): string {
 ${coreImport}
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
-import { createObserveModule } from "@nestjs/observe";
 ${options.db ? '\nimport { entities } from "#mikro-orm/generated";\n' : ""}
-
-export const { ObserveModule, ObserveInstrument } = createObserveModule();
-
 @Module({
   ${moduleImports}
   providers: [

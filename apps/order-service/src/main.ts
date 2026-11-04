@@ -1,14 +1,14 @@
 import "@libs/contract/arktype-global";
 
 import { ArktypeValidationPipe, RpcExceptionFilter } from "@libs/common";
-import { type AppConfig, appConfig, type TcpConfig, tcpConfig } from "@libs/core";
+import { type AppConfig, appConfig, ObserveInstrument, type TcpConfig, tcpConfig } from "@libs/core";
 import { VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { type TcpOptions, Transport } from "@nestjs/microservices";
 import { DocumentBuilder, type OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import { Logger, registerMicroserviceLogging } from "nestjs-pino";
 import "reflect-metadata";
-import { AppModule, ObserveInstrument } from "./app.module";
+import { AppModule } from "./app.module";
 
 async function bootstrap(): Promise<void> {
   if (!ObserveInstrument) throw new Error("Observe instrument is unavailable");
