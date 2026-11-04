@@ -46,5 +46,8 @@
     "reflect-metadata": "catalog:backend",
     "rxjs": "catalog:backend",
     "uuid": "catalog:backend"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "catalog:nest"
   }
 }
