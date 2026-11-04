@@ -23,7 +23,6 @@
     "@nestjs/core": "catalog:nest",
     "@nestjs/mail": "catalog:email",
     "@nestjs/microservices": "catalog:nest",
-    "@nestjs/observe": "catalog:nest",
     "@nestjs/platform-express": "catalog:nest",
     "@nestjs/swagger": "catalog:nest",
     "arktype": "catalog:common",

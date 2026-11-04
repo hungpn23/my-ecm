@@ -24,6 +24,7 @@ export * from "./kafka/kafka.service";
 export * from "./kafka/message-by-topic";
 export * from "./kafka/message-serializer.service";
 export * from "./logging/logger.module";
+export * from "./observe/observe.module";
 export * from "./outbox/aggregate-type.schema";
 export * from "./outbox/outbox.module";
 export * from "./outbox/outbox.service";
