@@ -15,6 +15,7 @@ export type MicroserviceEvent = typeof MicroserviceEvent.infer;
 
 export const MICROSERVICE_COMMANDS = [
   "get.user.by-id",
+  "get.address.by-id",
   "get.products.by-ids",
   "reserve.stock",
   "get.reservation.by-checkout-id",
