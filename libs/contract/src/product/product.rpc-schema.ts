@@ -10,5 +10,5 @@ export type GetProductsByIds = typeof GetProductsByIds.infer;
 export const ProductRpc = Product.merge(EntityRpcResponse);
 export type ProductRpc = typeof ProductRpc.infer;
 
-export const ProductsRpc = ProductRpc.array().atLeastLength(1).atMostLength(100);
+export const ProductsRpc = ProductRpc.array().atMostLength(100);
 export type ProductsRpc = typeof ProductsRpc.infer;

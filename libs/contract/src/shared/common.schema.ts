@@ -1,6 +1,7 @@
 import { type } from "arktype";
 
 import { Varchar255 } from "./string.schema";
+import { NonNegativeInteger } from "./number.schema";
 
 export const AnyRecord = type.Record("string", "unknown");
 export type AnyRecord = typeof AnyRecord.infer;
@@ -15,7 +16,7 @@ export type OffsetQuery = typeof OffsetQuery.infer;
 export const OffsetMetadata = type({
   page: "number.integer >= 1",
   pageSize: "number.integer >= 10",
-  total: "number.integer >= 0",
+  total: NonNegativeInteger,
   totalPages: "number.integer >= 1",
 });
 
