@@ -13,13 +13,17 @@ export class StockService {
   ) {}
 
   async findOne(productId: Uuid): Promise<Stock> {
-    const stock = await this.em.findOneOrFail(StockEntity, { productId, shopId: this.shopContext.shopId }, { exclude: ['reservations'] });
+    const stock = await this.em.findOneOrFail(
+      StockEntity,
+      { productId, shopId: this.shopContext.shopId },
+      { exclude: ["reservations"] },
+    );
 
     return stock.toResponse();
   }
 
   async findAvailability(productId: Uuid): Promise<Availability> {
-    const stock = await this.em.findOneOrFail(StockEntity, { productId }, { exclude: ['shopId', 'reservations'] });
+    const stock = await this.em.findOneOrFail(StockEntity, { productId }, { exclude: ["shopId", "reservations"] });
 
     return stock.toAvailabilityResponse();
   }

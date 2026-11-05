@@ -1,7 +1,7 @@
 import { type } from "arktype";
 
-import { Varchar255 } from "./string.schema";
 import { NonNegativeInteger } from "./number.schema";
+import { Varchar255 } from "./string.schema";
 
 export const AnyRecord = type.Record("string", "unknown");
 export type AnyRecord = typeof AnyRecord.infer;
