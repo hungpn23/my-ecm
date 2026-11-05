@@ -1,10 +1,11 @@
-import { NullableStockReservation, ProductsRpc, StockReservation, UserRpc } from "@libs/contract";
+import { AddressRpc, NullableStockReservation, ProductsRpc, StockReservation, UserRpc } from "@libs/contract";
 import type { Type } from "arktype";
 
 import type { MicroserviceCommand } from "./microservice.rpc-schema";
 
 export const ResponseByCommand = {
   "get.user.by-id": UserRpc,
+  "get.address.by-id": AddressRpc,
   "get.products.by-ids": ProductsRpc,
   "reserve.stock": StockReservation,
   "get.reservation.by-checkout-id": NullableStockReservation,
