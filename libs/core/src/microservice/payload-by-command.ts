@@ -1,4 +1,8 @@
 import {
+  CommitStock,
+  ConfirmPayment,
+  CreatePayment,
+  CreateStock,
   GetAddressById,
   GetProductsByIds,
   GetReservationByCheckoutId,
@@ -13,8 +17,12 @@ export const PayloadByCommand = {
   "get.user.by-id": GetUserByIdPayload,
   "get.address.by-id": GetAddressById,
   "get.products.by-ids": GetProductsByIds,
+  "create.stock": CreateStock,
   "reserve.stock": ReserveStock,
   "get.reservation.by-checkout-id": GetReservationByCheckoutId,
+  "create.payment": CreatePayment,
+  "confirm.payment": ConfirmPayment,
+  "commit.stock": CommitStock,
 } as const satisfies Record<MicroserviceCommand, Type>;
 
 export type PayloadByCommand = {

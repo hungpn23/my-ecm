@@ -7,4 +7,8 @@ export class StockPolicy {
   view(user: User | null): boolean {
     return isShopMember(user);
   }
+
+  update(user: User | null): boolean {
+    return isShopMember(user);
+  }
 }

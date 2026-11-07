@@ -1,12 +1,13 @@
 import type {
   CreateProduct,
+  CreateProductResponse,
   OffsetQuery,
   PaginatedProductResponse,
   ProductDetail,
   UpdateProduct,
   Uuid,
 } from "@libs/contract";
-import { ShopContext } from "@libs/core";
+import { InventoryClient, ShopContext } from "@libs/core";
 import { EntityManager, type FilterQuery } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
 
@@ -17,12 +18,13 @@ export class ProductService {
   constructor(
     private readonly em: EntityManager,
     private readonly shopContext: ShopContext,
+    private readonly inventory: InventoryClient,
   ) {}
 
-  async create(body: CreateProduct): Promise<ProductDetail> {
-    return await this.em.transactional(async (em) => {
-      const { categoryId, ...rest } = body;
+  async create(body: CreateProduct): Promise<CreateProductResponse> {
+    const { categoryId, onHand, ...rest } = body;
 
+    const product = await this.em.transactional(async (em) => {
       const category = await em.findOneOrFail(CategoryEntity, {
         id: categoryId,
       });
@@ -33,10 +35,14 @@ export class ProductService {
         category,
         shopId: this.shopContext.shopId,
       });
-      const product = await em.populate(newProduct, ["category", "description"]);
+      const loadedProduct = await em.populate(newProduct, ["category", "description"]);
 
-      return product.toDetailResponse();
+      return loadedProduct.toDetailResponse();
     });
+
+    const stock = await this.inventory.send("create.stock", { productId: product.id, shopId: product.shopId, onHand });
+
+    return { ...product, stock };
   }
 
   async find(query: OffsetQuery): Promise<PaginatedProductResponse> {

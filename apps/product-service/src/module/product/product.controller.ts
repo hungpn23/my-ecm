@@ -1,6 +1,7 @@
 import { Endpoint } from "@libs/common";
 import {
   CreateProduct,
+  CreateProductResponse,
   OffsetQuery,
   PaginatedProductResponse,
   ProductDetail,
@@ -18,8 +19,8 @@ export class ProductController {
   constructor(private readonly product: ProductService) {}
 
   @Can(ProductPolicy, "create")
-  @Endpoint("POST", { request: CreateProduct, response: ProductDetail })
-  async create(@Body({ schema: CreateProduct }) body: CreateProduct): Promise<ProductDetail> {
+  @Endpoint("POST", { request: CreateProduct, response: CreateProductResponse })
+  async create(@Body({ schema: CreateProduct }) body: CreateProduct): Promise<CreateProductResponse> {
     return await this.product.create(body);
   }
 

@@ -12,6 +12,7 @@ import { type TcpConfig, tcpConfig } from "#internal/config/tcp.config";
 import { IdentityClient } from "./client/identity.client";
 import { InventoryClient } from "./client/inventory.client";
 import { NotificationClient } from "./client/notification.client";
+import { PaymentClient } from "./client/payment.client";
 import { ProductClient } from "./client/product.client";
 import type { MicroserviceClient } from "./microservice.rpc-schema";
 
@@ -22,6 +23,7 @@ export class MicroserviceModule {
       INVENTORY_SERVICE: InventoryClient,
       NOTIFICATION_SERVICE: NotificationClient,
       PRODUCT_SERVICE: ProductClient,
+      PAYMENT_SERVICE: PaymentClient,
     } as const;
 
     const addresses = {
@@ -29,6 +31,7 @@ export class MicroserviceModule {
       INVENTORY_SERVICE: { host: "inventoryServiceTcpHost", port: "inventoryServiceTcpPort" },
       NOTIFICATION_SERVICE: { host: "notificationServiceTcpHost", port: "notificationServiceTcpPort" },
       PRODUCT_SERVICE: { host: "productServiceTcpHost", port: "productServiceTcpPort" },
+      PAYMENT_SERVICE: { host: "paymentServiceTcpHost", port: "paymentServiceTcpPort" },
     } as const;
 
     const providers = clients.map((client) => clientRegistry[client]);

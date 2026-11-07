@@ -10,6 +10,7 @@ export const ENTITY_NAME = {
   RESERVATION: "ReservationEntity",
   CHECKOUT: "CheckoutEntity",
   ORDER: "OrderEntity",
+  PAYMENT: "PaymentEntity",
   OUTBOX: "OutboxEntity",
 } as const;
 export const AggregateType = type.enumerated(...Object.values(ENTITY_NAME));

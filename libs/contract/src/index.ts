@@ -6,6 +6,8 @@ export * from "./inventory/stock.schema";
 export * from "./microservice/event-payload.rpc-schema";
 export * from "./microservice/error.rpc-schema";
 export * from "./order/checkout.schema";
+export * from "./payment/payment.schema";
+export * from "./payment/payment.rpc-schema";
 export * from "./order/order.schema";
 export * from "./product/category.schema";
 export * from "./product/product-catalog.schema";

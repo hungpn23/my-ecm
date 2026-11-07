@@ -16,6 +16,12 @@ export const Stock = EntityHttpResponse.merge({
 });
 export type Stock = typeof Stock.inferIn;
 
+export const ProductStock = Stock.pick("onHand", "reserved", "available");
+export type ProductStock = typeof ProductStock.infer;
+
+export const UpdateStock = Stock.pick("onHand");
+export type UpdateStock = typeof UpdateStock.infer;
+
 export const AvailabilityQuery = type({ productId: Uuid });
 export type AvailabilityQuery = typeof AvailabilityQuery.infer;
 
