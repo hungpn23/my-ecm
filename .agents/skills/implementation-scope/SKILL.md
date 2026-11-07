@@ -32,6 +32,6 @@ After completing the current scope:
 
 Treat review feedback as work on the current scope. Apply requested corrections, verify them, and hand the scope back for review before moving on.
 
-When the user replies `approve` to a scope, stage the changes from that approved scope before beginning the next scope. Inspect the staged and unstaged diffs first; stage only the approved changes, preserving unrelated changes and any existing partial staging. If a file contains mixed changes, stage only the approved hunks. Report what was staged. Approval to stage does not authorize a commit or push.
+When the user replies `approve` to a scope, inspect the staged and unstaged diffs, then stage the approved scope and all edits made by the user or formatter. Respect those edits and report what was staged. Approval to stage does not authorize a commit or push.
 
 Do not start the next scope merely because checks pass or the original request covers the whole feature. Continue only when the user authorizes continuation after review.
