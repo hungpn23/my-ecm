@@ -5,6 +5,8 @@ import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 
 import { entities } from "#mikro-orm/generated";
 
+import { CheckoutModule } from "./module/checkout/checkout.module";
+
 @Module({
   imports: [
     ObserveModule.forRoot(),
@@ -12,6 +14,7 @@ import { entities } from "#mikro-orm/generated";
     DatabaseModule.forRoot(entities),
     LoggerModule.forRoot(),
     AuthModule,
+    CheckoutModule,
   ],
   providers: [
     {

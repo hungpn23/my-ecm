@@ -1,6 +1,6 @@
-import { ORDER_STATUSES } from "@libs/contract";
+import { type Order, ORDER_STATUSES } from "@libs/contract";
 import { ENTITY_NAME, useBaseProps } from "@libs/core";
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, p, wrap } from "@mikro-orm/core";
 
 import { CheckoutEntity } from "./checkout.entity";
 
@@ -13,5 +13,11 @@ export const OrderSchema = defineEntity({
   }),
 });
 
-export class OrderEntity extends OrderSchema.class {}
+export class OrderEntity extends OrderSchema.class {
+  toResponse(this: OrderEntity): Order {
+    const data = wrap(this).serialize({ exclude: ["checkout"] });
+
+    return { ...data, checkoutId: this.checkout.id };
+  }
+}
 OrderSchema.setClass(OrderEntity);
