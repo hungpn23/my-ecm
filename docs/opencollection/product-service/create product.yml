@@ -14,6 +14,7 @@ http:
         "description": "{{$randomProductAdjective}}",
         "price": "{{$randomInt}}.00",
         "status": "ACTIVE",
+        "onHand": 25,
         "categoryId": "{{category_id}}"
       }
   auth: inherit

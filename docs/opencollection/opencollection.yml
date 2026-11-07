@@ -19,7 +19,7 @@ request:
     - type: before-request
       code: |-
         const accessToken = bru.getEnvVar('access_token')
-        const publicRequests = ['sign-up', 'token', 'refresh', 'revoke']
+        const publicRequests = ['sign-up', 'token', 'refresh', 'revoke', 'get availability']
 
         if (!publicRequests.includes(req.getName()) && accessToken) {
           req.setHeader('Authorization', 'Bearer ' + accessToken)

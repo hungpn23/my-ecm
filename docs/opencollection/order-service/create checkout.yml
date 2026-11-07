@@ -1,0 +1,33 @@
+info:
+  name: create checkout
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{order}}/checkouts"
+  body:
+    type: json
+    data: |-
+      {
+        "productId": "{{product_id}}",
+        "addressId": "{{address_id}}",
+        "quantity": 1,
+        "paymentMethod": "ONLINE"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const body = res.getBody()
+
+        if (body?.id) bru.setEnvVar('checkout_id', body.id)
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
