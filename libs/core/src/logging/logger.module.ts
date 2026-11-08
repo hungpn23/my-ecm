@@ -19,9 +19,9 @@ export class LoggerModule {
         quietReqLogger: true,
         quietResLogger: true,
         genReqId: (req, res) => {
-          const id = req.headers[X_REQUEST_ID] ?? v7();
-          res.setHeader(X_REQUEST_ID, id);
-          return id;
+          const requestId = req.headers[X_REQUEST_ID] ?? v7();
+          res.setHeader(X_REQUEST_ID, requestId);
+          return requestId;
         },
       },
       microservice: {

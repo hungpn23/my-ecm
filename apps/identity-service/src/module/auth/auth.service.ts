@@ -65,8 +65,8 @@ export class AuthService {
   }
 
   async changePassword({ oldPassword, newPassword }: ChangePassword): Promise<SuccessResponse> {
-    const { id } = this.authContext.requireUser();
-    const proof = await this._authenticate({ id }, oldPassword);
+    const userId = this.authContext.requireUser().id;
+    const proof = await this._authenticate({ id: userId }, oldPassword);
     const passwordHash = await this.passwordHasher.hash(newPassword);
 
     await this.em.transactional(
@@ -87,8 +87,8 @@ export class AuthService {
   }
 
   async refreshToken({ refreshToken }: RefreshTokenBody): Promise<TokenResponse> {
-    const id = createHash("sha256").update(refreshToken).digest("base64url");
-    const record = await this.storage.refreshTokens.getRefreshToken(id);
+    const refreshTokenHash = createHash("sha256").update(refreshToken).digest("base64url");
+    const record = await this.storage.refreshTokens.getRefreshToken(refreshTokenHash);
     if (!Uuid.allows(record?.userId)) throw new RefreshTokenError("invalid");
 
     const userCount = await this.em.count(UserEntity, { id: record.userId });

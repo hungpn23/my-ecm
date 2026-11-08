@@ -20,6 +20,6 @@ export class JwtAuth extends JwtBearerProvider<User> {
   protected override async validate({ sub }: JwtClaims): Promise<NullableUser> {
     if (!Uuid.allows(sub)) return null;
 
-    return await this.identityClient.send("get.user.by-id", { id: sub });
+    return await this.identityClient.send("get.user.by-id", { userId: sub });
   }
 }

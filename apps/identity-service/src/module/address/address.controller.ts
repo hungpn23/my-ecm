@@ -20,21 +20,21 @@ export class AddressController {
     return await this.address.create(body);
   }
 
-  @Endpoint("PATCH", { path: ":id/default", response: Address })
-  async setDefault(@Param("id", { schema: Uuid }) id: Uuid): Promise<Address> {
-    return await this.address.setDefault(id);
+  @Endpoint("PATCH", { path: ":addressId/default", response: Address })
+  async setDefault(@Param("addressId", { schema: Uuid }) addressId: Uuid): Promise<Address> {
+    return await this.address.setDefault(addressId);
   }
 
-  @Endpoint("PATCH", { path: ":id", request: EditAddress, response: Address })
+  @Endpoint("PATCH", { path: ":addressId", request: EditAddress, response: Address })
   async edit(
-    @Param("id", { schema: Uuid }) id: Uuid,
+    @Param("addressId", { schema: Uuid }) addressId: Uuid,
     @Body({ schema: EditAddress }) body: EditAddress,
   ): Promise<Address> {
-    return await this.address.edit(id, body);
+    return await this.address.edit(addressId, body);
   }
 
-  @Endpoint("DELETE", { path: ":id", response: SuccessResponse })
-  async remove(@Param("id", { schema: Uuid }) id: Uuid): Promise<SuccessResponse> {
-    return await this.address.remove(id);
+  @Endpoint("DELETE", { path: ":addressId", response: SuccessResponse })
+  async remove(@Param("addressId", { schema: Uuid }) addressId: Uuid): Promise<SuccessResponse> {
+    return await this.address.remove(addressId);
   }
 }

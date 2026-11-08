@@ -6,7 +6,7 @@ import {
   GetAddressById,
   GetProductsByIds,
   GetReservationByCheckoutId,
-  GetUserByIdPayload,
+  GetUserById,
   ReserveStock,
 } from "@libs/contract";
 import type { Type } from "arktype";
@@ -14,7 +14,7 @@ import type { Type } from "arktype";
 import type { MicroserviceCommand } from "./microservice.rpc-schema";
 
 export const PayloadByCommand = {
-  "get.user.by-id": GetUserByIdPayload,
+  "get.user.by-id": GetUserById,
   "get.address.by-id": GetAddressById,
   "get.products.by-ids": GetProductsByIds,
   "create.stock": CreateStock,

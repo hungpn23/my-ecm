@@ -29,7 +29,7 @@ export class CheckoutService {
   async open({ productId, addressId, quantity, paymentMethod }: OpenCheckout): Promise<Checkout> {
     const userId = this.authContext.requireUser().id;
     const [products, address] = await Promise.all([
-      this.product.send("get.products.by-ids", { ids: [productId] }),
+      this.product.send("get.products.by-ids", { productIds: [productId] }),
       this.identity.send("get.address.by-id", { addressId, userId }),
     ]);
 

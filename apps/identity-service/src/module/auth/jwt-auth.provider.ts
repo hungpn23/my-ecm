@@ -17,6 +17,6 @@ export class JwtAuth extends JwtBearerProvider<User> {
   protected override async validate({ sub }: JwtClaims): Promise<NullableUser> {
     if (!Uuid.allows(sub)) return null;
 
-    return await this.user.findOne({ id: sub });
+    return await this.user.findOne({ userId: sub });
   }
 }

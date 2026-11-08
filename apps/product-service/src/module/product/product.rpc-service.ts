@@ -8,9 +8,9 @@ import { ProductEntity } from "#internal/database/entity/index";
 export class ProductRpcService {
   constructor(private readonly em: EntityManager) {}
 
-  async findByIds({ ids }: GetProductsByIds): Promise<Product[]> {
+  async findByIds({ productIds }: GetProductsByIds): Promise<Product[]> {
     const em = this.em.fork();
-    const products = await em.find(ProductEntity, { id: { $in: ids } }, { populate: ["category"] });
+    const products = await em.find(ProductEntity, { id: { $in: productIds } }, { populate: ["category"] });
 
     return products.map((product) => product.toResponse());
   }

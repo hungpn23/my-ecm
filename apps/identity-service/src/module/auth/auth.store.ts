@@ -14,8 +14,8 @@ export class AuthStore implements RefreshTokenStore {
     storage.registerSource({ refreshTokens: this });
   }
 
-  async getRefreshToken(id: string): Promise<RefreshTokenRecord | undefined> {
-    const row = await this._fork().findOne(RefreshTokenEntity, { id });
+  async getRefreshToken(refreshTokenId: string): Promise<RefreshTokenRecord | undefined> {
+    const row = await this._fork().findOne(RefreshTokenEntity, { id: refreshTokenId });
     if (!row) return undefined;
 
     const { usedAt, claims, ...rest } = wrap(row).serialize({
@@ -45,8 +45,12 @@ export class AuthStore implements RefreshTokenStore {
     });
   }
 
-  async markRefreshTokenUsed(id: string, at: Date): Promise<boolean> {
-    const affected = await this._fork().nativeUpdate(RefreshTokenEntity, { id, usedAt: null }, { usedAt: at });
+  async markRefreshTokenUsed(refreshTokenId: string, at: Date): Promise<boolean> {
+    const affected = await this._fork().nativeUpdate(
+      RefreshTokenEntity,
+      { id: refreshTokenId, usedAt: null },
+      { usedAt: at },
+    );
 
     return affected === 1;
   }
