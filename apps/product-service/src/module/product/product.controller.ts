@@ -5,6 +5,7 @@ import {
   OffsetQuery,
   PaginatedProductResponse,
   ProductDetail,
+  type SuccessResponse,
   UpdateProduct,
   Uuid,
 } from "@libs/contract";
@@ -51,7 +52,9 @@ export class ProductController {
 
   @Can(ProductPolicy, "delete")
   @Endpoint("DELETE", { path: ":productId" })
-  async delete(@Param("productId", { schema: Uuid }) productId: Uuid): Promise<void> {
+  async delete(@Param("productId", { schema: Uuid }) productId: Uuid): Promise<SuccessResponse> {
     await this.product.delete(productId);
+
+    return { ok: true };
   }
 }

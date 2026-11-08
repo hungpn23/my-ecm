@@ -1,4 +1,4 @@
-import type { ConfirmPayment, CreatePayment, Payment } from "@libs/contract";
+import type { ConfirmPayment, CreatePaymentPayload, Payment } from "@libs/contract";
 import { LockMode } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { ConflictException, Injectable } from "@nestjs/common";
@@ -9,7 +9,7 @@ import { PaymentEntity } from "#internal/database/entity/index";
 export class PaymentRpcService {
   constructor(private readonly em: EntityManager) {}
 
-  async create(payload: CreatePayment): Promise<Payment> {
+  async create(payload: CreatePaymentPayload): Promise<Payment> {
     return await this.em.transactional(async (em) => {
       const payment = em.create(PaymentEntity, { ...payload, status: "INITIATED" });
 

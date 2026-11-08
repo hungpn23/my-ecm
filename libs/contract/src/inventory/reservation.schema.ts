@@ -2,14 +2,14 @@ import { type } from "arktype";
 
 import { POSTGRES_INTEGER_MAX } from "../shared/common.constant";
 import { DateToISOString } from "../shared/date.schema";
-import { EntityHttpResponse } from "../shared/entity-response.schema";
+import { EntityResponse } from "../shared/entity-response.schema";
 import { Uuid } from "../shared/string.schema";
 
 export const RESERVATION_STATUSES = ["HELD", "COMMITTED", "EXPIRED"] as const;
 export const ReservationStatus = type.enumerated(...RESERVATION_STATUSES);
 export type ReservationStatus = typeof ReservationStatus.infer;
 
-export const Reservation = EntityHttpResponse.merge({
+export const Reservation = EntityResponse.merge({
   checkoutId: Uuid,
   committedPaymentId: Uuid.or("null"),
   productId: Uuid,

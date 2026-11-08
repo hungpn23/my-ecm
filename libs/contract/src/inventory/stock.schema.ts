@@ -1,13 +1,13 @@
 import { type } from "arktype";
 
 import { POSTGRES_INTEGER_MAX } from "../shared/common.constant";
-import { EntityHttpResponse } from "../shared/entity-response.schema";
+import { EntityResponse } from "../shared/entity-response.schema";
 import { NonNegativeInteger } from "../shared/number.schema";
 import { Uuid } from "../shared/string.schema";
 
 const StockQuantity = NonNegativeInteger.atMost(POSTGRES_INTEGER_MAX);
 
-export const Stock = EntityHttpResponse.merge({
+export const Stock = EntityResponse.merge({
   productId: Uuid,
   shopId: Uuid,
   onHand: StockQuantity,

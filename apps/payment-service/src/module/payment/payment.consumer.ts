@@ -1,4 +1,4 @@
-import { ConfirmPayment, CreatePayment, type Payment } from "@libs/contract";
+import { ConfirmPayment, CreatePaymentPayload, type Payment } from "@libs/contract";
 import type { MicroserviceCommand } from "@libs/core";
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
@@ -10,7 +10,7 @@ export class PaymentConsumer {
   constructor(private readonly payment: PaymentRpcService) {}
 
   @MessagePattern<MicroserviceCommand>("create.payment")
-  async create(@Payload({ schema: CreatePayment }) payload: CreatePayment): Promise<Payment> {
+  async create(@Payload({ schema: CreatePaymentPayload }) payload: CreatePaymentPayload): Promise<Payment> {
     return await this.payment.create(payload);
   }
 

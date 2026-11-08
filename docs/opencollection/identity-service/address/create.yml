@@ -10,9 +10,9 @@ http:
     type: json
     data: |-
       {
-        "recipientName": "Nguyễn Văn A",
-        "phone": "0901234567",
-        "address": "141 Nguyễn Trãi, TP. Hà Nội"
+        "recipientName": "Phạm Ngọc Hùng",
+        "phone": "0961058815",
+        "address": "4/163 Phố Phú Đô, TP. Hà Nội"
       }
   auth: inherit
 

@@ -3,7 +3,7 @@ import { type } from "arktype";
 import { ReserveStock } from "../inventory/stock.rpc-schema";
 import { Payment } from "../payment/payment.schema";
 import { DateToISOString } from "../shared/date.schema";
-import { EntityHttpResponse } from "../shared/entity-response.schema";
+import { EntityResponse } from "../shared/entity-response.schema";
 import { NonNegativeDecimal } from "../shared/number.schema";
 import { Uuid, Varchar255 } from "../shared/string.schema";
 
@@ -24,7 +24,7 @@ export type CreateCheckout = typeof CreateCheckout.infer;
 export const ConfirmCheckout = type({ paymentId: Uuid });
 export type ConfirmCheckout = typeof ConfirmCheckout.infer;
 
-export const Checkout = EntityHttpResponse.merge(CreateCheckout.pick("productId", "quantity", "paymentMethod")).merge({
+export const Checkout = EntityResponse.merge(CreateCheckout.pick("productId", "quantity", "paymentMethod")).merge({
   userId: Uuid,
   shopId: Uuid,
   productName: "string",

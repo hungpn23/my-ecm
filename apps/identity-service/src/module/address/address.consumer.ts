@@ -1,4 +1,4 @@
-import { type Address, GetAddressById } from "@libs/contract";
+import { GetAddressById, type NullableAddress } from "@libs/contract";
 import type { MicroserviceCommand } from "@libs/core";
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
@@ -10,7 +10,7 @@ export class AddressConsumer {
   constructor(private readonly address: AddressRpcService) {}
 
   @MessagePattern<MicroserviceCommand>("get.address.by-id")
-  async getAddress(@Payload({ schema: GetAddressById }) payload: GetAddressById): Promise<Address | null> {
+  async getAddress(@Payload({ schema: GetAddressById }) payload: GetAddressById): Promise<NullableAddress> {
     return await this.address.findOne(payload);
   }
 }

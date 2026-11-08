@@ -1,7 +1,7 @@
 import { type } from "arktype";
 
 import { DateToISOString } from "../shared/date.schema";
-import { EntityHttpResponse } from "../shared/entity-response.schema";
+import { EntityResponse } from "../shared/entity-response.schema";
 import { NonNegativeDecimal } from "../shared/number.schema";
 import { Uuid } from "../shared/string.schema";
 
@@ -9,7 +9,7 @@ export const PAYMENT_STATUSES = ["INITIATED", "SUCCEEDED", "FAILED", "EXPIRED"] 
 export const PaymentStatus = type.enumerated(...PAYMENT_STATUSES);
 export type PaymentStatus = typeof PaymentStatus.infer;
 
-export const Payment = EntityHttpResponse.merge({
+export const Payment = EntityResponse.merge({
   checkoutId: Uuid,
   amount: NonNegativeDecimal,
   status: PaymentStatus,

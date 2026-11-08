@@ -25,6 +25,4 @@ export const PayloadByCommand = {
   "commit.stock": CommitStock,
 } as const satisfies Record<MicroserviceCommand, Type>;
 
-export type PayloadByCommand = {
-  [Command in MicroserviceCommand]: (typeof PayloadByCommand)[Command]["inferIn"];
-};
+export type PayloadByCommand<Command extends MicroserviceCommand> = (typeof PayloadByCommand)[Command]["inferIn"];

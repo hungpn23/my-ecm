@@ -1,4 +1,4 @@
-import { type User, Uuid } from "@libs/contract";
+import { type NullableUser, type User, Uuid } from "@libs/contract";
 import { AuthenticationRegistry, JwtBearerProvider, type JwtClaims } from "@nestjs/authentication";
 import { Injectable } from "@nestjs/common";
 
@@ -14,7 +14,7 @@ export class JwtAuth extends JwtBearerProvider<User> {
     registry.registerProvider(this);
   }
 
-  protected override async validate({ sub }: JwtClaims): Promise<User | null> {
+  protected override async validate({ sub }: JwtClaims): Promise<NullableUser> {
     if (!Uuid.allows(sub)) return null;
 
     return await this.user.findOne({ id: sub });

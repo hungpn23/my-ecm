@@ -1,4 +1,4 @@
-import type { GetUserByIdPayload, User } from "@libs/contract";
+import type { GetUserByIdPayload, NullableUser, User } from "@libs/contract";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { AuthenticationContext } from "@nestjs/authentication";
 import { Injectable } from "@nestjs/common";
@@ -16,7 +16,7 @@ export class UserService {
     return this.authContext.requireUser();
   }
 
-  async findOne(where: GetUserByIdPayload): Promise<User | null> {
+  async findOne(where: GetUserByIdPayload): Promise<NullableUser> {
     const em = this.em.fork();
 
     const user = await em.findOne(UserEntity, where, { populate: ["shop"] });

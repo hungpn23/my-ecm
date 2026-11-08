@@ -103,7 +103,7 @@ export class CheckoutService {
     const payment = await this.payment.send("create.payment", {
       checkoutId: pendingCheckout.id,
       amount: pendingCheckout.total,
-      expiresAt: reservation.expiresAt.toISOString(),
+      expiresAt: reservation.expiresAt,
     });
 
     return { checkout: pendingCheckout, payment };

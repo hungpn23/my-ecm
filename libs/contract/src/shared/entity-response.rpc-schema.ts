@@ -1,11 +1,7 @@
-import { type } from "arktype";
-
 import { DateFromISOString } from "./date.schema";
-import { Uuid } from "./string.schema";
+import { EntityResponse } from "./entity-response.schema";
 
-export const EntityRpcResponse = type({
-  id: Uuid,
+export const EntityResponseFromRpc = EntityResponse.merge({
   createdAt: DateFromISOString,
   updatedAt: DateFromISOString,
 });
-export type EntityRpcResponse = typeof EntityRpcResponse.inferIn;

@@ -1,5 +1,13 @@
 import { Endpoint } from "@libs/common";
-import { Category, CreateCategory, OffsetQuery, PaginatedCategoryResponse, UpdateCategory, Uuid } from "@libs/contract";
+import {
+  Category,
+  CreateCategory,
+  OffsetQuery,
+  PaginatedCategoryResponse,
+  type SuccessResponse,
+  UpdateCategory,
+  Uuid,
+} from "@libs/contract";
 import { Can } from "@nestjs/authorization";
 import { Body, Controller, Param, Query } from "@nestjs/common";
 
@@ -37,7 +45,9 @@ export class CategoryController {
 
   @Can(CategoryPolicy, "delete")
   @Endpoint("DELETE", { path: ":categoryId" })
-  async delete(@Param("categoryId", { schema: Uuid }) categoryId: Uuid): Promise<void> {
+  async delete(@Param("categoryId", { schema: Uuid }) categoryId: Uuid): Promise<SuccessResponse> {
     await this.category.delete(categoryId);
+
+    return { ok: true };
   }
 }

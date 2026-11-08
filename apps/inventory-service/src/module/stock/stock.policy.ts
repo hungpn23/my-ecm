@@ -1,14 +1,14 @@
-import type { User } from "@libs/contract";
+import type { NullableUser } from "@libs/contract";
 import { isShopMember } from "@libs/core";
 import { Policy } from "@nestjs/authorization";
 
 @Policy()
 export class StockPolicy {
-  view(user: User | null): boolean {
+  view(user: NullableUser): boolean {
     return isShopMember(user);
   }
 
-  update(user: User | null): boolean {
+  update(user: NullableUser): boolean {
     return isShopMember(user);
   }
 }
