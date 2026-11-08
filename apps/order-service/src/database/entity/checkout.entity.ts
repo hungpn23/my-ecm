@@ -1,6 +1,6 @@
 import { type Checkout, CHECKOUT_STATUSES, type NonNegativeDecimal, PAYMENT_METHODS, type Uuid } from "@libs/contract";
 import { ENTITY_NAME, useBaseProps } from "@libs/core";
-import { defineEntity, p, wrap } from "@mikro-orm/core";
+import { defineEntity, type Opt, p, wrap } from "@mikro-orm/core";
 
 export const CheckoutSchema = defineEntity({
   name: ENTITY_NAME.CHECKOUT,
@@ -39,6 +39,14 @@ export const CheckoutSchema = defineEntity({
 });
 
 export class CheckoutEntity extends CheckoutSchema.class {
+  get isOpen(): Opt<boolean> {
+    return this.status === "OPEN";
+  }
+
+  get isAwaitingPayment(): Opt<boolean> {
+    return this.status === "PAYMENT_PENDING";
+  }
+
   toResponse(this: CheckoutEntity): Checkout {
     const data = wrap(this).serialize();
 

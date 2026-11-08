@@ -61,13 +61,13 @@ export class StockRpcService {
         { lockMode: LockMode.PESSIMISTIC_WRITE },
       );
 
-      if (reservation.status === "COMMITTED") {
-        if (reservation.committedPaymentId !== paymentId) {
-          throw new ConflictException("Reservation was committed with another payment");
-        }
-      } else {
-        if (reservation.status !== "HELD" || reservation.isExpired) {
-          throw new ConflictException("Reservation cannot be committed");
+      if (reservation.isCommitted && reservation.committedPaymentId !== paymentId) {
+        throw new ConflictException("Reservation was committed before with another payment");
+      }
+
+      if (!reservation.isCommitted) {
+        if (!reservation.isHeld || reservation.isExpired) {
+          throw new ConflictException("Reservation status is not held or expired");
         }
 
         await this.commitHeldReservation(em, reservation, paymentId);

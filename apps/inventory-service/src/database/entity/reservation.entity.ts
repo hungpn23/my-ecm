@@ -19,6 +19,14 @@ export const ReservationSchema = defineEntity({
 });
 
 export class ReservationEntity extends ReservationSchema.class {
+  get isHeld(): Opt<boolean> {
+    return this.status === "HELD";
+  }
+
+  get isCommitted(): Opt<boolean> {
+    return this.status === "COMMITTED";
+  }
+
   get isExpired(): Opt<boolean> {
     return this.expiresAt.getTime() <= Date.now();
   }

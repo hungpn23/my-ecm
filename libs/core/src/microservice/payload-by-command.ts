@@ -1,7 +1,7 @@
 import {
   CommitStock,
   ConfirmPayment,
-  CreatePayment,
+  CreatePaymentPayload,
   CreateStock,
   GetAddressById,
   GetProductsByIds,
@@ -20,7 +20,7 @@ export const PayloadByCommand = {
   "create.stock": CreateStock,
   "reserve.stock": ReserveStock,
   "get.reservation.by-checkout-id": GetReservationByCheckoutId,
-  "create.payment": CreatePayment,
+  "create.payment": CreatePaymentPayload,
   "confirm.payment": ConfirmPayment,
   "commit.stock": CommitStock,
 } as const satisfies Record<MicroserviceCommand, Type>;

@@ -15,16 +15,16 @@ export const PAYMENT_METHODS = ["ONLINE"] as const;
 export const PaymentMethod = type.enumerated(...PAYMENT_METHODS);
 export type PaymentMethod = typeof PaymentMethod.infer;
 
-export const CreateCheckout = ReserveStock.pick("productId", "quantity").merge({
+export const OpenCheckout = ReserveStock.pick("productId", "quantity").merge({
   addressId: Uuid,
   paymentMethod: PaymentMethod,
 });
-export type CreateCheckout = typeof CreateCheckout.infer;
+export type OpenCheckout = typeof OpenCheckout.infer;
 
 export const ConfirmCheckout = type({ paymentId: Uuid });
 export type ConfirmCheckout = typeof ConfirmCheckout.infer;
 
-export const Checkout = EntityResponse.merge(CreateCheckout.pick("productId", "quantity", "paymentMethod")).merge({
+export const Checkout = EntityResponse.merge(OpenCheckout.pick("productId", "quantity", "paymentMethod")).merge({
   userId: Uuid,
   shopId: Uuid,
   productName: "string",
@@ -39,5 +39,5 @@ export const Checkout = EntityResponse.merge(CreateCheckout.pick("productId", "q
 });
 export type Checkout = typeof Checkout.inferIn;
 
-export const PayCheckoutResponse = type({ checkout: Checkout, payment: Payment });
-export type PayCheckoutResponse = typeof PayCheckoutResponse.inferIn;
+export const ProcessPaymentResponse = type({ checkout: Checkout, payment: Payment });
+export type ProcessPaymentResponse = typeof ProcessPaymentResponse.inferIn;

@@ -1,11 +1,11 @@
 info:
-  name: pay checkout
+  name: process payment
   type: http
   seq: 3
 
 http:
   method: POST
-  url: "{{order}}/checkouts/{{checkout_id}}/pay"
+  url: "{{order}}/checkouts/{{checkout_id}}/process-payment"
   auth: inherit
 
 runtime:

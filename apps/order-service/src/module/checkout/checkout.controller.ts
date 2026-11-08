@@ -1,5 +1,5 @@
 import { Endpoint } from "@libs/common";
-import { Checkout, ConfirmCheckout, CreateCheckout, Order, PayCheckoutResponse, Uuid } from "@libs/contract";
+import { Checkout, ConfirmCheckout, OpenCheckout, Order, ProcessPaymentResponse, Uuid } from "@libs/contract";
 import { Can } from "@nestjs/authorization";
 import { Body, Controller, Param } from "@nestjs/common";
 
@@ -10,26 +10,26 @@ import { CheckoutService } from "./checkout.service";
 export class CheckoutController {
   constructor(private readonly checkout: CheckoutService) {}
 
-  @Endpoint("POST", { request: CreateCheckout, response: Checkout })
-  async create(@Body({ schema: CreateCheckout }) body: CreateCheckout): Promise<Checkout> {
-    return await this.checkout.create(body);
+  @Endpoint("POST", { path: "open", request: OpenCheckout, response: Checkout })
+  async open(@Body({ schema: OpenCheckout }) body: OpenCheckout): Promise<Checkout> {
+    return await this.checkout.open(body);
   }
 
-  @Endpoint("POST", { path: ":id/pay", response: PayCheckoutResponse })
-  async pay(@Param("id", { schema: Uuid }) id: Uuid): Promise<PayCheckoutResponse> {
-    return await this.checkout.pay(id);
+  @Endpoint("POST", { path: ":checkoutId/process-payment", response: ProcessPaymentResponse })
+  async processPayment(@Param("checkoutId", { schema: Uuid }) checkoutId: Uuid): Promise<ProcessPaymentResponse> {
+    return await this.checkout.processPayment(checkoutId);
   }
 
-  @Endpoint("POST", { path: ":id/confirm", request: ConfirmCheckout, response: Order })
+  @Endpoint("POST", { path: ":checkoutId/confirm", request: ConfirmCheckout, response: Order })
   async confirm(
-    @Param("id", { schema: Uuid }) id: Uuid,
+    @Param("checkoutId", { schema: Uuid }) checkoutId: Uuid,
     @Body({ schema: ConfirmCheckout }) body: ConfirmCheckout,
   ): Promise<Order> {
-    return await this.checkout.confirm(id, body);
+    return await this.checkout.confirm(checkoutId, body);
   }
 
-  @Endpoint("GET", { path: ":id", response: Checkout })
-  async findOne(@Param("id", { schema: Uuid }) id: Uuid): Promise<Checkout> {
-    return await this.checkout.findOne(id);
+  @Endpoint("GET", { path: ":checkoutId", response: Checkout })
+  async findById(@Param("checkoutId", { schema: Uuid }) checkoutId: Uuid): Promise<Checkout> {
+    return await this.checkout.findById(checkoutId);
   }
 }

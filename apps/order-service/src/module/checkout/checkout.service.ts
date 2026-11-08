@@ -1,10 +1,10 @@
 import {
   type Checkout,
   type ConfirmCheckout,
-  type CreateCheckout,
   NonNegativeDecimal,
+  type OpenCheckout,
   type Order,
-  type PayCheckoutResponse,
+  type ProcessPaymentResponse,
   type Uuid,
 } from "@libs/contract";
 import { IdentityClient, InventoryClient, PaymentClient, ProductClient } from "@libs/core";
@@ -26,7 +26,7 @@ export class CheckoutService {
     private readonly payment: PaymentClient,
   ) {}
 
-  async create({ productId, addressId, quantity, paymentMethod }: CreateCheckout): Promise<Checkout> {
+  async open({ productId, addressId, quantity, paymentMethod }: OpenCheckout): Promise<Checkout> {
     const userId = this.authContext.requireUser().id;
     const [products, address] = await Promise.all([
       this.product.send("get.products.by-ids", { ids: [productId] }),
@@ -34,7 +34,7 @@ export class CheckoutService {
     ]);
 
     const [product] = products;
-    if (product?.status !== "ACTIVE") throw new NotFoundException("Product not found");
+    if (product?.status !== "ACTIVE") throw new NotFoundException("Product not found or inactive");
     if (!address) throw new NotFoundException("Address not found");
 
     const cents = BigInt(product.price.replace(".", "")) * BigInt(quantity);
@@ -65,33 +65,37 @@ export class CheckoutService {
     });
   }
 
-  async findOne(id: Uuid): Promise<Checkout> {
+  async findById(checkoutId: Uuid): Promise<Checkout> {
     return await this.em.transactional(async (em) => {
-      const checkout = await em.findOneOrFail(CheckoutEntity, { id, userId: this.authContext.requireUser().id });
+      const checkout = await em.findOneOrFail(CheckoutEntity, {
+        id: checkoutId,
+        userId: this.authContext.requireUser().id,
+      });
 
       return checkout.toResponse();
     });
   }
 
-  async pay(id: Uuid): Promise<PayCheckoutResponse> {
+  async processPayment(checkoutId: Uuid): Promise<ProcessPaymentResponse> {
     const userId = this.authContext.requireUser().id;
-    const openCheckout = await this.em.transactional(async (em) => {
-      const checkout = await em.findOneOrFail(CheckoutEntity, { id, userId });
-      if (checkout.status !== "OPEN") throw new ConflictException("Checkout is not open");
+
+    const openingCheckout = await this.em.transactional(async (em) => {
+      const checkout = await em.findOneOrFail(CheckoutEntity, { id: checkoutId, userId });
+      if (!checkout.isOpen) throw new ConflictException("Checkout status is not OPEN");
 
       return checkout.toResponse();
     });
 
     const reservation = await this.inventory.send("reserve.stock", {
-      checkoutId: openCheckout.id,
-      productId: openCheckout.productId,
-      shopId: openCheckout.shopId,
-      quantity: openCheckout.quantity,
+      checkoutId: openingCheckout.id,
+      productId: openingCheckout.productId,
+      shopId: openingCheckout.shopId,
+      quantity: openingCheckout.quantity,
     });
 
     const pendingCheckout = await this.em.transactional(async (em) => {
-      const checkout = await em.findOneOrFail(CheckoutEntity, { id, userId });
-      if (checkout.status !== "OPEN") throw new ConflictException("Checkout is not open");
+      const checkout = await em.findOneOrFail(CheckoutEntity, { id: checkoutId, userId });
+      if (checkout.status !== "OPEN") throw new ConflictException("Checkout status is not OPEN");
 
       checkout.status = "PAYMENT_PENDING";
       checkout.expiresAt = reservation.expiresAt;
@@ -109,20 +113,24 @@ export class CheckoutService {
     return { checkout: pendingCheckout, payment };
   }
 
-  async confirm(id: Uuid, { paymentId }: ConfirmCheckout): Promise<Order> {
+  async confirm(checkoutId: Uuid, { paymentId }: ConfirmCheckout): Promise<Order> {
     const userId = this.authContext.requireUser().id;
 
     await this.em.transactional(async (em) => {
-      const checkout = await em.findOneOrFail(CheckoutEntity, { id, userId });
-      if (checkout.status !== "PAYMENT_PENDING") throw new ConflictException("Checkout is not awaiting payment");
+      const checkout = await em.findOneOrFail(CheckoutEntity, { id: checkoutId, userId });
+      if (!checkout.isAwaitingPayment) throw new ConflictException("Checkout status is not PAYMENT_PENDING");
     });
 
-    await this.payment.send("confirm.payment", { checkoutId: id, paymentId });
-    await this.inventory.send("commit.stock", { checkoutId: id, paymentId });
+    await this.payment.send("confirm.payment", { checkoutId, paymentId });
+    await this.inventory.send("commit.stock", { checkoutId, paymentId });
 
     return await this.em.transactional(async (em) => {
-      const checkout = await em.findOneOrFail(CheckoutEntity, { id, userId }, { lockMode: LockMode.PESSIMISTIC_WRITE });
-      if (checkout.status !== "PAYMENT_PENDING") throw new ConflictException("Checkout is not awaiting payment");
+      const checkout = await em.findOneOrFail(
+        CheckoutEntity,
+        { id: checkoutId, userId },
+        { lockMode: LockMode.PESSIMISTIC_WRITE },
+      );
+      if (!checkout.isAwaitingPayment) throw new ConflictException("Checkout status is not PAYMENT_PENDING");
 
       checkout.status = "ORDER_CREATED";
       const order = em.create(OrderEntity, { checkout, status: "READY_TO_SHIP" });

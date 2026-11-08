@@ -42,8 +42,8 @@ Response của `get availability` có cùng `id`, `productId`, `available`, `cre
 
 Đăng nhập, dùng product đang `ACTIVE` có stock và đặt `address_id` là địa chỉ của tài khoản hiện tại. Chạy lần lượt:
 
-1. `order-service/create checkout`: gửi product, địa chỉ và số lượng; request lưu `checkout_id` từ response.
-2. `order-service/pay checkout`: reserve stock và tạo payment giả lập. Response có `{ "checkout": { ... }, "payment": { ... } }`; request lưu `payment.id` vào `payment_id`.
+1. `order-service/open checkout`: gửi product, địa chỉ và số lượng; request lưu `checkout_id` từ response.
+2. `order-service/process payment`: reserve stock và tạo payment giả lập. Response có `{ "checkout": { ... }, "payment": { ... } }`; request lưu `payment.id` vào `payment_id`.
 3. `order-service/confirm checkout`: gửi `{ "paymentId": "{{payment_id}}" }` để xác nhận payment và stock, sau đó tạo order.
 
 Ví dụ response của confirm (ID và thời gian chỉ để minh họa):

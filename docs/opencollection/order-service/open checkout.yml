@@ -1,11 +1,11 @@
 info:
-  name: create checkout
+  name: open checkout
   type: http
   seq: 1
 
 http:
   method: POST
-  url: "{{order}}/checkouts"
+  url: "{{order}}/checkouts/open"
   body:
     type: json
     data: |-

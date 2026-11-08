@@ -19,6 +19,14 @@ export class PaymentEntity extends PaymentSchema.class {
     return this.expiresAt.getTime() <= Date.now();
   }
 
+  get isInitiated(): Opt<boolean> {
+    return this.status === "INITIATED";
+  }
+
+  get isSucceeded(): Opt<boolean> {
+    return this.status === "SUCCEEDED";
+  }
+
   toResponse(this: PaymentEntity): Payment {
     return wrap(this).serialize();
   }
