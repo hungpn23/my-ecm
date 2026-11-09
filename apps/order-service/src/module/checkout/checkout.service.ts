@@ -56,7 +56,7 @@ export class CheckoutService {
         shippingAddress: address.address,
         paymentMethod,
         status: "OPEN",
-        expiresAt: null,
+        expiresAt: new Date(Date.now() + 15 * 60 * 1000),
       });
 
       await em.flush();
@@ -82,6 +82,7 @@ export class CheckoutService {
     const openingCheckout = await this.em.transactional(async (em) => {
       const checkout = await em.findOneOrFail(CheckoutEntity, { id: checkoutId, userId });
       if (!checkout.isOpen) throw new ConflictException("Checkout status is not OPEN");
+      if (checkout.isExpired) throw new ConflictException("Checkout has expired");
 
       return checkout.toResponse();
     });

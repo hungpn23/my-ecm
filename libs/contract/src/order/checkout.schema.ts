@@ -35,7 +35,7 @@ export const Checkout = EntityResponse.merge(OpenCheckout.pick("productId", "qua
   phone: Varchar255,
   shippingAddress: "string",
   status: CheckoutStatus,
-  expiresAt: DateToISOString.or("null"),
+  expiresAt: DateToISOString,
 });
 export type Checkout = typeof Checkout.inferIn;
 

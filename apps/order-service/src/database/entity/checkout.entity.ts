@@ -19,7 +19,7 @@ export const CheckoutSchema = defineEntity({
     shippingAddress: p.text(),
     paymentMethod: p.enum(PAYMENT_METHODS),
     status: p.enum(CHECKOUT_STATUSES),
-    expiresAt: p.datetime().nullable(),
+    expiresAt: p.datetime(),
   }),
   checks: [
     { property: "quantity", expression: ({ quantity }): string => `${quantity} > 0` },
@@ -43,14 +43,16 @@ export class CheckoutEntity extends CheckoutSchema.class {
     return this.status === "OPEN";
   }
 
+  get isExpired(): Opt<boolean> {
+    return this.expiresAt.getTime() <= Date.now();
+  }
+
   get isAwaitingPayment(): Opt<boolean> {
     return this.status === "PAYMENT_PENDING";
   }
 
   toResponse(this: CheckoutEntity): Checkout {
-    const data = wrap(this).serialize();
-
-    return { ...data, expiresAt: data.expiresAt ?? null };
+    return wrap(this).serialize();
   }
 }
 CheckoutSchema.setClass(CheckoutEntity);
