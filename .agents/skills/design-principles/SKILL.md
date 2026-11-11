@@ -5,7 +5,7 @@ description: Apply Clean Code and SOLID principles when designing, writing, chan
 
 # Design principles for my-ecm
 
-Apply Clean Code strictly when designing, writing, changing, or reviewing code. Apply SOLID after Clean Code, with judgment: preserve the project's preference for readable code over unnecessary abstractions. Inspect the relevant implementation and callers before choosing a design.
+Apply Clean Code strictly, without exceptions, when designing, writing, changing, or reviewing code. Apply SOLID after Clean Code, with judgment: preserve the project's preference for readable code over unnecessary abstractions. Inspect the relevant implementation and callers before choosing a design.
 
 ## Clean Code
 
