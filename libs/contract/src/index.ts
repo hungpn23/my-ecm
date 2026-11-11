@@ -4,7 +4,7 @@ export * from "./inventory/reservation.schema";
 export * from "./inventory/stock.rpc-schema";
 export * from "./inventory/stock.schema";
 export * from "./microservice/event-payload.rpc-schema";
-export * from "./microservice/error.rpc-schema";
+export * from "./microservice/error.schema";
 export * from "./order/checkout.schema";
 export * from "./payment/payment.schema";
 export * from "./payment/payment.rpc-schema";

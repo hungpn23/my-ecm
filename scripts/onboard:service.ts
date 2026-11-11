@@ -32,7 +32,7 @@ function validatePort(value: string, label: string): string | undefined {
     parsePort(value, label);
     return;
   } catch (error) {
-    return error instanceof Error ? error.message : "Invalid port.";
+    return Error.isError(error) ? error.message : "Invalid port.";
   }
 }
 
@@ -183,11 +183,7 @@ await bootstrap();
 }
 
 function createAppModule(options: OnboardOptions): string {
-  const commonImports = [
-    "ArktypeValidationPipe",
-    ...(options.db ? ["MikroOrmExceptionFilter"] : []),
-    "RxjsExceptionFilter",
-  ];
+  const commonImports = ["ArktypeValidationPipe", "ServerExceptionFilter"];
   const coreImports = [
     "AuthModule",
     "ConfigModule",
@@ -205,16 +201,8 @@ function createAppModule(options: OnboardOptions): string {
   const providers = [
     `{
       provide: APP_FILTER,
-      useClass: RxjsExceptionFilter,
+      useClass: ServerExceptionFilter,
     }`,
-    ...(options.db
-      ? [
-          `{
-      provide: APP_FILTER,
-      useClass: MikroOrmExceptionFilter,
-    }`,
-        ]
-      : []),
     `{
       provide: APP_PIPE,
       useClass: ArktypeValidationPipe,
@@ -471,10 +459,10 @@ async function main(): Promise<void> {
 try {
   await main();
 } catch (error) {
-  if (error instanceof Error && error.name === "AbortError") {
+  if (Error.isError(error) && error.name === "AbortError") {
     process.exitCode = 130;
   } else {
-    console.error(error instanceof Error ? error.message : error);
+    console.error(Error.isError(error) ? error.message : error);
     process.exitCode = 1;
   }
 }

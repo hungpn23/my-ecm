@@ -28,8 +28,11 @@ export class PaymentRpcService {
       );
 
       if (payment.isSucceeded) return payment.toResponse();
+
       if (!payment.isInitiated || payment.isExpired) {
-        throw new ConflictException("Payment status is not initiated or expired");
+        throw new ConflictException("Payment status is not initiated or expired", {
+          errorCode: "PAYMENT_NOT_INITIATED_OR_EXPIRED",
+        });
       }
 
       payment.status = "SUCCEEDED";

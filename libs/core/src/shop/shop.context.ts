@@ -10,7 +10,11 @@ export class ShopContext {
 
   get member(): ShopMember {
     const user = this.authContext.requireUser();
-    if (!isShopMember(user)) throw new ForbiddenException("User is not a shop member");
+
+    if (!isShopMember(user)) {
+      throw new ForbiddenException("User is not a shop member", { errorCode: "USER_NOT_SHOP_MEMBER" });
+    }
+
     return user;
   }
 

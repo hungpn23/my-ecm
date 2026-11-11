@@ -1,36 +1,18 @@
-import { STATUS_CODES } from "node:http";
-
-import { RPC_ERROR, type RpcError } from "@libs/contract";
-import { Catch, HttpException, Logger } from "@nestjs/common";
+import { Catch, Logger } from "@nestjs/common";
 import { BaseRpcExceptionFilter } from "@nestjs/microservices";
-import { isObject } from "lodash";
 import { type Observable, throwError } from "rxjs";
 
-import { RpcException } from "./rpc.exception";
+import { toServerError } from "./server-error.helper";
 
 @Catch()
 export class RpcExceptionFilter extends BaseRpcExceptionFilter {
   private readonly logger = new Logger(RpcExceptionFilter.name);
 
   override catch(exception: unknown): Observable<never> {
-    let error: RpcError = RPC_ERROR.INTERNAL_SERVER_ERROR satisfies RpcError;
+    const error = toServerError(exception);
 
-    if (exception instanceof RpcException) {
-      error = exception.payload satisfies RpcError;
-    } else if (exception instanceof HttpException) {
-      const statusCode = exception.getStatus();
-
-      const defaultErrorCode = STATUS_CODES[statusCode] ?? `Unknown Error (${statusCode})`;
-      const code = exception.errorCode ?? defaultErrorCode;
-
-      const response = exception.getResponse();
-      let message: unknown = exception.message;
-      if (isObject(response) && "message" in response) message = response.message;
-
-      error = { statusCode, code, message } satisfies RpcError;
-    } else if (exception instanceof Error) {
+    if (error.statusCode >= 500 && Error.isError(exception)) {
       this.logger.error(exception);
-      if (exception.cause) this.logger.error(`[REASON]: ${JSON.stringify(exception.cause)}`);
     }
 
     return throwError(() => error);

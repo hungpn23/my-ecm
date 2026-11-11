@@ -7,6 +7,7 @@ description: Design, change, or review ArkType schemas and inferred types in my-
 
 Inspect the contract, boundary, and callers before changing a schema. Apply `design-principles` and preserve existing input, output, and validation behavior unless the task requires a change.
 
+- **Placement:** Define and derive runtime validation schemas in files ending in `.schema.ts`, including schemas produced by composition or field projection. Import them into filters, clients, controllers, and services instead of defining them there.
 - **Definition order:** Define underlying constants first, then the ArkType schema, then its inferred type. For example, `PRODUCT_STATUSES` uses `as const`, `ProductStatus` uses `type.enumerated(...PRODUCT_STATUSES)`, and its type uses `typeof ProductStatus.infer`. Export a constant when another module needs it, such as an entity enum. Controllers, consumers, and services use named schema-derived types, not inline `typeof Schema.infer` or `typeof Schema.inferIn`.
 - **Reuse and composition:** Reuse shared schemas and compose them with operations such as `.merge()`, `.partial()`, and `.or()` where they represent the same contract. `UpdateCategory` derives from `CreateCategory`; `Paginated(Product)` composes a paginated response. Check field constraints and existing data before changing shared definitions.
 - **Nullable types:** Before writing `T | null`, look for a matching nullable schema and reuse its inferred input or output type for the boundary.

@@ -11,15 +11,8 @@ import {
 import { NotificationClient } from "@libs/core";
 import { type Loaded, LockMode } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
-import {
-  AuthenticationContext,
-  AuthenticationError,
-  AuthenticationStorage,
-  PasswordHasher,
-  RefreshTokenError,
-  TokenService,
-} from "@nestjs/authentication";
-import { Injectable } from "@nestjs/common";
+import { AuthenticationContext, AuthenticationStorage, PasswordHasher, TokenService } from "@nestjs/authentication";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 
 import { UserEntity } from "#internal/database/entity/index";
 
@@ -89,12 +82,16 @@ export class AuthService {
   async refreshToken({ refreshToken }: RefreshTokenBody): Promise<TokenResponse> {
     const refreshTokenHash = createHash("sha256").update(refreshToken).digest("base64url");
     const record = await this.storage.refreshTokens.getRefreshToken(refreshTokenHash);
-    if (!Uuid.allows(record?.userId)) throw new RefreshTokenError("invalid");
+
+    if (!Uuid.allows(record?.userId)) {
+      throw new UnauthorizedException("Refresh token invalid", { errorCode: "INVALID_REFRESH_TOKEN" });
+    }
 
     const userCount = await this.em.count(UserEntity, { id: record.userId });
+
     if (!userCount) {
       await this.token.revokeAll(record.userId);
-      throw new RefreshTokenError("invalid");
+      throw new UnauthorizedException("Refresh token invalid", { errorCode: "INVALID_REFRESH_TOKEN" });
     }
 
     return await this.token.refresh(refreshToken);
@@ -108,7 +105,8 @@ export class AuthService {
     const valid = await this.passwordHasher.verify(password, passwordHash);
 
     if (!valid || !user || !passwordHash) {
-      throw new AuthenticationError("Invalid email or password", {
+      throw new UnauthorizedException("Invalid email or password", {
+        errorCode: "INVALID_CREDENTIALS",
         cause: new Error(user ? "Invalid password" : "Unknown user"),
       });
     }
@@ -131,7 +129,8 @@ export class AuthService {
     );
 
     if (user?.password.get() !== proof.passwordHash) {
-      throw new AuthenticationError("Invalid email or password", {
+      throw new UnauthorizedException("Invalid email or password", {
+        errorCode: "INVALID_CREDENTIALS",
         cause: new Error(
           user ? `Password changed concurrently for user ${proof.userId}` : `User ${proof.userId} no longer exists`,
         ),

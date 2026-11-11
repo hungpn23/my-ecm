@@ -1,4 +1,4 @@
-import { RpcError } from "@libs/contract";
+import { ServerError } from "@libs/contract";
 import { HttpException } from "@nestjs/common";
 import type { ClientProxy } from "@nestjs/microservices";
 import { catchError, lastValueFrom, timeout } from "rxjs";
@@ -20,9 +20,13 @@ export abstract class AbstractMicroserviceClient {
 
     const response$ = this.client.send<unknown>(command, validated).pipe(
       timeout(timeoutMs),
-      catchError((e: unknown) => {
-        if (RpcError.allows(e)) throw new HttpException(e, e.statusCode);
-        throw e;
+      catchError((error: unknown) => {
+        if (ServerError.allows(error)) {
+          const { statusCode, message, errorCode } = error;
+          throw new HttpException({ message }, statusCode, { errorCode });
+        }
+
+        throw error;
       }),
     );
     const response = await lastValueFrom(response$);

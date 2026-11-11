@@ -37,7 +37,11 @@ export class StockService {
         { exclude: ["reservations"], lockMode: LockMode.PESSIMISTIC_WRITE },
       );
 
-      if (onHand < stock.reserved) throw new BadRequestException("onHand cannot be less than reserved stock");
+      if (onHand < stock.reserved) {
+        throw new BadRequestException("onHand cannot be less than reserved stock", {
+          errorCode: "STOCK_ON_HAND_BELOW_RESERVED",
+        });
+      }
 
       stock.onHand = onHand;
       await em.flush();

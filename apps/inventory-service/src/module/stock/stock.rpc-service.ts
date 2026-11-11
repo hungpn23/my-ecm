@@ -62,14 +62,18 @@ export class StockRpcService {
       );
 
       if (reservation.isCommitted && reservation.committedPaymentId !== paymentId) {
-        throw new ConflictException("Reservation was committed before with another payment");
+        throw new ConflictException("Reservation was committed before with another payment", {
+          errorCode: "RESERVATION_COMMITTED_WITH_DIFFERENT_PAYMENT",
+        });
+      }
+
+      if (!reservation.isCommitted && (!reservation.isHeld || reservation.isExpired)) {
+        throw new ConflictException("Reservation status is not held or expired", {
+          errorCode: "RESERVATION_NOT_HELD_OR_EXPIRED",
+        });
       }
 
       if (!reservation.isCommitted) {
-        if (!reservation.isHeld || reservation.isExpired) {
-          throw new ConflictException("Reservation status is not held or expired");
-        }
-
         await this.commitHeldReservation(em, reservation, paymentId);
         await em.flush();
       }
