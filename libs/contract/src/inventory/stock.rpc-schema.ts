@@ -5,9 +5,9 @@ import { DateFromISOString } from "../shared/date.schema";
 import { EntityResponseFromRpc } from "../shared/entity-response.rpc-schema";
 import { Uuid } from "../shared/string.schema";
 import { Reservation } from "./reservation.schema";
-import { ProductStock } from "./stock.schema";
+import { Stock } from "./stock.schema";
 
-export const CreateStock = type({ productId: Uuid, shopId: Uuid }).merge(ProductStock.pick("onHand"));
+export const CreateStock = type({ productId: Uuid, shopId: Uuid }).merge(Stock.pick("onHand"));
 export type CreateStock = typeof CreateStock.infer;
 
 export const ReserveStock = type({

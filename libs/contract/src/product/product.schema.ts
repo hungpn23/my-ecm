@@ -1,6 +1,6 @@
 import { type } from "arktype";
 
-import { ProductStock } from "../inventory/stock.schema";
+import { ProductStockResponse, Stock } from "../inventory/stock.schema";
 import { Paginated } from "../shared/common.schema";
 import { EntityResponse } from "../shared/entity-response.schema";
 import { NonNegativeDecimal } from "../shared/number.schema";
@@ -16,7 +16,7 @@ export const CreateProduct = type({
   price: NonNegativeDecimal,
   status: ProductStatus.default("ACTIVE"),
   categoryId: Uuid,
-}).merge(ProductStock.pick("onHand"));
+}).merge(Stock.pick("onHand"));
 export type CreateProduct = typeof CreateProduct.infer;
 
 export const UpdateProduct = CreateProduct.omit("onHand")
@@ -40,7 +40,7 @@ export const ProductDetail = Product.merge({
 });
 export type ProductDetail = typeof ProductDetail.inferIn;
 
-export const CreateProductResponse = ProductDetail.merge({ stock: ProductStock });
+export const CreateProductResponse = ProductDetail.merge({ stock: ProductStockResponse });
 export type CreateProductResponse = typeof CreateProductResponse.inferIn;
 
 export const PaginatedProductResponse = Paginated(Product);

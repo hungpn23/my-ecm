@@ -16,8 +16,8 @@ export const Stock = EntityResponse.merge({
 });
 export type Stock = typeof Stock.inferIn;
 
-export const ProductStock = Stock.pick("onHand", "reserved", "available");
-export type ProductStock = typeof ProductStock.infer;
+export const ProductStockResponse = Stock.pick("onHand", "reserved", "available");
+export type ProductStockResponse = typeof ProductStockResponse.infer;
 
 export const UpdateStock = Stock.pick("onHand");
 export type UpdateStock = typeof UpdateStock.infer;
