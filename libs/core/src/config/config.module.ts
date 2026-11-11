@@ -6,7 +6,7 @@ import { appConfig } from "./app.config";
 import { tcpConfig } from "./tcp.config";
 
 export class ConfigModule {
-  static forRoot(options?: ConfigModuleOptions): DynamicModule {
+  static forRoot(overrides?: ConfigModuleOptions): DynamicModule {
     const defaultOptions: ConfigModuleOptions = {
       isGlobal: true,
       expandVariables: true,
@@ -15,7 +15,7 @@ export class ConfigModule {
 
     return {
       module: ConfigModule,
-      imports: [NestConfigModule.forRoot(deepMerge(defaultOptions, options))],
+      imports: [NestConfigModule.forRoot(deepMerge(defaultOptions, overrides))],
     };
   }
 

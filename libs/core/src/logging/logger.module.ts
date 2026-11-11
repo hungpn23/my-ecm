@@ -4,7 +4,7 @@ import { LoggerModule as PinoLoggerModule, type Params } from "nestjs-pino";
 import { v7 } from "uuid";
 
 export class LoggerModule {
-  static forRoot(params?: Params): DynamicModule {
+  static forRoot(overrides?: Params): DynamicModule {
     const defaultParams: Params = {
       pinoHttp: {
         level: "debug",
@@ -35,7 +35,7 @@ export class LoggerModule {
 
     return {
       module: LoggerModule,
-      imports: [PinoLoggerModule.forRoot(deepMerge(defaultParams, params))],
+      imports: [PinoLoggerModule.forRoot(deepMerge(defaultParams, overrides))],
     };
   }
 }

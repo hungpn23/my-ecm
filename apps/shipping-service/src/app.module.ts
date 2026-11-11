@@ -9,7 +9,9 @@ import { entities } from "#mikro-orm/generated";
   imports: [
     ObserveModule.forRoot(),
     ConfigModule.forRoot(),
-    DatabaseModule.forRoot(entities),
+    DatabaseModule.forRoot(entities, {
+      discovery: { warnWhenNoEntities: false },
+    }),
     LoggerModule.forRoot(),
     AuthModule,
   ],

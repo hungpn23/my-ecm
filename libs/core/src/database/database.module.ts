@@ -1,3 +1,4 @@
+import { deepMerge } from "@libs/common";
 import { MikroOrmModule, type MikroOrmModuleOptions } from "@mikro-orm/nestjs";
 import { EntitySchema, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
@@ -8,7 +9,7 @@ import { PinoLogger } from "nestjs-pino";
 import { type DatabaseConfig, databaseConfig } from "./database.config";
 
 export class DatabaseModule {
-  static forRoot(entities: readonly EntitySchema[]): DynamicModule {
+  static forRoot(entities: readonly EntitySchema[], overrides?: MikroOrmModuleOptions): DynamicModule {
     return {
       module: DatabaseModule,
       imports: [
@@ -35,7 +36,7 @@ export class DatabaseModule {
               };
             }
 
-            return ormOptions;
+            return deepMerge(ormOptions, overrides);
           },
         }),
       ],
