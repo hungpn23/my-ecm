@@ -56,6 +56,6 @@ async function main(): Promise<void> {
 try {
   await main();
 } catch (error) {
-  console.error(error instanceof Error ? error.message : error);
+  console.error(Error.isError(error) ? error.message : error);
   process.exitCode = 1;
 }

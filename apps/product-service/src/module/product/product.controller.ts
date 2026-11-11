@@ -1,9 +1,11 @@
 import { Endpoint } from "@libs/common";
 import {
   CreateProduct,
+  CreateProductResponse,
   OffsetQuery,
   PaginatedProductResponse,
   ProductDetail,
+  type SuccessResponse,
   UpdateProduct,
   Uuid,
 } from "@libs/contract";
@@ -18,8 +20,8 @@ export class ProductController {
   constructor(private readonly product: ProductService) {}
 
   @Can(ProductPolicy, "create")
-  @Endpoint("POST", { request: CreateProduct, response: ProductDetail })
-  async create(@Body({ schema: CreateProduct }) body: CreateProduct): Promise<ProductDetail> {
+  @Endpoint("POST", { request: CreateProduct, response: CreateProductResponse })
+  async create(@Body({ schema: CreateProduct }) body: CreateProduct): Promise<CreateProductResponse> {
     return await this.product.create(body);
   }
 
@@ -50,7 +52,9 @@ export class ProductController {
 
   @Can(ProductPolicy, "delete")
   @Endpoint("DELETE", { path: ":productId" })
-  async delete(@Param("productId", { schema: Uuid }) productId: Uuid): Promise<void> {
+  async delete(@Param("productId", { schema: Uuid }) productId: Uuid): Promise<SuccessResponse> {
     await this.product.delete(productId);
+
+    return { ok: true };
   }
 }

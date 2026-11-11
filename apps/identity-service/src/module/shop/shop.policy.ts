@@ -1,10 +1,10 @@
-import type { User } from "@libs/contract";
+import type { NullableUser } from "@libs/contract";
 import { isShopMember } from "@libs/core";
 import { Policy } from "@nestjs/authorization";
 
 @Policy()
 export class ShopPolicy {
-  create(user: User | null): boolean {
+  create(user: NullableUser): boolean {
     return !!user && !isShopMember(user);
   }
 }

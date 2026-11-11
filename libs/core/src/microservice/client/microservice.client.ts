@@ -1,4 +1,4 @@
-import { RpcError } from "@libs/contract";
+import { ServerError } from "@libs/contract";
 import { HttpException } from "@nestjs/common";
 import type { ClientProxy } from "@nestjs/microservices";
 import { catchError, lastValueFrom, timeout } from "rxjs";
@@ -13,16 +13,20 @@ export abstract class AbstractMicroserviceClient {
 
   async send<Command extends MicroserviceCommand>(
     command: Command,
-    payload: PayloadByCommand[NoInfer<Command>],
+    payload: PayloadByCommand<Command>,
     timeoutMs = 3000,
-  ): Promise<(typeof ResponseByCommand)[Command]["infer"]> {
+  ): Promise<ResponseByCommand<Command>> {
     const validated = PayloadByCommand[command].assert(payload);
 
-    const response$ = this.client.send<ResponseByCommand[NoInfer<Command>]>(command, validated).pipe(
+    const response$ = this.client.send<unknown>(command, validated).pipe(
       timeout(timeoutMs),
-      catchError((e: unknown) => {
-        if (RpcError.allows(e)) throw new HttpException(e, e.statusCode);
-        throw e;
+      catchError((error: unknown) => {
+        if (ServerError.allows(error)) {
+          const { statusCode, message, errorCode } = error;
+          throw new HttpException({ message }, statusCode, { errorCode });
+        }
+
+        throw error;
       }),
     );
     const response = await lastValueFrom(response$);
@@ -30,7 +34,7 @@ export abstract class AbstractMicroserviceClient {
     return ResponseByCommand[command].assert(response);
   }
 
-  async emit<Event extends MicroserviceEvent>(event: Event, payload: PayloadByEvent[NoInfer<Event>]): Promise<void> {
+  async emit<Event extends MicroserviceEvent>(event: Event, payload: PayloadByEvent<Event>): Promise<void> {
     const validated = PayloadByEvent[event].assert(payload);
 
     return await lastValueFrom(this.client.emit(event, validated));

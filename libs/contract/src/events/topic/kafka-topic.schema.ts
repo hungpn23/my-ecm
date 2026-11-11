@@ -1,4 +1,6 @@
-import { UserTopic } from "./user-topic.schema";
+import { type } from "arktype";
 
-export const KafkaTopic = UserTopic;
+import { USER_TOPICS } from "./user-topic.schema";
+
+export const KafkaTopic = type.enumerated(...USER_TOPICS);
 export type KafkaTopic = typeof KafkaTopic.infer;

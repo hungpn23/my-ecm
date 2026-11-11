@@ -1,6 +1,6 @@
-import type { Availability, Stock, Uuid } from "@libs/contract";
+import type { Availability, ProductStock, Stock, Uuid } from "@libs/contract";
 import { ENTITY_NAME, useBaseProps } from "@libs/core";
-import { defineEntity, type Loaded, p, wrap } from "@mikro-orm/core";
+import { defineEntity, type Loaded, type Opt, p, wrap } from "@mikro-orm/core";
 
 // fallow-ignore-next-line circular-dependency
 import { ReservationEntity } from "./reservation.entity";
@@ -25,8 +25,14 @@ export const StockSchema = defineEntity({
 });
 
 export class StockEntity extends StockSchema.class {
-  get available(): number {
+  get available(): Opt<number> {
     return this.onHand - this.reserved;
+  }
+
+  toProductStockResponse(this: StockEntity): ProductStock {
+    const data = wrap(this).serialize({ fields: ["onHand", "reserved"] });
+
+    return { ...data, available: this.available };
   }
 
   toResponse(this: Loaded<StockEntity, never, never, "reservations">): Stock {

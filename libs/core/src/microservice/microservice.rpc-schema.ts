@@ -5,6 +5,7 @@ export const MICROSERVICE_CLIENT = {
   NOTIFICATION: "NOTIFICATION_SERVICE",
   PRODUCT: "PRODUCT_SERVICE",
   INVENTORY: "INVENTORY_SERVICE",
+  PAYMENT: "PAYMENT_SERVICE",
 } as const;
 export const MicroserviceClient = type.enumerated(...Object.values(MICROSERVICE_CLIENT));
 export type MicroserviceClient = typeof MicroserviceClient.infer;
@@ -17,8 +18,12 @@ export const MICROSERVICE_COMMANDS = [
   "get.user.by-id",
   "get.address.by-id",
   "get.products.by-ids",
+  "create.stock",
   "reserve.stock",
   "get.reservation.by-checkout-id",
+  "create.payment",
+  "confirm.payment",
+  "commit.stock",
 ] as const;
 export const MicroserviceCommand = type.enumerated(...MICROSERVICE_COMMANDS);
 export type MicroserviceCommand = typeof MicroserviceCommand.infer;

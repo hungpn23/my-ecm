@@ -1,9 +1,11 @@
-import { ArktypeValidationPipe, MikroOrmExceptionFilter, RxjsExceptionFilter } from "@libs/common";
+import { ArktypeValidationPipe, ServerExceptionFilter } from "@libs/common";
 import { AuthModule, ConfigModule, DatabaseModule, LoggerModule, ObserveModule } from "@libs/core";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 
 import { entities } from "#mikro-orm/generated";
+
+import { PaymentModule } from "./module/payment/payment.module";
 
 @Module({
   imports: [
@@ -12,15 +14,12 @@ import { entities } from "#mikro-orm/generated";
     DatabaseModule.forRoot(entities),
     LoggerModule.forRoot(),
     AuthModule,
+    PaymentModule,
   ],
   providers: [
     {
       provide: APP_FILTER,
-      useClass: RxjsExceptionFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: MikroOrmExceptionFilter,
+      useClass: ServerExceptionFilter,
     },
     {
       provide: APP_PIPE,

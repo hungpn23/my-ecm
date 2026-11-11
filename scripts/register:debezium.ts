@@ -49,7 +49,7 @@ const heathCheckOrThrow = async (): Promise<void> => {
 
       errorMessage = `Kafka Connect returned HTTP ${response.status}`;
     } catch (error) {
-      errorMessage = error instanceof Error ? error.message : String(error);
+      errorMessage = Error.isError(error) ? error.message : String(error);
     }
 
     await Bun.sleep(1000);

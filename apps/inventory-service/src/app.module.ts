@@ -1,4 +1,4 @@
-import { ArktypeValidationPipe, MikroOrmExceptionFilter, RxjsExceptionFilter } from "@libs/common";
+import { ArktypeValidationPipe, ServerExceptionFilter } from "@libs/common";
 import { AuthModule, ConfigModule, DatabaseModule, LoggerModule, ObserveModule } from "@libs/core";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
@@ -19,11 +19,7 @@ import { StockModule } from "./module/stock/stock.module";
   providers: [
     {
       provide: APP_FILTER,
-      useClass: RxjsExceptionFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: MikroOrmExceptionFilter,
+      useClass: ServerExceptionFilter,
     },
     {
       provide: APP_PIPE,

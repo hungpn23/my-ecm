@@ -37,11 +37,11 @@ export class AddressService {
     });
   }
 
-  async setDefault(id: Uuid): Promise<Address> {
+  async setDefault(addressId: Uuid): Promise<Address> {
     return await this.em.transactional(async (em) => {
       const user = await this._getLockedUser(em);
 
-      const address = await em.findOneOrFail(AddressEntity, { id, user });
+      const address = await em.findOneOrFail(AddressEntity, { id: addressId, user });
       if (address.isDefault) return address.toResponse();
 
       await em.nativeUpdate(AddressEntity, { user, isDefault: true }, { isDefault: false });
@@ -53,10 +53,10 @@ export class AddressService {
     });
   }
 
-  async edit(id: Uuid, body: EditAddress): Promise<Address> {
+  async edit(addressId: Uuid, body: EditAddress): Promise<Address> {
     return await this.em.transactional(async (em) => {
       const user = await this._getLockedUser(em);
-      const address = await em.findOneOrFail(AddressEntity, { id, user });
+      const address = await em.findOneOrFail(AddressEntity, { id: addressId, user });
 
       em.assign(address, body);
 
@@ -66,11 +66,11 @@ export class AddressService {
     });
   }
 
-  async remove(id: Uuid): Promise<SuccessResponse> {
+  async remove(addressId: Uuid): Promise<SuccessResponse> {
     await this.em.transactional(async (em) => {
       const user = await this._getLockedUser(em);
 
-      const address = await em.findOneOrFail(AddressEntity, { id, user });
+      const address = await em.findOneOrFail(AddressEntity, { id: addressId, user });
       if (address.isDefault) await this._replaceDefault(em, address);
 
       em.remove(address);

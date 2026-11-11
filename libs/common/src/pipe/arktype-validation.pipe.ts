@@ -17,14 +17,15 @@ export class ArktypeValidationPipe extends StandardSchemaValidationPipe {
     exceptionFactory: (issues) => {
       if (issues instanceof ArkErrors) {
         const messages: string[] = [];
+
         for (const [path, message] of Object.entries(issues.flatProblemsByPath)) {
           messages.push(`${path}: ${message.join(", ")}`);
         }
 
-        return new UnprocessableEntityException(messages);
+        return new UnprocessableEntityException(messages, { errorCode: "VALIDATION_FAILED" });
       }
 
-      return new UnprocessableEntityException("Validation failed");
+      return new UnprocessableEntityException("Validation failed", { errorCode: "VALIDATION_FAILED" });
     },
   };
 

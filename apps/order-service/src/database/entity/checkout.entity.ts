@@ -1,6 +1,6 @@
-import { CHECKOUT_STATUSES, type NonNegativeDecimal, PAYMENT_METHODS, type Uuid } from "@libs/contract";
+import { type Checkout, CHECKOUT_STATUSES, type NonNegativeDecimal, PAYMENT_METHODS, type Uuid } from "@libs/contract";
 import { ENTITY_NAME, useBaseProps } from "@libs/core";
-import { defineEntity, p } from "@mikro-orm/core";
+import { defineEntity, type Opt, p, wrap } from "@mikro-orm/core";
 
 export const CheckoutSchema = defineEntity({
   name: ENTITY_NAME.CHECKOUT,
@@ -19,7 +19,7 @@ export const CheckoutSchema = defineEntity({
     shippingAddress: p.text(),
     paymentMethod: p.enum(PAYMENT_METHODS),
     status: p.enum(CHECKOUT_STATUSES),
-    expiresAt: p.datetime().nullable(),
+    expiresAt: p.datetime(),
   }),
   checks: [
     { property: "quantity", expression: ({ quantity }): string => `${quantity} > 0` },
@@ -38,5 +38,21 @@ export const CheckoutSchema = defineEntity({
   ],
 });
 
-export class CheckoutEntity extends CheckoutSchema.class {}
+export class CheckoutEntity extends CheckoutSchema.class {
+  get isOpen(): Opt<boolean> {
+    return this.status === "OPEN";
+  }
+
+  get isExpired(): Opt<boolean> {
+    return this.expiresAt.getTime() <= Date.now();
+  }
+
+  get isAwaitingPayment(): Opt<boolean> {
+    return this.status === "PAYMENT_PENDING";
+  }
+
+  toResponse(this: CheckoutEntity): Checkout {
+    return wrap(this).serialize();
+  }
+}
 CheckoutSchema.setClass(CheckoutEntity);

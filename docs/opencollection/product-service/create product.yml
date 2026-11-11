@@ -10,10 +10,11 @@ http:
     type: json
     data: |-
       {
-        "name": "{{$randomProductName}}",
-        "description": "{{$randomProductAdjective}}",
-        "price": "{{$randomInt}}.00",
+        "name": "Iphone 13",
+        "description": "Ngon, bổ, rẻ",
+        "price": "1000.00",
         "status": "ACTIVE",
+        "onHand": 10,
         "categoryId": "{{category_id}}"
       }
   auth: inherit

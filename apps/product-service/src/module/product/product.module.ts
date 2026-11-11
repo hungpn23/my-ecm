@@ -1,4 +1,4 @@
-import { ShopContextModule } from "@libs/core";
+import { MicroserviceModule, ShopContextModule } from "@libs/core";
 import { Module } from "@nestjs/common";
 
 import { ProductConsumer } from "./product.consumer";
@@ -8,7 +8,7 @@ import { ProductRpcService } from "./product.rpc-service";
 import { ProductService } from "./product.service";
 
 @Module({
-  imports: [ShopContextModule],
+  imports: [ShopContextModule, MicroserviceModule.registerAsync("INVENTORY_SERVICE")],
   controllers: [ProductController, ProductConsumer],
   providers: [ProductService, ProductPolicy, ProductRpcService],
 })

@@ -1,13 +1,14 @@
 import { type } from "arktype";
 
-import { EntityRpcResponse } from "../shared/entity-response.rpc-schema";
+import { EntityResponseFromRpc } from "../shared/entity-response.rpc-schema";
 import { Uuid } from "../shared/string.schema";
 import { User } from "./user.schema";
 
-export const GetUserByIdPayload = type({
-  id: Uuid,
+export const GetUserById = type({
+  userId: Uuid,
 });
-export type GetUserByIdPayload = typeof GetUserByIdPayload.inferIn;
+export type GetUserById = typeof GetUserById.infer;
 
-export const UserRpc = User.merge(EntityRpcResponse).or("null");
-export type UserRpc = typeof UserRpc.infer;
+export const UserFromRpc = User.merge(EntityResponseFromRpc);
+
+export const NullableUserFromRpc = UserFromRpc.or("null");
