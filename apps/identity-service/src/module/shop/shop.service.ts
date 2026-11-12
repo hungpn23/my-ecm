@@ -4,7 +4,7 @@ import { LockMode } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { AuthenticationContext } from "@nestjs/authentication";
 import { AuthorizationService } from "@nestjs/authorization";
-import { Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectPinoLogger, type PinoLogger } from "nestjs-pino";
 
 import { ShopEntity, UserEntity } from "#internal/database/entity/index";
@@ -31,7 +31,12 @@ export class ShopService {
         { populate: ["shop"], lockMode: LockMode.PESSIMISTIC_WRITE },
       );
 
-      await this.authorization.authorize(ShopPolicy, "joinShop", user.toObject());
+      const canJoinShop = await this.authorization.can(ShopPolicy, "joinShop", user.toObject());
+      if (!canJoinShop) {
+        throw new ForbiddenException("User is not allowed to join the shop", {
+          errorCode: "JOIN_SHOP_NOT_ALLOWED",
+        });
+      }
 
       const newShop = em.create(ShopEntity, {
         ...body,
@@ -61,7 +66,12 @@ export class ShopService {
         { populate: ["shop"], lockMode: LockMode.PESSIMISTIC_WRITE },
       );
 
-      await this.authorization.authorize(ShopPolicy, "joinShop", user.toObject());
+      const canJoinShop = await this.authorization.can(ShopPolicy, "joinShop", user.toObject());
+      if (!canJoinShop) {
+        throw new ForbiddenException("User is not allowed to join the shop", {
+          errorCode: "JOIN_SHOP_NOT_ALLOWED",
+        });
+      }
 
       shop.addMember(user, "STAFF");
 

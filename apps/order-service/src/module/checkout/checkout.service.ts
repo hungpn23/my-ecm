@@ -1,5 +1,5 @@
 import {
-  type Checkout,
+  Checkout,
   type ConfirmCheckout,
   NonNegativeDecimal,
   type OpenCheckout,
@@ -11,15 +11,25 @@ import { IdentityClient, InventoryClient, PaymentClient, ProductClient } from "@
 import { LockMode } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { AuthenticationContext } from "@nestjs/authentication";
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { AuthorizationService } from "@nestjs/authorization";
+import {
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 
 import { CheckoutEntity, OrderEntity } from "#internal/database/entity/index";
+
+import { CheckoutPolicy } from "./checkout.policy";
 
 @Injectable()
 export class CheckoutService {
   constructor(
     private readonly em: EntityManager,
     private readonly authContext: AuthenticationContext,
+    private readonly authorization: AuthorizationService,
     private readonly identity: IdentityClient,
     private readonly product: ProductClient,
     private readonly inventory: InventoryClient,
@@ -27,14 +37,21 @@ export class CheckoutService {
   ) {}
 
   async open({ productId, addressId, quantity, paymentMethod }: OpenCheckout): Promise<Checkout> {
-    const userId = this.authContext.requireUser().id;
+    const user = this.authContext.requireUser();
     const [[product], address] = await Promise.all([
       this.product.send("get.products.by-ids", { productIds: [productId] }),
-      this.identity.send("get.address.by-id", { addressId, userId }),
+      this.identity.send("get.address.by-id", { addressId, userId: user.id }),
     ]);
 
     if (product?.status !== "ACTIVE") {
       throw new NotFoundException("Product not found or inactive", { errorCode: "PRODUCT_NOT_FOUND_OR_INACTIVE" });
+    }
+
+    const canOpenCheckout = await this.authorization.can(CheckoutPolicy, "open", user, product);
+    if (!canOpenCheckout) {
+      throw new ForbiddenException("User is not allowed to open a checkout", {
+        errorCode: "CHECKOUT_NOT_ALLOWED",
+      });
     }
 
     if (!address) throw new NotFoundException("Address not found", { errorCode: "ADDRESS_NOT_FOUND" });
@@ -48,7 +65,7 @@ export class CheckoutService {
 
     return await this.em.transactional(async (em) => {
       const checkout = em.create(CheckoutEntity, {
-        userId,
+        userId: user.id,
         shopId: product.shopId,
         productId: product.id,
         productName: product.name,
