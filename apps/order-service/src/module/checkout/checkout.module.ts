@@ -2,6 +2,7 @@ import { MicroserviceModule } from "@libs/core";
 import { Module } from "@nestjs/common";
 
 import { CheckoutController } from "./checkout.controller";
+import { CheckoutPolicy } from "./checkout.policy";
 import { CheckoutService } from "./checkout.service";
 
 @Module({
@@ -9,6 +10,6 @@ import { CheckoutService } from "./checkout.service";
     MicroserviceModule.registerAsync("IDENTITY_SERVICE", "PRODUCT_SERVICE", "INVENTORY_SERVICE", "PAYMENT_SERVICE"),
   ],
   controllers: [CheckoutController],
-  providers: [CheckoutService],
+  providers: [CheckoutService, CheckoutPolicy],
 })
 export class CheckoutModule {}
