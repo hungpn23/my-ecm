@@ -3,7 +3,7 @@ import type {
   CreateStock,
   GetReservationByCheckoutId,
   NullableReservation,
-  ProductStockResponse,
+  ProductStock,
   Reservation,
   ReserveStock,
 } from "@libs/contract";
@@ -17,10 +17,10 @@ import { ReservationEntity, StockEntity } from "#internal/database/entity/index"
 export class StockRpcService {
   constructor(private readonly em: EntityManager) {}
 
-  async create(payload: CreateStock): Promise<ProductStockResponse> {
+  async create(payload: CreateStock): Promise<ProductStock> {
     const stock = await this.em.transactional((em) => em.create(StockEntity, { ...payload, reserved: 0 }));
 
-    return stock.toProductStockResponse();
+    return stock.toProductStock();
   }
 
   async findReservation({ checkoutId }: GetReservationByCheckoutId): Promise<NullableReservation> {

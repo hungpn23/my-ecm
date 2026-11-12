@@ -12,7 +12,7 @@ import {
   NullableUserFromRpc,
   PaymentFromRpc,
   ProductsFromRpc,
-  ProductStockResponse,
+  ProductStock,
   ReservationFromRpc,
   ReserveStock,
 } from "@libs/contract";
@@ -24,7 +24,7 @@ export const ContractByCommand = {
   "get.user.by-id": [GetUserById, NullableUserFromRpc],
   "get.address.by-id": [GetAddressById, NullableAddressFromRpc],
   "get.products.by-ids": [GetProductsByIds, ProductsFromRpc],
-  "create.stock": [CreateStock, ProductStockResponse],
+  "create.stock": [CreateStock, ProductStock],
   "reserve.stock": [ReserveStock, ReservationFromRpc],
   "get.reservation.by-checkout-id": [GetReservationByCheckoutId, NullableReservationFromRpc],
   "create.payment": [CreatePaymentPayload, PaymentFromRpc],

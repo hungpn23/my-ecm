@@ -1,6 +1,6 @@
 import { type } from "arktype";
 
-import { ProductStockResponse, Stock } from "../inventory/stock.schema";
+import { ProductStock, Stock } from "../inventory/stock.schema";
 import { Paginated } from "../shared/common.schema";
 import { EntityResponse } from "../shared/entity-response.schema";
 import { NonNegativeDecimal } from "../shared/number.schema";
@@ -40,7 +40,7 @@ export const ProductDetail = Product.merge({
 });
 export type ProductDetail = typeof ProductDetail.inferIn;
 
-export const CreateProductResponse = ProductDetail.merge({ stock: ProductStockResponse });
+export const CreateProductResponse = ProductDetail.merge({ stock: ProductStock });
 export type CreateProductResponse = typeof CreateProductResponse.inferIn;
 
 export const PaginatedProductResponse = Paginated(Product);

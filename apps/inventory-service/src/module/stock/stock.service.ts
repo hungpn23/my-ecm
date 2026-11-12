@@ -1,4 +1,4 @@
-import type { Availability, Stock, UpdateStock, Uuid } from "@libs/contract";
+import type { AvailableStock, Stock, UpdateStock, Uuid } from "@libs/contract";
 import { ShopContext } from "@libs/core";
 import { LockMode } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
@@ -23,10 +23,10 @@ export class StockService {
     return stock.toResponse();
   }
 
-  async findAvailability(productId: Uuid): Promise<Availability> {
+  async findAvailableStock(productId: Uuid): Promise<AvailableStock> {
     const stock = await this.em.findOneOrFail(StockEntity, { productId }, { exclude: ["shopId", "reservations"] });
 
-    return stock.toAvailabilityResponse();
+    return stock.toAvailableStock();
   }
 
   async update(productId: Uuid, { onHand }: UpdateStock): Promise<Stock> {

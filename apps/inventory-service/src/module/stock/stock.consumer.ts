@@ -3,7 +3,7 @@ import {
   CreateStock,
   GetReservationByCheckoutId,
   type NullableReservation,
-  type ProductStockResponse,
+  type ProductStock,
   type Reservation,
   ReserveStock,
 } from "@libs/contract";
@@ -18,7 +18,7 @@ export class StockConsumer {
   constructor(private readonly stock: StockRpcService) {}
 
   @MessagePattern<MicroserviceCommand>("create.stock")
-  async create(@Payload({ schema: CreateStock }) payload: CreateStock): Promise<ProductStockResponse> {
+  async create(@Payload({ schema: CreateStock }) payload: CreateStock): Promise<ProductStock> {
     return await this.stock.create(payload);
   }
 

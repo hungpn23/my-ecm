@@ -10,8 +10,8 @@ http:
     type: json
     data: |-
       {
-        "code": "iphone",
-        "name": "Iphone"
+        "code": "ipad",
+        "name": "Ipad"
       }
   auth: inherit
 

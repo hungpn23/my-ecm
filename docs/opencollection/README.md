@@ -6,7 +6,7 @@ Chọn environment `env` và chạy các service qua `bun dev` từ root. URL m�
 2. Tạo category bằng `product-service/create category` hoặc đặt `category_id` thành ID của category đã có.
 3. Gọi `product-service/create product`. Request có sẵn ví dụ body với `onHand = 25` và lưu `id` trả về vào `product_id`. Product service gọi RPC tới Inventory để tạo Stock với `onHand` theo request và `reserved = 0`. Response Product có thêm `stock`.
 4. Gọi `inventory-service/get stock` bằng tài khoản thuộc shop để xem stock theo `product_id`; response gồm `productId`, `shopId`, `onHand`, `reserved`, `available`, `id`, `createdAt` và `updatedAt`.
-5. Gọi `inventory-service/get availability` để xem availability công khai theo `product_id`; response gồm `productId`, `available`, `id`, `createdAt` và `updatedAt`.
+5. Gọi `inventory-service/get available stock` để xem available stock công khai theo `product_id`; response gồm `productId`, `available`, `id`, `createdAt` và `updatedAt`.
 6. Gọi `inventory-service/update stock` bằng tài khoản thuộc shop để đổi số lượng tồn. Request mẫu gửi `{ "onHand": 100 }`; response là Stock sau cập nhật. `onHand` không được nhỏ hơn `reserved`, nếu không API trả lỗi `400`.
 
 Với request ví dụ, `stock` trong response tạo Product có dạng:
@@ -36,7 +36,7 @@ Ví dụ response của `get stock` (các ID và thời gian chỉ để minh h�
 }
 ```
 
-Response của `get availability` có cùng `id`, `productId`, `available`, `createdAt` và `updatedAt`.
+Response của `get available stock` có cùng `id`, `productId`, `available`, `createdAt` và `updatedAt`.
 
 ## Ví dụ checkout và tạo order
 

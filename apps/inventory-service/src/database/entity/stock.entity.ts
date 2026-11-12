@@ -1,4 +1,4 @@
-import type { Availability, ProductStockResponse, Stock, Uuid } from "@libs/contract";
+import type { AvailableStock, ProductStock, Stock, Uuid } from "@libs/contract";
 import { ENTITY_NAME, useBaseProps } from "@libs/core";
 import { defineEntity, type Loaded, type Opt, p, wrap } from "@mikro-orm/core";
 
@@ -29,7 +29,7 @@ export class StockEntity extends StockSchema.class {
     return this.onHand - this.reserved;
   }
 
-  toProductStockResponse(this: StockEntity): ProductStockResponse {
+  toProductStock(this: StockEntity): ProductStock {
     const data = wrap(this).serialize({ fields: ["onHand", "reserved"] });
 
     return { ...data, available: this.available };
@@ -41,7 +41,7 @@ export class StockEntity extends StockSchema.class {
     return { ...data, available: this.available };
   }
 
-  toAvailabilityResponse(this: Loaded<StockEntity, never, never, "shopId" | "reservations">): Availability {
+  toAvailableStock(this: Loaded<StockEntity, never, never, "shopId" | "reservations">): AvailableStock {
     const data = wrap(this).serialize({ exclude: ["shopId", "onHand", "reserved", "reservations"] });
 
     return { ...data, available: this.available };

@@ -10,9 +10,9 @@ http:
     type: json
     data: |-
       {
-        "name": "Iphone 13",
+        "name": "Ipad Air",
         "description": "Ngon, bổ, rẻ",
-        "price": "1000.00",
+        "price": "999.00",
         "status": "ACTIVE",
         "onHand": 10,
         "categoryId": "{{category_id}}"

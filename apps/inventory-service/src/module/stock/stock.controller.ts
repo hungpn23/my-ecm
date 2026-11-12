@@ -1,7 +1,7 @@
 import { Endpoint } from "@libs/common";
-import { Stock, UpdateStock, Uuid } from "@libs/contract";
+import { AvailableStock, AvailableStockQuery, Stock, UpdateStock, Uuid } from "@libs/contract";
 import { Can } from "@nestjs/authorization";
-import { Body, Controller, Param } from "@nestjs/common";
+import { Body, Controller, Param, Query } from "@nestjs/common";
 
 import { StockPolicy } from "./stock.policy";
 import { StockService } from "./stock.service";
@@ -9,6 +9,13 @@ import { StockService } from "./stock.service";
 @Controller("stocks")
 export class StockController {
   constructor(private readonly stock: StockService) {}
+
+  @Endpoint("GET", { path: "available", public: true, query: AvailableStockQuery, response: AvailableStock })
+  async findAvailableStock(
+    @Query({ schema: AvailableStockQuery }) { productId }: AvailableStockQuery,
+  ): Promise<AvailableStock> {
+    return await this.stock.findAvailableStock(productId);
+  }
 
   @Can(StockPolicy, "view")
   @Endpoint("GET", { path: ":productId", response: Stock })
