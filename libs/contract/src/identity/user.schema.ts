@@ -21,6 +21,11 @@ export const User = EntityResponse.merge({
   }),
 );
 export type User = typeof User.inferIn;
+
 export const NullableUser = User.or("null");
 export type NullableUser = typeof NullableUser.inferIn;
+
 export type ShopMember = Extract<User, { shopId: Uuid }>;
+export type ShopOwner = ShopMember & {
+  shopRole: "OWNER";
+};

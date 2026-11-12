@@ -1,8 +1,8 @@
-import type { ShopMember, Uuid } from "@libs/contract";
+import type { ShopMember, ShopOwner, Uuid } from "@libs/contract";
 import { AuthenticationContext } from "@nestjs/authentication";
 import { ForbiddenException, Injectable } from "@nestjs/common";
 
-import { isShopMember } from "./shop.helper";
+import { isShopMember, isShopOwner } from "./shop.helper";
 
 @Injectable()
 export class ShopContext {
@@ -20,5 +20,15 @@ export class ShopContext {
 
   get shopId(): Uuid {
     return this.member.shopId;
+  }
+
+  get owner(): ShopOwner {
+    const user = this.authContext.requireUser();
+
+    if (!isShopOwner(user)) {
+      throw new ForbiddenException("User is not a shop owner", { errorCode: "USER_NOT_SHOP_OWNER" });
+    }
+
+    return user;
   }
 }

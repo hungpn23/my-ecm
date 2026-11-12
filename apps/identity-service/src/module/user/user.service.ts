@@ -20,6 +20,6 @@ export class UserService {
     const em = this.em.fork();
 
     const user = await em.findOne(UserEntity, { id: userId }, { populate: ["shop"] });
-    return user?.toResponse() ?? null;
+    return user?.toObject() ?? null;
   }
 }
