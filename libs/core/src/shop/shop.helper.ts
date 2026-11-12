@@ -1,5 +1,9 @@
-import type { NullableUser, ShopMember } from "@libs/contract";
+import type { NullableUser, ShopMember, ShopOwner } from "@libs/contract";
 
 export function isShopMember(user: NullableUser): user is ShopMember {
-  return !!user?.shopId && !!user.shopRole;
+  return !!user && !!user.shopId && !!user.shopRole;
+}
+
+export function isShopOwner(user: NullableUser): user is ShopOwner {
+  return isShopMember(user) && user.shopRole === "OWNER";
 }

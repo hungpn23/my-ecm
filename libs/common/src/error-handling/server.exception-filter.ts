@@ -15,7 +15,7 @@ export class ServerExceptionFilter {
     const error = toServerError(exception);
 
     if (error.statusCode >= 500 && Error.isError(exception)) {
-      this.logger.error(exception);
+      this.logger.error(exception, "ServerExceptionFilter caught an server error");
     }
 
     const { statusCode, message, errorCode } = error;

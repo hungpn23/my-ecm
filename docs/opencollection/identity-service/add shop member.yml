@@ -1,0 +1,16 @@
+info:
+  name: add shop member
+  type: http
+  seq: 12
+
+http:
+  method: POST
+  url: "{{identity}}/shops/members/{{user_id}}"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

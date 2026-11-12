@@ -20,7 +20,7 @@ export const UserSchema = defineEntity({
 });
 
 export class UserEntity extends UserSchema.class {
-  toResponse(this: Loaded<UserEntity, "shop">): User {
+  toObject(this: Loaded<UserEntity, "shop">): User {
     const user = wrap(this).serialize({
       exclude: ["shop", "shopRole", "password", "addresses"],
     });

@@ -12,7 +12,7 @@ export class RpcExceptionFilter extends BaseRpcExceptionFilter {
     const error = toServerError(exception);
 
     if (error.statusCode >= 500 && Error.isError(exception)) {
-      this.logger.error(exception);
+      this.logger.error(exception, "RpcExceptionFilter caught an server error");
     }
 
     return throwError(() => error);
