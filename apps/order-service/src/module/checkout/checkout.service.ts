@@ -56,12 +56,7 @@ export class CheckoutService {
 
     if (!address) throw new NotFoundException("Address not found", { errorCode: "ADDRESS_NOT_FOUND" });
 
-    const cents = BigInt(product.price.replace(".", "")) * BigInt(quantity);
-    const totalValue = `${cents / 100n}.${(cents % 100n).toString().padStart(2, "0")}`;
-
-    if (!NonNegativeDecimal.allows(totalValue)) {
-      throw new BadRequestException("Checkout total exceeds the maximum", { errorCode: "CHECKOUT_TOTAL_TOO_LARGE" });
-    }
+    const total = this._calculateTotal(product.price, quantity);
 
     return await this.em.transactional(async (em) => {
       const checkout = em.create(CheckoutEntity, {
@@ -72,7 +67,7 @@ export class CheckoutService {
         unitPrice: product.price,
         quantity,
         shippingFee: NonNegativeDecimal.assert("0.00"),
-        total: NonNegativeDecimal.assert(totalValue),
+        total,
         recipientName: address.recipientName,
         phone: address.phone,
         shippingAddress: address.address,
@@ -180,5 +175,16 @@ export class CheckoutService {
 
       return order.toResponse();
     });
+  }
+
+  private _calculateTotal(price: NonNegativeDecimal, quantity: number): NonNegativeDecimal {
+    const cents = BigInt(price.replace(".", "")) * BigInt(quantity);
+    const totalValue = `${cents / 100n}.${(cents % 100n).toString().padStart(2, "0")}`;
+
+    if (!NonNegativeDecimal.allows(totalValue)) {
+      throw new BadRequestException("Checkout total exceeds the maximum", { errorCode: "CHECKOUT_TOTAL_TOO_LARGE" });
+    }
+
+    return NonNegativeDecimal.assert(totalValue);
   }
 }
