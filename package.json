@@ -82,7 +82,8 @@
     "orm:debug": "turbo orm:debug",
     "prepare": "bun .husky/install.mjs",
     "register:debezium": "dotenv -e .env -- turbo register:debezium",
-    "setup": "bun i && bun scripts/setup.ts"
+    "setup": "bun i && bun scripts/setup.ts",
+    "test:e2e": "NODE_ENV=test bun test ./tests/e2e"
   },
   "dependencies": {
     "dotenv-cli": "catalog:backend"
@@ -91,9 +92,11 @@
     "@clack/prompts": "1.8.1",
     "@oxlint/plugins": "1.90.0",
     "@types/bun": "1.4.4",
+    "@types/supertest": "7.2.1",
     "fallow": "3.37.0",
     "husky": "9.1.7",
     "rimraf": "6.1.3",
+    "supertest": "7.3.2",
     "turbo": "2.11.10",
     "typescript": "7.0.2"
   },
