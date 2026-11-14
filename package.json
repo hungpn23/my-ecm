@@ -23,7 +23,7 @@
       },
       "auth": {
         "@nestjs/authentication": "0.1.5",
-        "@nestjs/authorization": "^0.1.0"
+        "@nestjs/authorization": "0.1.4"
       },
       "logging": {
         "nestjs-pino": "5.3.1",
@@ -48,7 +48,7 @@
         "lodash": "4.18.1"
       },
       "email": {
-        "@nestjs/mail": "^0.0.1",
+        "@nestjs/mail": "0.0.1",
         "@react-email/ui": "6.11.3",
         "@types/react": "19.3.0",
         "@types/react-dom": "19.3.0",
