@@ -1,4 +1,13 @@
 services:
+  jwt-public-key:
+    volumes:
+      - type: bind
+        source: ../.tmp/identity-ed25519-public.pem
+        target: /run/keys/identity-ed25519-public.pem
+        read_only: true
+        bind:
+          create_host_path: false
+
   node:
     container_name: node
     restart: unless-stopped

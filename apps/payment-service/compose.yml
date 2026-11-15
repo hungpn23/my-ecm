@@ -1,0 +1,21 @@
+services:
+  payment-service:
+    container_name: ${APP_NAME}
+    extends:
+      file: ../../.docker/compose.base.yml
+      service: jwt-public-key
+    build:
+      context: ../..
+      args:
+        APP_FOLDER_NAME: payment-service
+    image: my-ecm/${APP_NAME}:local
+    restart: unless-stopped
+    cpus: 0.5
+    mem_limit: 512m
+    init: true
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    env_file:
+      - ../../.env
+      - ./.env
+      - ../../.env.docker
