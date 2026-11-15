@@ -27,7 +27,7 @@ async function bootstrap(): Promise<void> {
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
   const { appHost, appPort } = app.get<unknown, AppConfig>(appConfig.KEY);
-  const { productServiceTcpHost, productServiceTcpPort } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
+  const { productServiceTcpPort } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder().setTitle("Product Service API").setVersion("1.0").addBearerAuth().build();
   const documentFactory = (): OpenAPIObject => SwaggerModule.createDocument(app, swaggerConfig);
@@ -37,7 +37,7 @@ async function bootstrap(): Promise<void> {
     {
       transport: Transport.TCP,
       options: {
-        host: productServiceTcpHost,
+        host: appHost,
         port: productServiceTcpPort,
       },
     },
@@ -53,7 +53,7 @@ async function bootstrap(): Promise<void> {
 
   logger.log(`🔥 Swagger: http://${appHost}:${appPort}/swagger`);
   logger.log(`🟢 HTTP: http://${appHost}:${appPort}/api`);
-  logger.log(`🔵 TCP: ${productServiceTcpHost}:${productServiceTcpPort}`);
+  logger.log(`🔵 TCP: ${appHost}:${productServiceTcpPort}`);
 }
 
 await bootstrap();

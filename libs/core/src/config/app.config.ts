@@ -1,10 +1,6 @@
 import arkenv from "@arkenv/core";
+import { ServiceName } from "@libs/contract";
 import { type ConfigType, registerAs } from "@nestjs/config";
-import { type } from "arktype";
-
-const ServiceName = type("string").narrow(
-  (s, ctx): s is `${string}-service` => s.endsWith("-service") || ctx.mustBe("a string ending with '-service'"),
-);
 
 export const appConfig = registerAs("app", () => {
   const env = arkenv({

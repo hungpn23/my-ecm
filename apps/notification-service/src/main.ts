@@ -27,7 +27,7 @@ async function bootstrap(): Promise<void> {
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
   const { appHost, appPort } = app.get<unknown, AppConfig>(appConfig.KEY);
-  const { notificationServiceTcpHost, notificationServiceTcpPort } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
+  const { notificationServiceTcpPort } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("Notification Service API")
@@ -41,7 +41,7 @@ async function bootstrap(): Promise<void> {
     {
       transport: Transport.TCP,
       options: {
-        host: notificationServiceTcpHost,
+        host: appHost,
         port: notificationServiceTcpPort,
       },
     },
@@ -57,7 +57,7 @@ async function bootstrap(): Promise<void> {
 
   logger.log(`🔥 Swagger: http://${appHost}:${appPort}/swagger`);
   logger.log(`🟢 HTTP: http://${appHost}:${appPort}/api`);
-  logger.log(`🔵 TCP: ${notificationServiceTcpHost}:${notificationServiceTcpPort}`);
+  logger.log(`🔵 TCP: ${appHost}:${notificationServiceTcpPort}`);
 }
 
 await bootstrap();
