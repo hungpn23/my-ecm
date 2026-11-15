@@ -1,5 +1,4 @@
 import arkenv from "@arkenv/core";
-import { NonEmptyString } from "@libs/contract";
 import { type ConfigType, registerAs } from "@nestjs/config";
 import { type } from "arktype";
 
@@ -13,9 +12,6 @@ export const appConfig = registerAs("app", () => {
     APP_NAME: ServiceName,
     APP_HOST: "string.host",
     APP_PORT: "number.port",
-    OBSERVE_APP_KEY: NonEmptyString,
-    OBSERVE_APP_SECRET: NonEmptyString,
-    OBSERVE_ENABLE_DEBUG: "boolean = false",
   });
 
   return {
@@ -23,9 +19,6 @@ export const appConfig = registerAs("app", () => {
     appName: env.APP_NAME,
     appHost: env.APP_HOST,
     appPort: env.APP_PORT,
-    observeAppKey: env.OBSERVE_APP_KEY,
-    observeAppSecret: env.OBSERVE_APP_SECRET,
-    observeEnableDebug: env.OBSERVE_ENABLE_DEBUG,
   };
 });
 
