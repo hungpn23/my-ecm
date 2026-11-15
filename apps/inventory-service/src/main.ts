@@ -27,7 +27,7 @@ async function bootstrap(): Promise<void> {
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
   const { appHost, appPort } = app.get<unknown, AppConfig>(appConfig.KEY);
-  const { inventoryServiceTcpHost, inventoryServiceTcpPort } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
+  const { inventoryServiceTcpPort } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("Inventory Service API")
@@ -41,7 +41,7 @@ async function bootstrap(): Promise<void> {
     {
       transport: Transport.TCP,
       options: {
-        host: inventoryServiceTcpHost,
+        host: appHost,
         port: inventoryServiceTcpPort,
       },
     },
@@ -56,7 +56,7 @@ async function bootstrap(): Promise<void> {
 
   logger.log(`🔥 Swagger: http://${appHost}:${appPort}/swagger`);
   logger.log(`🟢 HTTP: http://${appHost}:${appPort}/api`);
-  logger.log(`🔵 TCP: ${inventoryServiceTcpHost}:${inventoryServiceTcpPort}`);
+  logger.log(`🔵 TCP: ${appHost}:${inventoryServiceTcpPort}`);
 }
 
 await bootstrap();

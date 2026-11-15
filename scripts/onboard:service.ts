@@ -146,7 +146,7 @@ async function bootstrap(): Promise<void> {
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
   const { appHost, appPort } = app.get<unknown, AppConfig>(appConfig.KEY);
-  const { ${tcpProperty}Host, ${tcpProperty}Port } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
+  const { ${tcpProperty}Port } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("${serviceTitle} Service API")
@@ -160,7 +160,7 @@ async function bootstrap(): Promise<void> {
     {
       transport: Transport.TCP,
       options: {
-        host: ${tcpProperty}Host,
+        host: appHost,
         port: ${tcpProperty}Port,
       },
     },
@@ -175,7 +175,7 @@ async function bootstrap(): Promise<void> {
 
   logger.log(\`🔥 Swagger: http://\${appHost}:\${appPort}/swagger\`);
   logger.log(\`🟢 HTTP: http://\${appHost}:\${appPort}/api\`);
-  logger.log(\`🔵 TCP: \${${tcpProperty}Host}:\${${tcpProperty}Port}\`);
+  logger.log(\`🔵 TCP: \${appHost}:\${${tcpProperty}Port}\`);
 }
 
 await bootstrap();

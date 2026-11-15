@@ -18,13 +18,13 @@ export class StockController {
   }
 
   @Can(StockPolicy, "view")
-  @Endpoint("GET", { path: ":productId", response: Stock })
+  @Endpoint("GET", { path: "by-product/:productId", response: Stock })
   async findOne(@Param("productId", { schema: Uuid }) productId: Uuid): Promise<Stock> {
     return await this.stock.findOne(productId);
   }
 
   @Can(StockPolicy, "update")
-  @Endpoint("PATCH", { path: ":productId", request: UpdateStock, response: Stock })
+  @Endpoint("PATCH", { path: "by-product/:productId", request: UpdateStock, response: Stock })
   async update(
     @Param("productId", { schema: Uuid }) productId: Uuid,
     @Body({ schema: UpdateStock }) body: UpdateStock,

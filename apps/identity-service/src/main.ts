@@ -27,7 +27,7 @@ async function bootstrap(): Promise<void> {
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
   const { appHost, appPort } = app.get<unknown, AppConfig>(appConfig.KEY);
-  const { identityServiceTcpHost, identityServiceTcpPort } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
+  const { identityServiceTcpPort } = app.get<unknown, TcpConfig>(tcpConfig.KEY);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("Identity Service API")
@@ -41,7 +41,7 @@ async function bootstrap(): Promise<void> {
     {
       transport: Transport.TCP,
       options: {
-        host: identityServiceTcpHost,
+        host: appHost,
         port: identityServiceTcpPort,
       },
     },
@@ -57,7 +57,7 @@ async function bootstrap(): Promise<void> {
 
   logger.log(`🔥 Swagger: http://${appHost}:${appPort}/swagger`);
   logger.log(`🟢 HTTP: http://${appHost}:${appPort}/api`);
-  logger.log(`🔵 TCP: ${identityServiceTcpHost}:${identityServiceTcpPort}`);
+  logger.log(`🔵 TCP: ${appHost}:${identityServiceTcpPort}`);
 }
 
 await bootstrap();
