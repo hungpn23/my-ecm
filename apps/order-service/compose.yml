@@ -8,14 +8,11 @@ services:
       context: ../..
       args:
         APP_FOLDER_NAME: order-service
-    image: my-ecm/${APP_NAME}:local
-    restart: unless-stopped
-    cpus: 0.5
-    mem_limit: 512m
-    init: true
+    image: my-ecm/${APP_NAME}:production
     ports:
       - "${APP_PORT}:${APP_PORT}"
     env_file:
       - ../../.env
       - ./.env
       - ../../.env.docker
+    restart: unless-stopped

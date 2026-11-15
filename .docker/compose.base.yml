@@ -1,4 +1,13 @@
 services:
+  jwt-private-key:
+    volumes:
+      - type: bind
+        source: ../.tmp/identity-ed25519-private.pem
+        target: /run/keys/identity-ed25519-private.pem
+        read_only: true
+        bind:
+          create_host_path: false
+
   jwt-public-key:
     volumes:
       - type: bind
@@ -10,9 +19,9 @@ services:
 
   node:
     container_name: node
-    restart: unless-stopped
     tty: true
     working_dir: /app
+    restart: unless-stopped
 
   db:
     image: postgres:16-alpine
@@ -50,6 +59,6 @@ services:
   kafka-ui:
     image: kafbat/kafka-ui:1764f6a
     container_name: kafbat-ui
-    restart: unless-stopped
     depends_on:
       - kafka
+    restart: unless-stopped
