@@ -1,25 +1,18 @@
 services:
   identity-service:
     container_name: ${APP_NAME}
+    extends:
+      file: ../../.docker/compose.base.yml
+      service: jwt-private-key
     build:
       context: ../..
       args:
         APP_FOLDER_NAME: identity-service
-    image: my-ecm/${APP_NAME}:local
-    restart: unless-stopped
-    cpus: 0.5
-    mem_limit: 512m
-    init: true
+    image: my-ecm/${APP_NAME}:production
     ports:
       - "${APP_PORT}:${APP_PORT}"
     env_file:
       - ../../.env
       - ./.env
       - ../../.env.docker
-    volumes:
-      - type: bind
-        source: ../../.tmp/identity-ed25519-private.pem
-        target: /run/keys/identity-ed25519-private.pem
-        read_only: true
-        bind:
-          create_host_path: false
+    restart: unless-stopped

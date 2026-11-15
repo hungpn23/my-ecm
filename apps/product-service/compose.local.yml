@@ -1,0 +1,18 @@
+services:
+  product-service:
+    extends:
+      file: ./compose.yml
+      service: product-service
+    build:
+      target: local
+    image: my-ecm/${APP_NAME}:local
+    init: true
+    cpus: 0.5
+    mem_limit: 512m
+    volumes:
+      - ./entities.generated.ts:/work/apps/product-service/entities.generated.ts:ro
+      - ./src:/work/apps/product-service/src:ro
+      - ../../libs/common/src:/work/libs/common/src:ro
+      - ../../libs/contract/src:/work/libs/contract/src:ro
+      - ../../libs/core/src:/work/libs/core/src:ro
+      - ../../libs/email/src:/work/libs/email/src:ro
