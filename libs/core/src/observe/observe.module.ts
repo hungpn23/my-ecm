@@ -2,6 +2,8 @@ import type { DynamicModule } from "@nestjs/common";
 import { createObserveModule } from "@nestjs/observe";
 
 import { type AppConfig, appConfig } from "#internal/config/app.config";
+import { ConfigModule } from "#internal/config/config.module";
+import { type ObserveConfig, observeConfig } from "#internal/config/observe.config";
 
 const { ObserveModule: NestObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -13,12 +15,13 @@ export class ObserveModule {
       module: ObserveModule,
       imports: [
         NestObserveModule.forRootAsync({
-          inject: [appConfig.KEY],
-          useFactory: (config: AppConfig) => ({
-            appKey: config.observeAppKey,
-            appSecret: config.observeAppSecret,
-            serviceId: config.appName,
-            debug: config.observeEnableDebug,
+          imports: [ConfigModule.forFeatures(observeConfig)],
+          inject: [appConfig.KEY, observeConfig.KEY],
+          useFactory: (appConf: AppConfig, observeConf: ObserveConfig) => ({
+            appKey: observeConf.observeAppKey,
+            appSecret: observeConf.observeAppSecret,
+            serviceId: appConf.appName,
+            debug: observeConf.observeEnableDebug,
           }),
         }),
       ],

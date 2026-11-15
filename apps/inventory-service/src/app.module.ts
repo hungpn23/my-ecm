@@ -1,5 +1,5 @@
 import { ArktypeValidationPipe, ServerExceptionFilter } from "@libs/common";
-import { AuthModule, ConfigModule, DatabaseModule, LoggerModule, ObserveModule } from "@libs/core";
+import { AuthModule, ConfigModule, DatabaseModule, LoggerModule } from "@libs/core";
 import { Module, StandardSchemaSerializerInterceptor } from "@nestjs/common";
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 
@@ -9,7 +9,7 @@ import { StockModule } from "./module/stock/stock.module";
 
 @Module({
   imports: [
-    ObserveModule.forRoot(),
+    // ObserveModule.forRoot(),
     ConfigModule.forRoot(),
     DatabaseModule.forRoot(entities),
     LoggerModule.forRoot(),
