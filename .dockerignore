@@ -1,0 +1,26 @@
+# Version control and logs
+.git
+*.log
+
+# Dependencies, build outputs, and caches
+**/node_modules
+**/.turbo
+**/dist
+**/.react-email
+
+# Environment files and key material
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+
+# Local data, temporary files, and tests
+.docker/volumes
+.workspace
+.local
+.tmp
+.temp
+tmp
+tests
+coverage
+**/.DS_Store
