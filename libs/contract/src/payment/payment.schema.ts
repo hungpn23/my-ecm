@@ -1,6 +1,6 @@
 import { type } from "arktype";
 
-import { DateToISOString } from "../shared/date.schema";
+import { DateValue } from "../shared/date.schema";
 import { EntityResponse } from "../shared/entity-response.schema";
 import { NonNegativeDecimal } from "../shared/number.schema";
 import { Uuid } from "../shared/string.schema";
@@ -13,6 +13,6 @@ export const Payment = EntityResponse.merge({
   checkoutId: Uuid,
   amount: NonNegativeDecimal,
   status: PaymentStatus,
-  expiresAt: DateToISOString,
+  expiresAt: DateValue,
 });
-export type Payment = typeof Payment.inferIn;
+export type Payment = typeof Payment.infer;

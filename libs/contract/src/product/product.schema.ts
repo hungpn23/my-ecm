@@ -33,15 +33,15 @@ export const Product = EntityResponse.merge({
   categoryId: Uuid,
   shopId: Uuid,
 });
-export type Product = typeof Product.inferIn;
+export type Product = typeof Product.infer;
 
 export const ProductDetail = Product.merge({
   description: "string | null",
 });
-export type ProductDetail = typeof ProductDetail.inferIn;
+export type ProductDetail = typeof ProductDetail.infer;
 
 export const CreateProductResponse = ProductDetail.merge({ stock: ProductStock });
-export type CreateProductResponse = typeof CreateProductResponse.inferIn;
+export type CreateProductResponse = typeof CreateProductResponse.infer;
 
 export const PaginatedProductResponse = Paginated(Product);
-export type PaginatedProductResponse = typeof PaginatedProductResponse.inferIn;
+export type PaginatedProductResponse = typeof PaginatedProductResponse.infer;

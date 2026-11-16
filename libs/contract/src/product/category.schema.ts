@@ -14,7 +14,7 @@ export const UpdateCategory = CreateCategory.partial();
 export type UpdateCategory = typeof UpdateCategory.infer;
 
 export const Category = EntityResponse.merge(CreateCategory);
-export type Category = typeof Category.inferIn;
+export type Category = typeof Category.infer;
 
 export const PaginatedCategoryResponse = Paginated(Category);
-export type PaginatedCategoryResponse = typeof PaginatedCategoryResponse.inferIn;
+export type PaginatedCategoryResponse = typeof PaginatedCategoryResponse.infer;

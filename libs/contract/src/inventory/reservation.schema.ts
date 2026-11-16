@@ -1,7 +1,7 @@
 import { type } from "arktype";
 
 import { POSTGRES_INTEGER_MAX } from "../shared/common.constant";
-import { DateToISOString } from "../shared/date.schema";
+import { DateValue } from "../shared/date.schema";
 import { EntityResponse } from "../shared/entity-response.schema";
 import { Uuid } from "../shared/string.schema";
 
@@ -16,9 +16,9 @@ export const Reservation = EntityResponse.merge({
   shopId: Uuid,
   quantity: type("number.integer >= 1").atMost(POSTGRES_INTEGER_MAX),
   status: ReservationStatus,
-  expiresAt: DateToISOString,
+  expiresAt: DateValue,
 });
-export type Reservation = typeof Reservation.inferIn;
+export type Reservation = typeof Reservation.infer;
 
 export const NullableReservation = Reservation.or("null");
-export type NullableReservation = typeof NullableReservation.inferIn;
+export type NullableReservation = typeof NullableReservation.infer;

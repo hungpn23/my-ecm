@@ -13,9 +13,9 @@ const Shop = EntityResponse.merge({
   name: Varchar255,
   ownerId: Uuid,
 });
-export type Shop = typeof Shop.inferIn;
+export type Shop = typeof Shop.infer;
 
 export const ShopDetail = Shop.merge({
   description: "string | null",
 });
-export type ShopDetail = typeof ShopDetail.inferIn;
+export type ShopDetail = typeof ShopDetail.infer;

@@ -30,6 +30,7 @@ function toJsonSchema(
     target: "draft-2020-12",
     libraryOptions: {
       fallback: {
+        date: (): JsonSchema => ({ type: "string", format: "date-time" }),
         // Swagger cannot express custom predicates; the validation pipe still enforces them.
         predicate: (ctx): JsonSchema => ctx.base,
       },
