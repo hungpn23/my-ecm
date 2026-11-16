@@ -31,8 +31,6 @@ function toJsonSchema(
     libraryOptions: {
       fallback: {
         date: (): JsonSchema => ({ type: "string", format: "date-time" }),
-        // Swagger cannot express custom predicates; the validation pipe still enforces them.
-        predicate: (ctx): JsonSchema => ctx.base,
       },
     } satisfies NonNullable<Parameters<Type<unknown>["toJsonSchema"]>[0]>,
   });
