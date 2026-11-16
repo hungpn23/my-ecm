@@ -1,6 +1,7 @@
 name: my-ecm
 
 include:
+  - ./compose.infra.yml
   - ./apps/identity-service/compose.local.yml
   - ./apps/inventory-service/compose.local.yml
   - ./apps/notification-service/compose.local.yml
@@ -8,9 +9,3 @@ include:
   - ./apps/payment-service/compose.local.yml
   - ./apps/product-service/compose.local.yml
   - ./apps/shipping-service/compose.local.yml
-
-services:
-  db:
-    extends:
-      file: ./compose.yml
-      service: db
