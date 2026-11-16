@@ -2,7 +2,7 @@ import { type } from "arktype";
 
 import { ReserveStock } from "../inventory/stock.rpc-schema";
 import { Payment } from "../payment/payment.schema";
-import { DateToISOString } from "../shared/date.schema";
+import { DateValue } from "../shared/date.schema";
 import { EntityResponse } from "../shared/entity-response.schema";
 import { NonNegativeDecimal } from "../shared/number.schema";
 import { Uuid, Varchar255 } from "../shared/string.schema";
@@ -35,9 +35,9 @@ export const Checkout = EntityResponse.merge(OpenCheckout.pick("productId", "qua
   phone: Varchar255,
   shippingAddress: "string",
   status: CheckoutStatus,
-  expiresAt: DateToISOString,
+  expiresAt: DateValue,
 });
-export type Checkout = typeof Checkout.inferIn;
+export type Checkout = typeof Checkout.infer;
 
 export const ProcessPaymentResponse = type({ checkout: Checkout, payment: Payment });
-export type ProcessPaymentResponse = typeof ProcessPaymentResponse.inferIn;
+export type ProcessPaymentResponse = typeof ProcessPaymentResponse.infer;

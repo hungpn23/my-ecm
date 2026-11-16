@@ -14,7 +14,7 @@ export const Stock = EntityResponse.merge({
   reserved: StockQuantity,
   available: StockQuantity,
 });
-export type Stock = typeof Stock.inferIn;
+export type Stock = typeof Stock.infer;
 
 export const ProductStock = Stock.pick("onHand", "reserved", "available");
 export type ProductStock = typeof ProductStock.infer;
@@ -26,4 +26,4 @@ export const AvailableStockQuery = type({ productId: Uuid });
 export type AvailableStockQuery = typeof AvailableStockQuery.infer;
 
 export const AvailableStock = Stock.omit("shopId", "onHand", "reserved");
-export type AvailableStock = typeof AvailableStock.inferIn;
+export type AvailableStock = typeof AvailableStock.infer;

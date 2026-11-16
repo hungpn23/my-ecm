@@ -25,7 +25,6 @@ export * from "./product/product.schema";
 export * from "./shared/common.constant";
 export * from "./shared/common.schema";
 export * from "./shared/date.schema";
-export * from "./shared/entity-response.rpc-schema";
 export * from "./shared/entity-response.schema";
 export * from "./shared/number.schema";
 export * from "./shared/string.schema";

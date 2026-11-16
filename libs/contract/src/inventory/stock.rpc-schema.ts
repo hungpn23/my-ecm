@@ -1,10 +1,7 @@
 import { type } from "arktype";
 
 import { POSTGRES_INTEGER_MAX } from "../shared/common.constant";
-import { DateFromISOString } from "../shared/date.schema";
-import { EntityResponseFromRpc } from "../shared/entity-response.rpc-schema";
 import { Uuid } from "../shared/string.schema";
-import { Reservation } from "./reservation.schema";
 import { Stock } from "./stock.schema";
 
 export const CreateStock = type({ productId: Uuid, shopId: Uuid }).merge(Stock.pick("onHand"));
@@ -23,7 +20,3 @@ export type GetReservationByCheckoutId = typeof GetReservationByCheckoutId.infer
 
 export const CommitStock = type({ checkoutId: Uuid, paymentId: Uuid });
 export type CommitStock = typeof CommitStock.infer;
-
-export const ReservationFromRpc = Reservation.merge(EntityResponseFromRpc).merge({ expiresAt: DateFromISOString });
-
-export const NullableReservationFromRpc = ReservationFromRpc.or("null");

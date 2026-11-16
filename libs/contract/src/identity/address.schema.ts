@@ -14,10 +14,10 @@ export const EditAddress = CreateAddress.partial();
 export type EditAddress = typeof EditAddress.infer;
 
 export const Address = EntityResponse.merge(CreateAddress).merge({ isDefault: "boolean" });
-export type Address = typeof Address.inferIn;
+export type Address = typeof Address.infer;
 
 export const NullableAddress = Address.or("null");
-export type NullableAddress = typeof NullableAddress.inferIn;
+export type NullableAddress = typeof NullableAddress.infer;
 
 export const Addresses = type({ addresses: Address.array() });
-export type Addresses = typeof Addresses.inferIn;
+export type Addresses = typeof Addresses.infer;

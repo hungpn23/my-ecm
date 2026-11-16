@@ -1,11 +1,11 @@
 import { type } from "arktype";
 
-import { DateToISOString } from "./date.schema";
+import { DateValue } from "./date.schema";
 import { Uuid } from "./string.schema";
 
 export const EntityResponse = type({
   id: Uuid,
-  createdAt: DateToISOString,
-  updatedAt: DateToISOString,
+  createdAt: DateValue,
+  updatedAt: DateValue,
 });
-export type EntityResponse = typeof EntityResponse.inferIn;
+export type EntityResponse = typeof EntityResponse.infer;

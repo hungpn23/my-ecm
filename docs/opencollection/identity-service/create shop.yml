@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "name": "{{$randomCity}}"
+        "name": "Civago VN"
       }
   auth: inherit
 

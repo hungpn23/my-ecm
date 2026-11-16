@@ -8,4 +8,4 @@ export const OrderStatus = type.enumerated(...ORDER_STATUSES);
 export type OrderStatus = typeof OrderStatus.infer;
 
 export const Order = EntityResponse.merge({ checkoutId: Uuid, status: OrderStatus });
-export type Order = typeof Order.inferIn;
+export type Order = typeof Order.infer;
