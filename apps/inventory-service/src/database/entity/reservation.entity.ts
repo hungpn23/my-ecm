@@ -1,4 +1,4 @@
-import { type Reservation, RESERVATION_STATUSES, type Uuid } from "@libs/contract";
+import { CONSTRAINT_NAME, type Reservation, RESERVATION_STATUSES, type Uuid } from "@libs/contract";
 import { ENTITY_NAME, useBaseProps } from "@libs/core";
 import { defineEntity, type Loaded, type Opt, p, wrap } from "@mikro-orm/core";
 
@@ -15,7 +15,13 @@ export const ReservationSchema = defineEntity({
     status: p.enum(RESERVATION_STATUSES),
     expiresAt: p.datetime(),
   }),
-  checks: [{ property: "quantity", expression: ({ quantity }): string => `${quantity} > 0` }],
+  checks: [
+    {
+      name: CONSTRAINT_NAME.RESERVATION_QUANTITY,
+      property: "quantity",
+      expression: ({ quantity }): string => `${quantity} > 0`,
+    },
+  ],
 });
 
 export class ReservationEntity extends ReservationSchema.class {

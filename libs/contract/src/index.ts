@@ -24,6 +24,7 @@ export * from "./product/product.rpc-schema";
 export * from "./product/product.schema";
 export * from "./shared/common.constant";
 export * from "./shared/common.schema";
+export * from "./shared/constraint-name.schema";
 export * from "./shared/date.schema";
 export * from "./shared/entity-response.schema";
 export * from "./shared/number.schema";

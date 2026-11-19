@@ -1,4 +1,4 @@
-import { type NonNegativeDecimal, type Payment, PAYMENT_STATUSES, type Uuid } from "@libs/contract";
+import { CONSTRAINT_NAME, type NonNegativeDecimal, type Payment, PAYMENT_STATUSES, type Uuid } from "@libs/contract";
 import { ENTITY_NAME, useBaseProps } from "@libs/core";
 import { defineEntity, type Opt, p, wrap } from "@mikro-orm/core";
 
@@ -11,7 +11,13 @@ export const PaymentSchema = defineEntity({
     status: p.enum(PAYMENT_STATUSES),
     expiresAt: p.datetime(),
   }),
-  checks: [{ property: "amount", expression: ({ amount }): string => `${amount} between 0 and 9999999999.99` }],
+  checks: [
+    {
+      name: CONSTRAINT_NAME.PAYMENT_AMOUNT,
+      property: "amount",
+      expression: ({ amount }): string => `${amount} between 0 and 9999999999.99`,
+    },
+  ],
 });
 
 export class PaymentEntity extends PaymentSchema.class {

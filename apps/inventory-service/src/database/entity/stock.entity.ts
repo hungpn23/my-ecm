@@ -1,4 +1,4 @@
-import type { AvailableStock, ProductStock, Stock, Uuid } from "@libs/contract";
+import { type AvailableStock, CONSTRAINT_NAME, type ProductStock, type Stock, type Uuid } from "@libs/contract";
 import { ENTITY_NAME, useBaseProps } from "@libs/core";
 import { defineEntity, type Loaded, type Opt, p, wrap } from "@mikro-orm/core";
 
@@ -16,8 +16,13 @@ export const StockSchema = defineEntity({
     reservations: () => p.oneToMany(ReservationEntity).mappedBy("stock"),
   }),
   checks: [
-    { property: "onHand", expression: ({ onHand }): string => `${onHand} >= 0` },
     {
+      name: CONSTRAINT_NAME.STOCK_ON_HAND,
+      property: "onHand",
+      expression: ({ onHand }): string => `${onHand} >= 0`,
+    },
+    {
+      name: CONSTRAINT_NAME.STOCK_RESERVED,
       property: "reserved",
       expression: ({ reserved, onHand }): string => `${reserved} >= 0 and ${reserved} <= ${onHand}`,
     },
@@ -42,7 +47,9 @@ export class StockEntity extends StockSchema.class {
   }
 
   toAvailableStock(this: Loaded<StockEntity, never, never, "shopId" | "reservations">): AvailableStock {
-    const data = wrap(this).serialize({ exclude: ["shopId", "onHand", "reserved", "reservations"] });
+    const data = wrap(this).serialize({
+      exclude: ["shopId", "onHand", "reserved", "reservations"],
+    });
 
     return { ...data, available: this.available };
   }

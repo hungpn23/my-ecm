@@ -1,4 +1,11 @@
-import { type Checkout, CHECKOUT_STATUSES, type NonNegativeDecimal, PAYMENT_METHODS, type Uuid } from "@libs/contract";
+import {
+  type Checkout,
+  CHECKOUT_STATUSES,
+  CONSTRAINT_NAME,
+  type NonNegativeDecimal,
+  PAYMENT_METHODS,
+  type Uuid,
+} from "@libs/contract";
 import { ENTITY_NAME, useBaseProps } from "@libs/core";
 import { defineEntity, type Opt, p, wrap } from "@mikro-orm/core";
 
@@ -22,16 +29,23 @@ export const CheckoutSchema = defineEntity({
     expiresAt: p.datetime(),
   }),
   checks: [
-    { property: "quantity", expression: ({ quantity }): string => `${quantity} > 0` },
     {
+      name: CONSTRAINT_NAME.CHECKOUT_QUANTITY,
+      property: "quantity",
+      expression: ({ quantity }): string => `${quantity} > 0`,
+    },
+    {
+      name: CONSTRAINT_NAME.CHECKOUT_UNIT_PRICE,
       property: "unitPrice",
       expression: ({ unitPrice }): string => `${unitPrice} between 0 and 9999999999.99`,
     },
     {
+      name: CONSTRAINT_NAME.CHECKOUT_SHIPPING_FEE,
       property: "shippingFee",
       expression: ({ shippingFee }): string => `${shippingFee} between 0 and 9999999999.99`,
     },
     {
+      name: CONSTRAINT_NAME.CHECKOUT_TOTAL,
       property: "total",
       expression: ({ total }): string => `${total} between 0 and 9999999999.99`,
     },

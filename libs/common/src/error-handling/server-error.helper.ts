@@ -1,7 +1,9 @@
 import { type ServerError, ServerErrorMessage } from "@libs/contract";
-import { NotFoundError, OptimisticLockError } from "@mikro-orm/core";
+import { CheckConstraintViolationException, NotFoundError, OptimisticLockError } from "@mikro-orm/core";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { TimeoutError } from "rxjs";
+
+import { toCheckConstraintError } from "./check-constraint-error.helper";
 
 export function toServerError(exception: unknown): ServerError {
   if (exception instanceof HttpException) {
@@ -16,16 +18,38 @@ export function toServerError(exception: unknown): ServerError {
   }
 
   if (exception instanceof NotFoundError) {
-    return { statusCode: 404, message: "Resource not found", errorCode: "NOT_FOUND" };
+    return {
+      statusCode: 404,
+      message: "Resource not found",
+      errorCode: "NOT_FOUND",
+    };
   }
 
   if (exception instanceof OptimisticLockError) {
-    return { statusCode: 409, message: "Resource was modified, please reload and retry", errorCode: "CONFLICT" };
+    return {
+      statusCode: 409,
+      message: "Resource was modified, please reload and retry",
+      errorCode: "CONFLICT",
+    };
+  }
+
+  if (exception instanceof CheckConstraintViolationException) {
+    const constraintName = "constraint" in exception ? exception.constraint : undefined;
+
+    return { statusCode: 400, ...toCheckConstraintError(constraintName) };
   }
 
   if (exception instanceof TimeoutError) {
-    return { statusCode: 504, message: "RPC request timed out", errorCode: "GATEWAY_TIMEOUT" };
+    return {
+      statusCode: 504,
+      message: "RPC request timed out",
+      errorCode: "GATEWAY_TIMEOUT",
+    };
   }
 
-  return { statusCode: 500, message: "Internal server error", errorCode: "INTERNAL_SERVER_ERROR" };
+  return {
+    statusCode: 500,
+    message: "Internal server error",
+    errorCode: "INTERNAL_SERVER_ERROR",
+  };
 }
